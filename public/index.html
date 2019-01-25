@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,160 +6,168 @@
     <link rel="stylesheet" href="/stylesheets/style.css">
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <link rel="stylesheet" href="../node_modules/bulma/css/bulma.css" type="text/css"/>
+    <link rel="stylesheet" href="../node_modules/bulma/css/bulma.min.css" type="text/css">
     <!-- Font Awesome Icons -->
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 </head>
-
 <body>
-<!-- Navigation Bar -->
-<nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <a class="navbar-item" href="https://bulma.io">
-            <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
-        </a>
-
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-    </div>
-
-    <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-start">
-            <a class="navbar-item">
-                Home
+    <!-- Navigation Bar -->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="https://bulma.io">
+                <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
             </a>
-
-            <a class="navbar-item">
-                Documentation
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
             </a>
-
-            <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">
-                    More
+        </div>
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item">
+                    Home
                 </a>
-
-                <div class="navbar-dropdown">
-                    <a class="navbar-item">
-                        About
+                <a class="navbar-item">
+                    Documentation
+                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        More
                     </a>
-                    <a class="navbar-item">
-                        Jobs
-                    </a>
-                    <a class="navbar-item">
-                        Contact
-                    </a>
-                    <hr class="navbar-divider">
-                    <a class="navbar-item">
-                        Report an issue
-                    </a>
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item">
+                            About
+                        </a>
+                        <a class="navbar-item">
+                            Jobs
+                        </a>
+                        <a class="navbar-item">
+                            Contact
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item">
+                            Report an issue
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-primary">
+                            <strong>Sign up</strong>
+                        </a>
+                        <a class="button is-light">
+                            Log in
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-primary">
-                        <strong>Sign up</strong>
-                    </a>
-                    <a class="button is-light">
-                        Log in
-                    </a>
-                </div>
+    </nav>
+    <!-- Hero Banner/Logo -->
+    <section class="hero is-primary">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title is-1">Yardy</h1>
+                <h2 class="subtitle">Primary subtitle</h2>
             </div>
         </div>
-    </div>
-</nav>
-
-<!-- Hero Banner/Logo -->
-<section class="hero is-primary">
-    <div class="hero-body">
-        <div class="container">
-            <h1 class="title">
-                Yardy
-            </h1>
-            <h2 class="subtitle">
-                Primary subtitle
-            </h2>
-        </div>
-    </div>
-</section>
-
-<!-- Main Content -->
-<div class="container">
-    <h2>Search for Yard Sales in your area!</h2>
-
-    <!-- Search Form -->
-    <form>
-        <input type="text" value="address">
-
-        <select value="state">
-            <option>State</option>
-            <option value="CT">CT</option>
-            <option value="MA">MA</option>
-            <option value="ME">ME</option>
-            <option value="NH">NH</option>
-            <option value="RI">RI</option>
-        </select>
-
-        <select value="radius">
-            <option value="5">5 miles</option>
-            <option value="10">10 miles</option>
-            <option value="25">25 miles</option>
-            <option value="50">50 miles</option>
-            <option value="100">100 miles</option>
-            <option value="unlimited">unlimited</option>
-        </select>
-
-        <button type="button" value="search">Search</button>
-
-        <select value="sort">
-            <option value="date">Date</option>
-            <option value="distance">Distance</option>
-            <option value="start-time">Start Time</option>
-        </select>
-    </form>
-
-    <!-- MAP OF USA -->
-
+    </section>
+    <!-- Main Content -->
+<center>
+    <section class="section">
+        <h1 class="subtitle is-3">Search for Yard Sales in your area!</h1>
+        <!-- Search Form -->
+                <div class="field is-grouped">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Address">
+                    </div>
+                    <div class="control">
+                        <div class="select">
+                            <select>
+                                <option>State</option>
+                                <option value="CT">CT</option>
+                                <option value="MA">MA</option>
+                                <option value="ME">ME</option>
+                                <option value="NH">NH</option>
+                                <option value="RI">RI</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <div class="select">
+                            <select>
+                                <option value="radius">--Radius--</option>
+                                <option value="5">5 miles</option>
+                                <option value="10">10 miles</option>
+                                <option value="25">25 miles</option>
+                                <option value="50">50 miles</option>
+                                <option value="100">100 miles</option>
+                                <option value="unlimited">unlimited</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <a class="button is-primary" type="button" value="search">
+                            Search
+                        </a>
+                    </div>
+                    <div class="control">
+                        <div class="select">
+                            <select>
+                                <option value="sort">--Sort--</option>
+                                <option value="date">Date</option>
+                                <option value="distance">Distance</option>
+                                <option value="time">Start Time</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            <!-- MAP OF USA -->
+            <div class="container">
+                <img src="images/US.jpeg" alt="placeholder">
+            </div>
+    </section>
     <!-- Search Results (Hard Coded for now...) -->
-    <article class="media">
-        <figure class="media-left">
-            <p class="image is-64x64">
-                <img src="https://bulma.io/images/placeholders/128x128.png">
-            </p>
-        </figure>
-        <div class="media-content">
-            <div class="content">
-                <p>
-                    <strong>John Smith</strong> <small>@johnsmith</small> <small>31m</small>
-                    <br>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.
-                </p>
-            </div>
-            <nav class="level is-mobile">
-                <div class="level-left">
-                    <a class="level-item">
-                        <span class="icon is-small"><i class="fas fa-reply"></i></span>
-                    </a>
-                    <a class="level-item">
-                        <span class="icon is-small"><i class="fas fa-retweet"></i></span>
-                    </a>
-                    <a class="level-item">
-                        <span class="icon is-small"><i class="fas fa-heart"></i></span>
-                    </a>
+    <section class="section">
+        <div class="container">
+            <article class="media">
+                <figure class="media-left">
+                    <p class="image is-64x64">
+                        <img src="https://bulma.io/images/placeholders/128x128.png">
+                    </p>
+                </figure>
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                            <strong>John Smith</strong> <small>@johnsmith</small> <small>31m</small>
+                            <br> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.
+                        </p>
+                    </div>
+                    <nav class="level is-mobile">
+                        <div class="level-left">
+                            <a class="level-item">
+                                <span class="icon is-small"><i class="fas fa-reply"></i></span>
+                            </a>
+                            <a class="level-item">
+                                <span class="icon is-small"><i class="fas fa-retweet"></i></span>
+                            </a>
+                            <a class="level-item">
+                                <span class="icon is-small"><i class="fas fa-heart"></i></span>
+                            </a>
+                        </div>
+                    </nav>
                 </div>
-            </nav>
+                <div class="media-right">
+                    <button class="delete"></button>
+                </div>
+            </article>
         </div>
-        <div class="media-right">
-            <button class="delete"></button>
-        </div>
-    </article>
-
-</div>
-
+    </section>
+</center>
 </body>
-
 </html>
+
