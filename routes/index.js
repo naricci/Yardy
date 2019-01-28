@@ -4,34 +4,11 @@ const sql = require('mssql');
 const async = require('async');
 const debug = require('debug')('Yardy:index');
 
-// var config = {
-//   server: 'sql.neit.edu.SE425_Yardy.windows.net',
-//   database: 'SE425_Yardy',
-//   user: 'NRicci',
-//   password: '001405200',
-//   port: 1433
-// };
 
-// const config = {
-//   server: 'sql.neit.edu.SE425_Yardy.windows.net',
-//   options: {
-//     // port: 4500,
-//     encrypt: false,
-//     database: 'SE425_Yardy'
-//   }, authentication: {
-//     type: "default",
-//     options: {
-//       userName: 'NRicci',
-//       password: '001405200'
-//     }
-//   }
-// };
-
-// const Connection = require('tedious').Connection,
 //     Request = require('tedious').Request,
 //     TYPES = require('tedious').TYPES;
 
-var config = {
+const config = {
     server: 'sql.neit.edu.SE425_Yardy.windows.net',
     options: {
         port: 1433, // or 4500
@@ -144,37 +121,41 @@ router.post('/signup.html', function(req, res, next){
   debug("username=" + username);
   debug("password=" + password);
 
-  var connection = new Connection(config);
+  // var connection = new Connection(config);
+  //
+  // connection.on('connect', function(err){
+  //   var request = new Request("INSERT INTO Users (Username, Password) VALUES (@Username, @Password)",
+  //       function(err){
+  //         if (err) console.log(err);
+  //       });
+  //
+  //   request.addParameter('username', TYPES.VarChar, 25);
+  //   request.addParameter('password', TYPES.VarChar, 25);
+  //
+  //   connection.execSql(request);
+  //   connection.close();
+  // });
 
-  connection.on('connect', function(err){
-    var request = new Request("INSERT INTO Users (Username, Password) VALUES (@Username, @Password)",
-        function(err){
-          if (err) console.log(err);
-        });
+  // TODO Finish INSERT Statement
+  insertRow();
 
-    request.addParameter('username', TYPES.VarChar, 25);
-    request.addParameter('password', TYPES.VarChar, 25);
-
-    connection.execSql(request);
-    connection.close();
-  });
   res.send("Got a POST request for "+ username);
   // res.render('signup', { title: req.body.username, errors: errors});
 });
 
 function insertRow() {
   //2.
-  var dbConn = new sql.Connection(config);
+  const dbConn = new sql.Connection(config);
   //3.
   dbConn.connect().then(function () {
     //4.
-    var transaction = new sql.Transaction(dbConn);
+    const transaction = new sql.Transaction(dbConn);
     //5.
     transaction.begin().then(function () {
       //6.
-      var request = new sql.Request(transaction);
+      const request = new sql.Request(transaction);
       //7.
-      request.query("Insert into EmployeeInfo (EmpName,Salary,DeptName,Designation) values ('T.M. Sabnis',13000,'Accounts','Lead')")
+      request.query("Insert into Users (Username, Password) values ('naricci', 'pw')")
           .then(function () {
             //8.
             transaction.commit().then(function (recordSet) {
