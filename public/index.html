@@ -1,154 +1,157 @@
 <!DOCTYPE html>
-<head lang="en-US">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Yardy</title>
     <link rel="stylesheet" href="/stylesheets/style.css">
+    
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <link rel="stylesheet" href="../node_modules/bulma/css/bulma.css" type="text/css"/>
+    <link rel="stylesheet" href="../node_modules/bulma/css/bulma.min.css" type="text/css">
     <!-- Font Awesome Icons -->
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 </head>
-<body>
-    <!-- Navigation Bar -->
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="https://bulma.io">
-                <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
-            </a>
-            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
-        <div id="navbarBasicExample" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item">
-                    Home
-                </a>
-                <a class="navbar-item">
-                    Documentation
-                </a>
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        More
-                    </a>
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item">
-                            About
-                        </a>
-                        <a class="navbar-item">
-                            Jobs
-                        </a>
-                        <a class="navbar-item">
-                            Contact
-                        </a>
-                        <hr class="navbar-divider">
-                        <a class="navbar-item">
-                            Report an issue
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <a class="button is-primary" href="signup.html">
-                            <strong>Sign up</strong>
-                        </a>
-                        <a class="button is-light">
-                            Log in
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <!-- Hero Banner/Logo -->
+<body bgcolor="#fffefa">
+    <!-- Hero banner/Navbar -->
     <section class="hero is-primary">
+        <div class="hero-head">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="container">
+                    <div class="navbar-brand">
+                        <!--<a class="navbar-item" href="">
+                            <img src="" width="112" height="28">
+                        </a>-->
+                        <span class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMenuHeroA">
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', () => {
+
+                                  // Get all "navbar-burger" elements
+                                  const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+                                  // Check if there are any navbar burgers
+                                  if ($navbarBurgers.length > 0) {
+
+                                    // Add a click event on each of them
+                                    $navbarBurgers.forEach( el => {
+                                      el.addEventListener('click', () => {
+
+                                        // Get the target from the "data-target" attribute
+                                        const target = el.dataset.target;
+                                        const $target = document.getElementById(target);
+
+                                        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+                                        el.classList.toggle('is-active');
+                                        $target.classList.toggle('is-active');
+
+                                      });
+                                    });
+                                  }
+
+                                });
+                            </script>
+                        </span>
+                    </div>
+                    <div id="navbarMenuHeroA" class="navbar-menu">
+                        <div class="navbar-end">
+                            <a class="navbar-item is-active" href="index.html">
+                                Home
+                            </a>
+                            <a class="navbar-item" href="post_yardsale.html">
+                                Post Yard Sale
+                            </a>
+
+                            <a class="navbar-item" href="account.html">
+                                Account
+                            </a>
+                            <a class="navbar-item" href="favorites.html">
+                                Favorites
+                            </a>
+                            <div class="navbar-item">
+                                <div class="buttons">
+                                    <a class="button is-light">
+                                        <strong>Sign up</strong>
+                                    </a>
+                                    <a class="button is-light">
+                                        Log in
+                                    </a>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!--Middle content-->
         <div class="hero-body">
             <div class="container">
                 <h1 class="title is-1">Yardy</h1>
-                <h2 class="subtitle">Primary subtitle</h2>
             </div>
         </div>
     </section>
-    <!-- Main Content -->
+
+ 
+    
+    <!-- Main content -->
 <center>
-    <section class="section">
         <h1 class="subtitle is-3">Search for Yard Sales in your area!</h1>
-        <!-- Search Form -->
-                <div class="field is-grouped">
-                    <div class="control">
-                        <input class="input" type="text" placeholder="Address">
-                    </div>
-                    <div class="control">
-                        <div class="select">
-                            <select>
-                                <option>State</option>
-                                <option value="CT">CT</option>
-                                <option value="MA">MA</option>
-                                <option value="ME">ME</option>
-                                <option value="NH">NH</option>
-                                <option value="RI">RI</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control">
-                        <div class="select">
-                            <select>
-                                <option value="radius">--Radius--</option>
-                                <option value="5">5 miles</option>
-                                <option value="10">10 miles</option>
-                                <option value="25">25 miles</option>
-                                <option value="50">50 miles</option>
-                                <option value="100">100 miles</option>
-                                <option value="unlimited">unlimited</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control">
-                        <a class="button is-primary" type="button" value="search">
-                            Search
-                        </a>
-                    </div>
-                    <div class="control">
-                        <div class="select">
-                            <select>
-                                <option value="sort">--Sort--</option>
-                                <option value="date">Date</option>
-                                <option value="distance">Distance</option>
-                                <option value="time">Start Time</option>
-                            </select>
-                        </div>
+        <!-- Search form -->
+        <div class="field is-horizontal">
+            <div class="field-body">
+                <div class="field">
+                    <p class="control">
+                        <input class="input" type="text" placeholder="Address" >
+                    </p>
+                </div>
+                <div class="field">             
+                    <div class="select">
+                        <select>
+                            <option>State</option>
+                            <option value="CT">CT</option>
+                            <option value="MA">MA</option>
+                            <option value="ME">ME</option>
+                            <option value="NH">NH</option>
+                            <option value="RI">RI</option>
+                        </select>
                     </div>
                 </div>
+                <div class="field">
+                    <div class="select">
+                        <select>
+                            <option value="radius">--Radius--</option>
+                            <option value="5">5 miles</option>
+                            <option value="10">10 miles</option>
+                            <option value="25">25 miles</option>
+                            <option value="50">50 miles</option>
+                            <option value="100">100 miles</option>
+                            <option value="unlimited">unlimited</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="select">
+                        <select>
+                            <option value="sort">--Sort--</option>
+                            <option value="date">Date</option>
+                            <option value="distance">Distance</option>
+                            <option value="time">Start Time</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field">
+                    <a class="button is-primary" type="button" value="search">
+                        Search
+                    </a>
+                </div>
+            </div>
+        </div>
             <!-- MAP OF USA -->
             <div class="container">
                 <img src="images/US.jpeg" alt="placeholder">
             </div>
-    </section>
-
-    <!-- YardSales -->
-    <!--<table border="1">-->
-        <!--<thead>-->
-            <!--YardSales-->
-        <!--</thead>-->
-        <!--<tr>-->
-            <!--<td>YardSale ID</td>-->
-            <!--<td>User ID</td>-->
-            <!--<td>Date</td>-->
-            <!--<td>Time Start</td>-->
-            <!--<td>Time End</td>-->
-            <!--<td>Image Name</td>-->
-        <!--</tr>-->
-        <!--{{#each yardsales}}-->
-        <!--<tr>-->
-            <!--{{yardsales.YardSaleId}}-->
-        <!--</tr>-->
-    <!--</table>-->
-
     <!-- Search Results (Hard Coded for now...) -->
     <section class="section">
         <div class="container">
