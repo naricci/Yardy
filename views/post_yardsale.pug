@@ -1,0 +1,84 @@
+extends layout
+
+block content
+
+    // Main content
+    .container
+        .columns
+            .column.is-one-quarter
+            .column.is-one-quarter
+                .field
+                    label.label First Name
+                    .control
+                        input.input(type='text' id='firstname' name='firstname')
+                .field
+                    label.label Last Name
+                    .control
+                        input.input(type='text' id='lastname' name='lastname')
+                .field
+                    label.label Username
+                    .control
+                        input.input(type='text' id='username' name='username')
+                .field
+                    label.label Phone Number
+                    .control
+                        input.input(type='tel' id='phone' name='phone')
+                .field
+                    label.label Address
+                    .control
+                        input.input(type='text' id='address' name='address')
+                .field
+                    label.label City
+                    .control
+                        input.input(type='text' id='city' name='city')
+                .field
+                    label.label State
+                    .control
+                        .select
+                            select(id='state' name='state')
+                                option ----
+                                option(value='CT') CT
+                                option(value='MA') MA
+                                option(value='ME') ME
+                                option(value='NH') NH
+                                option(value='RI') RI
+                .field
+                    label.label Zip Code
+                    .control
+                        input.input(type='text' id='zipcode' name='zipcode')
+                    br
+                    br
+                    br
+            .column.is-one-quarter
+                .field
+                    label.label Date
+                    .control
+                        input.input(type='date' id='date' name='date')
+                .field
+                    label.label Start Time
+                    .control
+                        input.input(type='time' id='starttime' name='starttime')
+                .field
+                    label.label End Time
+                    .control
+                        input.input(type='time' id='endtime' name='endtime')
+                .field
+                    label.label Description
+                    .control
+                        textarea.textarea(maxlength='1000' id='description' name='description')
+                .field
+                    label.label Add Image
+                    .control
+                        .file.is-boxed
+                            label.file-label
+                                input.file-input(type='file' id='image' name='image')
+                                span.file-cta
+                                    span.file-icon
+                                        i.fas.fa-upload
+                                    span.file-label
+                                        | Choose a file&mldr;
+                .field
+                    .control
+                        a.button.is-primary(type='button' id='postYardSale')
+                            | Post your yard sale!
+            .column.is-one-quarter

@@ -1,0 +1,64 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  title= title
+  // Custom CSS
+  link(rel='stylesheet' href='/css/style.css')
+  // Bulma CSS
+  link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css')
+  
+body
+  // Hero banner/Navbar
+  section.hero.is-primary
+    .hero-head
+      nav.navbar(role='navigation' aria-label='main navigation')
+        .container
+          .navbar-brand
+            //
+              <a class="navbar-item" href="">
+              <img src="" width="112" height="28">
+              </a>
+            span.navbar-burger.burger(aria-label='menu' aria-expanded='false' data-target='navbarMenuHeroA')
+              span(aria-hidden='true')
+              span(aria-hidden='true')
+              span(aria-hidden='true')
+          #navbarMenuHeroA.navbar-menu
+            .navbar-end
+              a.navbar-item(href='/')
+                | Home
+              a.navbar-item(href='post_yardsale')
+                | Post Yard Sale
+              a.navbar-item(href='account')
+                | Account
+              a.navbar-item(href='favorites')
+                | Favorites
+              .navbar-item
+                .buttons
+                  a.button.is-light(href='signup')
+                    | Sign up
+                  a.button.is-light(href='login')
+                    | Log in
+    // Middle content
+    .hero-body
+      .container
+        h1.title.is-1 Yardy
+        h2.subtitle= title
+  br
+  
+  block content
+
+  br
+  footer.footer
+    .content.has-text-centered
+      p
+        strong Yardy
+        |   created by MaNiJo.
+
+  // jQuery
+  script(src='/js/jquery-3.3.1.min.js')
+  // Font Awesome Icons
+  script(defer='' src='https://use.fontawesome.com/releases/v5.3.1/js/all.js')
+  // Custom JS
+  script(src='/js/menu.js')
+  script(src='/js/registration.js')

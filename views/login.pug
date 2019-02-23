@@ -1,0 +1,29 @@
+extends layout
+
+block content
+
+    // Main content
+    .container
+        .columns
+            .column.is-one-third
+            .column.is-one-third
+                form(method='POST' action='/signup.html')
+                    // enctype="multipart/form-data"
+                    .field
+                        label.label Username
+                        .control.has-icons-left.has-icons-right
+                            input.input(type='text' placeholder='')
+                            span.icon.is-small.is-left
+                                i.fas.fa-user
+                    .field
+                        label.label Password
+                        .control
+                            input.input(type='text' name='password')
+                    .field
+                        .control
+                            a.button.is-primary(type='button' value='logIn')
+                                | Log in
+                    br
+                    br
+                    br
+            .column.is-one-third

@@ -1,0 +1,73 @@
+extends layout
+
+block content
+
+    // Middle content
+    //- .hero-body
+    //-     .container
+    //-         h1.title.is-1 Yardy
+    //-         h2.subtitle Account Page
+
+    // Main content
+    .container
+        .container
+            .columns
+                .column.is-one-quarter
+                .column.is-one-quarter
+                    .field
+                        label.label First Name
+                        .control
+                            input.input(type='text' name='firstname')
+                    .field
+                        label.label Last Name
+                        .control
+                            input.input(type='text' name='lastname')
+                    .field
+                        label.label Username
+                        .control
+                            input.input(type='text' name='username')
+                    .field
+                        label.label Phone Number
+                        .control
+                            input.input(type='tel' name='phone')
+                    .field
+                        label.label Password
+                        .control
+                            input.input(type='text' name='password')
+                    .field
+                        label.label Confirm Password
+                        .control
+                            input.input(type='text' name='confirmPassword')
+                        br
+                        br
+                        br
+                .column.is-one-quarter
+                    .field
+                        label.label Address
+                        .control
+                            input.input(type='text' name='address')
+                    .field
+                        label.label City
+                        .control
+                            input.input(type='text' name='city')
+                    .field
+                        label.label State
+                        .control
+                            .select
+                                select(name='state')
+                                    option ----
+                                    option(value='CT') CT
+                                    option(value='MA') MA
+                                    option(value='ME') ME
+                                    option(value='NH') NH
+                                    option(value='RI') RI
+                    .field
+                        label.label Zip Code
+                        .control
+                            input.input(type='text' name='zipcode')
+                    .field
+                        .control
+                            a.button.is-primary(type='button' value='updateAccount')
+                                | Update account!
+                .column.is-one-quarter
+    
