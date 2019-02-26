@@ -9,7 +9,7 @@ const { matchedData, sanitize }   = require('express-validator/filter');
 // Controllers
 // const signup_controller = require('../controllers/signup.controller');
 // const favorites_controller = require('../controllers/favorites.controller');
-// const yardsales_controller = require('../controllers/yardsales.controller');
+const yardsales_controller = require('../controllers/yardsales.controller');
 // const users_controller = require('../controllers/users.controller');
 
 // Routes for views
