@@ -4,6 +4,7 @@ exports.all_yardsales = (req, res) => {
     console.log("All Yardsales");
 
     Yardsale.find()
+    .exec()
     .then (yardsales_controller => {
         res.send(yardsales_controller);
     }).catch(err => {
