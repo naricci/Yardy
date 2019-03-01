@@ -1,20 +1,14 @@
 const Yardsale = require('../models/yardsales.model');
-var debug = require('debug')('Yardy: Yardsales search');
 
-function sendJSONresponse(res, status, content){
-    res.status(status);
-    res.json(conent);
-};
+exports.all_yardsales = (req, res) => {
+    console.log("All Yardsales");
 
-exports.yardsale_search = function(req, res){
-    debug('Getting all Yardsales');
-    Yardsale
-        .find()
-        .exec()
-        .then(function(results){
-            sendJSONresponse(res, 200, results);
-        })
-        .catch(function(err){
-            sendJSONresponse(res, 404, err);
+    Yardsale.find()
+    .then (yardsales_controller => {
+        res.send(yardsales_controller);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message
         });
+    });
 };

@@ -6,52 +6,53 @@ block content
     center
         h1.subtitle.is-3 Search for Yard Sales in your area!
         // Search form
-        .container
-            .columns
-                .column.is-one-quarter
-                .column.is-one-quarter
-                    .field.is-horizontal
-                        .field-body
-                            .field
-                                p.control
-                                    input.input(type='text' placeholder='City, State, Zip Code')
-                            //
-                            <div class="field">
-                            <div class="select">
-                            <select>
-                            <option>State</option>
-                            <option value="CT">CT</option>
-                            <option value="MA">MA</option>
-                            <option value="ME">ME</option>
-                            <option value="NH">NH</option>
-                            <option value="RI">RI</option>
-                            </select>
-                            </div>
-                            </div>
-                .column.is-one-quarter
-                    .field.is-horizontal
-                        .field-body
-                            .field
-                                .select
-                                    select
-                                        option(value='radius') --Radius--
-                                        option(value='5') 5 miles
-                                        option(value='10') 10 miles
-                                        option(value='25') 25 miles
-                                        option(value='50') 50 miles
-                                        option(value='100') 100 miles
-                                        option(value='unlimited') unlimited
-                            .field
-                                .select
-                                    select
-                                        option(value='sort') --Sort--
-                                        option(value='date') Date
-                                        option(value='distance') Distance
-                                        option(value='time') Start Time
-                            .field
-                                a.button.is-primary(id='search' type='button')
-                                    | Search
-                .column.is-one-quarter
+        form(role='form' method='GET' action='/index')
+            .container
+                .columns
+                    .column.is-one-quarter
+                    .column.is-one-quarter
+                        .field.is-horizontal
+                            .field-body
+                                .field
+                                    p.control
+                                        input.input(type='text' placeholder='City, State, Zip Code')
+                                //
+                                <div class="field">
+                                <div class="select">
+                                <select>
+                                <option>State</option>
+                                <option value="CT">CT</option>
+                                <option value="MA">MA</option>
+                                <option value="ME">ME</option>
+                                <option value="NH">NH</option>
+                                <option value="RI">RI</option>
+                                </select>
+                                </div>
+                                </div>
+                    .column.is-one-quarter
+                        .field.is-horizontal
+                            .field-body
+                                .field
+                                    .select
+                                        select
+                                            option(value='radius') --Radius--
+                                            option(value='5') 5 miles
+                                            option(value='10') 10 miles
+                                            option(value='25') 25 miles
+                                            option(value='50') 50 miles
+                                            option(value='100') 100 miles
+                                            option(value='unlimited') unlimited
+                                .field
+                                    .select
+                                        select(name='sort')
+                                            option(value='sort') --Sort--
+                                            option(value='date') Date
+                                            option(value='distance') Distance
+                                            option(value='time') Start Time
+                                .field
+                                    a.button.is-primary(id='search' type='e')
+                                        | Search
+                    .column.is-one-quarter
         br
         // MAP OF USA
         .container

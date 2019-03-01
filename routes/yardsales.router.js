@@ -1,14 +1,26 @@
+module.exports = function (app) {
+
 var express = require('express');
 var router = express.Router();
 
-var Yardsales = require('../models/yardsales.model');
 const yardsales_controller = require('../controllers/yardsales.controller');
 
-router.get('/', function(req, res, next) {
-    res.send('respond with a resource');
-  });
+router.use(function(req, res, next) {
+  console.log("/" + req.method);
+  next();
+});
+
+app.get('/', (req, res) => {
+  res.sendFile(path + "index")
+});
 
 /* GET all Yardsales */
-router.get("/search", yardsales_controller.yardsale_search);
+app.get('/yardsales', yardsales_controller.all_yardsales)
 
-module.exports = router;
+app.use("/", router);
+
+app.use("*", (req, res) => {
+  res.sendFile(path + "error")
+})
+}
+
