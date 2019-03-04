@@ -22,7 +22,8 @@ router.get('/', (req, res, next) => {
   res.render('index', { title: 'Welcome!' });
 });
 
-router.get("/", yardsales_controller.all_yardsales);
+/* GET all yardsales*/
+router.get("/yardsales", yardsales_controller.all_yardsales);
 
 /* GET signup page. */
 router.get('/signup', function(req, res, next) {
