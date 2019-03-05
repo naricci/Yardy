@@ -4,6 +4,7 @@ var router = express.Router();
 // var crypto = require('crypto'), hmac, signature;
 // var { check, validationResult } = require('express-validator/check');
 // var { matchedData, sanitize }   = require('express-validator/filter');
+const yardsaleController = require('../controllers/yardsaleController');
 
 // Models
 // var User = require('../models/user');
@@ -262,5 +263,8 @@ router.get('/', (req, res, next) => {
 // 		});
 // 	}
 // }
+
+/* GET all yardsales*/
+router.get("/yardsales", yardsaleController.all_yardsales);
 
 module.exports = router;

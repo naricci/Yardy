@@ -14,8 +14,8 @@ module.exports.post_yardsale = function (req, res) {
 			phone : req.body.phone,
 			address : req.body.address,
 			city : req.body.city,
-		  state : req.body.state,
-		  zipcode : req.body.zipcode,
+                        state : req.body.state,
+                        zipcode : req.body.zipcode,
 			description : req.body.description,
 			date : req.body.date,
 			starttime : req.body.starttime,
@@ -141,4 +141,18 @@ module.exports.delete = function (req, res) {
 				removed: removed
 			});
 		});
+};
+
+module.exports.all_yardsales = function (req, res) {
+    console.log("All Yardsales");
+
+    Yardsale.find()
+    .exec()
+    .then (yardsaleController => {
+        res.send(yardsaleController);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message
+        });
+    });
 };
