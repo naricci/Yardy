@@ -7,48 +7,52 @@ block content
         .columns
             .column.is-one-quarter
             .column.is-one-quarter
-                .field
-                    label.label First Name
-                    .control
-                        input.input(type='text' id='firstname' name='firstname')
-                .field
-                    label.label Last Name
-                    .control
-                        input.input(type='text' id='lastname' name='lastname')
-                .field
-                    label.label Username
-                    .control
-                        input.input(type='text' id='username' name='username')
-                .field
-                    label.label Phone Number
-                    .control
-                        input.input(type='tel' id='phone' name='phone')
-                .field
-                    label.label Address
-                    .control
-                        input.input(type='text' id='address' name='address')
-                .field
-                    label.label City
-                    .control
-                        input.input(type='text' id='city' name='city')
-                .field
-                    label.label State
-                    .control
-                        .select
-                            select(id='state' name='state')
-                                option ----
-                                option(value='CT') CT
-                                option(value='MA') MA
-                                option(value='ME') ME
-                                option(value='NH') NH
-                                option(value='RI') RI
-                .field
-                    label.label Zip Code
-                    .control
-                        input.input(type='text' id='zipcode' name='zipcode')
-                    br
-                    br
-                    br
+
+                .alert.has-text-warning(role='alert' id="msgDiv")
+                br
+                form(role='form' method='POST' action='/post_yardsale')
+                    .field
+                        label.label First Name
+                        .control
+                            input.input(type='text' id='firstname' name='firstname' required)
+                    .field
+                        label.label Last Name
+                        .control
+                            input.input(type='text' id='lastname' name='lastname')
+                    .field
+                        label.label Username
+                        .control
+                            input.input(type='text' id='username' name='username')
+                    .field
+                        label.label Phone Number
+                        .control
+                            input.input(type='tel' id='phone' name='phone')
+                    .field
+                        label.label Address
+                        .control
+                            input.input(type='text' id='address' name='address')
+                    .field
+                        label.label City
+                        .control
+                            input.input(type='text' id='city' name='city' required)
+                    .field
+                        label.label State
+                        .control.has-icons-left
+                            .select
+                                select(id='state' name='state')
+                                    option(selected) ----
+                                    option(value='CT') CT
+                                    option(value='MA') MA
+                                    option(value='ME') ME
+                                    option(value='NH') NH
+                                    option(value='RI') RI
+                    .field
+                        label.label Zip Code
+                        .control
+                            input.input(type='text' id='zipcode' name='zipcode')
+                        br
+                        br
+                        br
             .column.is-one-quarter
                 .field
                     label.label Date
@@ -71,7 +75,7 @@ block content
                     .control
                         .file.is-boxed
                             label.file-label
-                                input.file-input(type='file' id='image' name='image')
+                                input.file-input(type='file' id='imagename' name='imagename')
                                 span.file-cta
                                     span.file-icon
                                         i.fas.fa-upload
@@ -79,6 +83,6 @@ block content
                                         | Choose a file&mldr;
                 .field
                     .control
-                        a.button.is-primary(type='button' id='postYardSale')
+                        a.button.is-primary(id='postYardSale' type="e")
                             | Post your yard sale!
             .column.is-one-quarter

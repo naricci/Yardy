@@ -1,0 +1,7 @@
+,
+  "nodemonConfig": {
+    "verbose": true,
+    "ignore": [
+      "public/*"
+    ]
+  }

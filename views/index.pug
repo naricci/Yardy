@@ -4,7 +4,7 @@ block content
 
     // Main content
     center
-        h1.subtitle.is-3 Search for Yard Sales in your area!
+        h1.subtitle.is-3(style='padding-left: auto; padding-right: auto;') Search for Yard Sales in your area!
         // Search form
         .container
             .columns
@@ -15,22 +15,10 @@ block content
                             .field
                                 p.control
                                     input.input(type='text' placeholder='City, State, Zip Code')
-                            //
-                            <div class="field">
-                            <div class="select">
-                            <select>
-                            <option>State</option>
-                            <option value="CT">CT</option>
-                            <option value="MA">MA</option>
-                            <option value="ME">ME</option>
-                            <option value="NH">NH</option>
-                            <option value="RI">RI</option>
-                            </select>
-                            </div>
-                            </div>
+
                 .column.is-one-quarter
                     .field.is-horizontal
-                        .field-body
+                        .field-body(style='padding-left: auto; padding-right: auto;')
                             .field
                                 .select
                                     select
@@ -118,6 +106,6 @@ block content
                         </div>
                         </nav>
                     .media-right
-                        a.button.is-primary(type='button' value='view')
+                        a.button.is-primary(type='submit')
                             | View
 

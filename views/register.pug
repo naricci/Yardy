@@ -1,0 +1,51 @@
+extends layout
+
+block content
+
+    // Main content
+    .container
+        .columns
+            .column.is-one-third
+            .column.is-one-third
+
+                .alert.has-text-warning(role='alert' id="msgDiv")
+                br
+
+                form(role='form' method='POST' action='')
+                    .field
+                        label.label Email
+                        .control.has-icons-left.has-icons-right
+                            input.input(id='email' type='email' name='email' placeholder='naricci@email.neit.edu' required value=(undefined===user ? '' : user.email))
+                    .field
+                        label.label Username
+                        .control.has-icons-left.has-icons-right
+                            input.input(id='username' type='text' name='username' placeholder='naricci' required value=(undefined===user ? '' : user.username))
+                            span.icon.is-small.is-left
+                                i.fas.fa-user
+
+                    if is_update_form
+                        hr
+                        p Use the fields below if you want to change your password, too. Otherwise, leave blank.
+                        hr
+
+                    .field
+                        label.label #{is_update_form ? 'New Password:' : 'Password:'}
+                        .control
+                            input.input(id='password' type='password' name='password' required)
+                    .field
+                        label.label #{is_update_form ? 'Confirm New Password:' : 'Confirm Password:'}
+                        .control
+                            input.input(id='cpassword' type='password' name='cpassword' required=!is_update_form)
+                    .field
+                        .control
+                            // type='submit'
+                            a.button.is-primary(type='submit')
+                                | Register
+                    br
+                    br
+                    br
+                    if errors
+                        ul
+                            for error in errors
+                                li!= error.msg
+            .column.is-one-third

@@ -1,0 +1,22 @@
+{
+  "name": "yardy",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "Nicholas Ricci <naricci@email.neit.edu>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bulma": "^0.7.4",
+    "jquery": "^3.3.1"
+  }
+}

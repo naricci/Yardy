@@ -7,23 +7,29 @@ block content
         .columns
             .column.is-one-third
             .column.is-one-third
-                form(method='POST' action='/signup.html')
-                    // enctype="multipart/form-data"
+                form(method='POST' action='')
                     .field
                         label.label Username
                         .control.has-icons-left.has-icons-right
-                            input.input(type='text' placeholder='')
+                            input.input#username(type='text' placeholder='username' name='username' required value=(undefined===user ? '' : user.username))
                             span.icon.is-small.is-left
                                 i.fas.fa-user
                     .field
                         label.label Password
                         .control
-                            input.input(type='text' name='password')
+                            // TODO type='password'
+                            input.input#password(type='text' name='password' required)
                     .field
                         .control
-                            a.button.is-primary(type='button' value='logIn')
+                            // type='button' value='logIn'
+                            a.button.is-primary(type='submit')
                                 | Log in
                     br
-                    br
+                    a(href='/users/reset') Forgot your password?
                     br
             .column.is-one-third
+    br
+    if errors
+        ul
+            for error in errors
+                li!= error.msg
