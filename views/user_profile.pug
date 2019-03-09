@@ -1,0 +1,30 @@
+extends layout
+
+block content
+
+    h1 #{title}
+
+    p #[strong Username:] #{user.username}
+    p #[strong First Name:] #{user.firstname}
+    p #[strong Last Name:] #{user.lastname}
+    p #[strong E-mail:] #{user.email}
+    p #[strong Phone:] #{user.phone}
+    p #[strong Address:] #{user.address}
+    p #[strong Address 2:] #{user.address2}
+    p #[strong City:] #{user.city}
+    p #[strong State:]
+        if (user.state === 'CT')
+            | CT
+        else if (user.state === 'MA')
+            | MA
+        else if (user.state === 'ME')
+            | ME
+        if (user.state === 'NH')
+            | NH
+        if (user.state === 'RI')
+            | RI
+    p #[strong Zip Code:] #{user.zipcode}
+
+    hr
+    p
+        a(href=user.url+'/update').btn.btn-primary Update Account

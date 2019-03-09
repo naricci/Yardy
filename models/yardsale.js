@@ -1,8 +1,9 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var moment = require('moment');
 
 // Create Schema and Model
-const yardsaleSchema = new Schema({
+var yardsaleSchema = new Schema({
 	firstname: {
 		type: String,
 		required: true,
@@ -14,6 +15,11 @@ const yardsaleSchema = new Schema({
 		required: false,
 		minlength: 1,
 		maxlength: 25
+	},
+	username: {
+		type: Schema.ObjectId,
+		ref: 'Author',
+		required: true
 	},
 	phone: {
 		type: Number,
@@ -34,13 +40,13 @@ const yardsaleSchema = new Schema({
 	},
 	zipcode: {
 		type: String,
-		required: false,
+		required: true,
 		minlength: 5,
 		maxlength: 5
 	},
 	date: {
-		type: String,
-		required: false
+		type: Date,
+		required: true
 	},
 	starttime: {
 		type: String,
@@ -63,6 +69,11 @@ const yardsaleSchema = new Schema({
 		type: Date,
 		default: Date.now
 	}
+});
+
+// Virtual for this yardsale instance URL.
+yardsaleSchema.virtual('url').get(function() {
+	return '/yardsale/' + this._id;
 });
 
 var Yardsale = mongoose.model('yardsales', yardsaleSchema);

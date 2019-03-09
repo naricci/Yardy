@@ -21,7 +21,7 @@ exports.user_profile = [
 				return next(err);
 			}
 			// Successful, so render
-			res.render('user_account', {
+			res.render('user_profile', {
 				title: 'User Account',
 				user: found_user
 			});
@@ -66,9 +66,10 @@ exports.login_post = [
 exports.logout_get = [
 	function(req, res, next) {
 		req.logout();
-		req.session.destroy(err => {
+		req.session.destroy(function(err) {
 			res.redirect('/');
 		});
+		// next();
 	}
 ];
 
@@ -79,7 +80,7 @@ exports.register_get = [
 	// Continue processing.
 	function(req, res, next) {
 		// 'user_form'
-		res.render('register', {
+		res.render('user_form', {
 			title: 'Create User'
 		});
 	}
@@ -131,7 +132,7 @@ exports.register_post = [
 
 		if (errorsArray.length > 0) {
 			// There are errors. Render the form again with sanitized values/error messages.
-			res.render('register', {
+			res.render('user_form', {
 				title: 'Create User',
 				user: user,
 				errors: errorsArray
@@ -150,7 +151,7 @@ exports.register_post = [
 				}
 				if (found_user) {
 					// Username exists, re-render the form with error message.
-					res.render('register', {
+					res.render('user_form', {
 						title: 'Create User',
 						user: user,
 						errors: [{ msg: 'Username already taken. Choose another one.' }]
@@ -161,6 +162,7 @@ exports.register_post = [
 						if (err) {
 							return next(err);
 						}
+						console.log('User Created Successfully\n' + user);
 						// User saved. Redirect to login page.
 						req.flash(
 							'success',
@@ -189,7 +191,7 @@ exports.update_get = [
 				return next(err);
 			}
 			// Successful, so render
-			res.render('user_account', {
+			res.render('user_form', {
 				title: 'Update User',
 				user: found_user,
 				is_update_form: true
@@ -237,7 +239,7 @@ exports.update_post = [
 		});
 
 		// Update password only if the user filled both password fields!
-		if (req.body.password != '' && req.body.cpassword != '') {
+		if (req.body.password !== '' && req.body.cpassword !== '') {
 			// -- The user wants to change password. -- //
 
 			// Check if passwords match or not.
@@ -254,7 +256,9 @@ exports.update_post = [
 			// Remove warnings that may be coming from the body(..) validation step above.
 			var filteredErrorsArray = [];
 			errorsArray.forEach(errorObj => {
-				if (!(errorObj.param == 'password' || errorObj.param == 'cpassword')) {
+				if (
+					!(errorObj.param === 'password' || errorObj.param === 'cpassword')
+				) {
 					filteredErrorsArray.push(errorObj);
 				}
 			});
@@ -264,7 +268,7 @@ exports.update_post = [
 
 		if (errorsArray.length > 0) {
 			// There are errors. Render the form again with sanitized values/error messages.
-			res.render('user_account', {
+			res.render('user_form', {
 				title: 'Update Account',
 				user: user,
 				errors: errorsArray,

@@ -14,12 +14,12 @@ mongoose.connect(dev_db_url, {
 });
 mongoose.set('useCreateIndex', true);
 
-// mongoose.connect(mongoDB, { useNewUrlParser: true });
-//   .then(() => {
-//     console.log("Connected to the mLab MongoDB!");
-// }).catch((err) => {
-//     console.log("ERROR!  Not Connected to Database: ", err);
-// });
+mongoose.connect(mongoDB, { useNewUrlParser: true })
+	.then(() => {
+		console.log('Connected to the mLab MongoDB!');
+	}).catch((err) => {
+		console.log('ERROR!  Not Connected to Database: ', err);
+	});
 
 mongoose.Promise = global.Promise;
 

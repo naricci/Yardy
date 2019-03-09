@@ -1,11 +1,13 @@
 {
 	"env": {
 		"browser": true,
+		"node": true,
+		"shared-node-browser": true,
 		"es6": true,
+		"mocha": true,
 		"jasmine": true,
 		"jquery": true,
-		"mongo": true,
-		"node": true
+		"mongo": true
 	},
 	"extends": "eslint:recommended",
 	"parserOptions": {

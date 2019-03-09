@@ -1,0 +1,24 @@
+extends layout
+
+block content
+
+	h1 #{title}: #{yardsale.address}
+
+	p #[strong Date:] #{yardsale.date}
+	p #[strong Start Time:] #{yardsale.starttime}
+	p #[strong End Time:] #{yardsale.endtime}
+	p #[strong Host:] #{yardsale.firstname} + #{yardsale.lastname}
+	p #[strong Username:]
+		a(href=yardsale.username.url) #{yardsale.username}
+	p #[strong Description:] #{yardsale.description}
+
+
+	hr
+
+	p Do you really want to delete this Yardsale?
+
+	form(method='POST' action='')
+		div.form-group
+			input#id.form-control(type='hidden' name='id' required='true' value=yardsale._id )
+
+		button.btn.btn-primary(type='submit') Delete

@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const crypto = require('crypto');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var crypto = require('crypto');
+var debug = require('debug')('Yardy:user.model');
 
 // const validateEmail = function (email) {
 // 	var re = /^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/;	// /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
@@ -8,7 +9,7 @@ const crypto = require('crypto');
 // };
 
 // Create Schema and Model
-const userSchema = new Schema({
+var userSchema = new Schema({
 	username: {
 		type: String,
 		unique: true,
@@ -17,20 +18,20 @@ const userSchema = new Schema({
 		minlength: 1,
 		maxlength: 25
 	},
-	password: {
+	// password: {
+	// 	type: String,
+	// 	// TODO change password minlength/maxlength accordingly
+	// 	required: [true, 'Password is required'],
+	// 	minlength: 1
+	// },
+	salt: {
 		type: String,
-		// TODO change password minlength/maxlength accordingly
-		required: [true, 'Password is required'],
-		minlength: 1
+		required: true
 	},
-	// salt: {
-	// 	type: String,
-	// 	required: true
-	// },
-	// hash: {
-	// 	type: String,
-	// 	required: true
-	// },
+	hash: {
+		type: String,
+		required: true
+	},
 	firstName: {
 		type: String,
 		required: false
@@ -41,10 +42,10 @@ const userSchema = new Schema({
 	},
 	email: {
 		type: String,
-		required: [true, 'Email is required'],
+		required: [true, 'Email is required']
 		// validate: [validateEmail, 'Please fill a valid email address'],
 		// match: [/^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'],	// /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-		index: { unique: true, dropDups: true }
+		// index: { unique: true, dropDups: true }
 	},
 	phone: {
 		type: String,
@@ -66,7 +67,7 @@ const userSchema = new Schema({
 		type: String,
 		required: false
 	},
-	zipCode: {
+	zipcode: {
 		type: String,
 		required: false,
 		minlength: 5,
@@ -79,27 +80,38 @@ const userSchema = new Schema({
 });
 
 // Virtual for User's URL.
-userSchema.virtual('url').get(function() {
+userSchema.virtual('url').get(() => {
 	return '/users/' + this._id;
 });
 
+// Virtual for Yardsale/User instance URL.
+// userSchema.virtual('sale_url').get(function() {
+// 	return '/yardsales/user/' + this._id;
+// });
+
 // Instance method for hashing user-typed password.
-// userSchema.methods.setPassword = function(password) {
-// 	// Create a salt for the user.
-// 	this.salt = crypto.randomBytes(16).toString('hex');
-// 	// Use salt to create hashed password.
-// 	this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 128, 'sha512').toString('hex');
-// };
+userSchema.methods.setPassword = function(password) {
+	// Create a salt for the user.
+	this.salt = crypto.randomBytes(16).toString('hex');
+	// Use salt to create hashed password.
+	this.hash = crypto
+		.pbkdf2Sync(password, this.salt, 10000, 128, 'sha512')
+		.toString('hex');
+	debug(`Salt: ${this.salt}, Hash: ${this.hash}`);
+};
 
 // Instance method for comparing user-typed password against hashed-password on db.
-// userSchema.methods.validatePassword = function(password) {
-// 	var hash = crypto.pbkdf2Sync(password, this.salt, 10000, 128, 'sha512').toString('hex');
-// 	return this.hash === hash;
-// };
+userSchema.methods.validatePassword = function(password) {
+	var hash = crypto
+		.pbkdf2Sync(password, this.salt, 10000, 128, 'sha512')
+		.toString('hex');
+	debug(hash);
+	return this.hash === hash;
+};
 
 // Instance method for comparing user-typed passwords against each other.
-userSchema.methods.passwordsMatch = function(password, cpassword) {
-	return password === cpassword;
+userSchema.methods.passwordsMatch = function(password, passwordConfirm) {
+	return password === passwordConfirm;
 };
 
 var User = mongoose.model('users', userSchema);

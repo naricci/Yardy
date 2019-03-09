@@ -8,33 +8,31 @@ block content
             .column.is-one-quarter
             .column.is-one-quarter
 
-                .alert.has-text-warning(role='alert' id="msgDiv")
-                br
-                form(role='form' method='POST' action='/post_yardsale')
+                form(method='POST' action='')
                     .field
                         label.label First Name
                         .control
-                            input.input(type='text' id='firstname' name='firstname' required)
+                            input.input(type='text' id='firstname' name='firstname' required value=(undefined===yardsale ? '' : yardsale.firstname))
                     .field
                         label.label Last Name
                         .control
-                            input.input(type='text' id='lastname' name='lastname')
+                            input.input(type='text' id='lastname' name='lastname' value=(undefined===yardsale ? '' : yardsale.lastname))
                     .field
                         label.label Username
                         .control
-                            input.input(type='text' id='username' name='username')
+                            input.input(type='text' id='username' name='username' value=(undefined===yardsale ? '' : yardsale.username))
                     .field
                         label.label Phone Number
                         .control
-                            input.input(type='tel' id='phone' name='phone')
+                            input.input(type='tel' id='phone' name='phone' value=(undefined===yardsale ? '' : yardsale.phone))
                     .field
                         label.label Address
                         .control
-                            input.input(type='text' id='address' name='address')
+                            input.input(type='text' id='address' name='address' value=(undefined===yardsale ? '' : yardsale.address))
                     .field
                         label.label City
                         .control
-                            input.input(type='text' id='city' name='city' required)
+                            input.input(type='text' id='city' name='city' required value=(undefined===yardsale ? '' : yardsale.city))
                     .field
                         label.label State
                         .control.has-icons-left
@@ -49,7 +47,7 @@ block content
                     .field
                         label.label Zip Code
                         .control
-                            input.input(type='text' id='zipcode' name='zipcode')
+                            input.input(type='text' id='zipcode' name='zipcode' value=(undefined===yardsale ? '' : yardsale.zipcode))
                         br
                         br
                         br
@@ -57,25 +55,25 @@ block content
                 .field
                     label.label Date
                     .control
-                        input.input(type='date' id='date' name='date')
+                        input.input(type='date' id='date' name='date' value=(undefined===yardsale ? '' : yardsale.date))
                 .field
                     label.label Start Time
                     .control
-                        input.input(type='time' id='starttime' name='starttime')
+                        input.input(type='time' id='starttime' name='starttime' value=(undefined===yardsale ? '' : yardsale.starttime))
                 .field
                     label.label End Time
                     .control
-                        input.input(type='time' id='endtime' name='endtime')
+                        input.input(type='time' id='endtime' name='endtime' value=(undefined===yardsale ? '' : yardsale.endtime))
                 .field
                     label.label Description
                     .control
-                        textarea.textarea(maxlength='1000' id='description' name='description')
+                        textarea.textarea(maxlength='1000' id='description' name='description' value=(undefined===yardsale ? '' : yardsale.description))
                 .field
                     label.label Add Image
                     .control
                         .file.is-boxed
                             label.file-label
-                                input.file-input(type='file' id='imagename' name='imagename')
+                                input.file-input(type='file' id='imagename' name='imagename' value=(undefined===yardsale ? '' : yardsale.imagename))
                                 span.file-cta
                                     span.file-icon
                                         i.fas.fa-upload
@@ -83,6 +81,10 @@ block content
                                         | Choose a file&mldr;
                 .field
                     .control
-                        a.button.is-primary(id='postYardSale' type="e")
+                        // id='postYardSale' type="e"
+                        a.button.is-primary(type='submit')
                             | Post your yard sale!
             .column.is-one-quarter
+
+    // AWS JavaScript SDK
+    script(src="https://sdk.amazonaws.com/js/aws-sdk-2.414.0.min.js")

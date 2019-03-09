@@ -55,11 +55,11 @@ block content
                         .control
                             .select
                                 select(type='select' name='state' placeholder='Select State' required)
-                                    option(value='CT' selected=(undefined===user || user.state!=CT ? false:'selected')) CT
-                                    option(value='MA' selected=(undefined===user || user.state!=MA ? false:'selected')) MA
-                                    option(value='ME' selected=(undefined===user || user.state!=ME ? false:'selected')) ME
-                                    option(value='NH' selected=(undefined===user || user.state!=NH ? false:'selected')) NH
-                                    option(value='RI' selected=(undefined===user || user.state!=RI ? false:'selected')) RI
+                                    option(value='CT' selected=(undefined === user || user.state != 'CT' ? false : 'selected')) CT
+                                    option(value='MA' selected=(undefined === user || user.state != 'MA' ? false : 'selected')) MA
+                                    option(value='ME' selected=(undefined === user || user.state != 'ME' ? false : 'selected')) ME
+                                    option(value='NH' selected=(undefined === user || user.state != 'NH' ? false : 'selected')) NH
+                                    option(value='RI' selected=(undefined === user || user.state != 'RI' ? false : 'selected')) RI
                     .field
                         label.label Zip Code
                         .control

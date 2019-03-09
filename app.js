@@ -1,35 +1,44 @@
-const createError = require('http-errors');
-const express = require('express');
-// const expressValidator = require('express-validator');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const debug = require('debug')('Yardy:app');
-
-//const auth = require('./lib/auth');
-const index = require('./routes/index');
-const users = require('./routes/users');
-//const yardsales = require('./routes/yardsales');
+var createError = require('http-errors');
+var express = require('express');
+//var expressValidator = require('express-validator');
+var path = require('path');
+//var favicon = require('serve-favicon');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
 var compression = require('compression');
 var helmet = require('helmet');
+var debug = require('debug')('Yardy:mongo');
+// Authentication Packages
+var session = require('express-session');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var User = require('./models/user');
+var flash = require('express-flash');
+var MongoStore = require('connect-mongo')(session);
+var auth = require('./lib/auth');
+// Routes
+var index = require('./routes/index');
+var users = require('./routes/users');
+var yardsales = require('./routes/yardsales');
 
-const app = express();
+var app = express();
 
 // Set up mongoose connection
 var mongoose = require('mongoose');
 var gracefulShutdown;
 var dev_db_url = 'mongodb://nick:Yardy123@ds121475.mlab.com:21475/yardy';
 var mongoDB = process.env.MONGODB_URI || dev_db_url;
+var db = mongoose.connection;
 mongoose.connect(mongoDB, {
 	useNewUrlParser: true
 });
 mongoose.set('useCreateIndex', true);
 mongoose.Promise = global.Promise;
-var db = mongoose.connection;
 // CONNECTION EVENTS
 db.on('connected', function() {
 	debug('Mongoose connected to ' + dev_db_url);
 });
+// db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.on('error', function(err) {
 	debug('Mongoose connection error: ' + err);
 	process.exit(0);
@@ -60,14 +69,6 @@ process.on('SIGINT', function() {
 process.on('exit', function(code) {
 	debug('About to exit with code: ', code);
 });
-
-// Authentication Packages
-var session = require('express-session');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var User = require('./models/user');
-var flash = require('express-flash');
-var MongoStore = require('connect-mongo')(session);
 
 // Configure the local strategy for use by Passport.
 passport.use(
@@ -115,7 +116,6 @@ app.use(cookieParser());
 
 app.use(compression()); // Compress all routes
 app.use(helmet());
-// app.use(session({ secret: "lkjda7i34ljs7agsudg7a4hg8e", resave: false, saveUninitialized: true }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('bower_components'));
@@ -131,14 +131,15 @@ app.use(express.static('bower_components'));
 app.use(flash());
 app.use(
 	session({
-		secret: 'local-library-session-secret',
+		secret: 'yardy-session-secret',
 		resave: false,
 		saveUninitialized: true,
+		maxAge: 600000,
 		store: new MongoStore({
 			url: mongoDB,
 			ttl: 7 * 24 * 60 * 60 // 7 days. 14 Default.
 		})
-		// cookie: { secure: true }
+		// cookie: { secure: true }		// requires HTTPS
 	})
 );
 
@@ -161,11 +162,11 @@ app.use(function(req, res, next) {
 });
 
 // Use our Authentication and Authorization middleware.
-//app.use(auth);
+app.use(auth);
 
 app.use('/', index);
 app.use('/users', users);
-//app.use('/yardsales', yardsales);
+app.use('/yardsales', yardsales);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

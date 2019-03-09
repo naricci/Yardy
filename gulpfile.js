@@ -1,9 +1,11 @@
-var gulp = require('gulp');
-var eslint = require('gulp-eslint');
-var nodemon = require('gulp-nodemon');
+const gulp = require('gulp');
+const eslint = require('gulp-eslint');
+const wiredep = require('wiredep').stream;
+const inject = require('gulp-inject');
+const nodemon = require('gulp-nodemon');
 
 // Location of JS files
-var jsFiles = [
+const jsFiles = [
 	'./*.js',
 	'./controllers/*.js',
 	'./lib/*.js',
@@ -13,32 +15,30 @@ var jsFiles = [
 ];
 
 // function to style/lint JS code
-gulp.task('style', () => {
-	return gulp.src(jsFiles)
-		.pipe(eslint());
-	// .pipe(eslint.result(result => {
-	// 	// Called for each ESLint result.
-	// 	console.log(`ESLint result: ${result.filePath}`);
-	// 	console.log(`# Messages: ${result.messages.length}`);
-	// 	console.log(`# Warnings: ${result.warningCount}`);
-	// 	console.log(`# Errors: ${result.errorCount}`);
-	// }));
-	// 	.pipe(eslint.format())
-	// 	.pipe(eslint.failAfterError());
+gulp.task('style', done => {
+	gulp.src(jsFiles)
+		.pipe(eslint())
+		// .pipe(eslint.result(result => {
+		// 	// Called for each ESLint result.
+		// 	console.log(`ESLint result: ${result.filePath}`);
+		// 	console.log(`# Messages: ${result.messages.length}`);
+		// 	console.log(`# Warnings: ${result.warningCount}`);
+		// 	console.log(`# Errors: ${result.errorCount}`);
+		// }))
+		.pipe(eslint.format());
+	//.pipe(eslint.failAfterError());
+	done();
 });
 
 // function to inject bootstrap css/js files into html page
 gulp.task('inject', () => {
-	var wiredep = require('wiredep').stream;
-	var inject = require('gulp-inject');
+	const injectSrc = gulp.src(['./public/css/*.css', './public/js/*.js']);
 
-	var injectSrc = gulp.src(['./public/css/*.css', './public/img/*/*', './public/js/*.js']);
-
-	var injectOptions = {
+	const injectOptions = {
 		ignorePath: './public'
 	};
 
-	var options = {
+	const options = {
 		bowerJson: require('./bower.json'),
 		directory: './bower_components',
 		ignorePath: './bower_components'
@@ -51,7 +51,7 @@ gulp.task('inject', () => {
 });
 
 gulp.task('start', (done) => {
-	var stream = nodemon({
+	const stream = nodemon({
 		script: './app.js',
 		ext: 'js pug',
 		env: { 'NODE_ENV': 'development' },
@@ -71,22 +71,20 @@ gulp.task('start', (done) => {
 });
 
 
-gulp.task('serve', (done) => {
-	var stream = nodemon({
+gulp.task('default', gulp.series(['style']), (done) => {
+	return nodemon({
 		script: './app.js',
+		nodeArgs: ['$NODE_DEBUG_OPTION'],
 		ext: 'js pug',
 		env: { 'NODE_ENV': 'development' },
 		delayTime: 1,
 		watch: jsFiles,
-		tasks: ['style', 'inject'],
 		done: done
-	});
-
-	stream
-		.on('restart',  () => {
+	})
+		.on('restart',   () => {
 			console.log('Restarting Server...');
 		})
-		.on('crash', function() {
+		.on('crash', () => {
 			console.error('Application has crashed!\n');
 			stream.emit('restart', 2);  // restart the server in 2 seconds
 		});
