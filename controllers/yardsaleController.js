@@ -4,6 +4,52 @@ var { sanitizeBody } = require('express-validator/filter');
 var async = require('async');
 var debug = require('debug')('Yardy:yardsale.controller');
 
+module.exports.post_yardsale = function (req, res) {
+
+	if (req.method === 'POST') {
+
+		let msg = '';
+
+		Yardsale.create({
+			firstname: req.body.firstname,
+			lastname : req.body.lastname,
+			username : req.body.username,
+			phone : req.body.phone,
+			address : req.body.address,
+			city : req.body.city,
+		  state : req.body.state,
+		  zipcode : req.body.zipcode,
+			description : req.body.description,
+			date : req.body.date,
+			starttime : req.body.starttime,
+			endtime : req.body.endtime,
+			imgname : req.body.imgname
+		})
+			.then(function () {
+				msg = 'yardsale was Saved';
+				return;
+			})
+			.catch(function (err) {
+				msg = 'yardsale was not Saved';
+				return err.message;
+			}).then(function (err) {
+				res.render('index', {
+					title: 'Add yardsale',
+					message: msg,
+					error: err
+				});
+			});
+	} else {
+		res.render('index', {
+			title: 'Add yardsale',
+			message: ''
+		});
+	}
+};
+
+
+
+
 exports.index = function(req, res) {
 	async.parallel(
 		{
