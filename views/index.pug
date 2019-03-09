@@ -19,24 +19,23 @@ block content
                 .column.is-one-quarter
                     .field.is-horizontal
                         .field-body(style='padding-left: auto; padding-right: auto;')
+                            //- .field
+                            //-     .select
+                            //-         select
+                            //-             option(value='radius') --Radius--
+                            //-             option(value='5') 5 miles
+                            //-             option(value='10') 10 miles
+                            //-             option(value='25') 25 miles
+                            //-             option(value='50') 50 miles
+                            //-             option(value='100') 100 miles
+                            //-             option(value='unlimited') unlimited
                             .field
                                 .select
-                                    select
-                                        option(value='radius') --Radius--
-                                        option(value='5') 5 miles
-                                        option(value='10') 10 miles
-                                        option(value='25') 25 miles
-                                        option(value='50') 50 miles
-                                        option(value='100') 100 miles
-                                        option(value='unlimited') unlimited
-                            .field
-                                .select
-                                    select
-                                        option(value='sort') --Sort--
+                                    select(id='sort')
+                                        option(selected) --Sort--
                                         option(value='date') Date
                                         option(value='distance') Distance
-                                        option(value='time') Start Time
-                            .field
+                                        //- option(value='time') Start Time
                                 a.button.is-primary(type='e' id='search')
                                     | Search
                 .column.is-one-quarter
@@ -93,19 +92,19 @@ block content
                     .media-content
                         .content
                             p
-                                strong City
-                                strong Date
+                                strong date
+                            p
+                                strong address
                                 br
-                                |  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.
-                        //
-                        <nav class="level is-mobile">
-                        <div class="level-left">
-                        <a class="level-item">
-                        <span class="icon is-small"><i class="fas fa-heart"></i></span>
-                        </a>
-                        </div>
-                        </nav>
+                                |  dsctrptn
+
                     .media-right
                         a.button.is-primary(type='submit')
                             | View
-
+                        <nav class="level is-mobile">
+                        <div class="level-right">
+                        <a class="level-item">
+                        <span class="icon is-small"><i class="fas fa-star"></i></span>
+                        </a>
+                        </div>
+                        </nav>

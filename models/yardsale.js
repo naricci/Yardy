@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 // Create Schema and Model
-var yardsaleSchema = new Schema({
-	firstName: {
+var YardsaleSchema = new Schema({
+	firstname: {
 		type: String,
 		required: true,
 		minlength: 1,
@@ -79,10 +79,33 @@ var yardsaleSchema = new Schema({
 });
 
 // Virtual for this yardsale instance URL.
-yardsaleSchema.virtual('url').get(function() {
+YardsaleSchema
+	.virtual('url').get(function() {
 	return '/catalog/yardsale/' + this._id;
 });
 
-var Yardsale = mongoose.model('yardsales', yardsaleSchema);
+// Full address
+YardsaleSchema
+	.virtual('full_address')
+	.get(function() {
+		return this.address + ', ' + this.city + ', ' + this.state + ', ' + this.zipcode;
+	});
 
-module.exports = Yardsale;
+// Date and Time
+YardsaleSchema
+	.virtual('date_and_time')
+	.get(function() {
+		return this.date + ', ' + this.starttime + ' - ' + this.endtime;
+	});
+
+// Yardsale instance URL
+YardsaleSchema
+	.virtual('url')
+	.get(function() {
+		return '/yardsale/' + this._id;
+	});
+
+
+
+
+module.exports = mongoose.model('Yardsales', YardsaleSchema);
