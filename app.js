@@ -7,7 +7,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var compression = require('compression');
 var helmet = require('helmet');
-var debug = require('debug')('Yardy:mongo');
+var debug = require('debug')('yardy:mongo');
 // Authentication Packages
 var session = require('express-session');
 var passport = require('passport');

@@ -1,8 +1,6 @@
-const gulp = require('gulp');
-const eslint = require('gulp-eslint');
-const wiredep = require('wiredep').stream;
-const inject = require('gulp-inject');
-const nodemon = require('gulp-nodemon');
+var gulp = require('gulp');
+var eslint = require('gulp-eslint');
+var nodemon = require('gulp-nodemon');
 
 // Location of JS files
 const jsFiles = [
@@ -32,13 +30,15 @@ gulp.task('style', done => {
 
 // function to inject bootstrap css/js files into html page
 gulp.task('inject', () => {
-	const injectSrc = gulp.src(['./public/css/*.css', './public/js/*.js']);
+	var wiredep = require('wiredep').stream;
+	var inject = require('gulp-inject');
+	var injectSrc = gulp.src(['./public/css/*.css', './public/js/*.js']);
 
-	const injectOptions = {
+	var injectOptions = {
 		ignorePath: './public'
 	};
 
-	const options = {
+	var options = {
 		bowerJson: require('./bower.json'),
 		directory: './bower_components',
 		ignorePath: './bower_components'
@@ -51,7 +51,7 @@ gulp.task('inject', () => {
 });
 
 gulp.task('start', (done) => {
-	const stream = nodemon({
+	var stream = nodemon({
 		script: './app.js',
 		ext: 'js pug',
 		env: { 'NODE_ENV': 'development' },

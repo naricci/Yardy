@@ -6,7 +6,6 @@
     "Nicholas Ricci <naricci@email.neit.edu>"
   ],
   "license": "MIT",
-  "homepage": "",
   "private": true,
   "ignore": [
     "**/.*",
