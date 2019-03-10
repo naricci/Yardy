@@ -264,7 +264,8 @@ router.get('/', (req, res, next) => {
 // 	}
 // }
 
+// TODO Add other yardsale-search route and controller functions...
 /* GET all yardsales*/
-router.get("/yardsales", yardsaleController.all_yardsales);
+//router.get('/yardsale', yardsaleController.all_yardsales);
 
 module.exports = router;

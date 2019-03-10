@@ -2,50 +2,50 @@ var Yardsale = require('../models/yardsale.js');
 var { body, validationResult } = require('express-validator/check');
 var { sanitizeBody } = require('express-validator/filter');
 var async = require('async');
-var debug = require('debug')('Yardy:yardsale.controller');
+var debug = require('debug')('yardy:yardsale.controller');
 
-module.exports.post_yardsale = function (req, res) {
-
-	if (req.method === 'POST') {
-
-		let msg = '';
-
-		Yardsale.create({
-			firstname: req.body.firstname,
-			lastname : req.body.lastname,
-			username : req.body.username,
-			phone : req.body.phone,
-			address : req.body.address,
-			city : req.body.city,
-		  state : req.body.state,
-		  zipcode : req.body.zipcode,
-			description : req.body.description,
-			date : req.body.date,
-			starttime : req.body.starttime,
-			endtime : req.body.endtime,
-			imgname : req.body.imgname
-		})
-			.then(function () {
-				msg = 'yardsale was Saved';
-				return;
-			})
-			.catch(function (err) {
-				msg = 'yardsale was not Saved';
-				return err.message;
-			}).then(function (err) {
-				res.render('index', {
-					title: 'Add yardsale',
-					message: msg,
-					error: err
-				});
-			});
-	} else {
-		res.render('index', {
-			title: 'Add yardsale',
-			message: ''
-		});
-	}
-};
+// module.exports.post_yardsale = function (req, res) {
+//
+// 	if (req.method === 'POST') {
+//
+// 		let msg = '';
+//
+// 		Yardsale.create({
+// 			firstname: req.body.firstname,
+// 			lastname : req.body.lastname,
+// 			username : req.body.username,
+// 			phone : req.body.phone,
+// 			address : req.body.address,
+// 			city : req.body.city,
+// 		  state : req.body.state,
+// 		  zipcode : req.body.zipcode,
+// 			description : req.body.description,
+// 			date : req.body.date,
+// 			starttime : req.body.starttime,
+// 			endtime : req.body.endtime,
+// 			imgname : req.body.imgname
+// 		})
+// 			.then(function () {
+// 				msg = 'yardsale was Saved';
+// 				return;
+// 			})
+// 			.catch(function (err) {
+// 				msg = 'yardsale was not Saved';
+// 				return err.message;
+// 			}).then(function (err) {
+// 				res.render('index', {
+// 					title: 'Add yardsale',
+// 					message: msg,
+// 					error: err
+// 				});
+// 			});
+// 	} else {
+// 		res.render('index', {
+// 			title: 'Add yardsale',
+// 			message: ''
+// 		});
+// 	}
+// };
 
 
 
@@ -88,7 +88,7 @@ exports.yardsale_list = function(req, res, next) {
 				return next(err);
 			}
 			// Successful, so render
-			res.render('Yardsale_list', {
+			res.render('yardsale_list', {
 				title: 'Yardsale List',
 				yardsale_list: list_yardsales
 			});
@@ -115,13 +115,13 @@ exports.yardsale_detail = function(req, res, next) {
 			}
 			if (results.yardsale == null) {
 				// No results.
-				var err = new Error('Yardsale not found');
+				err = new Error('Yardsale not found');
 				err.status = 404;
 				return next(err);
 			}
 			// Successful, so render.
 			res.render('yardsale_detail', {
-				title: 'Title',
+				title: 'Details',
 				yardsale: results.yardsale,
 				yardsale_instances: results.yardsale_instance
 			});

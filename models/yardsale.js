@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var moment = require('moment');
+// var moment = require('moment');
 
 // Create Schema and Model
 var yardsaleSchema = new Schema({

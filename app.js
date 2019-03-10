@@ -134,7 +134,7 @@ app.use(
 		secret: 'yardy-session-secret',
 		resave: false,
 		saveUninitialized: true,
-		maxAge: 600000,
+		//maxAge: 600000,
 		store: new MongoStore({
 			url: mongoDB,
 			ttl: 7 * 24 * 60 * 60 // 7 days. 14 Default.
@@ -166,7 +166,7 @@ app.use(auth);
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/yardsales', yardsales);
+app.use('/yardsale', yardsales);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

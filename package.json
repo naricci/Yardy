@@ -30,7 +30,6 @@
     "express-flash": "0.0.2",
     "express-session": "^1.15.6",
     "express-validator": "^4.3.0",
-    "fsevents": "^1.2.7",
     "helmet": "^3.15.1",
     "http-errors": "~1.6.2",
     "moment": "^2.24.0",
