@@ -34,7 +34,7 @@ block content
                                     select(id='sort')
                                         option(selected) --Sort--
                                         option(value='date') Date
-                                        option(value='distance') Distance
+                                        //- option(value='distance') Distance
                                         //- option(value='time') Start Time
                                 a.button.is-primary(type='e' id='search')
                                     | Search
@@ -86,23 +86,23 @@ block content
         section.section
             .container
                 article.media 
-                    if yardsale //some data should be displaying no?
-                     each yardsale in all_yardsales
-                        figure.media-left
-                            p.image.is-64x64
-                                img(src='https://bulma.io/images/placeholders/128x128.png')
-                        .media-content
-                            .content
-                                p
-                                    strong #{yardsale.date_and_time}
-                                p
-                                    strong #{yardsale.full_address}
-                                    br
-                                    |  #{yardsale.description}
+                    if yardsale 
+                        each yardsale in yardsales
+                            figure.media-left
+                                p.image.is-64x64
+                                    img(src='https://bulma.io/images/placeholders/128x128.png')
+                            .media-content
+                                .content
+                                    p
+                                        strong #{yardsale.date_and_time}
+                                    p
+                                        strong #{yardsale.full_address}
+                                        br
+                                        |  #{yardsale.description}
 
-                        .media-right
-                            a.button.is-primary(type='submit')
-                                | View
+                            .media-right
+                                a.button.is-primary(type='submit')
+                                    | View
                             <nav class="level is-mobile">
                             <div class="level-right">
                             <a class="level-item">

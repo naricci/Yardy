@@ -3,8 +3,8 @@
 
 // const yardsaleController = require('../controllers/yardsaleController');
 
-// router.get('/', yardsaleController.all_yardsales);
+// router.get('/yardsale', yardsaleController.all_yardsales);
 
-// router.get('/', yardsaleController.all_yardsales_sorted);
+// router.get('/yardsale_by_date', yardsaleController.all_yardsales_sorted);
 
 // module.exports = router;
