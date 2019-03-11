@@ -8,12 +8,12 @@ const helmet = require('helmet');
 const debug = require('debug')('yardy:mongo');
 
 // Routes
+// var auth = require('./lib/auth');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var catalog = require('./routes/catalog');
 
 var app = express();
-
 
 // Set up mongoose connection
 var mongoose = require('mongoose');
@@ -30,11 +30,10 @@ mongoose.Promise = global.Promise;
 db.on('connected', function() {
 	debug('Mongoose connected to ' + dev_db_url);
 });
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-// db.on('error', function(err) {
-// 	debug('Mongoose connection error: ' + err);
-// 	process.exit(0);
-// });
+db.on('error', function(err) {
+	debug('Mongoose connection error: ' + err);
+	process.exit(0);
+});
 db.on('disconnected', function() {
 	debug('Mongoose disconnected');
 });
@@ -76,7 +75,6 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('./models/user');
 var flash = require('express-flash');
 var MongoStore = require('connect-mongo')(session);
-//var auth = require('./lib/auth');
 
 // Configure the local strategy for use by Passport.
 passport.use(
@@ -131,16 +129,16 @@ app.use(express.static('bower_components'));
 
 // a middleware function with no mount path.
 // This code is executed for every request to the router
-app.use(function (req, res, next) {
-	debug('Time:', Date.now());
-	next();
-});
+// app.use(function (req, res, next) {
+// 	debug('Time:', Date.now());
+// 	next();
+// });
 
 // Authentication related middleware.
 app.use(flash());
 app.use(
 	session({
-		secret: 'local-library-session-secret',
+		secret: 'yardy-session-secret',
 		resave: false,
 		saveUninitialized: true,
 		store: new MongoStore({
@@ -170,7 +168,7 @@ app.use(function(req, res, next) {
 });
 
 // Use our Authentication and Authorization middleware.
-//app.use(auth);
+// app.use(auth);
 
 app.use('/', index);
 app.use('/users', users);

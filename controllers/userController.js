@@ -3,7 +3,6 @@ const { sanitizeBody } = require('express-validator/filter');
 const passport = require('passport');
 const async = require('async');
 const debug = require('debug')('yardy:user.controller');
-
 // Require user model
 var User = require('../models/user');
 
@@ -497,7 +496,7 @@ function isAlreadyLoggedIn(req, res, next) {
 // Function that confirms that user is logged in and is the 'owner' of the page.
 function isPageOwnedByUser(req, res, next) {
 	if (req.user && req.isAuthenticated()) {
-		if (req.user._id.toString() == req.params.id.toString()) {
+		if (req.user._id.toString() === req.params.id.toString()) {
 			// User's own page. Allow request.
 			next();
 		} else {

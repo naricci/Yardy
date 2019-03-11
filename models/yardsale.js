@@ -1,5 +1,5 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 // Create Schema and Model
 var YardsaleSchema = new Schema({
@@ -80,8 +80,9 @@ var YardsaleSchema = new Schema({
 
 // Virtual for this yardsale instance URL.
 YardsaleSchema
-	.virtual('url').get(function() {
-	return '/catalog/yardsale/' + this._id;
+	.virtual('url')
+	.get(function() {
+		return '/catalog/yardsale/' + this._id;
 });
 
 // Full address
@@ -99,13 +100,13 @@ YardsaleSchema
 	});
 
 // Yardsale instance URL
-YardsaleSchema
-	.virtual('url')
-	.get(function() {
-		return '/yardsale/' + this._id;
-	});
+// YardsaleSchema
+// 	.virtual('url')
+// 	.get(function() {
+// 		return '/yardsale/' + this._id;
+// 	});
 
 
 
 
-module.exports = mongoose.model('Yardsales', YardsaleSchema);
+module.exports = mongoose.model('yardsales', YardsaleSchema);

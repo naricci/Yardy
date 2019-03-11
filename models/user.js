@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const debug = require('debug')('Yardy:user.model');
 
 // Create Schema and Model
-var userSchema = new Schema({
+var UserSchema = new Schema({
 	username: {
 		type: String,
 		unique: true,
@@ -75,24 +75,24 @@ var userSchema = new Schema({
 });
 
 // Virtual for User's URL.
-userSchema.virtual('url').get(() => {
+UserSchema.virtual('url').get(() => {
 	debug('Getting /users/' + this._id);
 	return '/users/' + this._id;
 });
 
 // Virtual for User's Full Name.
-userSchema.virtual('fullname').get(() => {
+UserSchema.virtual('fullname').get(() => {
 	debug('Getting ' + this.firstName + ' ' + this.lastName);
 	return this.firstName + ' ' + this.lastName;
 });
 
 // Virtual for Yardsale/User instance URL.
-// userSchema.virtual('sale_url').get(function() {
+// UserSchema.virtual('sale_url').get(function() {
 // 	return '/yardsales/user/' + this._id;
 // });
 
 // Instance method for hashing user-typed password.
-userSchema.methods.setPassword = function(password) {
+UserSchema.methods.setPassword = function(password) {
 	// Create a salt for the user.
 	this.salt = crypto.randomBytes(16).toString('hex');
 	// Use salt to create hashed password.
@@ -103,7 +103,7 @@ userSchema.methods.setPassword = function(password) {
 };
 
 // Instance method for comparing user-typed password against hashed-password on db.
-userSchema.methods.validatePassword = function(password) {
+UserSchema.methods.validatePassword = function(password) {
 	var hash = crypto
 		.pbkdf2Sync(password, this.salt, 10000, 128, 'sha512')
 		.toString('hex');
@@ -112,10 +112,10 @@ userSchema.methods.validatePassword = function(password) {
 };
 
 // Instance method for comparing user-typed passwords against each other.
-userSchema.methods.passwordsMatch = function(password, passwordConfirm) {
+UserSchema.methods.passwordsMatch = function(password, passwordConfirm) {
 	return password === passwordConfirm;
 };
 
-var User = mongoose.model('users', userSchema);
+var User = mongoose.model('users', UserSchema);
 
 module.exports = User;

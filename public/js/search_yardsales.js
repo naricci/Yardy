@@ -11,7 +11,7 @@ $(document).ready(function(){
 
 	function all_yardsales() {
 		$.ajax({
-			url: '/yardsale',
+			url: '/catalog/yardsale',
 			type: 'GET',
 			success: function (data) {
 				console.log('Success Unsorted: ', data);
@@ -24,7 +24,7 @@ $(document).ready(function(){
 	///if this worked Tom will be the first in the array
 	function all_yardsales_sorted() {
 		$.ajax({
-			url: '/yardsale_by_date',
+			url: '/catalog/yardsale_by_date',
 			type: 'GET',
 			success: function (data) {
 				console.log('Success Sorted: ', data);

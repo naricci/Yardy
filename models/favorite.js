@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 // Create Schema and Model
-var favoriteSchema = new Schema({
+var FavoriteSchema = new Schema({
 	_userId: {
 		type: ObjectId,
 		ref: 'user'
@@ -18,6 +18,6 @@ var favoriteSchema = new Schema({
 	}
 });
 
-var Favorite = mongoose.model('Favorite', favoriteSchema);
+var Favorite = mongoose.model('favorite', FavoriteSchema);
 
 module.exports = Favorite;
