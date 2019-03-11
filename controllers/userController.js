@@ -1,7 +1,7 @@
-var { body, validationResult } = require('express-validator/check');
-var { sanitizeBody } = require('express-validator/filter');
-var passport = require('passport');
-var async = require('async');
+const { body, validationResult } = require('express-validator/check');
+const { sanitizeBody } = require('express-validator/filter');
+const passport = require('passport');
+const async = require('async');
 
 // Require user model
 var User = require('../models/user');
@@ -234,6 +234,7 @@ exports.update_post = [
 			username: req.body.username,
 			firstname: req.body.firstname,
 			lastname: req.body.lastname,
+			fullname: req.body.fullname,
 			email: req.body.email,
 			_id: req.params.id
 		});

@@ -1,13 +1,13 @@
-var createError = require('http-errors');
-var express = require('express');
-//var expressValidator = require('express-validator');
-var path = require('path');
-//var favicon = require('serve-favicon');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var compression = require('compression');
-var helmet = require('helmet');
-var debug = require('debug')('yardy:mongo');
+const createError = require('http-errors');
+const express = require('express');
+const expressValidator = require('express-validator');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const compression = require('compression');
+const helmet = require('helmet');
+const debug = require('debug')('yardy:mongo');
+
 // Authentication Packages
 var session = require('express-session');
 var passport = require('passport');
@@ -16,6 +16,7 @@ var User = require('./models/user');
 var flash = require('express-flash');
 var MongoStore = require('connect-mongo')(session);
 var auth = require('./lib/auth');
+
 // Routes
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -38,11 +39,11 @@ mongoose.Promise = global.Promise;
 db.on('connected', function() {
 	debug('Mongoose connected to ' + dev_db_url);
 });
-// db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.on('error', function(err) {
-	debug('Mongoose connection error: ' + err);
-	process.exit(0);
-});
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+// db.on('error', function(err) {
+// 	debug('Mongoose connection error: ' + err);
+// 	process.exit(0);
+// });
 db.on('disconnected', function() {
 	debug('Mongoose disconnected');
 });
@@ -63,6 +64,12 @@ process.once('SIGUSR2', function() {
 // For app termination
 process.on('SIGINT', function() {
 	gracefulShutdown('app termination', function() {
+		process.exit(0);
+	});
+});
+// For Heroku app termination
+process.on('SIGTERM', function() {
+	gracefulShutdown('Heroku app termination', function() {
 		process.exit(0);
 	});
 });

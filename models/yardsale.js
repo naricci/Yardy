@@ -4,13 +4,13 @@ var Schema = mongoose.Schema;
 
 // Create Schema and Model
 var yardsaleSchema = new Schema({
-	firstname: {
+	firstName: {
 		type: String,
 		required: true,
 		minlength: 1,
 		maxlength: 25
 	},
-	lastname: {
+	lastName: {
 		type: String,
 		required: false,
 		minlength: 1,
@@ -18,7 +18,7 @@ var yardsaleSchema = new Schema({
 	},
 	username: {
 		type: Schema.ObjectId,
-		ref: 'Author',
+		ref: 'user',
 		required: true
 	},
 	phone: {
@@ -73,7 +73,7 @@ var yardsaleSchema = new Schema({
 
 // Virtual for this yardsale instance URL.
 yardsaleSchema.virtual('url').get(function() {
-	return '/yardsale/' + this._id;
+	return '/catalog/yardsale/' + this._id;
 });
 
 var Yardsale = mongoose.model('yardsales', yardsaleSchema);

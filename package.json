@@ -12,10 +12,8 @@
     "start": "node ./bin/www",
     "dev:pc": "SET DEBUG=yardy:* & nodemon $NODE_DEBUG_OPTION ./bin/www",
     "dev:mac": "DEBUG=yardy:* nodemon $NODE_DEBUG_OPTION ./bin/www",
-		"debug": "DEBUG=yardy:* nodemon --inspect ./bin/www",
-    "lint": "eslint . --fix",
-    "pretty": "prettier .",
-    "prettier": "prettierrc --write app.js"
+    "debug": "DEBUG=yardy:* nodemon --inspect ./bin/www",
+    "lint": "eslint -c eslintrc.json . --fix"
   },
   "dependencies": {
     "acorn": "^6.1.1",

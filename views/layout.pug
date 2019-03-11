@@ -39,9 +39,11 @@ html(lang='en')
               // The content below will be visible to users who have logged in.
               if isAuthenticated
                 .navbar-end
+                  a.navbar-item(href='#')
+                    | #{current_user.fullname}
                   a.navbar-item(href='/')
                     | Home
-                  a.navbar-item(href='/yardsales/yardsale_form')
+                  a.navbar-item(href='/catalog/yardsale_form')
                     | Post Yard Sale
                   a.navbar-item(href=current_user.url)
                     | Account
@@ -49,7 +51,7 @@ html(lang='en')
                     | Favorites
                   .navbar-item
                     .buttons
-                      a.button.is-light(href='/users/login')
+                      a.button.is-light(href='/users/logout')
                         | Logout
 
               // The content below will be visible to users who have NOT logged in.

@@ -1,54 +1,8 @@
-var Yardsale = require('../models/yardsale.js');
-var { body, validationResult } = require('express-validator/check');
-var { sanitizeBody } = require('express-validator/filter');
-var async = require('async');
-var debug = require('debug')('yardy:yardsale.controller');
-
-// module.exports.post_yardsale = function (req, res) {
-//
-// 	if (req.method === 'POST') {
-//
-// 		let msg = '';
-//
-// 		Yardsale.create({
-// 			firstname: req.body.firstname,
-// 			lastname : req.body.lastname,
-// 			username : req.body.username,
-// 			phone : req.body.phone,
-// 			address : req.body.address,
-// 			city : req.body.city,
-// 		  state : req.body.state,
-// 		  zipcode : req.body.zipcode,
-// 			description : req.body.description,
-// 			date : req.body.date,
-// 			starttime : req.body.starttime,
-// 			endtime : req.body.endtime,
-// 			imgname : req.body.imgname
-// 		})
-// 			.then(function () {
-// 				msg = 'yardsale was Saved';
-// 				return;
-// 			})
-// 			.catch(function (err) {
-// 				msg = 'yardsale was not Saved';
-// 				return err.message;
-// 			}).then(function (err) {
-// 				res.render('index', {
-// 					title: 'Add yardsale',
-// 					message: msg,
-// 					error: err
-// 				});
-// 			});
-// 	} else {
-// 		res.render('index', {
-// 			title: 'Add yardsale',
-// 			message: ''
-// 		});
-// 	}
-// };
-
-
-
+const Yardsale = require('../models/yardsale.js');
+const { body, validationResult } = require('express-validator/check');
+const { sanitizeBody } = require('express-validator/filter');
+const async = require('async');
+const debug = require('debug')('yardy:yardsale.controller');
 
 exports.index = function(req, res) {
 	async.parallel(
@@ -56,27 +10,13 @@ exports.index = function(req, res) {
 			yardsale_count: function(callback) {
 				Yardsale.count(callback);
 			},
-			book_instance_count: function(callback) {
-				BookInstance.count(callback);
-			},
-			book_instance_available_count: function(callback) {
-				BookInstance.count({ status: 'Available' }, callback);
-			},
-			author_count: function(callback) {
-				Author.count(callback);
-			},
-			genre_count: function(callback) {
-				Genre.count(callback);
-			}
-		},
-		function(err, results) {
-			res.render('index', {
+		}, function(err, results) {
+			res.render('/', {
 				title: 'Yardy Home',
 				error: err,
 				data: results
 			});
-		}
-	);
+		});
 };
 
 // Display list of all yardsales.

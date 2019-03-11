@@ -1,12 +1,7 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var crypto = require('crypto');
-var debug = require('debug')('Yardy:user.model');
-
-// const validateEmail = function (email) {
-// 	var re = /^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/;	// /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-// 	return re.test(email);
-// };
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const crypto = require('crypto');
+const debug = require('debug')('Yardy:user.model');
 
 // Create Schema and Model
 var userSchema = new Schema({
@@ -14,16 +9,9 @@ var userSchema = new Schema({
 		type: String,
 		unique: true,
 		required: [true, 'Username is required'],
-		// TODO change username minlength/maxlength accordingly
-		minlength: 1,
+		minlength: 4,
 		maxlength: 25
 	},
-	// password: {
-	// 	type: String,
-	// 	// TODO change password minlength/maxlength accordingly
-	// 	required: [true, 'Password is required'],
-	// 	minlength: 1
-	// },
 	salt: {
 		type: String,
 		required: true
@@ -43,9 +31,6 @@ var userSchema = new Schema({
 	email: {
 		type: String,
 		required: [true, 'Email is required']
-		// validate: [validateEmail, 'Please fill a valid email address'],
-		// match: [/^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'],	// /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-		// index: { unique: true, dropDups: true }
 	},
 	phone: {
 		type: String,
@@ -82,6 +67,12 @@ var userSchema = new Schema({
 // Virtual for User's URL.
 userSchema.virtual('url').get(() => {
 	return '/users/' + this._id;
+});
+
+// Virtual for User's Full Name.
+userSchema.virtual('fullname').get(() => {
+	debug('Getting ' + this.firstName + ' ' + this.lastName);
+	return this.firstName + ' ' + this.lastName;
 });
 
 // Virtual for Yardsale/User instance URL.

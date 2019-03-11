@@ -5,9 +5,9 @@ var router = express.Router();
 var yardsaleController = require('../controllers/yardsaleController');
 
 // GET post_yardsale test page
-router.get('/yardsale_form', (req, res, next) => {
-	res.render('yardsale_form');
-});
+// router.get('/yardsale_form', (req, res, next) => {
+// 	res.render('yardsale_form');
+// });
 
 // Yardsale Routes
 // GET catalog home page.
