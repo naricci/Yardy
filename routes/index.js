@@ -11,9 +11,3 @@ router.get('/', (req, res, next) => {
 router.get('/yardsale', yardsaleController.all_yardsales);
 
 router.get('/yardsale_by_date', yardsaleController.all_yardsales_sorted);
-
-<<<<<<< HEAD
-module.exports = router;
-=======
-module.exports = router;
->>>>>>> itchin
