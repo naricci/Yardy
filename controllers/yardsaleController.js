@@ -21,8 +21,8 @@ exports.index = function(req, res) {
 
 // Display list of all yardsales.
 exports.yardsale_list = function(req, res, next) {
-	Yardsale.find({}, 'yardsale author ')
-		.populate('author')
+	Yardsale.find({}, 'yardsale user ')
+		.populate('yardsale')
 		.exec(function(err, list_yardsales) {
 			if (err) {
 				return next(err);
@@ -41,145 +41,105 @@ exports.yardsale_detail = function(req, res, next) {
 		{
 			yardsale: function(callback) {
 				Yardsale.findById(req.params.id)
-					.populate('author')
-					.populate('genre')
+					.populate('yardsales')
 					.exec(callback);
-			},
-			yardsale_instance: function(callback) {
-				BookInstance.find({ book: req.params.id }).exec(callback);
+			}, function(err, results) {
+				if (err) {
+					return next(err);
+				}
+				if (results.yardsale == null) {
+					// No results.
+					err = new Error('Yardsale not found');
+					err.status = 404;
+					return next(err);
+				}
+				// Successful, so render.
+				res.render('yardsale_detail', {
+					title: 'Details',
+					yardsale: results.yardsale
+				});
 			}
-		},
-		function(err, results) {
-			if (err) {
-				return next(err);
-			}
-			if (results.yardsale == null) {
-				// No results.
-				err = new Error('Yardsale not found');
-				err.status = 404;
-				return next(err);
-			}
-			// Successful, so render.
-			res.render('yardsale_detail', {
-				title: 'Details',
-				yardsale: results.yardsale,
-				yardsale_instances: results.yardsale_instance
-			});
-		}
-	);
+		});
 };
 
 // Display yardsale create form on GET.
-exports.yardsale_create_get = function(req, res, next) {
-	// Get all authors and genres, which we can use for adding to our yardsale.
-	async.parallel(
-		{
-			authors: function(callback) {
-				Author.find(callback);
-			},
-			genres: function(callback) {
-				Genre.find(callback);
-			}
-		},
-		function(err, results) {
-			if (err) {
-				return next(err);
-			}
-			res.render('yardsale_form', {
-				title: 'Create Yardsale',
-				authors: results.authors,
-				genres: results.genres
-			});
-		}
-	);
+// exports.yardsale_create_get = function(req, res, next) {
+// 	// Get all authors and genres, which we can use for adding to our yardsale.
+// 	async.parallel(
+// 		{
+// 			user: function(callback) {
+// 				User.find(callback);
+// 			}
+// 		},
+// 		function(err, results) {
+// 			if (err) {
+// 				return next(err);
+// 			}
+// 			res.render('yardsale_form', {
+// 				title: 'Create Yardsale',
+// 				user: results.user
+// 			});
+// 		}
+// 	);
+// };
+
+// Display yardsale create form on GET.
+exports.yardsale_create_get = function (req, res, next) {
+	res.render('yardsale_form', { title: 'Create Yardsale' });
 };
 
 // Handle yardsale create on POST.
 exports.yardsale_create_post = [
-	// Convert the genre to an array.
-	(req, res, next) => {
-		if (!(req.body.genre instanceof Array)) {
-			if (typeof req.body.genre === 'undefined') req.body.genre = [];
-			else req.body.genre = new Array(req.body.genre);
-		}
-		next();
-	},
 
 	// Validate fields.
-	body('title', 'Title must not be empty.')
-		.isLength({ min: 1 })
-		.trim(),
-	body('author', 'Author must not be empty.')
-		.isLength({ min: 1 })
-		.trim(),
-	body('summary', 'Summary must not be empty.')
-		.isLength({ min: 1 })
-		.trim(),
-	body('isbn', 'ISBN must not be empty')
-		.isLength({ min: 1 })
-		.trim(),
+	// body('first_name').isLength({ min: 1 }).trim().withMessage('First name must be specified.')
+	// 									.isAlphanumeric().withMessage('First name has non-alphanumeric characters.'),
+	// body('family_name').isLength({ min: 1 }).trim().withMessage('Family name must be specified.')
+	// 									 .isAlphanumeric().withMessage('Family name has non-alphanumeric characters.'),
+	// body('date_of_birth', 'Invalid date of birth').optional({ checkFalsy: true }).isISO8601(),
+	// body('date_of_death', 'Invalid date of death').optional({ checkFalsy: true }).isISO8601(),
+	//
+	// // Sanitize fields.
+	// sanitizeBody('first_name').trim().escape(),
+	// sanitizeBody('family_name').trim().escape(),
+	// sanitizeBody('date_of_birth').toDate(),
+	// sanitizeBody('date_of_death').toDate(),
 
-	// Sanitize fields.
-	sanitizeBody('*')
-		.trim()
-		.escape(),
-	sanitizeBody('genre.*')
-		.trim()
-		.escape(),
 	// Process request after validation and sanitization.
 	(req, res, next) => {
-		// Extract the validation errors from a request.
-		var errors = validationResult(req);
 
-		// Create a Yardsale object with escaped and trimmed data.
-		var yardsale = new Yardsale({
-			title: req.body.title,
-			author: req.body.author,
-			summary: req.body.summary,
-			isbn: req.body.isbn,
-			genre: req.body.genre
-		});
+		// Extract the validation errors from a request.
+		const errors = validationResult(req);
 
 		if (!errors.isEmpty()) {
-			// There are errors. Render form again with sanitized values/error messages.
-
-			// Get all authors and genres for form.
-			async.parallel(
-				{
-					authors: function(callback) {
-						Author.find(callback);
-					},
-					genres: function(callback) {
-						Genre.find(callback);
-					}
-				},
-				function(err, results) {
-					if (err) {
-						return next(err);
-					}
-
-					// Mark our selected genres as checked.
-					for (let i = 0; i < results.genres.length; i++) {
-						if (book.genre.indexOf(results.genres[i]._id) > -1) {
-							results.genres[i].checked = 'true';
-						}
-					}
-					res.render('yardsale_form', {
-						title: 'Create Yardsale',
-						authors: results.authors,
-						genres: results.genres,
-						book: book,
-						errors: errors.array()
-					});
-				}
-			);
+			// There are errors. Render form again with sanitized values/errors messages.
+			res.render('yardsale_form', { title: 'Create Yard Sale', yardsale: req.body, errors: errors.array() });
 			return;
-		} else {
-			// Data from form is valid. Save yardsale.
-			yardsale.save(function(err) {
-				if (err) {
-					return next(err);
-				}
+		}
+		else {
+			// Data from form is valid.
+
+			// Create a Yardsale object with escaped and trimmed data.
+			var yardsale = new Yardsale(
+				{
+					firstName: req.body.firstname,
+					lastName: req.body.lastname,
+					username: req.body.username,
+					phone: req.body.phone,
+					address: req.body.address,
+					address2: req.body.address2,
+					city: req.body.city,
+					state: req.body.state,
+					zipcode: req.body.zipcode,
+					date: req.body.date,
+					starttime: req.body.starttime,
+					endtime: req.body.endtime,
+					description: req.body.description,
+					imagename: req.body.imagename
+
+				});
+			yardsale.save(function (err) {
+				if (err) { return next(err); }
 				// Successful - redirect to new yardsale record.
 				res.redirect(yardsale.url);
 			});
@@ -187,19 +147,112 @@ exports.yardsale_create_post = [
 	}
 ];
 
+
+// Handle yardsale create on POST.
+// exports.yardsale_create_post = [
+// 	// Convert the yardsale to an array.
+// 	(req, res, next) => {
+// 		if (!(req.body.yardsale instanceof Array)) {
+// 			if (typeof req.body.yardsale === 'undefined') req.body.yardsale = [];
+// 			else req.body.yardsale = new Array(req.body.yardsale);
+// 		}
+// 		next();
+// 	},
+//
+// 	// Validate fields.
+// 	body('firstName', 'First name must not be empty.')
+// 		.isLength({ min: 1 })
+// 		.trim(),
+// 	body('city', 'City cannot be empty.')
+// 		.isLength({ min: 2 })
+// 		.trim(),
+//
+// 	// Sanitize fields.
+// 	sanitizeBody('*')
+// 		.trim()
+// 		.escape(),
+// 	sanitizeBody('user.*')
+// 		.trim()
+// 		.escape(),
+// 	// Process request after validation and sanitization.
+// 	(req, res, next) => {
+// 		// Extract the validation errors from a request.
+// 		var errors = validationResult(req);
+//
+// 		// Create a Yardsale object with escaped and trimmed data.
+// 		var yardsale = new Yardsale({
+// 			firstName: req.body.firstname,
+// 			lastName: req.body.lastname,
+// 			username: req.body.username,
+// 			phone: req.body.phone,
+// 			address: req.body.address,
+// 			address2: req.body.address2,
+// 			city: req.body.city,
+// 			state: req.body.state,
+// 			zipcode: req.body.zipcode,
+// 			date: req.body.date,
+// 			starttime: req.body.starttime,
+// 			endtime: req.body.endtime,
+// 			description: req.body.description,
+// 			imagename: req.body.imagename
+// 		});
+//
+// 		if (!errors.isEmpty()) {
+// 			// There are errors. Render form again with sanitized values/error messages.
+//
+// 			// Get all authors and genres for form.
+// 			async.parallel(
+// 				{
+// 					users: function(callback) {
+// 						User.find(callback);
+// 					}
+// 				},
+// 				function(err, results) {
+// 					if (err) {
+// 						return next(err);
+// 					}
+//
+// 					// // Mark our selected genres as checked.
+// 					// for (let i = 0; i < results.genres.length; i++) {
+// 					// 	if (book.genre.indexOf(results.genres[i]._id) > -1) {
+// 					// 		results.genres[i].checked = 'true';
+// 					// 	}
+// 					// }
+// 					res.render('yardsale_form', {
+// 						title: 'Create Yardsale',
+// 						id: results._id,
+// 						users: results.users,
+// 						yardsale: yardsale,
+// 						errors: errors.array()
+// 					});
+// 				}
+// 			);
+// 			return;
+// 		} else {
+// 			// Data from form is valid. Save yardsale.
+// 			yardsale.save(function(err) {
+// 				if (err) {
+// 					return next(err);
+// 				}
+// 				// Successful - redirect to new yardsale record.
+// 				res.redirect(yardsale.url);
+// 			});
+// 		}
+// 	}
+// ];
+
 // Display yardsale delete form on GET.
 exports.yardsale_delete_get = function(req, res, next) {
 	async.parallel(
 		{
 			yardsale: function(callback) {
 				Yardsale.findById(req.params.id)
-					.populate('author')
-					.populate('genre')
+					.populate('user')
 					.exec(callback);
-			},
-			book_bookinstances: function(callback) {
-				BookInstance.find({ yardsale: req.params.id }).exec(callback);
 			}
+			// book_bookinstances: function(callback) {
+			// 	BookInstance.find({ yardsale: req.params.id }).exec(callback);
+			// }
 		},
 		function(err, results) {
 			if (err) {
@@ -213,8 +266,7 @@ exports.yardsale_delete_get = function(req, res, next) {
 			// Successful, so render.
 			res.render('yardsale_delete', {
 				title: 'Delete Yardsale',
-				yardsale: results.yardsale,
-				book_instances: results.book_bookinstances
+				yardsale: results.yardsale
 			});
 		}
 	);
@@ -245,8 +297,7 @@ exports.yardsale_delete_post = function(req, res, next) {
 				// Book has book_instances. Render in same way as for GET route.
 				res.render('yardsale_delete', {
 					title: 'Delete Yardsale',
-					yardsale: results.yardsale,
-					book_instances: results.book_bookinstances
+					yardsale: results.yardsale
 				});
 				return;
 			} else {
@@ -288,7 +339,7 @@ exports.yardsale_update_get = function(req, res, next) {
 			}
 			if (results.yardsale == null) {
 				// No results.
-				var err = new Error('Yardsale not found');
+				err = new Error('Yardsale not found');
 				err.status = 404;
 				return next(err);
 			}

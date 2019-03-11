@@ -5,12 +5,12 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 // Create Schema and Model
 var favoriteSchema = new Schema({
 	_userId: {
-		type: ObjectId //,
-		// required: [true, 'User ID is required']
+		type: ObjectId,
+		ref: 'user'
 	},
 	_yardsaleId: {
-		type: ObjectId //,
-		// required: true
+		type: ObjectId,
+		ref: 'yardsale'
 	},
 	isChecked: {
 		type: Boolean,

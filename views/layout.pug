@@ -39,11 +39,9 @@ html(lang='en')
               // The content below will be visible to users who have logged in.
               if isAuthenticated
                 .navbar-end
-                  a.navbar-item(href='#')
-                    | #{current_user.fullname}
                   a.navbar-item(href='/')
-                    | Home
-                  a.navbar-item(href='/catalog/yardsale_form')
+                    | #{current_user.fullname} Home
+                  a.navbar-item(href='/catalog/yardsale/create')
                     | Post Yard Sale
                   a.navbar-item(href=current_user.url)
                     | Account

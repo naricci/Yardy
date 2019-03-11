@@ -22,35 +22,45 @@ var userSchema = new Schema({
 	},
 	firstName: {
 		type: String,
-		required: false
+		required: false,
+		minlength: 1,
+		maxlength: 25
 	},
 	lastName: {
 		type: String,
-		required: false
+		required: false,
+		minlength: 1,
+		maxlength: 25
 	},
 	email: {
 		type: String,
-		required: [true, 'Email is required']
+		required: [true, 'Email is required'],
+		maxlength: 25
 	},
 	phone: {
 		type: String,
-		required: false
+		required: false,
+		maxlength: 9
 	},
 	address: {
 		type: String,
-		required: false
+		required: false,
+		maxlength: 250
 	},
 	address2: {
 		type: String,
-		required: false
+		required: false,
+		maxlength: 250
 	},
 	city: {
 		type: String,
-		required: false
+		required: false,
+		maxlength: 25
 	},
 	state: {
 		type: String,
-		required: false
+		required: false,
+		maxlength: 2
 	},
 	zipcode: {
 		type: String,
@@ -66,6 +76,7 @@ var userSchema = new Schema({
 
 // Virtual for User's URL.
 userSchema.virtual('url').get(() => {
+	debug('Getting /users/' + this._id);
 	return '/users/' + this._id;
 });
 

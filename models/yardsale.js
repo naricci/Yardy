@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-// var moment = require('moment');
 
 // Create Schema and Model
 var yardsaleSchema = new Schema({
@@ -23,20 +22,28 @@ var yardsaleSchema = new Schema({
 	},
 	phone: {
 		type: Number,
-		required: false
+		required: false,
+		maxlength: 9
 	},
 	address: {
 		type: String,
 		required: false,
 		maxlength: 250
 	},
+	address2: {
+		type: String,
+		required: false,
+		maxlength: 250
+	},
 	city: {
 		type: String,
-		required: true
+		required: true,
+		maxlength: 25
 	},
 	state: {
 		type: String,
-		required: false
+		required: false,
+		maxlength: 2
 	},
 	zipcode: {
 		type: String,

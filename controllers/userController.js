@@ -90,7 +90,7 @@ exports.register_get = [
 exports.register_post = [
 	// Validate fields.
 	body('username', 'Username must be at least 3 characters long.')
-		.isLength({ min: 3 })
+		.isLength({ min: 4 })
 		.trim(),
 	// body('fullname', 'Full name must be at least 3 characters long.').isLength({ min: 3 }).trim(),
 	body('email', 'Please enter a valid email address.')
@@ -204,7 +204,7 @@ exports.update_get = [
 exports.update_post = [
 	// Validate fields.
 	body('username', 'Username must be at least 3 characters long.')
-		.isLength({ min: 3 })
+		.isLength({ min: 4 })
 		.trim(),
 	body('email', 'Please enter a valid email address.')
 		.isEmail()
@@ -496,7 +496,7 @@ function isAlreadyLoggedIn(req, res, next) {
 // Function that confirms that user is logged in and is the 'owner' of the page.
 function isPageOwnedByUser(req, res, next) {
 	if (req.user && req.isAuthenticated()) {
-		if (req.user._id.toString() === req.params.id.toString()) {
+		if (req.user._id.toString() == req.params.id.toString()) {
 			// User's own page. Allow request.
 			next();
 		} else {
