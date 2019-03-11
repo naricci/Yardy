@@ -11,7 +11,7 @@ var yardsaleController = require('../controllers/yardsaleController');
 
 // Yardsale Routes
 // GET catalog home page.
-router.get('/yardsale', yardsaleController.index);
+// router.get('/yardsale', yardsaleController.index);
 
 // GET request for creating a Yardsale. NOTE This must come before routes that display Yardsale (uses id).
 router.get('/yardsale/create', yardsaleController.yardsale_create_get);

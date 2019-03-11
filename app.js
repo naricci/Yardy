@@ -1,6 +1,5 @@
 const createError = require('http-errors');
 const express = require('express');
-const expressValidator = require('express-validator');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -8,21 +7,13 @@ const compression = require('compression');
 const helmet = require('helmet');
 const debug = require('debug')('yardy:mongo');
 
-// Authentication Packages
-var session = require('express-session');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var User = require('./models/user');
-var flash = require('express-flash');
-var MongoStore = require('connect-mongo')(session);
-var auth = require('./lib/auth');
-
 // Routes
 var index = require('./routes/index');
 var users = require('./routes/users');
 var catalog = require('./routes/catalog');
 
 var app = express();
+
 
 // Set up mongoose connection
 var mongoose = require('mongoose');
@@ -77,6 +68,16 @@ process.on('exit', function(code) {
 	debug('About to exit with code: ', code);
 });
 
+
+// Authentication Packages
+var session = require('express-session');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var User = require('./models/user');
+var flash = require('express-flash');
+var MongoStore = require('connect-mongo')(session);
+//var auth = require('./lib/auth');
+
 // Configure the local strategy for use by Passport.
 passport.use(
 	new LocalStrategy(function(username, password, callback) {
@@ -94,6 +95,7 @@ passport.use(
 		});
 	})
 );
+
 
 // Configure Passport authenticated session persistence.
 passport.serializeUser(function(user, callback) {
@@ -129,19 +131,18 @@ app.use(express.static('bower_components'));
 
 // a middleware function with no mount path.
 // This code is executed for every request to the router
-// app.use(function (req, res, next) {
-//   debug('Time:', Date.now());
-//   next();
-// });
+app.use(function (req, res, next) {
+	debug('Time:', Date.now());
+	next();
+});
 
 // Authentication related middleware.
 app.use(flash());
 app.use(
 	session({
-		secret: 'yardy-session-secret',
+		secret: 'local-library-session-secret',
 		resave: false,
 		saveUninitialized: true,
-		//maxAge: 600000,
 		store: new MongoStore({
 			url: mongoDB,
 			ttl: 7 * 24 * 60 * 60 // 7 days. 14 Default.
@@ -169,7 +170,7 @@ app.use(function(req, res, next) {
 });
 
 // Use our Authentication and Authorization middleware.
-app.use(auth);
+//app.use(auth);
 
 app.use('/', index);
 app.use('/users', users);

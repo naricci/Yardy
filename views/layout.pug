@@ -40,7 +40,7 @@ html(lang='en')
               if isAuthenticated
                 .navbar-end
                   a.navbar-item(href='/')
-                    | #{current_user.fullname} Home
+                    | Home
                   a.navbar-item(href='/catalog/yardsale/create')
                     | Post Yard Sale
                   a.navbar-item(href=current_user.url)

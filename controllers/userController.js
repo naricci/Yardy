@@ -2,16 +2,17 @@ const { body, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 const passport = require('passport');
 const async = require('async');
+const debug = require('debug')('yardy:user.controller');
 
 // Require user model
 var User = require('../models/user');
 
 // Display detail page for a specific user.
 exports.user_profile = [
-	isPageOwnedByUser,
 
 	function(req, res, next) {
-		User.findById(req.params.id).exec((err, found_user) => {
+		User.findById(req.params._id).exec((err, found_user) => {
+			debug(req.body);
 			if (err) {
 				return next(err);
 			}
