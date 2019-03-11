@@ -11,7 +11,7 @@ router.get('/yardsale_form', (req, res, next) => {
 
 // Yardsale Routes
 // GET catalog home page.
-router.get('/', yardsaleController.index);
+router.get('/yardsale', yardsaleController.index);
 
 // GET request for creating a Yardsale. NOTE This must come before routes that display Yardsale (uses id).
 router.get('/yardsale/create', yardsaleController.yardsale_create_get);
@@ -34,7 +34,7 @@ router.post('/yardsale/:id/update', yardsaleController.yardsale_update_post);
 // GET request for one Yardsale.
 router.get('/yardsale/:id', yardsaleController.yardsale_detail);
 
-// GET request for list of all Yardsale.
-router.get('/yardsale', yardsaleController.yardsale_list);
+// GET request for list of all Yardsales.
+router.get('/yardsales', yardsaleController.yardsale_list);
 
 module.exports = router;

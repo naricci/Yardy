@@ -3,9 +3,12 @@ extends layout
 block content
 	h1 #{title}: #{yardsale.title}
 
+	img(src=yardsale.imagename alt='yardsale preview') 
 	p #[strong Username:]
 		a(href=yardsale.username.url) #{yardsale.username}
 	p #[strong First Name:] #{yardsale.firstname}
+	p #[strong Last Name:] #{yardsale.lastname}
+
 	p #[strong Address:] #{yardsale.address}
 	hr
 	p
