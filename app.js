@@ -7,7 +7,7 @@ const debug = require('debug')('yardy:mongo');
 
 // For Heroku
 // const cool = require('cool-ascii-faces');
-// const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 
 // Routes
 // var auth = require('./lib/auth');
@@ -21,7 +21,7 @@ const helmet = require('helmet');
 const app = express();
 // app.get('/', (req, res) => { return res.render('pages/index'); });
 // app.get('/cool', (req, res) => { return res.send(cool()); });
-// app.listen(PORT, () => { return console.log(`Listening on ${ PORT }`); });
+app.listen(PORT, () => { return console.log(`Listening on ${ PORT }`); });
 
 // Set up mongoose connection
 const mongoose = require('mongoose');
