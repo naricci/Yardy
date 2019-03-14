@@ -137,7 +137,7 @@ app.use(compression()); // Compress all routes
 app.use(helmet());
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static('bower_components'));
+// app.use(express.static('bower_components'));	// not using on final deployment
 
 
 // a middleware function with no mount path.
