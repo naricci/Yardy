@@ -3,29 +3,35 @@ const { sanitizeBody } = require('express-validator/filter');
 const passport = require('passport');
 const async = require('async');
 const debug = require('debug')('yardy:user.controller');
-// Require user model
 var User = require('../models/user');
+var mongoose = require('mongoose');
 
 // Display detail page for a specific user.
 exports.user_profile = [
+	// isPageOwnedByUser,
 
 	function(req, res, next) {
-		User.findById(req.params._id).exec((err, found_user) => {
-			debug(req.body);
-			if (err) {
-				return next(err);
-			}
-			if (found_user == null) {
-				let err = new Error('User not found');
-				err.status = 404;
-				return next(err);
-			}
-			// Successful, so render
-			res.render('user_profile', {
-				title: 'User Account',
-				user: found_user
+		var id = mongoose.Types.ObjectId(req.user._id);
+
+		debug(id);
+		User.findById(id)
+			.exec()
+			.then(function(found_user){
+				// Successful, so render
+				res.render('user_profile', {
+					title: 'User Account',
+					user: found_user
+				}).catch(function(err, found_user) {
+					if (err) {
+						return next(err);
+					}
+					if (found_user === null) {
+						let err = new Error('User not found');
+						err.status = 404;
+						return next(err);
+					}
+				});
 			});
-		});
 	}
 ];
 
@@ -69,7 +75,6 @@ exports.logout_get = [
 		req.session.destroy(function(err) {
 			res.redirect('/');
 		});
-		// next();
 	}
 ];
 
@@ -88,21 +93,20 @@ exports.register_get = [
 
 // Handle register on POST.
 exports.register_post = [
-	// Validate fields.
+	// Validate form fields.
 	body('username', 'Username must be at least 3 characters long.')
 		.isLength({ min: 4 })
 		.trim(),
-	// body('fullname', 'Full name must be at least 3 characters long.').isLength({ min: 3 }).trim(),
 	body('email', 'Please enter a valid email address.')
 		.isEmail()
 		.trim(),
-	// body('role', 'A role must be selected for the user.').isLength({ min: 1 }).trim(),
 	body('password', 'Password must be between 4-32 characters long.')
 		.isLength({ min: 4, max: 32 })
 		.trim(),
 	body('cpassword', 'Password must be between 4-32 characters long.')
 		.isLength({ min: 4, max: 32 })
 		.trim(),
+
 
 	// Sanitize fields with wildcard operator.
 	sanitizeBody('*')
@@ -121,7 +125,15 @@ exports.register_post = [
 		// Create a user object with escaped and trimmed data.
 		var user = new User({
 			username: req.body.username,
-			email: req.body.email
+			firstName: req.body.firstname,
+			lastName: req.body.lastname,
+			email: req.body.email,
+			phone: req.body.phone,
+			address: req.body.address,
+			address2: req.body.address2,
+			city: req.body.city,
+			state: req.body.state,
+			zipcode: req.body.zipcode
 		});
 
 		// Check if passwords match or not.
@@ -178,10 +190,14 @@ exports.register_post = [
 
 // Display update form on GET.
 exports.update_get = [
-	isPageOwnedByUser,
+	// isPageOwnedByUser,
 
 	function(req, res, next) {
-		User.findById(req.params.id).exec((err, found_user) => {
+		// TODO Figure out why Id is not being cast correctly
+		// ERROR - Cast to ObjectId failed for value "undefined" at path "_id" for model "Users"
+		// var id = req.params.id;
+		var id = mongoose.Types.ObjectId(req.user._id);
+		User.findById(id).exec((err, found_user) => {
 			if (err) {
 				return next(err);
 			}
@@ -236,10 +252,15 @@ exports.update_post = [
 			lastname: req.body.lastname,
 			fullname: req.body.fullname,
 			email: req.body.email,
+			address: req.body.address,
+			address2: req.body.address2,
+			city: req.body.city,
+			state: req.body.state,
+			zipcode: req.body.zipcode,
 			_id: req.params.id
 		});
 
-		// Update password only if the user filled both password fields!
+		// Update password only if the user filled both password fields
 		if (req.body.password !== '' && req.body.cpassword !== '') {
 			// -- The user wants to change password. -- //
 
@@ -464,8 +485,7 @@ exports.reset_post_final = [
 	}
 ];
 
-// -- Helper functions, no need to export. -- //
-
+// -- Helper functions -- //
 // Extract flash messages from req.flash and return an array of messages.
 function extractFlashMessages(req) {
 	var messages = [];

@@ -23,13 +23,11 @@ var UserSchema = new Schema({
 	firstName: {
 		type: String,
 		required: false,
-		minlength: 1,
 		maxlength: 25
 	},
 	lastName: {
 		type: String,
 		required: false,
-		minlength: 1,
 		maxlength: 25
 	},
 	email: {
@@ -40,7 +38,7 @@ var UserSchema = new Schema({
 	phone: {
 		type: String,
 		required: false,
-		maxlength: 9
+		maxlength: 10
 	},
 	address: {
 		type: String,
@@ -81,14 +79,9 @@ UserSchema.virtual('url').get(() => {
 });
 
 // Virtual for User's Full Name.
-UserSchema.virtual('fullname').get(() => {
-	debug('Getting ' + this.firstName + ' ' + this.lastName);
-	return this.firstName + ' ' + this.lastName;
-});
-
-// Virtual for Yardsale/User instance URL.
-// UserSchema.virtual('sale_url').get(function() {
-// 	return '/yardsales/user/' + this._id;
+// UserSchema.virtual('fullname').get(() => {
+// 	debug('Getting ' + this.firstName + ' ' + this.lastName);
+// 	return this.firstName + ' ' + this.lastName;
 // });
 
 // Instance method for hashing user-typed password.
@@ -99,7 +92,6 @@ UserSchema.methods.setPassword = function(password) {
 	this.hash = crypto
 		.pbkdf2Sync(password, this.salt, 10000, 128, 'sha512')
 		.toString('hex');
-	debug(`Salt: ${this.salt}, Hash: ${this.hash}`);
 };
 
 // Instance method for comparing user-typed password against hashed-password on db.
@@ -107,7 +99,6 @@ UserSchema.methods.validatePassword = function(password) {
 	var hash = crypto
 		.pbkdf2Sync(password, this.salt, 10000, 128, 'sha512')
 		.toString('hex');
-	debug(hash);
 	return this.hash === hash;
 };
 

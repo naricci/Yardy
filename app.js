@@ -3,30 +3,35 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const compression = require('compression');
-const helmet = require('helmet');
 const debug = require('debug')('yardy:mongo');
 
 // For Heroku
-const cool = require('cool-ascii-faces');
-const PORT = process.env.PORT || 5000;
+// const cool = require('cool-ascii-faces');
+// const PORT = process.env.PORT || 5000;
 
 // Routes
 // var auth = require('./lib/auth');
-var index = require('./routes/index');
-var users = require('./routes/users');
-var catalog = require('./routes/catalog');
+const index = require('./routes/index');
+const users = require('./routes/users');
+const catalog = require('./routes/catalog');
 
-var app = express();
-app.get('/', (req, res) => { return res.render('pages/index'); })
-app.get('/cool', (req, res) => { return res.send(cool()); })
-app.listen(PORT, () => { return console.log(`Listening on ${ PORT }`); });
+const compression = require('compression');
+const helmet = require('helmet');
+
+const app = express();
+// app.get('/', (req, res) => { return res.render('pages/index'); });
+// app.get('/cool', (req, res) => { return res.send(cool()); });
+// app.listen(PORT, () => { return console.log(`Listening on ${ PORT }`); });
 
 // Set up mongoose connection
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 var gracefulShutdown;
+// var dev_db_url = 'mongodb://localhost/yardy';
 var dev_db_url = 'mongodb://nick:Yardy123@ds121475.mlab.com:21475/yardy';
 var mongoDB = process.env.MONGODB_URI || dev_db_url;
+// if (process.env.NODE_ENV === 'production') {
+// 	dev_db_url = process.env.MONGOLAB_URI;
+// }
 var db = mongoose.connection;
 mongoose.connect(mongoDB, {
 	useNewUrlParser: true
@@ -74,7 +79,6 @@ process.on('exit', function(code) {
 	debug('About to exit with code: ', code);
 });
 
-
 // Authentication Packages
 var session = require('express-session');
 var passport = require('passport');
@@ -101,7 +105,6 @@ passport.use(
 	})
 );
 
-
 // Configure Passport authenticated session persistence.
 passport.serializeUser(function(user, callback) {
 	callback(null, user._id);
@@ -116,11 +119,13 @@ passport.deserializeUser(function(id, callback) {
 	});
 });
 
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 // used to display the json in pretty print format
 app.set('json spaces', 2);
+
 
 // Middleware
 app.use(logger('dev'));
@@ -134,12 +139,14 @@ app.use(helmet());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('bower_components'));
 
+
 // a middleware function with no mount path.
 // This code is executed for every request to the router
-// app.use(function (req, res, next) {
-// 	debug('Time:', Date.now());
-// 	next();
-// });
+app.use(function (req, res, next) {
+	debug('Time:', Date.now());
+	next();
+});
+
 
 // Authentication related middleware.
 app.use(flash());
@@ -150,11 +157,12 @@ app.use(
 		saveUninitialized: true,
 		store: new MongoStore({
 			url: mongoDB,
-			ttl: 7 * 24 * 60 * 60 // 7 days. 14 Default.
+			ttl: 7 * 24 * 60 * 60 // 7 days. 14 is Default.
 		})
 		// cookie: { secure: true }		// requires HTTPS
 	})
 );
+
 
 // Initialize Passport and restore authentication state, if any,
 // from the session.
@@ -180,6 +188,7 @@ app.use(function(req, res, next) {
 app.use('/', index);
 app.use('/users', users);
 app.use('/catalog', catalog);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

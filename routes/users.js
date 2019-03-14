@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-
-// Require user controller.
 var userController = require('../controllers/userController');
 
 // Handler for all types of requests pointed to '/' route.

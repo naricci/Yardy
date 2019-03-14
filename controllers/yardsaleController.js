@@ -46,6 +46,57 @@ exports.yardsale_create_get = function (req, res, next) {
 };
 
 
+// Handle Yardsale create on POST.
+exports.yardsale_create_post = [
+
+	// Validate fields.
+	body('firstname').isLength({ min: 1 }).trim().withMessage('First name must be specified.')
+		.isAlphanumeric().withMessage('First name has non-alphanumeric characters.'),
+
+	// Sanitize fields.
+	sanitizeBody('date').toDate(),
+
+	// Process request after validation and sanitization.
+	(req, res, next) => {
+
+		// Extract the validation errors from a request.
+		const errors = validationResult(req);
+
+		if (!errors.isEmpty()) {
+			// There are errors. Render form again with sanitized values/errors messages.
+			res.render('yardsale_form', { title: 'Create Yardsale', yardsale: req.body, errors: errors.array() });
+			return;
+		}
+		else {
+			// Data from form is valid.
+
+			// Create an Yardsale object with escaped and trimmed data.
+			var yardsale = new Yardsale(
+				{
+					firstname: req.body.firstname,
+					lastname: req.body.lastname,
+					username: req.body.username,
+					phone: req.body.phone,
+					address: req.body.address,
+					address2: req.body.address2,
+					city: req.body.city,
+					state: req.body.state,
+					zipcode: req.body.zipcode,
+					date: req.body.date,
+					starttime: req.body.starttime,
+					endtime: req.body.endtime,
+					description: req.body.description
+				});
+			yardsale.save(function (err) {
+				if (err) { return next(err); }
+				// Successful - redirect to new yardsale record.
+				res.redirect(yardsale.url);
+			});
+		}
+	}
+];
+
+
 //////////for search
 module.exports.all_yardsales = function (req, res) {
 	console.log('All Yardsales Unsorted');

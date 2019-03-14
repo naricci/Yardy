@@ -10,15 +10,13 @@ block content
                 form(method='POST' action='')
                     .field
                         label.label Username
-                        .control.has-icons-left.has-icons-right
+                        .control
                             input.input#username(type='text' placeholder='username' name='username' required value=(undefined===user ? '' : user.username))
-                            span.icon.is-small.is-left
-                                i.fas.fa-user
                     .field
                         label.label Password
                         .control
                             // TODO type='password'
-                            input.input#password(type='text' name='password' required)
+                            input.input#password(type='password' name='password' required)
                     .field
                         .control
                             // type='button' value='logIn'

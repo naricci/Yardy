@@ -1,30 +1,38 @@
 extends layout
 
 block content
+    // Main content
+    .container
+        .columns
+            .column.is-one-third
+            .column.is-one-third
 
-    h1 #{user.fullname}
+                h1
+                    strong Welcome #{user.username}!
+                br
 
-    p #[strong Username:] #{user.username}
-    p #[strong First Name:] #{user.firstName}
-    p #[strong Last Name:] #{user.lastName}
-    p #[strong E-mail:] #{user.email}
-    p #[strong Phone:] #{user.phone}
-    p #[strong Address:] #{user.address}
-    p #[strong Address 2:] #{user.address2}
-    p #[strong City:] #{user.city}
-    p #[strong State:]
-        if (user.state === 'CT')
-            | CT
-        else if (user.state === 'MA')
-            | MA
-        else if (user.state === 'ME')
-            | ME
-        if (user.state === 'NH')
-            | NH
-        if (user.state === 'RI')
-            | RI
-    p #[strong Zip Code:] #{user.zipcode}
+                p #[strong Username: ] #{user.username}
+                p #[strong First Name: ] #{user.firstName}
+                p #[strong Last Name: ] #{user.lastName}
+                p #[strong E-mail: ] #{user.email}
+                p #[strong Phone: ] #{user.phone}
+                p #[strong Address: ] #{user.address}
+                p #[strong Address 2: ] #{user.address2}
+                p #[strong City: ] #{user.city}
+                p #[strong State: ]
+                    if (user.state === 'CT')
+                        | CT
+                    else if (user.state === 'MA')
+                        | MA
+                    else if (user.state === 'ME')
+                        | ME
+                    if (user.state === 'NH')
+                        | NH
+                    if (user.state === 'RI')
+                        | RI
+                p #[strong Zip Code: ] #{user.zipcode}
 
-    hr
-    p
-        a(href=user.url+'/update').btn.btn-primary Update Account
+                hr
+                p
+                    a(href=user._id+'/update').btn.btn-primary Update Account
+            .column.is-one-third

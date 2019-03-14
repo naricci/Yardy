@@ -1,12 +1,17 @@
 extends layout
 
 block content
+    // Main content
+    .container
+        .columns
+            .column.is-one-third
+            .column.is-one-third
+                h1 #{title}
+                hr
 
-    h1 #{title}
-    hr
+                if errors
+                    for error in errors
+                        h4!= error.msg
 
-    if errors
-        for error in errors
-            h4!= error.msg
-
-    hr
+                hr
+            .column.is-one-third

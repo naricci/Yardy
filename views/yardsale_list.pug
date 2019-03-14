@@ -1,13 +1,14 @@
 extends layout
 
 block content
-	h1= title
+	.container
+		h1= title
 
-	ul
-	each yardsale in yardsale_list
-		li
-			a(href=yardsale.url) #{yardsale.address}
-			| (#{yardsale.firstname})
+		ul
+		each yardsale in yardsale_list
+			li
+				a(href=yardsale.url) #{yardsale.address}
+				| (#{yardsale.firstname})
 
-	else
-		li There are no yardsales.
+		else
+			li There are no yardsales.

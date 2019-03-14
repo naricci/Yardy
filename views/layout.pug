@@ -12,7 +12,7 @@ html(lang='en')
 
     // Bulma CSS
     // bower:css
-    link(rel='stylesheet' href='/bower_components/dist//bulma/css/bulma.css')
+    link(rel='stylesheet' href='/bulma/css/bulma.css')
     // endbower
 
     // Fonts & Icons
@@ -23,8 +23,9 @@ html(lang='en')
     // Hero banner/Navbar
     section.hero.is-primary
       .hero-head
-        nav.navbar(role='navigation' aria-label='main navigation')
-          .container
+        .container
+          nav.navbar(role='navigation' aria-label='main navigation')
+
             .navbar-brand
               //
                 <a class="navbar-item" href="">
@@ -43,7 +44,7 @@ html(lang='en')
                     | Home
                   a.navbar-item(href='/catalog/yardsale/create')
                     | Post Yard Sale
-                  a.navbar-item(href=current_user.url)
+                  a.navbar-item(href='/users/'+current_user._id)
                     | Account
                   a.navbar-item(href='/users/favorites')
                     | Favorites
@@ -59,35 +60,35 @@ html(lang='en')
                     .buttons
                       a.button.is-light(href='/users/register')
                         | Register
+                  .navbar-item
+                    .buttons
                       a.button.is-light(href='/users/login')
                         | Login
 
-      // Middle content
-      .hero-body
-        .container
-        a(href="/")
-          h1.title.is-1 Yardy
-        h2.subtitle= title
-    br
+        // Middle content
+        .hero-body
+          .container
+            a(href="/")
+              h1.title.is-1 Yardy
+            h2.subtitle= title
+  br
 
-    block content
+  block content
 
-    br
-    footer.footer
-      .content.has-text-centered
-        p
-          strong Yardy
-          |   created by MaNiJo.
+  br
+  footer.footer
+    .content.has-text-centered
+      p
+        strong Yardy
+        |   created by MaNiJo.
 
     // jQuery
     // bower:js
-    script(src='/bower_components/dist/jquery/dist/jquery.js')
+    script(src='/jquery/dist/jquery.js')
     // endbower
 
     // Custom JavaScript
     // inject:js
     script(src='/js/menu.js')
-    // script(src='/js/post_yardsale.js')
-    // script(src='/js/registration.js')
-    script(src='/public/js/search_yardsales.js')
+    script(src='/js/search_yardsales.js')
     // endinject
