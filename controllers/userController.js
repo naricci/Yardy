@@ -10,7 +10,7 @@ var User = require('../models/user');
 exports.user_profile = [
 	// isPageOwnedByUser,
 
-	function(req, res, next) {
+	(req, res, next) => {
 
 		if (req.params && req.params.id) {
 			// let id = mongoose.Types.ObjectId(req.user._id);
@@ -509,7 +509,7 @@ exports.reset_post_final = [
 	}
 ];
 
-// Handle GET request for user's favorites page
+// Display favorites page on GET
 exports.favorites_get = [
 	// isPageOwnedByUser,
 
@@ -533,6 +533,11 @@ exports.favorites_get = [
 				});
 			});
 	}
+];
+
+// Handle favorites page on POST
+exports.favorites_post = [
+	// TODO Finish writing function to POST/PUT favorites
 ];
 
 // -- Helper functions -- //

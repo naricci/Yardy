@@ -11,13 +11,13 @@ block content
 				img(src=yardsale.imagename alt='yardsale preview')
 				p #[strong Username:]
 					a(href=yardsale.username.url) #{yardsale.username}
-				p #[strong First Name:] #{yardsale.firstname}
-				p #[strong Last Name:] #{yardsale.lastname}
+				p #[strong First Name:] #{yardsale.firstName}
+				p #[strong Last Name:] #{yardsale.lastName}
 
 				p #[strong Address:] #{yardsale.address}
 				hr
 				p
-					a(href=yardsale.url+'/delete') Delete Yardsale
+					a(href=yardsale._id+'/delete') Delete Yardsale
 				p
-					a(href=yardsale.url+'/update') Update Yardsale
+					a(href=yardsale._id+'/update') Update Yardsale
 			.column.is-one-third

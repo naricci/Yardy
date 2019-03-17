@@ -17,7 +17,7 @@ var yardsaleController = require('../controllers/yardsaleController');
 router.get('/yardsale/create', yardsaleController.yardsale_create_get);
 
 // POST request for creating Yardsale.
-// router.post('/yardsale/create', yardsaleController.yardsale_create_post);
+router.post('/yardsale/create', yardsaleController.yardsale_create_post);
 
 // GET request to delete Yardsale.
 // router.get('/yardsale/:id/delete', yardsaleController.yardsale_delete_get);

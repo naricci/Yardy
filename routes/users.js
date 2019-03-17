@@ -48,4 +48,7 @@ router.post('/:id/update', userController.update_post);
 // GET request for User favorites
 router.get('/:id/favorites', userController.favorites_get);
 
+// POST request for User favorites
+router.post('/:id/favorites', userController.favorites_post);
+
 module.exports = router;

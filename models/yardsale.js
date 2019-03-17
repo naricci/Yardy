@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 // Create Schema and Model
 var YardsaleSchema = new Schema({
-	firstname: {
+	firstName: {
 		type: String,
 		required: true,
 		minlength: 1,
@@ -16,14 +16,16 @@ var YardsaleSchema = new Schema({
 		maxlength: 25
 	},
 	username: {
-		type: Schema.ObjectId,
-		ref: 'user',
+		// type: Schema.ObjectId,
+		// ref: 'users',
+		type: String,
 		required: true
 	},
 	phone: {
 		type: Number,
 		required: false,
-		maxlength: 9
+		minlength: 10,
+		maxlength: 10
 	},
 	address: {
 		type: String,
@@ -99,14 +101,6 @@ YardsaleSchema
 		return this.date + ', ' + this.starttime + ' - ' + this.endtime;
 	});
 
-// Yardsale instance URL
-// YardsaleSchema
-// 	.virtual('url')
-// 	.get(function() {
-// 		return '/yardsale/' + this._id;
-// 	});
+var Yardsale = mongoose.model('yardsales', YardsaleSchema);
 
-
-
-
-module.exports = mongoose.model('yardsales', YardsaleSchema);
+module.exports = Yardsale;
