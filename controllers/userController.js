@@ -527,7 +527,7 @@ exports.favorites_get = [
 				}
 				// Successful, so render
 				res.render('user_favorites', {
-					title: 'Manage Favoritesr',
+					title: 'Manage Favorites',
 					user: found_user,
 					is_update_form: true
 				});

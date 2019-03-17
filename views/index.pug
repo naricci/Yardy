@@ -37,83 +37,48 @@ block content
                                         //- option(value='distance') Distance
                                         //- option(value='time') Start Time
                                 //a.button.is-primary(type='e' id='search')
-                                button.is-primary(type='submit')
+                            .field
+                                button.is-link(type='submit')
                                     | Search
-                                a.button.is-primary(href='/catalog/yardsales')
+                            .field
+                                a.button.is-link(href='/catalog/yardsales')
                                     | View All
                 .column.is-one-quarter
         br
         // MAP OF USA
         .container
             #map(style='width:100%;height:400px')
-            script.
-                var map;
-                function initMap() {
-                    map = new google.maps.Map(document.getElementById('map'), {
-                        center: new google.maps.LatLng(44.5886,-104.6985),
-                        mapTypeId: google.maps.MapTypeId.ROADMAP,
-                        zoom: 8
-                    });
-                    var locations = [
-                        new google.maps.LatLng(41.6617218,-71.5049636),
-                        new google.maps.LatLng(44.5886,-104.6985),
-                        new google.maps.LatLng(44.0769281,-103.6503378)
-                        // and additional coordinates, just add a new item
-                    ];
-                    locations.forEach(function (location) {
-                        var marker = new google.maps.Marker({
-                            position: location,
-                            map: map,
-                            title:"Yard Sale"
-                        });
-                        marker.addListener('click', function() {
-                            infowindow.open(map, marker);
-                        });
-                    });
-                    var contentString = '<div id="content">'+
-                        '<div id="siteNotice">'+
-                        '</div>'+
-                        '<h1 id="firstHeading" class="firstHeading">Address  </h1>'+
-                        '<h1 id="firstHeading" class="firstHeading">  Date</h1>'+
-                        '<div id="bodyContent">'+
-                        '<p class="image is-64x64"><img src="https://bulma.io/images/placeholders/128x128.png"></p>'+
-                        '<p>Yard sale info.</p>'+
-                        '</div>'+
-                        '</div>';
-                    var infowindow = new google.maps.InfoWindow({
-                        content: contentString
-                    });
-                }
+            script(src='/js/index_map.js')
             script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCQZTrgfsk848vQb70eG-wEaJwbFnvUUpk&callback=initMap' async='' defer='')
-        // api key AIzaSyCQZTrgfsk848vQb70eG-wEaJwbFnvUUpk
-        // Search Results (Hard Coded for now...)
-        section.section
-            .container
-                article.media 
-                    if yardsale 
-                        each yardsale in yardsale_list
-                            figure.media-left
-                                p.image.is-64x64
-                                    img(src='https://bulma.io/images/placeholders/128x128.png')
-                            .media-content
-                                .content
-                                    p
-                                        strong #{yardsale.date_and_time}
-                                    p
-                                        strong #{yardsale.full_address}
-                                        br
-                                        |  #{yardsale.description}
+            // api key AIzaSyCQZTrgfsk848vQb70eG-wEaJwbFnvUUpk
+            // Search Results (Hard Coded for now...)
+            section.section
+                .container
+                    article.media
+                        if yardsale
+                            each yardsale in yardsale_list
+                                figure.media-left
+                                    p.image.is-64x64
+                                        img(src='https://bulma.io/images/placeholders/128x128.png')
+                                .media-content
+                                    .content
+                                        p
+                                            strong #{yardsale.date_and_time}
+                                        p
+                                            strong #{yardsale.full_address}
+                                            br
+                                            |  #{yardsale.description}
 
-                            .media-right
-                                a.button.is-primary(type='submit')
-                                    | View
-                            //<nav class="level is-mobile">
-                            //<div class="level-right">
-                            //<a class="level-item">
-                            //<span class="icon is-small"><i class="fas fa-star"></i></span>
-                            //</a>
-                            //</div>
-                            //</nav>
+                                .media-right
+                                    a.button.is-primary(type='submit')
+                                        | View
+                                //<nav class="level is-mobile">
+                                //<div class="level-right">
+                                //<a class="level-item">
+                                //<span class="icon is-small"><i class="fas fa-star"></i></span>
+                                //</a>
+                                //</div>
+                                //</nav>
         //.container
         //    each yardsale in yardsale_list
         //        div

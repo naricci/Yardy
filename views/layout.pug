@@ -5,92 +5,24 @@ html(lang='en')
     meta(name='viewport' content='width=device-width, initial-scale=1')
     title= title
 
-    // Custom CSS
-    // inject:css
-    link(rel='stylesheet' href='/css/style.css')
-    // endinject
-
     // Bulma CSS
     link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.css')
-    // bower:css
-    //link(rel='stylesheet' href='/bulma/css/bulma.css')
-    // endbower
+    // Custom CSS
+    link(rel='stylesheet' href='/css/style.css')
 
-    // Fonts & Icons
-    // Font Awesome
+    // Font Awesome Icons
     link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous")
-
+    // Google Fonts
+    link(href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet")
+    link(href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet")
   body
-    // Hero banner/Navbar
-    section.hero.is-primary
-      .hero-head
-        .container
-          nav.navbar(role='navigation' aria-label='main navigation')
+    .main-container
+      include header
+      br
 
-            .navbar-brand
-              //
-                <a class="navbar-item" href="">
-                <img src="" width="112" height="28">
-                </a>
-              span.navbar-burger.burger(aria-label='menu' aria-expanded='false' data-target='navbarMenuHeroA')
-                span(aria-hidden='true')
-                span(aria-hidden='true')
-                span(aria-hidden='true')
-            #navbarMenuHeroA.navbar-menu
+      block content
+      br
 
-              // The content below will be visible to users who have logged in.
-              if isAuthenticated
-                .navbar-end
-                  a.navbar-item(href='/')
-                    | Home
-                  a.navbar-item(href='/catalog/yardsale/create')
-                    | Post Yard Sale
-                  a.navbar-item(href='/users/'+current_user._id)
-                    | Account
-                  a.navbar-item(href='/users/'+current_user._id+'/favorites')
-                    | Favorites
-                  .navbar-item
-                    .buttons
-                      a.button.is-light(href='/users/logout')
-                        | Logout
+      include footer
 
-              // The content below will be visible to users who have NOT logged in.
-              if isAuthenticated === false
-                .navbar-end
-                  .navbar-item
-                    .buttons
-                      a.button.is-light(href='/users/register')
-                        | Register
-                  .navbar-item
-                    .buttons
-                      a.button.is-light(href='/users/login')
-                        | Login
-
-        // Middle content
-        .hero-body
-          .container
-            a(href="/")
-              h1.title.is-1 Yardy
-            h2.subtitle= title
-  br
-
-  block content
-
-  br
-  footer.footer
-    .content.has-text-centered
-      p
-        strong Yardy
-        |   created by MaNiJo.
-
-    // jQuery
-    script(src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous")
-    // bower:js
-    //script(src='/jquery/dist/jquery.js')
-    // endbower
-
-    // Custom JavaScript
-    // inject:js
-    script(src='/js/menu.js')
-    script(src='/js/search_yardsales.js')
-    // endinject
+    include scripts
