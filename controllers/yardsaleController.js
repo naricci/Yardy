@@ -51,25 +51,29 @@ exports.yardsale_create_get = (req, res, next) => {
 exports.yardsale_create_post = [
 
 	// Validate fields.
-	body('firstname').isLength({ min: 1 })
-		.trim()
-		.withMessage('First name must be specified.')
-		.isAlphanumeric()
-		.withMessage('First name has non-alphanumeric characters.'),
-	body('phone')
-		.isLength({ min: 10, max: 10 })
-		.trim()
-		.withMessage('Please enter a 10-digit phone number.')
-		.isNumeric()
-		.withMessage('Phone number can only contain numbers.'),
-	body('zipcode')
-		.isLength({ min: 5, max: 5 })
-		.trim()
-		.withMessage('Please enter a 5-digit zip code.')
-		.isNumeric()
-		.withMessage('Zip code can only contain numbers.'),
+	// body('firstname').isLength({ min: 1 })
+	// 	.trim()
+	// 	.withMessage('First name must be specified.')
+	// 	.isAlphanumeric()
+	// 	.withMessage('First name has non-alphanumeric characters.'),
+	// body('phone')
+	// 	.isLength({ min: 10, max: 10 })
+	// 	.trim()
+	// 	.withMessage('Please enter a 10-digit phone number.')
+	// 	.isNumeric()
+	// 	.withMessage('Phone number can only contain numbers.'),
+	// body('zipcode')
+	// 	.isLength({ min: 5, max: 5 })
+	// 	.trim()
+	// 	.withMessage('Please enter a 5-digit zip code.')
+	// 	.isNumeric()
+	// 	.withMessage('Zip code can only contain numbers.'),
+
 	// Sanitize fields.
-	sanitizeBody('date').toDate(),
+	// sanitizeBody('firstname').trim(),
+	// sanitizeBody('phone').trim(),
+	// sanitizeBody('zipcode').trim(),
+	// sanitizeBody('date').toDate(),
 
 	// Process request after validation and sanitization.
 	(req, res, next) => {
