@@ -54,7 +54,7 @@ block content
                     .field
                         label.label #{is_update_form ? 'Confirm New Zip Code:' : 'Zip Code:'}
                         .control
-                            input.input(id='zipcode' type='text' name='zipcode' placeholder='02818' minlength='5' maxlength='5' required=!is_update_form)
+                            input.input(id='zipcode' type='text' name='zipcode' placeholder='02818' minlength='5' maxlength='5' value=(undefined===user ? '' : user.zipcode))
 
                     if is_update_form
                         hr

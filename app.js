@@ -32,12 +32,12 @@ var mongoDB = process.env.MONGODB_URI || dev_db_url;
 // if (process.env.NODE_ENV === 'production') {
 // 	dev_db_url = process.env.MONGOLAB_URI;
 // }
-var db = mongoose.connection;
 mongoose.connect(mongoDB, {
 	useNewUrlParser: true
 });
 mongoose.set('useCreateIndex', true);
 mongoose.Promise = global.Promise;
+var db = mongoose.connection;
 // CONNECTION EVENTS
 db.on('connected', function() {
 	debug('Mongoose connected to ' + dev_db_url);

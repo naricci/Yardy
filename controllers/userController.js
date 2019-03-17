@@ -4,34 +4,36 @@ const passport = require('passport');
 const async = require('async');
 const debug = require('debug')('yardy:user.controller');
 var User = require('../models/user');
-var mongoose = require('mongoose');
+// var mongoose = require('mongoose');
 
 // Display detail page for a specific user.
 exports.user_profile = [
 	// isPageOwnedByUser,
 
 	function(req, res, next) {
-		var id = mongoose.Types.ObjectId(req.user._id);
 
-		debug(id);
-		User.findById(id)
-			.exec()
-			.then(function(found_user){
-				// Successful, so render
-				res.render('user_profile', {
-					title: 'User Account',
-					user: found_user
-				}).catch(function(err, found_user) {
+		if (req.params && req.params.id) {
+			// let id = mongoose.Types.ObjectId(req.user._id);
+			debug('Gettting user id: ' + req.user._id.toString());
+
+			User
+				.findById(req.params.id)
+				.exec((err, found_user) => {
 					if (err) {
 						return next(err);
 					}
-					if (found_user === null) {
+					if (found_user == null) {
 						let err = new Error('User not found');
 						err.status = 404;
 						return next(err);
 					}
+					// Successful, so render
+					res.render('user_profile', {
+						title: 'User Profile',
+						user: found_user
+					});
 				});
-			});
+		}
 	}
 ];
 
@@ -107,7 +109,6 @@ exports.register_post = [
 		.isLength({ min: 4, max: 32 })
 		.trim(),
 
-
 	// Sanitize fields with wildcard operator.
 	sanitizeBody('*')
 		.trim()
@@ -157,33 +158,43 @@ exports.register_post = [
 			user.setPassword(req.body.password);
 
 			// Check if User with same username already exists.
-			User.findOne({ username: req.body.username }).exec((err, found_user) => {
-				if (err) {
-					return next(err);
-				}
-				if (found_user) {
+			User
+				.findOne({ username: req.body.username, email: req.body.email })
+				.exec((err, found_user, found_email) => {
+					if (err) {
+						return next(err);
+					}
+					if (found_user) {
 					// Username exists, re-render the form with error message.
-					res.render('user_form', {
-						title: 'Create User',
-						user: user,
-						errors: [{ msg: 'Username already taken. Choose another one.' }]
-					});
-				} else {
-					// User does not exist. Create it.
-					user.save(err => {
-						if (err) {
-							return next(err);
+						res.render('user_form', {
+							title: 'Create User',
+							user: user,
+							errors: [{ msg: 'Username already taken. Choose another one.' }]
+						});
+						if (found_email) {
+							// Email exists, re-render the form with error message.
+							res.render('user_form', {
+								title: 'Create User',
+								user: user,
+								errors: [{msg: 'Email already taken. Choose another one.'}]
+							});
 						}
-						console.log('User Created Successfully\n' + user);
-						// User saved. Redirect to login page.
-						req.flash(
-							'success',
-							'Successfully registered. You can log in now!'
-						);
-						res.redirect('/users/login');
-					});
-				}
-			});
+					} else {
+					// User does not exist. Create it.
+						user.save(err => {
+							if (err) {
+								return next(err);
+							}
+							console.log('User Created Successfully\n' + user);
+							// User saved. Redirect to login page.
+							req.flash(
+								'success',
+								'Successfully registered. You can log in now!'
+							);
+							res.redirect('/users/login');
+						});
+					}
+				});
 		}
 	}
 ];
@@ -196,23 +207,25 @@ exports.update_get = [
 		// TODO Figure out why Id is not being cast correctly
 		// ERROR - Cast to ObjectId failed for value "undefined" at path "_id" for model "Users"
 		// var id = req.params.id;
-		var id = mongoose.Types.ObjectId(req.user._id);
-		User.findById(id).exec((err, found_user) => {
-			if (err) {
-				return next(err);
-			}
-			if (found_user == null) {
-				let err = new Error('User not found');
-				err.status = 404;
-				return next(err);
-			}
-			// Successful, so render
-			res.render('user_form', {
-				title: 'Update User',
-				user: found_user,
-				is_update_form: true
+		// var id = mongoose.Types.ObjectId(req.user._id);
+		User
+			.findById(req.params.id)
+			.exec((err, found_user) => {
+				if (err) {
+					return next(err);
+				}
+				if (found_user == null) {
+					let err = new Error('User not found');
+					err.status = 404;
+					return next(err);
+				}
+				// Successful, so render
+				res.render('user_form', {
+					title: 'Update User',
+					user: found_user,
+					is_update_form: true
+				});
 			});
-		});
 	}
 ];
 
@@ -220,7 +233,7 @@ exports.update_get = [
 exports.update_post = [
 	// Validate fields.
 	body('username', 'Username must be at least 3 characters long.')
-		.isLength({ min: 4 })
+		.isLength({ min: 4, max: 25 })
 		.trim(),
 	body('email', 'Please enter a valid email address.')
 		.isEmail()
@@ -230,6 +243,9 @@ exports.update_post = [
 		.trim(),
 	body('cpassword', 'Password must be between 4-32 characters long.')
 		.isLength({ min: 4, max: 32 })
+		.trim(),
+	body('zipcode', 'Zip Code must be 5 characters long.')
+		.isLength({ min: 5, max: 5 })
 		.trim(),
 
 	// Sanitize fields with wildcard operator.
@@ -248,10 +264,11 @@ exports.update_post = [
 		// Create a user object with escaped and trimmed data and the old _id!
 		var user = new User({
 			username: req.body.username,
-			firstname: req.body.firstname,
-			lastname: req.body.lastname,
+			firstName: req.body.firstname,
+			lastName: req.body.lastname,
 			fullname: req.body.fullname,
 			email: req.body.email,
+			phone: req.body.phone,
 			address: req.body.address,
 			address2: req.body.address2,
 			city: req.body.city,
@@ -298,14 +315,19 @@ exports.update_post = [
 			});
 			return;
 		} else {
-			// Data from form is valid. Update the record.
-			User.findByIdAndUpdate(req.params.id, user, {}, function(err, theuser) {
-				if (err) {
-					return next(err);
-				}
-				// Successful - redirect to user detail page.
-				res.redirect(theuser.url);
-			});
+			if (req.params && req.params.id) {
+				// let id = mongoose.Types.ObjectId(req.user._id);
+				debug('Updating user id: ' + req.user._id.toString());
+				// Data from form is valid. Update the record.
+				User
+					.findByIdAndUpdate(req.params.id, user, {}, function(err, theuser) {
+						if (err) {
+							return next(err);
+						}
+						// Successful - redirect to user detail page.
+						res.redirect('/users/'+theuser._id);
+					});
+			}
 		}
 	}
 ];
@@ -368,36 +390,38 @@ exports.reset_post = [
 			// Data from form is valid.
 
 			// Check if User exists.
-			User.findOne({ username: req.body.username, email: req.body.email }).exec(
-				(err, found_user) => {
-					if (err) {
-						return next(err);
-					}
-					if (found_user) {
+			User
+				.findOne({ username: req.body.username, email: req.body.email })
+				.exec(
+					(err, found_user) => {
+						if (err) {
+							return next(err);
+						}
+						if (found_user) {
 						// User exists and credentials did match. Proceed to the second step.
 						// And pass found_user to the form. We'll need user._id in the final step.
-						res.render('user_reset', {
-							title: 'Reset Password',
-							is_second_step: true,
-							user: found_user // Pass found_user.
-						});
-					} else {
+							res.render('user_reset', {
+								title: 'Reset Password',
+								is_second_step: true,
+								user: found_user // Pass found_user.
+							});
+						} else {
 						// User does not exist or credentials didn't match.
 						// Render the form again with error messages. Still first step!
-						res.render('user_reset', {
-							title: 'Reset Password',
-							is_first_step: true,
-							user: user, // Pass user object created with user-entered values.
-							errors: [
-								{
-									msg:
+							res.render('user_reset', {
+								title: 'Reset Password',
+								is_first_step: true,
+								user: user, // Pass user object created with user-entered values.
+								errors: [
+									{
+										msg:
 										'The user does not exist or credentials did not match a user. Try again.'
-								}
-							]
-						});
+									}
+								]
+							});
+						}
 					}
-				}
-			);
+				);
 		}
 	}
 ];
@@ -465,7 +489,7 @@ exports.reset_post_final = [
 					},
 					function(found_user, callback) {
 						// This step is required to keep user role unchanged.
-						user.role = found_user.role;
+						// user.role = found_user.role;
 						User.findByIdAndUpdate(req.body.userid, user, {}).exec(callback);
 					}
 				],
@@ -482,6 +506,32 @@ exports.reset_post_final = [
 				}
 			);
 		}
+	}
+];
+
+// Handle GET request for user's favorites page
+exports.favorites_get = [
+	// isPageOwnedByUser,
+
+	function(req, res, next) {
+		User
+			.findById(req.params.id)
+			.exec((err, found_user) => {
+				if (err) {
+					return next(err);
+				}
+				if (found_user == null) {
+					let err = new Error('User not found');
+					err.status = 404;
+					return next(err);
+				}
+				// Successful, so render
+				res.render('user_favorites', {
+					title: 'Manage Favoritesr',
+					user: found_user,
+					is_update_form: true
+				});
+			});
 	}
 ];
 
@@ -528,3 +578,10 @@ function isPageOwnedByUser(req, res, next) {
 		res.redirect('/');
 	}
 }
+
+// Function sends a JSON response
+function sendJSONresponse(res, status, content) {
+	res.status(status);
+	res.json(content);
+}
+

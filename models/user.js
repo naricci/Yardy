@@ -32,6 +32,7 @@ var UserSchema = new Schema({
 	},
 	email: {
 		type: String,
+		unique: true,
 		required: [true, 'Email is required'],
 		maxlength: 25
 	},
@@ -73,16 +74,26 @@ var UserSchema = new Schema({
 });
 
 // Virtual for User's URL.
-UserSchema.virtual('url').get(() => {
-	debug('Getting /users/' + this._id);
-	return '/users/' + this._id;
-});
+UserSchema
+	.virtual('url')
+	.get(function() {
+		return '/users/' + this.user._id;
+	});
 
-// Virtual for User's Full Name.
-// UserSchema.virtual('fullname').get(() => {
-// 	debug('Getting ' + this.firstName + ' ' + this.lastName);
-// 	return this.firstName + ' ' + this.lastName;
-// });
+// Virtual Getter/Setter for User's Full Name.
+UserSchema
+	.virtual('fullname')
+	.get(() => {
+		return this.firstName + ' ' + this.lastName;
+	})
+	.set(function(setFullNameTo) {
+		var split = setFullNameTo.split(' '),
+			firstName = split[0],
+			lastName = split[1];
+
+		this.set('name.first', firstName);
+		this.set('name.last', lastName);
+	});
 
 // Instance method for hashing user-typed password.
 UserSchema.methods.setPassword = function(password) {

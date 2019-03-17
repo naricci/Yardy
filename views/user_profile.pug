@@ -31,8 +31,7 @@ block content
                     if (user.state === 'RI')
                         | RI
                 p #[strong Zip Code: ] #{user.zipcode}
-
                 hr
                 p
-                    a(href=user._id+'/update').btn.btn-primary Update Account
+                    a(href=current_user._id+'/update').btn.btn-primary Update Account
             .column.is-one-third
