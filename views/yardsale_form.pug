@@ -4,23 +4,25 @@ block content
 
     // Main content
     .container
-        .columns
-            .column.is-one-third
-            .column.is-one-third
-
-                form(method='POST' action='' enctype='multipart/form-data')
+        h1.subtitle
+            strong= title
+        form(method='POST' action='' enctype='multipart/form-data')
+            .columns
+                .column.is-one-half
                     .field
                         label.label First Name
-                        .control
-                            input.input(type='text' id='firstname' name='firstname' required value=(undefined===yardsale ? '' : yardsale.firstName))
+                        .control.has-icons-left.has-icons-right
+                            input.input(type='text' id='firstname' name='firstname' placeholder='e.g. Alex' required value=(undefined===yardsale ? '' : yardsale.firstName))
                     .field
                         label.label Last Name
-                        .control
+                        .control.has-icons-left.has-icons-right
                             input.input(type='text' id='lastname' name='lastname' value=(undefined===yardsale ? '' : yardsale.lastName))
                     .field
                         label.label Username
-                        .control
+                        .control.has-icons-left.has-icons-right
                             input.input(type='text' id='username' name='username' value=(undefined===yardsale ? '' : yardsale.username))
+                            span.icon.is-small.is-left
+                                i.fas.fa-user
                     .field
                         label.label Phone Number
                         .control
@@ -28,22 +30,21 @@ block content
                     .field
                         label.label Address
                         .control
-                            input.input(type='text' id='address' name='address' value=(undefined===yardsale ? '' : yardsale.address))
+                            input.input(type='text' id='address' name='address' value=(undefined === yardsale ? '' : yardsale.address))
                     .field
                         label.label Address 2
                         .control
-                            input.input(type='text' id='address2' name='address2' value=(undefined === yardsale ?
-                                    '' : yardsale.address2))
+                            input.input(type='text' id='address2' name='address2' value=(undefined === yardsale ? '' : yardsale.address2))
                     .field
                         label.label City
                         .control
-                            input.input(type='text' id='city' name='city' required value=(undefined===yardsale ? '' : yardsale.city))
+                            input.input(type='text' id='city' name='city' required value=(undefined === yardsale ? '' : yardsale.city))
                     .field
                         label.label State
-                        .control.has-icons-left
+                        .control
                             .select
                                 select(id='state' name='state')
-                                    option(selected) ----
+                                    option(selected) Select State
                                     option(value='CT') CT
                                     option(value='MA') MA
                                     option(value='ME') ME
@@ -52,9 +53,12 @@ block content
                     .field
                         label.label Zip Code
                         .control
-                            input.input(type='text' id='zipcode' name='zipcode' value=(undefined===yardsale ? '' : yardsale.zipcode))
+                            input.input(type='text' id='zipcode' name='zipcode' value=(undefined === yardsale ? '' : yardsale.zipcode))
+
+                .column.is-one-half
                     .field
-                        label.label Date
+                        label.label.has-icons-left Date&nbsp;
+                            i.fas.fa-calendar-alt
                         .control
                             input.input(type='date' id='date' name='date' value=(undefined===yardsale ? '' : yardsale.date))
                     .field
@@ -68,7 +72,7 @@ block content
                     .field
                         label.label Description
                         .control
-                            textarea.textarea(maxlength='1000' id='description' name='description' value=(undefined===yardsale ? '' : yardsale.description))
+                            textarea.textarea.is-primary(maxlength='1000' id='description' name='description' value=(undefined===yardsale ? '' : yardsale.description))
                     .field
                         label.label Add Image
                         .control
@@ -82,16 +86,10 @@ block content
                                             | Choose a file&mldr;
                     .field
                         .control
-                            // id='postYardSale' type="e"
-                            button.is-primary(type='submit')
+                            button.is-link(type='submit')
                                 | Post your yard sale!
 
-                if errors
-                    ul
-                        for error in errors
-                            li!= error.msg
-            .column.is-one-third
-
-
-    // AWS JavaScript SDK
-    script(src="https://sdk.amazonaws.com/js/aws-sdk-2.414.0.min.js")
+        if errors
+            ul
+                for error in errors
+                    li!= error.msg

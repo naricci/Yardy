@@ -3,6 +3,9 @@ extends layout
 block content
 	// Main content
 	.container
+		h1.subtitle
+			strong= title
+
 		h1 #{title}: #{yardsale.title}
 
 		img(src=yardsale.imagename alt='yardsale preview')

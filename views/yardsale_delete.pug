@@ -1,24 +1,28 @@
 extends layout
 
 block content
+	// Main Content
+	.container
+		h1.subtitle
+			strong= title
 
-	h1 #{title}: #{yardsale.address}
+		h1 #{title}: #{yardsale.address}
 
-	p #[strong Date:] #{yardsale.date}
-	p #[strong Start Time:] #{yardsale.starttime}
-	p #[strong End Time:] #{yardsale.endtime}
-	p #[strong Host:] #{yardsale.firstname} + #{yardsale.lastname}
-	p #[strong Username:]
-		a(href=yardsale.username.url) #{yardsale.username}
-	p #[strong Description:] #{yardsale.description}
+		p #[strong Date:] #{yardsale.date}
+		p #[strong Start Time:] #{yardsale.starttime}
+		p #[strong End Time:] #{yardsale.endtime}
+		p #[strong Host:] #{yardsale.firstname} + #{yardsale.lastname}
+		p #[strong Username:]
+			a(href=yardsale.username.url) #{yardsale.username}
+		p #[strong Description:] #{yardsale.description}
 
 
-	hr
+		hr
 
-	p Do you really want to delete this Yardsale?
+		p Do you really want to delete this Yardsale?
 
-	form(method='POST' action='')
-		div.form-group
-			input#id.form-control(type='hidden' name='yardsaleid' required='true' value=yardsale._id )
+		form(method='POST' action='')
+			div.form-group
+				input#id.form-control(type='hidden' name='yardsaleid' required='true' value=yardsale._id )
 
-		button.btn.btn-primary(type='submit') Delete
+			button.btn.btn-primary(type='submit') Delete
