@@ -1,6 +1,8 @@
 const async = require('async');
 const { body, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
+var multer = require('multer');
+var upload = multer({ dest: 'uploads/' });
 const Yardsale = require('../models/yardsale');
 const debug = require('debug')('yardy:yardsale.controller');
 

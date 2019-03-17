@@ -5,6 +5,10 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const debug = require('debug')('yardy:mongo');
 
+// File Uploads
+var multer = require('multer');
+var upload = multer({ dest: 'uploads/' });
+
 // For Heroku
 // const cool = require('cool-ascii-faces');
 const PORT = process.env.PORT || 5000;

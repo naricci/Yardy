@@ -4,20 +4,32 @@ block content
 	// Main content
 	.container
 		.columns
-			.column.is-one-third
-			.column.is-one-third
-				h1 #{title}: #{yardsale.title}
+			h1 #{title}: #{yardsale.title}
 
-				img(src=yardsale.imagename alt='yardsale preview')
-				p #[strong Username:]
-					a(href=yardsale.username.url) #{yardsale.username}
-				p #[strong First Name:] #{yardsale.firstName}
-				p #[strong Last Name:] #{yardsale.lastName}
-
-				p #[strong Address:] #{yardsale.address}
-				hr
-				p
-					a(href=yardsale._id+'/delete') Delete Yardsale
-				p
-					a(href=yardsale._id+'/update') Update Yardsale
-			.column.is-one-third
+			img(src=yardsale.imagename alt='yardsale preview')
+			p #[strong Username:]
+				a(href=yardsale.username.url) #{yardsale.username}
+			hr
+			h2 Date & Time
+			p #[strong Date:] #{yardsale.date}
+			p #[strong Start Time:] #{yardsale.starttime}
+			p #[strong End Time:] #{yardsale.endtime}
+			hr
+			h2 Contact Info
+			p #[strong First Name:] #{yardsale.firstName}
+			p #[strong Last Name:] #{yardsale.lastName}
+			hr
+			h2 Location
+			p #[strong Address:] #{yardsale.address}
+			p #[strong Address 2:] #{yardsale.address2}
+			p #[strong City:] #{yardsale.city}
+			p #[strong State:] #{yardsale.state}
+			p #[strong Zip Code:] #{yardsale.zipcode}
+			hr
+			h2 Description
+			p #[strong Description] #{yardsale.description}
+			hr
+			p
+				a(href=yardsale._id+'/delete') Delete Yardsale
+			p
+				a(href=yardsale._id+'/update') Update Yardsale
