@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const debug = require('debug')('yardy:mongo');
+const heroku = require('debug')('yardy:heroku');
 
 // File Uploads
 var multer = require('multer');
@@ -25,7 +26,7 @@ const helmet = require('helmet');
 const app = express();
 // app.get('/', (req, res) => { return res.render('pages/index'); });
 // app.get('/cool', (req, res) => { return res.send(cool()); });
-app.listen(PORT, () => { return console.log(`Listening on ${ PORT }`); });
+app.listen(PORT, () => { return heroku(`Heroku listening on ${ PORT }`); });
 
 // Set up mongoose connection
 const mongoose = require('mongoose');

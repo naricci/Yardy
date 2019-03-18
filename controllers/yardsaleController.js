@@ -154,7 +154,7 @@ exports.yardsale_delete_post = function (req, res, next) {
 		else {
 			// Delete yardsale object and redirect to the list of yardsales.
 			Yardsale
-				.findByIdAndRemove(req.body.yardsaleid, function deleteYardsale(err) {
+				.findByIdAndDelete(req.body.yardsaleid, function deleteYardsale(err) {
 					if (err) { return next(err); }
 					// Success - go to yardsale list.
 					res.redirect('/catalog/yardsales');
@@ -178,6 +178,63 @@ exports.yardsale_update_get = function (req, res, next) {
 			res.render('yardsale_form', { title: 'Update Yardsale', yardsale: yardsale });
 		});
 };
+
+// Handle Yardsale update on POST.
+exports.yardsale_update_post = [
+
+	// Validate form fields.
+	body('firstname').isLength({ min: 1 }).trim().withMessage('First name must be specified.')
+		.isAlphanumeric().withMessage('First name has non-alphanumeric characters.'),
+	body('lastname').isLength({ min: 1 }).trim().withMessage('Last name must be specified.')
+		.isAlphanumeric().withMessage('Last name has non-alphanumeric characters.'),
+	body('date', 'Invalid date').optional({ checkFalsy: true }).isISO8601(),
+
+	// Sanitize fields.
+	sanitizeBody('firstname').trim().escape(),
+	sanitizeBody('lastname').trim().escape(),
+	sanitizeBody('date').toDate(),
+
+	// Process request after validation and sanitization.
+	(req, res, next) => {
+
+		// Extract the validation errors from a request.
+		const errors = validationResult(req);
+
+		// Create Yardsale object with escaped and trimmed data (and the old id!)
+		var yardsale = new Yardsale(
+			{
+				firstName: req.body.firstname,
+				lastName: req.body.lastname,
+				username: req.body.username,
+				phone: req.body.phone,
+				address: req.body.address,
+				address2: req.body.address2,
+				city: req.body.city,
+				state: req.body.state,
+				zipcode: req.body.zipcode,
+				date: req.body.date,
+				starttime: req.body.starttime,
+				endtime: req.body.endtime,
+				description: req.body.description,
+				_id: req.params.id
+			}
+		);
+
+		if (!errors.isEmpty()) {
+			// There are errors. Render the form again with sanitized values and error messages.
+			res.render('yardsale_form', { title: 'Update Yardsale', yardsale: yardsale, errors: errors.array() });
+			return;
+		}
+		else {
+			// Data from form is valid. Update the yardsale record.
+			Yardsale.findByIdAndUpdate(req.params.id, yardsale, {}, function (err, theyardsale) {
+				if (err) { return next(err); }
+				// Successful - redirect to yardsale detail page.
+				res.redirect('/catalog/yardsale/'+theyardsale._id);
+			});
+		}
+	}
+];
 
 //////////for search
 exports.all_yardsales = function (req, res) {

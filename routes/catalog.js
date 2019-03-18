@@ -29,7 +29,7 @@ router.post('/yardsale/:id/delete', yardsaleController.yardsale_delete_post);
 router.get('/yardsale/:id/update', yardsaleController.yardsale_update_get);
 
 // POST request to update Yardsale.
-// router.post('/yardsale/:id/update', yardsaleController.yardsale_update_post);
+router.post('/yardsale/:id/update', yardsaleController.yardsale_update_post);
 
 // GET request for one Yardsale.
 router.get('/yardsale/:id', yardsaleController.yardsale_detail);
@@ -39,7 +39,6 @@ router.get('/yardsales', yardsaleController.yardsale_list);
 
 /*try to display some yahdsales*/
 router.get('/yardsale', yardsaleController.all_yardsales);
-
 router.get('/yardsale_by_date', yardsaleController.all_yardsales_sorted);
 
 module.exports = router;
