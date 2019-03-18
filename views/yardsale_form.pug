@@ -13,33 +13,33 @@ block content
                     .field
                         label.label First Name
                         .control.has-icons-left.has-icons-right
-                            input.input(type='text' id='firstname' name='firstname' placeholder='e.g. Alex' required value=(undefined===yardsale ? '' : yardsale.firstName))
+                            input.input(type='text' id='firstname' name='firstname' placeholder='e.g. Alex' maxlength='25' required value=(undefined===yardsale ? '' : yardsale.firstName))
                     .field
                         label.label Last Name
                         .control.has-icons-left.has-icons-right
-                            input.input(type='text' id='lastname' name='lastname' value=(undefined===yardsale ? '' : yardsale.lastName))
+                            input.input(type='text' id='lastname' name='lastname' placeholder='e.g. Smith' maxlength='25' value=(undefined===yardsale ? '' : yardsale.lastName))
                     .field
                         label.label Username
                         .control.has-icons-left.has-icons-right
-                            input.input(type='text' id='username' name='username' value=(undefined===yardsale ? '' : yardsale.username))
+                            input.input(type='text' id='username' name='username' placeholder='e.g. yardsaleking' maxlength='25' value=(undefined===yardsale ? '' : yardsale.username))
                             span.icon.is-small.is-left
                                 i.fas.fa-user
                     .field
                         label.label Phone Number
                         .control
-                            input.input(type='tel' id='phone' name='phone' value=(undefined===yardsale ? '' : yardsale.phone))
+                            input.input(type='tel' id='phone' name='phone' placeholder='e.g. 4018843030' maxlength='10' value=(undefined===yardsale ? '' : yardsale.phone))
                     .field
                         label.label Address
                         .control
-                            input.input(type='text' id='address' name='address' value=(undefined === yardsale ? '' : yardsale.address))
+                            input.input(type='text' id='address' name='address' placeholder='e.g. 1600 Pennsylvania Ave' maxlength='250' value=(undefined === yardsale ? '' : yardsale.address))
                     .field
                         label.label Address 2
                         .control
-                            input.input(type='text' id='address2' name='address2' value=(undefined === yardsale ? '' : yardsale.address2))
+                            input.input(type='text' id='address2' name='address2' maxlength='250' placeholder=(undefined === yardsale ? '' : yardsale.address2))
                     .field
                         label.label City
                         .control
-                            input.input(type='text' id='city' name='city' required value=(undefined === yardsale ? '' : yardsale.city))
+                            input.input(type='text' id='city' name='city' placeholder='e.g. Washington' maxlength='25' required value=(undefined === yardsale ? '' : yardsale.city))
                     .field
                         label.label State
                         .control
@@ -54,7 +54,7 @@ block content
                     .field
                         label.label Zip Code
                         .control
-                            input.input(type='text' id='zipcode' name='zipcode' value=(undefined === yardsale ? '' : yardsale.zipcode))
+                            input.input(type='text' id='zipcode' name='zipcode' placeholder='e.g. 20500' maxlength='5' value=(undefined === yardsale ? '' : yardsale.zipcode))
 
                 .column.is-one-half
                     .field
@@ -65,11 +65,11 @@ block content
                     .field
                         label.label Start Time
                         .control
-                            input.input(type='time' id='starttime' name='starttime' value=(undefined===yardsale ? '' : yardsale.starttime))
+                            input.input(type='time' id='starttime' name='starttime' placeholder='e.g. 10:00 AM' value=(undefined===yardsale ? '' : yardsale.starttime))
                     .field
                         label.label End Time
                         .control
-                            input.input(type='time' id='endtime' name='endtime' value=(undefined===yardsale ? '' : yardsale.endtime))
+                            input.input(type='time' id='endtime' name='endtime' placeholder='4:00 PM' value=(undefined===yardsale ? '' : yardsale.endtime))
                     .field
                         label.label Description
                         .control

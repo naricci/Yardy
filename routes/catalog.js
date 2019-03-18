@@ -26,7 +26,7 @@ router.get('/yardsale/:id/delete', yardsaleController.yardsale_delete_get);
 router.post('/yardsale/:id/delete', yardsaleController.yardsale_delete_post);
 
 // GET request to update Yardsale.
-// router.get('/yardsale/:id/update', yardsaleController.yardsale_update_get);
+router.get('/yardsale/:id/update', yardsaleController.yardsale_update_get);
 
 // POST request to update Yardsale.
 // router.post('/yardsale/:id/update', yardsaleController.yardsale_update_post);
