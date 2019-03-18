@@ -20,10 +20,10 @@ router.get('/yardsale/create', yardsaleController.yardsale_create_get);
 router.post('/yardsale/create', yardsaleController.yardsale_create_post);
 
 // GET request to delete Yardsale.
-// router.get('/yardsale/:id/delete', yardsaleController.yardsale_delete_get);
+router.get('/yardsale/:id/delete', yardsaleController.yardsale_delete_get);
 
 // POST request to delete Yardsale.
-// router.post('/yardsale/:id/delete', yardsaleController.yardsale_delete_post);
+router.post('/yardsale/:id/delete', yardsaleController.yardsale_delete_post);
 
 // GET request to update Yardsale.
 // router.get('/yardsale/:id/update', yardsaleController.yardsale_update_get);

@@ -15,14 +15,10 @@ block content
 		p #[strong Username:]
 			a(href=yardsale.username.url) #{yardsale.username}
 		p #[strong Description:] #{yardsale.description}
-
-
 		hr
-
 		p Do you really want to delete this Yardsale?
 
 		form(method='POST' action='')
 			div.form-group
 				input#id.form-control(type='hidden' name='yardsaleid' required='true' value=yardsale._id )
-
 			button.btn.btn-primary(type='submit') Delete
