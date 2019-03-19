@@ -26,9 +26,11 @@ block content
                     br
                     a(href='/users/reset') Forgot your password?
                     br
+                    br
+                    if errors
+                        ul
+                            for error in errors
+                                li!= error.msg
+
             .column.is-one-third
-    br
-    if errors
-        ul
-            for error in errors
-                li!= error.msg
+

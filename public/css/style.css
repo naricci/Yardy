@@ -16,9 +16,10 @@ body {
   position: relative;
 }
 
-a {
-  color: #00B7FF;
-}
+/*a {*/
+/*  color: #00B7FF;*/
+/*}*/
+
 /* NAVIGATION BAR */
 .navbar-end > a.navbar-item {
   font-size: 18px;
@@ -70,6 +71,7 @@ footer {
 footer.content {
   margin-bottom: 0;
 }
+
 strong#footer-text {
   font-family: 'Permanent Marker', cursive;
   font-size: 18px;

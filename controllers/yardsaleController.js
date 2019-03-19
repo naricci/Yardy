@@ -8,7 +8,8 @@ const debug = require('debug')('yardy:yardsale.controller');
 
 // Display list of all yardsales.
 exports.yardsale_list = function(req, res, next) {
-	Yardsale.find()
+	Yardsale
+		.find()
 		.sort([['date', 'ascending']])
 		.exec(function(err, list_yardsales) {
 			if (err) {
@@ -16,7 +17,7 @@ exports.yardsale_list = function(req, res, next) {
 			}
 			// Successful, so render
 			res.render('yardsale_list', {
-				title: 'Yardsale List',
+				title: 'Yardsales',
 				yardsale_list: list_yardsales
 			});
 		});
