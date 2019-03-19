@@ -1,8 +1,10 @@
 const async = require('async');
 const { body, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
-var multer = require('multer');
-var upload = multer({ dest: 'uploads/' });
+const multer = require('multer');
+// var upload = multer({ dest: 'uploads/' });
+const upload = require('../lib/image-upload');
+const singleUpload = upload.single('image');
 const Yardsale = require('../models/yardsale');
 const debug = require('debug')('yardy:yardsale.controller');
 
@@ -106,13 +108,20 @@ exports.yardsale_create_post = [
 					date: req.body.date,
 					starttime: req.body.starttime,
 					endtime: req.body.endtime,
-					description: req.body.description
+					description: req.body.description,
+					imagename: req.body.imagename
 				});
 
 			yardsale.save(function (err) {
 				if (err) { return next(err); }
-				console.log('User Created Successfully\n' + yardsale._id);
+
+				singleUpload(req, res, function(err, some) {
+					if (err)
+						res.status(422).send({ errors: [{ title: 'Image Upload Error', detail: err.message}] });
+					// res.json({ 'imageUrl': req.file.location });
+				});
 				// Successful - redirect to new yardsale record.
+				debug('Yardsale posted Successfully\n' + yardsale._id);
 				res.redirect('/catalog/yardsale/'+yardsale._id);
 			});
 		}
