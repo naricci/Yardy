@@ -9,13 +9,9 @@ const heroku = require('debug')('yardy:heroku');
 // Use dotenv to read .env vars into Node
 require('dotenv').config();
 
-// File Uploads
-var multer = require('multer');
-var upload = multer({ dest: 'uploads/' });
-
 // For Heroku
 // const cool = require('cool-ascii-faces');
-const PORT2 = process.env.PORT2;
+const PORT2 = process.env.PORT2 || 5000;
 
 // Routes
 // var auth = require('./lib/auth');
@@ -35,8 +31,8 @@ app.listen(PORT2, () => { return heroku(`Heroku listening on ${ PORT2 }`); });
 const mongoose = require('mongoose');
 var gracefulShutdown;
 // var dev_db_url = 'mongodb://localhost/yardy';
-//var dev_db_url = 'mongodb://nick:Yardy123@ds121475.mlab.com:21475/yardy';
-var mongoDB = process.env.MONGODB_URI;
+const dev_db_url = 'mongodb://nick:Yardy123@ds121475.mlab.com:21475/yardy';
+var mongoDB = process.env.MONGODB_URI || dev_db_url;
 // if (process.env.NODE_ENV === 'production') {
 // 	dev_db_url = process.env.MONGOLAB_URI;
 // }
