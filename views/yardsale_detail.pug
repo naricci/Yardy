@@ -3,12 +3,13 @@ extends layout
 block content
 	// Main content
 	.container
-		h1.subtitle
+		h1.subtitle.has-text-centered
 			strong= title
 
 		h1 #{title}: #{yardsale.title}
 
-		img(src=yardsale.imagename alt='yardsale preview') src='https://s3.console.aws.amazon.com/s3/buckets/yardy123/?region=us-east-1&tab=overview/'+yardsale.username+'/'+yardsale.imagename
+		img(src=yardsale.imagename alt='yardsale preview')
+		//src='https://s3.console.aws.amazon.com/s3/buckets/yardy123/?region=us-east-1&tab=overview/'+yardsale.username+'/'+yardsale.imagename
 		p #[strong Username:]
 			a(href=yardsale.username) #{yardsale.username}
 		hr
