@@ -11,8 +11,8 @@ const heroku = require('debug')('yardy:heroku');
 
 // For Heroku
 const cool = require('cool-ascii-faces');
-// const PORT2 = process.env.PORT2 || 5000;
-const PORT2 = 5000;
+const PORT = process.env.PORT || 5000;
+// const PORT2 = 5000;
 
 // Routes
 // var auth = require('./lib/auth');
@@ -26,17 +26,17 @@ const helmet = require('helmet');
 const app = express();
 // app.get('/', (req, res) => { return res.render('pages/index'); });
 app.get('/cool', (req, res) => { return res.send(cool()); });
-app.listen(PORT2, () => { return heroku(`Heroku listening on ${ PORT2 }`); });
+app.listen(PORT, () => { return heroku(`Heroku listening on ${ PORT }`); });
 
 // Set up mongoose connection
 const mongoose = require('mongoose');
 var gracefulShutdown;
 // var dev_db_url = 'mongodb://localhost/yardy';
-const dev_db_url = 'mongodb://nick:Yardy123@ds121475.mlab.com:21475/yardy';
+var dev_db_url = 'mongodb://nick:Yardy123@ds121475.mlab.com:21475/yardy';
 var mongoDB = process.env.MONGODB_URI || dev_db_url;
-// if (process.env.NODE_ENV === 'production') {
-// 	dev_db_url = process.env.MONGOLAB_URI;
-// }
+if (process.env.NODE_ENV === 'production') {
+	dev_db_url = process.env.MONGOLAB_URI;
+}
 mongoose.connect(mongoDB, {
 	useNewUrlParser: true
 });
