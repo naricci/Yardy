@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const crypto = require('crypto');
-const debug = require('debug')('Yardy:user.model');
+// const debug = require('debug')('Yardy:user.model');
 
 // Create Schema and Model
-var UserSchema = new Schema({
+const UserSchema = new Schema({
 	username: {
 		type: String,
 		unique: true,
@@ -107,7 +107,7 @@ UserSchema.methods.setPassword = function(password) {
 
 // Instance method for comparing user-typed password against hashed-password on db.
 UserSchema.methods.validatePassword = function(password) {
-	var hash = crypto
+	let hash = crypto
 		.pbkdf2Sync(password, this.salt, 10000, 128, 'sha512')
 		.toString('hex');
 	return this.hash === hash;
@@ -118,6 +118,6 @@ UserSchema.methods.passwordsMatch = function(password, passwordConfirm) {
 	return password === passwordConfirm;
 };
 
-var User = mongoose.model('users', UserSchema);
+const User = mongoose.model('users', UserSchema);
 
 module.exports = User;

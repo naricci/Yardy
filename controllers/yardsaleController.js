@@ -2,11 +2,13 @@ const async = require('async');
 const { body, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 const multer = require('multer');
-// var upload = multer({ dest: 'uploads/' });
 const upload = require('../lib/image-upload');
 const singleUpload = upload.single('image');
-const Yardsale = require('../models/yardsale');
 const debug = require('debug')('yardy:yardsale.controller');
+
+// Models
+const Yardsale = require('../models/yardsale');
+const User = require('../models/user');
 
 // Display list of all yardsales.
 exports.yardsale_list = function(req, res, next) {
@@ -55,8 +57,7 @@ exports.yardsale_create_post = [
 
 	// Validate fields.
 	body('firstname', 'First name must be specified.')
-		.isLength({ min: 1 })
-		.trim(),
+		.isLength({ min: 1 }).trim(),
 	// .withMessage('First name must be specified.'),
 	// 	.isAlphanumeric()
 	// 	.withMessage('First name has non-alphanumeric characters.'),
@@ -92,13 +93,20 @@ exports.yardsale_create_post = [
 		}
 		else {
 			// Data from form is valid.
-
+			User
+				.findById(req.params.id)
+				.populate('stories'). // only works if we pushed refs to children
+												 exec(function (err, person) {
+					if (err) return handleError(err);
+					console.log(person);
+				});
 			// Create an Yardsale object with escaped and trimmed data.
 			var yardsale = new Yardsale(
 				{
 					firstName: req.body.firstname,
 					lastName: req.body.lastname,
 					username: req.body.username,
+					user: User._id,
 					phone: req.body.phone,
 					address: req.body.address,
 					address2: req.body.address2,

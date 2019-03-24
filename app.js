@@ -5,16 +5,13 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const debug = require('debug')('yardy:mongo');
 const heroku = require('debug')('yardy:heroku');
-
 // Use dotenv to read .env vars into Node
 // require('dotenv').config();
 
 // For Heroku
 const cool = require('cool-ascii-faces');
 const PORT = process.env.PORT || 5000;
-// const PORT2 = 5000;
 
-// Routes
 // var auth = require('./lib/auth');
 const index = require('./routes/index');
 const users = require('./routes/users');
@@ -32,7 +29,7 @@ app.listen(PORT, () => { return heroku(`Heroku listening on ${ PORT }`); });
 const mongoose = require('mongoose');
 var gracefulShutdown;
 // var dev_db_url = 'mongodb://localhost/yardy';
-var dev_db_url = 'mongodb://nick:Yardy123@ds121475.mlab.com:21475/yardy';
+let dev_db_url = 'mongodb://nick:Yardy123@ds121475.mlab.com:21475/yardy';
 var mongoDB = process.env.MONGODB_URI || dev_db_url;
 if (process.env.NODE_ENV === 'production') {
 	dev_db_url = process.env.MONGOLAB_URI;

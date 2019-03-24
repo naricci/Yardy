@@ -12,6 +12,7 @@ block content
 					// Hard coded images for now
 					img(src='https://s3.amazonaws.com/yardy123/naricci/yardsale.jpg' alt='picture of yardsale' height=100 width=100)
 					h2 #{yardsale.date.toDateString()}
+					p #{yardsale.starttime}
 					p #{yardsale.username},
 						a(href=yardsale.url)  #{yardsale.address}
 						| #{yardsale.firstname}

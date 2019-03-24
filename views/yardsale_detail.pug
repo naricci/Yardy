@@ -6,30 +6,29 @@ block content
 		h1.subtitle.has-text-centered
 			strong= title
 
-		h1 #{title}: #{yardsale.title}
+		// h1 #{title}: #{yardsale.title}
 
 		img(src=yardsale.imagename alt='yardsale preview')
-		//src='https://s3.console.aws.amazon.com/s3/buckets/yardy123/?region=us-east-1&tab=overview/'+yardsale.username+'/'+yardsale.imagename
 		p #[strong Username:]
-			a(href=yardsale.username) #{yardsale.username}
+			a(href=yardsale.username)  #{yardsale.username}
 		hr
-		h2 Date & Time
+		h1 Date & Time
 		p #[strong Date:] #{yardsale.date}
 		p #[strong Start Time:] #{yardsale.starttime}
 		p #[strong End Time:] #{yardsale.endtime}
 		hr
-		h2 Contact Info
+		h1 Contact Info
 		p #[strong First Name:] #{yardsale.firstName}
 		p #[strong Last Name:] #{yardsale.lastName}
 		hr
-		h2 Location
+		h1 Location
 		p #[strong Address:] #{yardsale.address}
 		p #[strong Address 2:] #{yardsale.address2}
 		p #[strong City:] #{yardsale.city}
 		p #[strong State:] #{yardsale.state}
 		p #[strong Zip Code:] #{yardsale.zipcode}
 		hr
-		h2 Description
+		h1 Description
 		p #[strong Description] #{yardsale.description}
 		hr
 		p

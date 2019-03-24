@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // Create Schema and Model
-var YardsaleSchema = new Schema({
+const YardsaleSchema = new Schema({
 	firstName: {
 		type: String,
 		required: true,
@@ -15,8 +15,12 @@ var YardsaleSchema = new Schema({
 		minlength: 1,
 		maxlength: 25
 	},
+	user: {
+		type: Schema.Types.ObjectId,
+		ref: 'users',
+	},
 	username: {
-		// type: Schema.ObjectId,
+		// type: Schema.Types.ObjectId,
 		// ref: 'users',
 		type: String,
 		required: true
@@ -101,6 +105,6 @@ YardsaleSchema
 		return this.date + ', ' + this.starttime + ' - ' + this.endtime;
 	});
 
-var Yardsale = mongoose.model('yardsales', YardsaleSchema);
+const Yardsale = mongoose.model('yardsales', YardsaleSchema);
 
 module.exports = Yardsale;
