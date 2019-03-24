@@ -11,7 +11,8 @@ const heroku = require('debug')('yardy:heroku');
 
 // For Heroku
 const cool = require('cool-ascii-faces');
-const PORT2 = process.env.PORT2 || 5000;
+// const PORT2 = process.env.PORT2 || 5000;
+const PORT2 = 5000;
 
 // Routes
 // var auth = require('./lib/auth');
