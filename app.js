@@ -7,7 +7,7 @@ const debug = require('debug')('yardy:mongo');
 const heroku = require('debug')('yardy:heroku');
 
 // Use dotenv to read .env vars into Node
-require('dotenv').config();
+// require('dotenv').config();
 
 // For Heroku
 // const cool = require('cool-ascii-faces');
@@ -36,7 +36,7 @@ var mongoDB = process.env.MONGODB_URI || dev_db_url;
 // if (process.env.NODE_ENV === 'production') {
 // 	dev_db_url = process.env.MONGOLAB_URI;
 // }
-mongoose.connect(mongoDB, {
+mongoose.connect(dev_db_url, {
 	useNewUrlParser: true
 });
 mongoose.set('useCreateIndex', true);
@@ -84,12 +84,12 @@ process.on('exit', function(code) {
 });
 
 // Authentication Packages
-var session = require('express-session');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var User = require('./models/user');
-var flash = require('express-flash');
-var MongoStore = require('connect-mongo')(session);
+const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const User = require('./models/user');
+const flash = require('express-flash');
+const MongoStore = require('connect-mongo')(session);
 
 // Configure the local strategy for use by Passport.
 passport.use(
