@@ -10,7 +10,7 @@ const heroku = require('debug')('yardy:heroku');
 // require('dotenv').config();
 
 // For Heroku
-// const cool = require('cool-ascii-faces');
+const cool = require('cool-ascii-faces');
 const PORT2 = process.env.PORT2 || 5000;
 
 // Routes
@@ -24,7 +24,7 @@ const helmet = require('helmet');
 
 const app = express();
 // app.get('/', (req, res) => { return res.render('pages/index'); });
-// app.get('/cool', (req, res) => { return res.send(cool()); });
+app.get('/cool', (req, res) => { return res.send(cool()); });
 app.listen(PORT2, () => { return heroku(`Heroku listening on ${ PORT2 }`); });
 
 // Set up mongoose connection
@@ -36,7 +36,7 @@ var mongoDB = process.env.MONGODB_URI || dev_db_url;
 // if (process.env.NODE_ENV === 'production') {
 // 	dev_db_url = process.env.MONGOLAB_URI;
 // }
-mongoose.connect(dev_db_url, {
+mongoose.connect(mongoDB, {
 	useNewUrlParser: true
 });
 mongoose.set('useCreateIndex', true);

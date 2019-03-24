@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-var userController = require('../controllers/userController');
+const userController = require('../controllers/userController');
 
 // Handler for all types of requests pointed to '/' route.
 router.all('/', function(req, res) {
