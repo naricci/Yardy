@@ -35,6 +35,10 @@ exports.yardsale_detail = function(req, res, next) {
 				.findById(req.params.id)
 				.exec(callback);
 		},
+		user: function(callback) {
+			User.find({ 'user': req.params.id })
+				.exec(callback);
+		},
 	}, function (err, results) {
 		if (err) { return next(err); } // Error in API usage.
 		if (results.yardsale == null) { // No results.
@@ -43,7 +47,7 @@ exports.yardsale_detail = function(req, res, next) {
 			return next(err);
 		}
 		// Successful, so render.
-		res.render('yardsale_detail', { title: 'Yardsale Details', yardsale: results.yardsale });
+		res.render('yardsale_detail', { title: 'Yardsale Details', yardsale: results.yardsale, user: results.user });
 	});
 };
 
@@ -93,20 +97,19 @@ exports.yardsale_create_post = [
 		}
 		else {
 			// Data from form is valid.
-			User
-				.findById(req.params.id)
-				.populate('stories'). // only works if we pushed refs to children
-												 exec(function (err, person) {
-					if (err) return handleError(err);
-					console.log(person);
-				});
+			// User
+			// 	.findById(req.params.id)
+			// 	.populate('users')
+			// 	.exec(function (err, person) {
+			// 		if (err) return handleError(err);
+			// 		console.log(person);
+			// 	});
 			// Create an Yardsale object with escaped and trimmed data.
-			var yardsale = new Yardsale(
+			let yardsale = new Yardsale(
 				{
 					firstName: req.body.firstname,
 					lastName: req.body.lastname,
 					username: req.body.username,
-					user: User._id,
 					phone: req.body.phone,
 					address: req.body.address,
 					address2: req.body.address2,
