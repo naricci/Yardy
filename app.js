@@ -1,5 +1,6 @@
 const createError = require('http-errors');
 const express = require('express');
+const favicon = require('serve-favicon');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -137,6 +138,7 @@ app.use(compression()); // Compress all routes
 app.use(helmet());
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(favicon(path.join(__dirname, 'public', 'icons', 'favicon.ico')));
 // app.use(express.static('bower_components'));	// not using on final deployment
 
 // a middleware function with no mount path.
@@ -185,7 +187,6 @@ app.use(function(req, res, next) {
 app.use('/', index);
 app.use('/users', users);
 app.use('/catalog', catalog);
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

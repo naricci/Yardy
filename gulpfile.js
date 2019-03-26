@@ -1,6 +1,6 @@
-var gulp = require('gulp');
-var eslint = require('gulp-eslint');
-var nodemon = require('gulp-nodemon');
+const gulp = require('gulp'),
+	eslint = require('gulp-eslint'),
+	nodemon = require('gulp-nodemon');
 
 // Location of JS files
 const jsFiles = [
@@ -13,7 +13,7 @@ const jsFiles = [
 ];
 
 // function to style/lint JS code
-gulp.task('style', done => {
+gulp.task('lint', () => {
 	gulp.src(jsFiles)
 		.pipe(eslint())
 		// .pipe(eslint.result(result => {
@@ -23,9 +23,8 @@ gulp.task('style', done => {
 		// 	console.log(`# Warnings: ${result.warningCount}`);
 		// 	console.log(`# Errors: ${result.errorCount}`);
 		// }))
-		.pipe(eslint.format());
-	//.pipe(eslint.failAfterError());
-	done();
+		.pipe(eslint.format())
+		.pipe(eslint.failAfterError());
 });
 
 // function to inject bootstrap css/js files into html page
@@ -51,8 +50,8 @@ gulp.task('inject', () => {
 });
 
 gulp.task('start', (done) => {
-	var stream = nodemon({
-		script: './app.js',
+	let stream = nodemon({
+		script: 'app.js',
 		ext: 'js pug',
 		env: { 'NODE_ENV': 'development' },
 		delayTime: 1,
@@ -65,23 +64,26 @@ gulp.task('start', (done) => {
 			console.log('Restarting Server...');
 		})
 		.on('crash', function() {
-			console.error('Application has crashed!\n');
-			stream.emit('restart', 2);  // restart the server in 2 seconds
+			console.error('Application has crashed!\n')
+				.emit('restart', 2);  // restart the server in 2 seconds
 		});
 });
 
 
-gulp.task('default', gulp.series(['style']), (done) => {
-	return nodemon({
-		script: './app.js',
+gulp.task('build', (done) => {
+	let stream =  nodemon({
+		script: 'app.js',
 		nodeArgs: ['$NODE_DEBUG_OPTION'],
 		ext: 'js pug',
 		env: { 'NODE_ENV': 'development' },
+		tasks: ['lint'],
 		delayTime: 1,
 		watch: jsFiles,
 		done: done
-	})
-		.on('restart',   () => {
+	});
+
+	stream
+		.on('restart', () => {
 			console.log('Restarting Server...');
 		})
 		.on('crash', () => {
