@@ -16,11 +16,32 @@ body {
   position: relative;
 }
 
-/*a {*/
-/*  color: #00B7FF;*/
+/* NAVIGATION BAR */
+#navbar-title {
+  font-family: 'Permanent Marker', cursive;
+  color: hsl(217, 71%, 53%);
+  font-size: 2rem;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/*
+@media screen and (min-width: 720px)
+{
+  #navbar-title {
+    display: none;
+  }
+}
+*/
+/* TODO - Center Title in nav on mobile devices
+/*@media screen and (max-width: 400px)*/
+/*{*/
+/*  #navbar-title {*/
+/*    margin-left: auto;*/
+/*    margin-right: auto;*/
+/*  }*/
 /*}*/
 
-/* NAVIGATION BAR */
 .navbar-end > a.navbar-item {
   font-size: 18px;
   /*color: hsl(217, 71%, 53%);*/
@@ -49,6 +70,19 @@ h1.title.is-1 {
 .hero-body.has-background-primary {
   padding: 16px;
 }
+
+/*
+@media screen and (max-width: 480px)
+{
+  h1.title.is-1 {
+    display: none;
+  }
+
+  .hero-body.has-background-primary {
+    padding: 0;
+  }
+}
+*/
 
 /* MAIN CONTENT */
 .main-container {
