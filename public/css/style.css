@@ -25,22 +25,13 @@ body {
   padding-bottom: 0;
 }
 
-/*
-@media screen and (min-width: 720px)
-{
-  #navbar-title {
-    display: none;
-  }
+.navbar-end > a.navbar-item {
+  font-family: 'Permanent Marker', cursive;
 }
-*/
-/* TODO - Center Title in nav on mobile devices
-/*@media screen and (max-width: 400px)*/
-/*{*/
-/*  #navbar-title {*/
-/*    margin-left: auto;*/
-/*    margin-right: auto;*/
-/*  }*/
-/*}*/
+
+.navbar-item > .buttons > a.button {
+  font-family: 'Permanent Marker', cursive;
+}
 
 .navbar-end > a.navbar-item {
   font-size: 18px;
@@ -70,19 +61,6 @@ h1.title.is-1 {
 .hero-body.has-background-primary {
   padding: 16px;
 }
-
-/*
-@media screen and (max-width: 480px)
-{
-  h1.title.is-1 {
-    display: none;
-  }
-
-  .hero-body.has-background-primary {
-    padding: 0;
-  }
-}
-*/
 
 /* MAIN CONTENT */
 .main-container {
