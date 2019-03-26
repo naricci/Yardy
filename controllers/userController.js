@@ -351,7 +351,7 @@ exports.reset_post = [
 
 	// Validate fields.
 	body('username', 'Username must be at least 3 characters long.')
-		.isLength({ min: 3 })
+		.isLength({ min: 4 })
 		.trim(),
 	body('email', 'Please enter a valid email address.')
 		.isEmail()

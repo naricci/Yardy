@@ -25,20 +25,38 @@ section.hero
 								| Favorites
 							.navbar-item
 								.buttons
+									a.button.is-dark(href='https://github.com/naricci/Yardy')
+										span.icon
+											i.fab.fa-github
+										span GitHub
+							.navbar-item
+								.buttons
 									a.button.is-link(href='/users/logout')
-										| Logout
+										span.icon
+											i.fas.i.fa.fa-sign-out-alt
+										span Logout
 
 					// The content below will be visible to users who have NOT logged in.
 					if isAuthenticated === false
 						.navbar-end
 							.navbar-item
 								.buttons
+									a.button.is-dark(href='https://github.com/naricci/Yardy')
+										span.icon
+											i.fab.fa-github
+										span GitHub
+							.navbar-item
+								.buttons
 									a.button.is-light(href='/users/register')
-										| Register
+										span.icon
+											i.fas.i.fa.i.fa.fa-user-plus
+										span Register
 							.navbar-item
 								.buttons
 									a.button.is-link(href='/users/login')
-										| Login
+										span.icon
+											i.fas.i.fa.fa-sign-in-alt
+										span Login
 
 		// Middle content
 		.hero-body.has-background-primary.is-hidden-touch

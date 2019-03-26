@@ -2,35 +2,38 @@ extends layout
 
 block content
 
-    // Main content
-    .container
-        h1.subtitle.has-text-centered
-            strong= title
-        .columns
-            .column.is-one-third
-            .column.is-one-third
-                form(method='POST' action='')
-                    .field
-                        label.label Username
-                        .control
-                            input.input#username(type='text' placeholder='username' name='username' required value=(undefined===user ? '' : user.username))
-                    .field
-                        label.label Password
-                        .control
-                            input.input#password(type='password' name='password' required)
-                    .field
-                        .control
-                            // type='button' value='logIn'
-                            button.button.is-primary(type='submit')
-                                | Log in
-                    br
-                    a(href='/users/reset') Forgot your password?
-                    br
-                    br
-                    if errors
-                        ul
-                            for error in errors
-                                li!= error.msg
+	// Main content
+	.container
+		h1.subtitle.has-text-centered
+			strong= title
+		.columns
+			.column
+			.column
+				form(method='POST' action='')
+					.field
+						label.label Username
+						.control.has-icons-left
+							input.input#username(type='text' placeholder='username' name='username' required value=(undefined===user ? '' : user.username))
+							span.icon.is-small.is-left
+								i.fas.fa-user
+					.field
+						label.label Password
+						.control.has-icons-left
+							input.input#password(type='password' name='password' required)
+							span.icon.is-small.is-left
+								i.fas.fa-key
+					.field
+						.control
+							button.button.is-primary(type='submit')
+								| Log in
+						.control
+							a(href='/users/reset') Forgot your password?
+					br
 
-            .column.is-one-third
-
+					br
+					br
+					if errors
+						ul
+							for error in errors
+								li.has-text-danger!= error.msg
+			.column
