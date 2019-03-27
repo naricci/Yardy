@@ -34,14 +34,15 @@ block content
 					p #[strong Zip Code: ] #{user.zipcode}
 					hr
 					p
-						a(href=current_user._id+'/update').btn.btn-primary Update Account
+						a(href=current_user._id+'/update').button.is-link Update Account
 				.column.is-one-half
 					h1
 						strong Your Yard Sales
+					br
 					if yardsales
 						each yardsale in yardsales
 							p #[strong Date: ] #{yardsale.date}
-								| #[strong Start Time: ] #{yardsale.starttime}
+							p #[strong Start Time: ] #{yardsale.starttime}
 							p #[strong Address: ] #{yardsale.address}
 							p #[strong City: ] #{yardsale.city}
 							p #[strong State: ] #{yardsale.state}

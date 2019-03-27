@@ -23,7 +23,7 @@ exports.user_profile = [
 						.exec(callback);
 				},
 				yardsales: function(callback) {
-					Yardsale.find({ 'user': req.params.id }, 'username')
+					Yardsale.find({ 'user': req.params.id }, 'date starttime address city state')
 						.exec(callback);
 				},
 			}, function(err, results) {
