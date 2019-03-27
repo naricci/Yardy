@@ -6,6 +6,7 @@ const Yardsale = require('../models/yardsale');
 router.get('/', function(req, res) {
 	Yardsale
 		.find()
+		.populate('user')
 		.sort([['date', 'ascending']])
 		.exec(function(err, list_yardsales) {
 			if (err) {
