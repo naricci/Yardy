@@ -38,3 +38,9 @@ block content
 				.column.is-one-half
 					h1
 						strong Your Yard Sales
+					if yardsales
+						each yardsale in yardsales
+							p #[strong Username: ] #{yardsale.username}
+							p #[strong City: ] #{yardsale.city}
+							p #[strong Date: ] #{yardsale.date}
+							hr
