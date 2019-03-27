@@ -130,6 +130,7 @@ exports.yardsale_create_post = [
 					if (err)
 						res.status(422).send({ errors: [{ title: 'Image Upload Error', detail: err.message}] });
 					// res.json({ 'imageUrl': req.file.location });
+					console.log(req.file.location);
 				});
 				// Successful - redirect to new yardsale record.
 				debug('Yardsale posted Successfully\n' + yardsale._id);
