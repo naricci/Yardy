@@ -7,56 +7,33 @@ const User = require('../models/user');
 const Yardsale = require('../models/yardsale');
 
 // Display detail page for a specific user.
-exports.user_profile = [
-	// isPageOwnedByUser,
+exports.user_profile = (req, res, next) => {
 
-	(req, res, next) => {
+	if (req.params && req.params.id) {
 
-		if (req.params && req.params.id) {
-			// let id = mongoose.Types.ObjectId(req.user._id);
-			debug('Gettting user id: ' + req.user._id.toString());
+		debug('Gettting user id: ' + req.user._id.toString());
 
-			// TODO - add user/yardsale connections
-			async.parallel({
-				user: function(callback) {
-					User.findById(req.params.id)
-						.exec(callback);
-				},
-				yardsales: function(callback) {
-					Yardsale.find({ 'user': req.params.id }, 'date starttime address city state')
-						.exec(callback);
-				},
-			}, function(err, results) {
-				if (err) { return next(err); } // Error in API usage.
-				if (results.user == null) { // No results.
-					let err = new Error('User not found');
-					err.status = 404;
-					return next(err);
-				}
-				// Successful, so render.
-				res.render('user_profile', { title: 'User Profile', user: results.user, yardsales: results.yardsales });
-			});
-
-			// User
-			// 	.findById(req.params.id)
-			// 	.exec((err, found_user) => {
-			// 		if (err) {
-			// 			return next(err);
-			// 		}
-			// 		if (found_user == null) {
-			// 			let err = new Error('User not found');
-			// 			err.status = 404;
-			// 			return next(err);
-			// 		}
-			// 		// Successful, so render
-			// 		res.render('user_profile', {
-			// 			title: 'User Profile',
-			// 			user: found_user
-			// 		});
-			// 	});
-		}
+		async.parallel({
+			user: function(callback) {
+				User.findById(req.params.id)
+					.exec(callback);
+			},
+			yardsales: function(callback) {
+				Yardsale.find({ 'user': req.params.id }, 'date starttime address city state description')
+					.exec(callback);
+			},
+		}, function(err, results) {
+			if (err) { return next(err); } // Error in API usage.
+			if (results.user == null) { // No results.
+				let err = new Error('User not found');
+				err.status = 404;
+				return next(err);
+			}
+			// Successful, so render.
+			res.render('user_profile', { title: 'User Profile', user: results.user, yardsales: results.yardsales });
+		});
 	}
-];
+};
 
 // Display login form on GET.
 exports.login_get = [

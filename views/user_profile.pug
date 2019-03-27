@@ -5,45 +5,130 @@ block content
 	section.section
 		.container
 			h1.subtitle.has-text-centered
-				strong= title
+				strong Welcome #{user.username}!
 			.columns
-				.column.is-one-half
-					h1
-						strong Welcome #{user.username}!
-					br
-					img(src='' alt='profile pic')
-					p #[strong Username: ] #{user.username}
-					p #[strong First Name: ] #{user.firstName}
-					p #[strong Last Name: ] #{user.lastName}
-					p #[strong E-mail: ] #{user.email}
-					p #[strong Phone: ] #{user.phone}
-					p #[strong Address: ] #{user.address}
-					p #[strong Address 2: ] #{user.address2}
-					p #[strong City: ] #{user.city}
-					p #[strong State: ]
-						if (user.state === 'CT')
-							| CT
-						else if (user.state === 'MA')
-							| MA
-						else if (user.state === 'ME')
-							| ME
-						if (user.state === 'NH')
-							| NH
-						if (user.state === 'RI')
-							| RI
-					p #[strong Zip Code: ] #{user.zipcode}
-					hr
-					p
-						a(href=current_user._id+'/update').button.is-link Update Account
-				.column.is-one-half
+				.column.is-one-third
+					nav.panel
+						p.panel-heading= title
+						.panel-block
+							img.image(src='' alt='profile picture')
+						.panel-block
+							p.control.has-icons-left
+								input.input.is-small(type='text' placeholder='search')
+								span.icon.is-small.is-left
+									i.fas.fa-search(aria-hidden=true)
+						.panel-tabs
+							a.is-active(href=current_user.id) profile
+							a(href=current_user._id+'/update') edit
+							a yardsales
+							a(href=current_user._id+'/favorites') favorites
+						a.panel-block
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong Username: ] #{user.username}
+						a.panel-block
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong First Name: ] #{user.firstName}
+						a.panel-block
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong Last Name: ] #{user.lastName}
+						a.panel-block
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong Email: ] #{user.email}
+						a.panel-block
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong Phone: ] #{user.phone}
+						a.panel-block
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong Address: ] #{user.address}
+						a.panel-block
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong Address 2: ] #{user.address2}
+						a.panel-block
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong City: ] #{user.city}
+						a.panel-block
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong State: ] #{user.state}
+						a.panel-block
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong Zip Code: ] #{user.zipcode}
+
+
+					//h1
+					//	strong= title
+					//br
+					//img(src='' alt='profile pic')
+					//p #[strong Username: ] #{user.username}
+					//p #[strong First Name: ] #{user.firstName}
+					//p #[strong Last Name: ] #{user.lastName}
+					//p #[strong E-mail: ] #{user.email}
+					//p #[strong Phone: ] #{user.phone}
+					//p #[strong Address: ] #{user.address}
+					//p #[strong Address 2: ] #{user.address2}
+					//p #[strong City: ] #{user.city}
+					//p #[strong State: ]
+					//	if (user.state === 'CT')
+					//		| CT
+					//	else if (user.state === 'MA')
+					//		| MA
+					//	else if (user.state === 'ME')
+					//		| ME
+					//	if (user.state === 'NH')
+					//		| NH
+					//	if (user.state === 'RI')
+					//		| RI
+					//p #[strong Zip Code: ] #{user.zipcode}
+					//hr
+					//p
+					//	a(href=current_user._id+'/update').button.is-link Update Account
+				.column.is-two-thirds
 					h1
 						strong Your Yard Sales
 					br
+
 					if yardsales
 						each yardsale in yardsales
-							p #[strong Date: ] #{yardsale.date}
-							p #[strong Start Time: ] #{yardsale.starttime}
-							p #[strong Address: ] #{yardsale.address}
-							p #[strong City: ] #{yardsale.city}
-							p #[strong State: ] #{yardsale.state}
+							//p #[strong Date: ] #{yardsale.date}
+							//p #[strong Start Time: ] #{yardsale.starttime}
+							//p #[strong Address: ] #{yardsale.address}
+							//p #[strong City: ] #{yardsale.city}
+							//p #[strong State: ] #{yardsale.state}
 							br
+
+							article.media
+								figure.media-left
+									p.image.is-64x64
+										img(src='https://s3.amazonaws.com/yardy123/naricci/yardsale.jpg' alt='picture of yardsale')
+								.media-content
+									.content
+										p
+											strong #{yardsale.city}&nbsp;
+											small #{yardsale.date}&nbsp;@&nbsp;
+											small #{yardsale.starttime}
+											br
+										p Posted by #{user.username}
+										p #{yardsale.description}
+									nav.level.is-mobile
+										.level-left
+											a.level-item
+												span.icon.is-small
+													i.fas.fa-envelope
+											a.level-item
+												span.icon.is-small
+													i.fab.fa-twitter
+											a.level-item
+												span.icon.is-small
+													i.fas.fa-heart
+								.media-right
+									button.delete
+							hr

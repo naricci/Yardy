@@ -6,32 +6,40 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const debug = require('debug')('yardy:mongo');
 const heroku = require('debug')('yardy:heroku');
+// Mongoose Connection
+const mongoose = require('mongoose');
+let gracefulShutdown;
+// var dev_db_url = 'mongodb://localhost/yardy';
+let dev_db_url = 'mongodb://nick:Yardy123@ds121475.mlab.com:21475/yardy';
+var mongoDB = process.env.MONGODB_URI || dev_db_url;
+var db = mongoose.connection;
 // Use dotenv to read .env vars into Node
-// require('dotenv').config();
-
+require('dotenv').config();
 // For Heroku
 const cool = require('cool-ascii-faces');
 const PORT = process.env.PORT || 5000;
-
 // var auth = require('./lib/auth');
 const index = require('./routes/index');
 const users = require('./routes/users');
 const catalog = require('./routes/catalog');
-
+// Compression/Security Packages
 const compression = require('compression');
 const helmet = require('helmet');
-
+// Authentication Packages
+const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const User = require('./models/user');
+const flash = require('express-flash');
+const MongoStore = require('connect-mongo')(session);
+// Initialize Express App
 const app = express();
+
 // app.get('/', (req, res) => { return res.render('pages/index'); });
 app.get('/cool', (req, res) => { return res.send(cool()); });
 app.listen(PORT, () => { return heroku(`Heroku listening on ${ PORT }`); });
 
 // Set up mongoose connection
-const mongoose = require('mongoose');
-var gracefulShutdown;
-// var dev_db_url = 'mongodb://localhost/yardy';
-let dev_db_url = 'mongodb://nick:Yardy123@ds121475.mlab.com:21475/yardy';
-var mongoDB = process.env.MONGODB_URI || dev_db_url;
 if (process.env.NODE_ENV === 'production') {
 	dev_db_url = process.env.MONGOLAB_URI;
 }
@@ -40,8 +48,8 @@ mongoose.connect(mongoDB, {
 });
 mongoose.set('useCreateIndex', true);
 mongoose.Promise = global.Promise;
-var db = mongoose.connection;
-// CONNECTION EVENTS
+
+// MongoDB CONNECTION EVENTS
 db.on('connected', function() {
 	debug('Mongoose connected to ' + mongoDB);
 });
@@ -81,14 +89,6 @@ process.on('SIGTERM', function() {
 process.on('exit', function(code) {
 	debug('About to exit with code: ', code);
 });
-
-// Authentication Packages
-const session = require('express-session');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const User = require('./models/user');
-const flash = require('express-flash');
-const MongoStore = require('connect-mongo')(session);
 
 // Configure the local strategy for use by Passport.
 passport.use(

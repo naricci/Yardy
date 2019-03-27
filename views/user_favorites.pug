@@ -1,6 +1,65 @@
 extends layout
 
 block content
-    .container
-        h1.subtitle.has-text-centered
-            strong= title
+
+	// Main content
+	section.section
+		.container
+			h1.subtitle.has-text-centered
+				strong Welcome #{user.username}!
+			.columns
+				.column.is-one-third
+					nav.panel
+						p.panel-heading= title
+						.panel-block
+							img.image(src='' alt='profile picture')
+						.panel-block
+							p.control.has-icons-left
+								input.input.is-small(type='text' placeholder='search')
+								span.icon.is-small.is-left
+									i.fas.fa-search(aria-hidden=true)
+						.panel-tabs
+							a profile
+							a(href='update') edit
+							a yardsales
+							a.is-active(href='favorites') favorites
+						a.panel-block.is-active
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong Username: ] #{user.username}
+						a.panel-block.is-active
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong First Name: ] #{user.firstName}
+						a.panel-block.is-active
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong Last Name: ] #{user.lastName}
+						a.panel-block.is-active
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong Email: ] #{user.email}
+						a.panel-block.is-active
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong Phone: ] #{user.phone}
+						a.panel-block.is-active
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong Address: ] #{user.address}
+						a.panel-block.is-active
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong Address 2: ] #{user.address2}
+						a.panel-block.is-active
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong City: ] #{user.city}
+						a.panel-block.is-active
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong State: ] #{user.state}
+						a.panel-block.is-active
+							span.panel-icon
+								i.fas.fa-user(aria-hidden=true)
+							p #[strong Zip Code: ] #{user.zipcode}
