@@ -5,17 +5,46 @@ block content
 		h1.subtitle.has-text-centered
 			strong= title
 
-		ul
-		each yardsale in yardsale_list
-			li
-				div
-					// Hard coded images for now
-					img(src='https://s3.amazonaws.com/yardy123/naricci/yardsale.jpg' alt='picture of yardsale' height=100 width=100)
-					h2 #{yardsale.date.toDateString()}
-					p #{yardsale.starttime}
-					p #{yardsale.username},
-						a(href=yardsale.url)  #{yardsale.address}
-						| #{yardsale.firstname}
+		//ul
+		//	if yardsale_list
+		//		each yardsale in yardsale_list
+		//			li
+		//				div
+		//					// Hard coded images for now
+		//					img(src='https://s3.amazonaws.com/yardy123/naricci/yardsale.jpg' alt='picture of yardsale' height=100 width=100)
+		//					h2 #{yardsale.date.toDateString()}
+		//					p #{yardsale.starttime}
+		//					p #{yardsale.username},
+		//						a(href=yardsale.url)  #{yardsale.address}
+		//						| #{yardsale.firstname}
+
+		if yardsale_list
+			each yardsale in yardsale_list
+				article.media
+					figure.media-left
+						p.image.is-64x64
+							img(src='https://s3.amazonaws.com/yardy123/naricci/yardsale.jpg' alt='picture of yardsale')
+					.media-content
+						.content
+							p
+								strong #{yardsale.city}&nbsp;
+								small #{yardsale.date.toDateString()}&nbsp;@&nbsp;
+								small #{yardsale.starttime}
+								br
+								#{yardsale.description}
+						nav.level.is-mobile
+							.level-left
+								a.level-item
+									span.icon.is-small
+										i.fas.fa-reply
+								a.level-item
+									span.icon.is-small
+										i.fas.fa-retweet
+								a.level-item
+									span.icon.is-small
+										i.fas.fa-heart
+					.media-right
+						button.delete
 
 		else
 			li There are no yardsales.

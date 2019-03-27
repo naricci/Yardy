@@ -4,7 +4,6 @@ const passport = require('passport');
 const async = require('async');
 const debug = require('debug')('yardy:user.controller');
 const User = require('../models/user');
-// var mongoose = require('mongoose');
 
 // Display detail page for a specific user.
 exports.user_profile = [

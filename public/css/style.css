@@ -1,90 +1,90 @@
 /* MAIN STYLES */
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 *:before,
 *:after {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 html,
 body {
-  /*padding: 50px;*/
-  /*font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;*/
-  font: 14px 'Lato', sans-serif;
-  height: 100%;
-  position: relative;
+	/*padding: 50px;*/
+	/*font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;*/
+	font: 14px 'Lato', sans-serif;
+	height: 100%;
+	position: relative;
 }
 
 /* NAVIGATION BAR */
 #navbar-title {
-  font-family: 'Permanent Marker', cursive;
-  color: hsl(217, 71%, 53%);
-  font-size: 2rem;
-  padding-top: 0;
-  padding-bottom: 0;
+	font-family: 'Permanent Marker', cursive;
+	color: hsl(217, 71%, 53%);
+	font-size: 2rem;
+	padding-top: 0;
+	padding-bottom: 0;
 }
 
 .navbar-end > a.navbar-item {
-  font-family: 'Permanent Marker', cursive;
+	font-family: 'Permanent Marker', cursive;
 }
 
 .navbar-item > .buttons > a.button {
-  font-family: 'Permanent Marker', cursive;
+	font-family: 'Permanent Marker', cursive;
 }
 
 .navbar-end > a.navbar-item {
-  font-size: 18px;
-  /*color: hsl(217, 71%, 53%);*/
-  color: hsl(48, 100%, 67%);
-  font-weight: bold;
+	font-size: 18px;
+	/*color: hsl(217, 71%, 53%);*/
+	color: hsl(48, 100%, 67%);
+	font-weight: bold;
 }
 
 .navbar-end > a:hover.navbar-item {
-  font-size: 18px;
-  color: hsl(217, 71%, 53%);
-  /*color: hsl(48, 100%, 67%);*/
-  font-weight: bold;
+	font-size: 18px;
+	color: hsl(217, 71%, 53%);
+	/*color: hsl(48, 100%, 67%);*/
+	font-weight: bold;
 }
 
 a:hover.button.is-link {
-  color: hsl(48, 100%, 67%);
+	color: hsl(48, 100%, 67%);
 }
 
 /* HERO TITLE */
 h1.title.is-1 {
-  font-family: 'Permanent Marker', cursive;
-  font-size: 132px;
-  /*text-decoration: underline;*/
+	font-family: 'Permanent Marker', cursive;
+	font-size: 132px;
+	/*text-decoration: underline;*/
 }
 
 .hero-body.has-background-primary {
-  padding: 16px;
+	padding: 16px;
 }
 
 /* MAIN CONTENT */
 .main-container {
-  min-height: 100vh; /* will cover the 100% of viewport */
-  overflow: hidden;
-  display: block;
-  position: relative;
-  padding-bottom: 100px; /* height of your footer */
+	min-height: 100vh; /* will cover the 100% of viewport */
+	overflow: hidden;
+	display: block;
+	position: relative;
+	padding-bottom: 100px; /* height of your footer */
 }
 
 /* FOOTER */
 footer {
-  /*flex: 1;*/
-  padding-bottom: 48px;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
+	/*flex: 1;*/
+	padding-bottom: 48px;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
 }
 
 footer.content {
-  margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 strong#footer-text {
-  font-family: 'Permanent Marker', cursive;
-  font-size: 18px;
+	font-family: 'Permanent Marker', cursive;
+	font-size: 18px;
 }
