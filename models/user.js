@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const crypto = require('crypto');
-// const debug = require('debug')('Yardy:user.model');
 
 // Create Schema and Model
 const UserSchema = new Schema({

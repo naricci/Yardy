@@ -10,26 +10,27 @@ block content
 
 		img(src=yardsale.imagename alt='yardsale preview')
 		p #[strong Username:]
-			a(href=yardsale.username)  #{yardsale.username}
+			a(href='/users/'+user._id)  #{user.username}
 		hr
-		h1 Date & Time
+		h1.subtitle #[strong Date & Time]
 		p #[strong Date:] #{yardsale.date}
 		p #[strong Start Time:] #{yardsale.starttime}
 		p #[strong End Time:] #{yardsale.endtime}
 		hr
-		h1 Contact Info
-		p #[strong First Name:] #{yardsale.firstName}
-		p #[strong Last Name:] #{yardsale.lastName}
+		h1.subtitle #[strong Contact Info]
+		p #[strong First Name:] #{user.firstName}
+		p #[strong Phone:] #{user.phone}
+		p #[strong Email:] #{user.email}
 		hr
-		h1 Location
+		h1.subtitle #[strong Location]
 		p #[strong Address:] #{yardsale.address}
 		p #[strong Address 2:] #{yardsale.address2}
 		p #[strong City:] #{yardsale.city}
 		p #[strong State:] #{yardsale.state}
 		p #[strong Zip Code:] #{yardsale.zipcode}
 		hr
-		h1 Description
-		p #[strong Description] #{yardsale.description}
+		h1.subtitle #[strong Description]
+		p #{yardsale.description}
 		hr
 		p
 			a(href=yardsale._id+'/update') Update Yardsale&nbsp&nbsp&nbsp

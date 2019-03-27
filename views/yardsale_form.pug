@@ -6,28 +6,9 @@ block content
 	.container
 		h1.subtitle.has-text-centered
 			strong= title
-		form(method='POST' action='' enctype='multipart/form-data')
-			// enctype='multipart/form-data'
+		form(method='POST' action='')
 			.columns
 				.column.is-one-half
-					.field
-						label.label First Name *
-						.control.has-icons-left.has-icons-right
-							input.input.is-primary(type='text' id='firstname' name='firstname' placeholder='e.g. Alex' maxlength='25' required value=(undefined===yardsale ? '' : yardsale.firstName))
-							span.icon.is-small.is-left
-								i.fas.fa-user
-					.field
-						label.label Last Name
-						.control.has-icons-left.has-icons-right
-							input.input.is-primary(type='text' id='lastname' name='lastname' placeholder='e.g. Smith' maxlength='25' value=(undefined===yardsale ? '' : yardsale.lastName))
-							span.icon.is-small.is-left
-								i.fas.fa-user
-					.field
-						label.label Username
-						.control.has-icons-left.has-icons-right
-							input.input.is-primary(type='text' id='username' name='username' placeholder='e.g. yardsaleking' maxlength='25' value=(undefined===yardsale ? '' : yardsale.username))
-							span.icon.is-small.is-left
-								i.fas.fa-user
 					.field
 						label.label Phone Number
 						.control.has-icons-left
@@ -47,13 +28,13 @@ block content
 							span.icon.is-small.is-left
 								i.fas.fa-map-marker-alt
 					.field
-						label.label City
+						label.label City *
 						.control.has-icons-left
 							input.input.is-primary(type='text' id='city' name='city' placeholder='e.g. Washington' maxlength='25' required value=(undefined === yardsale ? '' : yardsale.city))
 							span.icon.is-small.is-left
 								i.fas.fa-city
 					.field
-						label.label State
+						label.label State *
 						.control.has-icons-left
 							.select.is-primary
 								select(id='state' name='state')
@@ -92,10 +73,8 @@ block content
 								i.fas.fa-clock
 					.field
 						label.label Description
-						.control.has-icons-left
+						.control
 							textarea.textarea.is-primary(maxlength='1000' id='description' name='description' placeholder='Add your comments here...' value=(undefined===yardsale ? '' : yardsale.description))
-							//span.icon.is-small.is-left
-							//    i.fas.fa-comment
 					.field
 						label.label Add Image
 						.control

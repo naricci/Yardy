@@ -60,27 +60,21 @@ exports.yardsale_create_get = (req, res, next) => {
 exports.yardsale_create_post = [
 
 	// Validate fields.
-	body('firstname', 'First name must be specified.')
-		.isLength({ min: 1 }).trim(),
-	// .withMessage('First name must be specified.'),
-	// 	.isAlphanumeric()
-	// 	.withMessage('First name has non-alphanumeric characters.'),
 	// body('phone')
-	// 	.isLength({ min: 10, max: 10 })
-	// 	.trim()
-	// 	.withMessage('Please enter a 10-digit phone number.')
-	// 	.isNumeric()
-	// 	.withMessage('Phone number can only contain numbers.'),
+	// 	.isNumeric().trim().withMessage('Phone number is not valid.'),
+	// body('city')
+	// 	.isEmpty().withMessage('City is required.')
+	// 	.isLength({ max: 25 }).trim().withMessage('City is cannot be more than 25 characters.'),
+	// // body('state')
+	// // 	.isEmpty().withMessage('State is required')
+	// // 	.isLength({ max: 2 }).trim().withMessage('Please use State abbreviation.'),
 	// body('zipcode')
-	// 	.isLength({ min: 5, max: 5 })
-	// 	.trim()
-	// 	.withMessage('Please enter a 5-digit zip code.')
-	// 	.isNumeric()
-	// 	.withMessage('Zip code can only contain numbers.'),
-
-	// Sanitize fields.
-	sanitizeBody('firstname').trim(),
+	// 	.isLength({ max: 5 }).trim().withMessage('Zip Code must be 5 digits.')
+	// 	.isNumeric().withMessage('Zip Code is not valid.'),
+	// // Sanitize fields.
 	// sanitizeBody('phone').trim(),
+	// sanitizeBody('city').trim(),
+	// // sanitizeBody('state').trim(),
 	// sanitizeBody('zipcode').trim(),
 	// sanitizeBody('date').toDate(),
 
@@ -93,47 +87,38 @@ exports.yardsale_create_post = [
 		if (!errors.isEmpty()) {
 			// There are errors. Render form again with sanitized values/errors messages.
 			res.render('yardsale_form', { title: 'Create Yardsale', yardsale: req.body, errors: errors.array() });
-			return;
+			// return;
 		}
 		else {
 			// Data from form is valid.
-			// User
-			// 	.findById(req.params.id)
-			// 	.populate('users')
-			// 	.exec(function (err, person) {
-			// 		if (err) return handleError(err);
-			// 		console.log(person);
-			// 	});
 			// Create an Yardsale object with escaped and trimmed data.
-			let yardsale = new Yardsale(
-				{
-					firstName: req.body.firstname,
-					lastName: req.body.lastname,
-					username: req.body.username,
-					phone: req.body.phone,
-					address: req.body.address,
-					address2: req.body.address2,
-					city: req.body.city,
-					state: req.body.state,
-					zipcode: req.body.zipcode,
-					date: req.body.date,
-					starttime: req.body.starttime,
-					endtime: req.body.endtime,
-					description: req.body.description,
-					imagename: req.body.imagename
-				});
+			let yardsale = new Yardsale({
+				phone: req.body.phone,
+				address: req.body.address,
+				address2: req.body.address2,
+				city: req.body.city,
+				state: req.body.state,
+				zipcode: req.body.zipcode,
+				date: req.body.date,
+				starttime: req.body.starttime,
+				endtime: req.body.endtime,
+				description: req.body.description,
+				user: req.user._id//,
+				// imagename: req.body.imagename
+			});
 
 			yardsale.save(function (err) {
 				if (err) { return next(err); }
 
-				singleUpload(req, res, function(err, some) {
-					if (err)
-						res.status(422).send({ errors: [{ title: 'Image Upload Error', detail: err.message}] });
-					// res.json({ 'imageUrl': req.file.location });
-					console.log(req.file.location);
-				});
+				// singleUpload(req, res, function(err, some) {
+				// 	if (err)
+				// 		res.status(422).send({ errors: [{ title: 'Image Upload Error', detail: err.message}] });
+				// 	// res.json({ 'imageUrl': req.file.location });
+				// 	console.log(req.file.location);
+				// });
 				// Successful - redirect to new yardsale record.
-				debug('Yardsale posted Successfully\n' + yardsale._id);
+				debug(`Yardsale ${yardsale._id} posted Successfully`);
+				debug(yardsale);
 				res.redirect('/catalog/yardsale/'+yardsale._id);
 			});
 		}
@@ -192,7 +177,7 @@ exports.yardsale_update_get = function (req, res, next) {
 		.findById(req.params.id, function (err, yardsale) {
 			if (err) { return next(err); }
 			if (yardsale == null) { // No results.
-				var err = new Error('Yardsale not found.');
+				let err = new Error('Yardsale not found.');
 				err.status = 404;
 				return next(err);
 			}

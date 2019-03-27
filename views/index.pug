@@ -75,10 +75,11 @@ block content
 							.content
 								p
 									strong #{yardsale.city}&nbsp;
-									small #{yardsale.date.toDateString()}&nbsp;@&nbsp;
+									small #{yardsale.date}&nbsp;@&nbsp;
 									small #{yardsale.starttime}
 									br
-									#{yardsale.description}
+								p Posted by #{yardsale.user.username}
+								p #{yardsale.description}
 							nav.level.is-mobile
 								.level-left
 									a.level-item

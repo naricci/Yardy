@@ -3,28 +3,6 @@ const Schema = mongoose.Schema;
 
 // Create Schema and Model
 const YardsaleSchema = new Schema({
-	firstName: {
-		type: String,
-		required: true,
-		minlength: 1,
-		maxlength: 25
-	},
-	lastName: {
-		type: String,
-		required: false,
-		minlength: 1,
-		maxlength: 25
-	},
-	user: {
-		type: Schema.Types.ObjectId,
-		ref: 'users',
-	},
-	username: {
-		// type: Schema.Types.ObjectId,
-		// ref: 'users',
-		type: String,
-		required: true
-	},
 	phone: {
 		type: Number,
 		required: false,
@@ -48,12 +26,12 @@ const YardsaleSchema = new Schema({
 	},
 	state: {
 		type: String,
-		required: false,
+		required: true,
 		maxlength: 2
 	},
 	zipcode: {
 		type: String,
-		required: true,
+		required: false,
 		minlength: 5,
 		maxlength: 5
 	},
@@ -78,6 +56,10 @@ const YardsaleSchema = new Schema({
 		type: Array,
 		required: false
 	},
+	user: {
+		type: Schema.Types.ObjectId,
+		ref: 'users',
+	},
 	createdDate: {
 		type: Date,
 		default: Date.now
@@ -86,25 +68,22 @@ const YardsaleSchema = new Schema({
 
 // Virtual for this yardsale instance URL.
 YardsaleSchema
-	.virtual('url')
-	.get(function() {
+	.virtual('url').get(function() {
 		return '/catalog/yardsale/' + this._id;
 	});
 
 // Full address
 YardsaleSchema
-	.virtual('full_address')
-	.get(function() {
+	.virtual('full_address').get(function() {
 		return this.address + ', ' + this.city + ', ' + this.state + ', ' + this.zipcode;
 	});
 
 // Date and Time
 YardsaleSchema
-	.virtual('date_and_time')
-	.get(function() {
-		return this.date + ', ' + this.starttime + ' - ' + this.endtime;
+	.virtual('date_and_time').get(function() {
+		return this.date.toDateString() + ', ' + this.starttime + ' - ' + this.endtime;
 	});
 
-const Yardsale = mongoose.model('yardsales', YardsaleSchema);
+const Yardsale = mongoose.model('Yardsales', YardsaleSchema);
 
 module.exports = Yardsale;

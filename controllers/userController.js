@@ -29,7 +29,7 @@ exports.user_profile = [
 			}, function(err, results) {
 				if (err) { return next(err); } // Error in API usage.
 				if (results.user == null) { // No results.
-					var err = new Error('User not found');
+					let err = new Error('User not found');
 					err.status = 404;
 					return next(err);
 				}

@@ -40,7 +40,9 @@ block content
 						strong Your Yard Sales
 					if yardsales
 						each yardsale in yardsales
-							p #[strong Username: ] #{yardsale.username}
-							p #[strong City: ] #{yardsale.city}
 							p #[strong Date: ] #{yardsale.date}
-							hr
+								| #[strong Start Time: ] #{yardsale.starttime}
+							p #[strong Address: ] #{yardsale.address}
+							p #[strong City: ] #{yardsale.city}
+							p #[strong State: ] #{yardsale.state}
+							br
