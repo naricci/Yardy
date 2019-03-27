@@ -11,17 +11,17 @@ block content
 					nav.panel
 						p.panel-heading= title
 						.panel-block
-							img.image(src='' alt='profile picture')
+							img(src='/images/blank_profile.png' alt='profile picture' height=250 width=250)
 						.panel-block
 							p.control.has-icons-left
 								input.input.is-small(type='text' placeholder='search')
 								span.icon.is-small.is-left
 									i.fas.fa-search(aria-hidden=true)
 						.panel-tabs
-							a.is-active(href=current_user.id) profile
-							a(href=current_user._id+'/update') edit
+							a.is-active(href='/users/'+user._id) profile
+							a(href='/users/'+user._id+'/update') edit
 							a yardsales
-							a(href=current_user._id+'/favorites') favorites
+							a(href='/users/'+user._id+'/favorites') favorites
 						a.panel-block
 							span.panel-icon
 								i.fas.fa-user(aria-hidden=true)

@@ -2,85 +2,140 @@ extends layout
 
 block content
 
-    // Main content
-    .container
-        h1.subtitle.has-text-centered
-            strong= title
-        .columns
-            .column.is-one-third
-            .column.is-one-third
-                br
-                form(method='POST' action='')
-                    .field
-                        label.label Email
-                        .control
-                            input.input(id='email' type='email' name='email' placeholder='naricci@email.neit.edu' maxlength='25' required value=(undefined===user ? '' : user.email))
-                    .field
-                        label.label Username
-                        .control
-                            input.input(id='username' type='text' name='username' placeholder='naricci' minlength='4' maxlength='25' required value=(undefined===user ? '' : user.username))
-                    .field
-                        label.label First Name
-                        .control
-                            input.input(id='firstname' type='text' name='firstname' placeholder='John' maxlength='25' value=(undefined === user ? '' : user.firstName))
-                    .field
-                        label.label Last Name
-                        .control
-                            input.input(id='lastname' type='text' name='lastname' placeholder='Doe' maxlength='25' value=(undefined === user ? '' : user.lastName))
-                    .field
-                        label.label #{is_update_form ? 'Confirm New Phone:' : 'Phone:'}
-                        .control
-                            input.input(id='phone' type='tel' name='phone' placeholder='4028287902' maxlength='10' value=(undefined===user ? '' : user.phone))
-                    .field
-                        label.label #{is_update_form ? 'Confirm New Address:' : 'Address:'}
-                        .control
-                            input.input(id='address' type='text' name='address' maxlength='250' placeholder='123 Yardy Street' value=(undefined===user ? '' : user.address))
-                    .field
-                        label.label #{is_update_form ? 'Confirm New Address 2:' : 'Address 2:'}
-                        .control
-                            input.input(id='address2' type='text' name='address2' maxlength='250' value=(undefined===user ? '' : user.address2))
-                    .field
-                        label.label #{is_update_form ? 'Confirm New City:' : 'City:'}
-                        .control
-                            input.input(id='city' type='text' name='city' placeholder='Providence' value=(undefined===user ? '' : user.city))
-                    .field
-                        label.label #{is_update_form ? 'Confirm New State:' : 'State:'}
-                        .control
-                            select.input(name='state')
-                                option(value="" selected=(undefined === user || user.state !== '' ? false : 'selected')) Select State
-                                option(value='CT' selected=(undefined === user || user.state !== 'CT' ? false : 'selected')) CT
-                                option(value='MA' selected=(undefined === user || user.state !== 'MA' ? false : 'selected')) MA
-                                option(value='ME' selected=(undefined === user || user.state !== 'ME' ? false : 'selected')) ME
-                                option(value='NH' selected=(undefined === user || user.state !== 'NH' ? false : 'selected')) NH
-                                option(value='RI' selected=(undefined === user || user.state !== 'RI' ? false : 'selected')) RI
-                    .field
-                        label.label #{is_update_form ? 'Confirm New Zip Code:' : 'Zip Code:'}
-                        .control
-                            input.input(id='zipcode' type='text' name='zipcode' placeholder='02818' minlength='5' maxlength='5' value=(undefined===user ? '' : user.zipcode))
+	// Main content
+	section.section
+		.container
+			h1.subtitle.has-text-centered
+				strong= title
+			.columns
+				.column.is-one-third
+					if isAuthenticated
+						nav.panel.is-hidden-mobile
+							p.panel-heading= title
+							.panel-block
+								img(src='/images/blank_profile.png' alt='profile picture' height=250 width=250)
+							.panel-block
+								p.control.has-icons-left
+									input.input.is-small(type='text' placeholder='search')
+									span.icon.is-small.is-left
+										i.fas.fa-search(aria-hidden=true)
+							.panel-tabs
+								a(href='/users/'+current_user._id) profile
+								a.is-active(href='/users/'+current_user._id + '/update') edit
+								a yardsales
+								a(href='/users/'+current_user._id + '/favorites') favorites
+							a.panel-block
+								span.panel-icon
+									i.fas.fa-user(aria-hidden=true)
+								p #[strong Username: ] #{user.username}
+							a.panel-block
+								span.panel-icon
+									i.fas.fa-user(aria-hidden=true)
+								p #[strong First Name: ] #{user.firstName}
+							a.panel-block
+								span.panel-icon
+									i.fas.fa-user(aria-hidden=true)
+								p #[strong Last Name: ] #{user.lastName}
+							a.panel-block
+								span.panel-icon
+									i.fas.fa-user(aria-hidden=true)
+								p #[strong Email: ] #{user.email}
+							a.panel-block
+								span.panel-icon
+									i.fas.fa-user(aria-hidden=true)
+								p #[strong Phone: ] #{user.phone}
+							a.panel-block
+								span.panel-icon
+									i.fas.fa-user(aria-hidden=true)
+								p #[strong Address: ] #{user.address}
+							a.panel-block
+								span.panel-icon
+									i.fas.fa-user(aria-hidden=true)
+								p #[strong Address 2: ] #{user.address2}
+							a.panel-block
+								span.panel-icon
+									i.fas.fa-user(aria-hidden=true)
+								p #[strong City: ] #{user.city}
+							a.panel-block
+								span.panel-icon
+									i.fas.fa-user(aria-hidden=true)
+								p #[strong State: ] #{user.state}
+							a.panel-block
+								span.panel-icon
+									i.fas.fa-user(aria-hidden=true)
+								p #[strong Zip Code: ] #{user.zipcode}
+				.column.is-one-third
+					br
+					form(method='POST' action='')
+						.field
+							label.label Email
+							.control
+								input.input(id='email' type='email' name='email' placeholder='naricci@email.neit.edu' maxlength='25' required value=(undefined===user ? '' : user.email))
+						.field
+							label.label Username
+							.control
+								input.input(id='username' type='text' name='username' placeholder='naricci' minlength='4' maxlength='25' required value=(undefined===user ? '' : user.username))
+						.field
+							label.label First Name
+							.control
+								input.input(id='firstname' type='text' name='firstname' placeholder='John' maxlength='25' value=(undefined === user ? '' : user.firstName))
+						.field
+							label.label Last Name
+							.control
+								input.input(id='lastname' type='text' name='lastname' placeholder='Doe' maxlength='25' value=(undefined === user ? '' : user.lastName))
+						.field
+							label.label #{is_update_form ? 'Confirm New Phone:' : 'Phone:'}
+							.control
+								input.input(id='phone' type='tel' name='phone' placeholder='4028287902' maxlength='10' value=(undefined===user ? '' : user.phone))
+						.field
+							label.label #{is_update_form ? 'Confirm New Address:' : 'Address:'}
+							.control
+								input.input(id='address' type='text' name='address' maxlength='250' placeholder='123 Yardy Street' value=(undefined===user ? '' : user.address))
+						.field
+							label.label #{is_update_form ? 'Confirm New Address 2:' : 'Address 2:'}
+							.control
+								input.input(id='address2' type='text' name='address2' maxlength='250' value=(undefined===user ? '' : user.address2))
+						.field
+							label.label #{is_update_form ? 'Confirm New City:' : 'City:'}
+							.control
+								input.input(id='city' type='text' name='city' placeholder='Providence' value=(undefined===user ? '' : user.city))
+						.field
+							label.label #{is_update_form ? 'Confirm New State:' : 'State:'}
+							.control
+								select.input(name='state')
+									option(value="" selected=(undefined === user || user.state !== '' ? false : 'selected')) Select State
+									option(value='CT' selected=(undefined === user || user.state !== 'CT' ? false : 'selected')) CT
+									option(value='MA' selected=(undefined === user || user.state !== 'MA' ? false : 'selected')) MA
+									option(value='ME' selected=(undefined === user || user.state !== 'ME' ? false : 'selected')) ME
+									option(value='NH' selected=(undefined === user || user.state !== 'NH' ? false : 'selected')) NH
+									option(value='RI' selected=(undefined === user || user.state !== 'RI' ? false : 'selected')) RI
+						.field
+							label.label #{is_update_form ? 'Confirm New Zip Code:' : 'Zip Code:'}
+							.control
+								input.input(id='zipcode' type='text' name='zipcode' placeholder='02818' minlength='5' maxlength='5' value=(undefined===user ? '' : user.zipcode))
+				.column.is-one-third
+						if is_update_form
+							hr
+							p Use the fields below if you want to change your password, too. Otherwise, leave blank.
+							hr
+						br
+						.field
+							label.label #{is_update_form ? 'New Password:' : 'Password:'}
+							.control
+								input.input(id='password' type='password' name='password' )
+						.field
+							label.label #{is_update_form ? 'Confirm New Password:' : 'Confirm Password:'}
+							.control
+								input.input(id='cpassword' type='password' name='cpassword' )
 
-                    if is_update_form
-                        hr
-                        p Use the fields below if you want to change your password, too. Otherwise, leave blank.
-                        hr
-
-                    .field
-                        label.label #{is_update_form ? 'New Password:' : 'Password:'}
-                        .control
-                            input.input(id='password' type='password' name='password' )
-                    .field
-                        label.label #{is_update_form ? 'Confirm New Password:' : 'Confirm Password:'}
-                        .control
-                            input.input(id='cpassword' type='password' name='cpassword' )
-
-                    .field
-                        .control
-                            button.is-primary(type='submit')
-                                | Submit
-                    br
-                    br
-                    br
-                    if errors
-                        ul
-                            for error in errors
-                                li!= error.msg
-            .column.is-one-third
+						.field
+							.control
+								button.button.is-primary(type='submit')
+									| Submit
+						br
+						br
+						br
+						if errors
+							ul
+								for error in errors
+									li!= error.msg
