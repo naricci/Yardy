@@ -3,95 +3,96 @@ extends layout
 block content
 
 	// Main content
-	.container
-		h1.subtitle.has-text-centered
-			strong= title
-		form(method='POST' action='')
-			.columns
-				.column.is-one-half
-					.field
-						label.label Phone Number
-						.control.has-icons-left
-							input.input.is-primary(type='tel' id='phone' name='phone' placeholder='e.g. 4018843030' maxlength='10' value=(undefined===yardsale ? '' : yardsale.phone))
-							span.icon.is-small.is-left
-								i.fas.fa-phone
-					.field
-						label.label Address *
-						.control.has-icons-left
-							input.input.is-primary(type='text' id='address' name='address' placeholder='e.g. 1600 Pennsylvania Ave' maxlength='250' value=(undefined === yardsale ? '' : yardsale.address))
-							span.icon.is-small.is-left
-								i.fas.fa-map-marker-alt
-					.field
-						label.label Address 2
-						.control.has-icons-left
-							input.input.is-primary(type='text' id='address2' name='address2' maxlength='250' placeholder=(undefined === yardsale ? '' : yardsale.address2))
-							span.icon.is-small.is-left
-								i.fas.fa-map-marker-alt
-					.field
-						label.label City *
-						.control.has-icons-left
-							input.input.is-primary(type='text' id='city' name='city' placeholder='e.g. Washington' maxlength='25' required value=(undefined === yardsale ? '' : yardsale.city))
-							span.icon.is-small.is-left
-								i.fas.fa-city
-					.field
-						label.label State *
-						.control.has-icons-left
-							.select.is-primary
-								select(id='state' name='state')
-									option(selected) Select State
-									option(value='CT') CT
-									option(value='MA') MA
-									option(value='ME') ME
-									option(value='NH') NH
-									option(value='RI') RI
+	section.section
+		.container
+			h1.subtitle.has-text-centered
+				strong= title
+			form(method='POST' action='')
+				.columns
+					.column.is-one-half
+						.field
+							label.label Phone Number
+							.control.has-icons-left
+								input.input.is-primary(type='tel' id='phone' name='phone' placeholder='e.g. 4018843030' maxlength='10' value=(undefined===yardsale ? '' : yardsale.phone))
+								span.icon.is-small.is-left
+									i.fas.fa-phone
+						.field
+							label.label Address *
+							.control.has-icons-left
+								input.input.is-primary(type='text' id='address' name='address' placeholder='e.g. 1600 Pennsylvania Ave' maxlength='250' value=(undefined === yardsale ? '' : yardsale.address))
 								span.icon.is-small.is-left
 									i.fas.fa-map-marker-alt
-					.field
-						label.label Zip Code
-						.control.has-icons-left
-							input.input.is-primary(type='text' id='zipcode' name='zipcode' placeholder='e.g. 20500' maxlength='5' value=(undefined === yardsale ? '' : yardsale.zipcode))
-							span.icon.is-small.is-left
-								i.fas.fa-map-marker-alt
-				.column.is-one-half
-					.field
-						label.label Date *
-						.control.has-icons-left
-							input.input.is-primary(type='date' id='date' name='date' placeholder='e.g. July 4, 2019' value=(undefined===yardsale ? '' : yardsale.date))
-							span.icon.is-small.is-left
-								i.fas.fa-calendar
-					.field
-						label.label Start Time
-						.control.has-icons-left
-							input.input.is-primary(type='time' id='starttime' name='starttime' placeholder='e.g. 10:00 AM' value=(undefined===yardsale ? '' : yardsale.starttime))
-							span.icon.is-small.is-left
-								i.fas.fa-clock
-					.field
-						label.label End Time
-						.control.has-icons-left
-							input.input.is-primary(type='time' id='endtime' name='endtime' placeholder='e.g. 4:00 PM' value=(undefined===yardsale ? '' : yardsale.endtime))
-							span.icon.is-small.is-left
-								i.fas.fa-clock
-					.field
-						label.label Description
-						.control
-							textarea.textarea.is-primary(maxlength='1000' id='description' name='description' placeholder='Add your comments here...' value=(undefined===yardsale ? '' : yardsale.description))
-					.field
-						label.label Add Image
-						.control
-							.file.is-boxed.is-primary
-								label.file-label
-									input.file-input(type='file' id='imagename' name='imagename' value=(undefined===yardsale ? '' : yardsale.imagename))
-									span.file-cta
-										span.file-icon
-											i.fas.fa-upload
-										span.file-label
-											| Choose a file&mldr;
-					.field
-						.control
-							button.button.is-link(type='submit')
-								| Post your yard sale!
+						.field
+							label.label Address 2
+							.control.has-icons-left
+								input.input.is-primary(type='text' id='address2' name='address2' maxlength='250' placeholder=(undefined === yardsale ? '' : yardsale.address2))
+								span.icon.is-small.is-left
+									i.fas.fa-map-marker-alt
+						.field
+							label.label City *
+							.control.has-icons-left
+								input.input.is-primary(type='text' id='city' name='city' placeholder='e.g. Washington' maxlength='25' required value=(undefined === yardsale ? '' : yardsale.city))
+								span.icon.is-small.is-left
+									i.fas.fa-city
+						.field
+							label.label State *
+							.control.has-icons-left
+								.select.is-primary
+									select(id='state' name='state')
+										option(selected) Select State
+										option(value='CT') CT
+										option(value='MA') MA
+										option(value='ME') ME
+										option(value='NH') NH
+										option(value='RI') RI
+									span.icon.is-small.is-left
+										i.fas.fa-map-marker-alt
+						.field
+							label.label Zip Code
+							.control.has-icons-left
+								input.input.is-primary(type='text' id='zipcode' name='zipcode' placeholder='e.g. 20500' maxlength='5' value=(undefined === yardsale ? '' : yardsale.zipcode))
+								span.icon.is-small.is-left
+									i.fas.fa-map-marker-alt
+					.column.is-one-half
+						.field
+							label.label Date *
+							.control.has-icons-left
+								input.input.is-primary(type='date' id='date' name='date' placeholder='e.g. July 4, 2019' value=(undefined===yardsale ? '' : yardsale.date))
+								span.icon.is-small.is-left
+									i.fas.fa-calendar
+						.field
+							label.label Start Time
+							.control.has-icons-left
+								input.input.is-primary(type='time' id='starttime' name='starttime' placeholder='e.g. 10:00 AM' value=(undefined===yardsale ? '' : yardsale.starttime))
+								span.icon.is-small.is-left
+									i.fas.fa-clock
+						.field
+							label.label End Time
+							.control.has-icons-left
+								input.input.is-primary(type='time' id='endtime' name='endtime' placeholder='e.g. 4:00 PM' value=(undefined===yardsale ? '' : yardsale.endtime))
+								span.icon.is-small.is-left
+									i.fas.fa-clock
+						.field
+							label.label Description
+							.control
+								textarea.textarea.is-primary(maxlength='1000' id='description' name='description' placeholder='Add your comments here...' value=(undefined===yardsale ? '' : yardsale.description))
+						.field
+							label.label Add Image
+							.control
+								.file.is-boxed.is-primary
+									label.file-label
+										input.file-input(type='file' id='imagename' name='imagename' value=(undefined===yardsale ? '' : yardsale.imagename))
+										span.file-cta
+											span.file-icon
+												i.fas.fa-upload
+											span.file-label
+												| Choose a file&mldr;
+						.field
+							.control
+								button.button.is-link(type='submit')
+									| Post your yard sale!
 
-		if errors
-			ul
-				for error in errors
-					li!= error.msg
+			if errors
+				ul
+					for error in errors
+						li!= error.msg

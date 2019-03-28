@@ -6,11 +6,11 @@ block content
 	section.section
 		.container
 			h1.subtitle.has-text-centered
-				strong Welcome #{user.username}!
+				strong #{user.username} | #{title}
 			.columns
 				.column.is-one-third
 					nav.panel
-						p.panel-heading= title
+						p.panel-heading Profile
 						.panel-block
 							img(src='/images/blank_profile.png' alt='profile picture' height=250 width=250)
 						.panel-block

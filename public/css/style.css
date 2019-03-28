@@ -16,6 +16,15 @@ body {
 	position: relative;
 }
 
+/* MAIN CONTENT */
+.main-container {
+	min-height: 100vh; /* will cover the 100% of viewport */
+	overflow: hidden;
+	display: block;
+	position: relative;
+	padding-bottom: 100px; /* height of your footer */
+}
+
 /* NAVIGATION BAR */
 #navbar-title {
 	font-family: 'Permanent Marker', cursive;
@@ -58,19 +67,16 @@ h1.title.is-1 {
 	/*text-decoration: underline;*/
 }
 
-.hero-body.has-background-primary {
+.hero-body.has-background-warning.is-hidden-touch {
+	/*border-top: 2px solid hsl(48, 100%, 67%);*/
 	padding: 0;
 	/*padding-top: 0;*/
 	/*padding-bottom: 0;*/
 }
 
-/* MAIN CONTENT */
-.main-container {
-	min-height: 100vh; /* will cover the 100% of viewport */
-	overflow: hidden;
-	display: block;
-	position: relative;
-	padding-bottom: 100px; /* height of your footer */
+section.section {
+	padding-bottom: 5px;
+	padding-top: 5px;
 }
 
 /* FOOTER */

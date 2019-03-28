@@ -1,27 +1,27 @@
 // Hero banner/Navbar
 section.hero
-	.hero-head.has-background-primary
+	.hero-head.has-background-warning
 		.container
 			nav.navbar.has-text-weight-bold(role='navigation' aria-label='main navigation')
 				// Mobile Navigation Bar
-				.navbar-brand
+				.navbar-brand.has-background-warning
 					a.navbar-item.is-hidden-desktop#navbar-title(href='/') Yardy
 					a.navbar-burger.burger(role='button' aria-label='menu' aria-expanded='false' data-target='navbarMenuHeroA')
 						span(aria-hidden='true')
 						span(aria-hidden='true')
 						span(aria-hidden='true')
 				// Desktop Navigation Bar
-				.navbar-menu.has-background-primary#navbarMenuHeroA
+				.navbar-menu.has-background-warning#navbarMenuHeroA
 					// The content below will be visible to users who have logged in.
 					if isAuthenticated
 						.navbar-end
-							a.navbar-item(href='/')
-								| Home
-							a.navbar-item(href='/catalog/yardsale/create')
+							//a.navbar-item(href='/')
+							//	| Home
+							a.navbar-item.has-text-link(href='/catalog/yardsale/create')
 								| Post Yard Sale
-							a.navbar-item(href='/users/' + current_user._id)
+							a.navbar-item.has-text-link(href='/users/' + current_user._id)
 								| Account
-							a.navbar-item(href='/users/' + current_user._id + '/favorites')
+							a.navbar-item.has-text-link(href='/users/' + current_user._id + '/favorites')
 								| Favorites
 							.navbar-item
 								.buttons
@@ -49,17 +49,17 @@ section.hero
 								.buttons
 									a.button.is-light(href='/users/register')
 										span.icon
-											i.fa.fa-user-plus
+											i.fas.fa-user-plus
 										span Register
 							.navbar-item
 								.buttons
 									a.button.is-link(href='/users/login')
 										span.icon
-											i.fas.i.fa.fa-sign-in-alt
+											i.fas.fa-sign-in-alt
 										span Login
 
 		// Middle content
-		.hero-body.has-background-primary.is-hidden-touch
+		.hero-body.has-background-warning.is-hidden-touch
 			.container
 				a(href="/")
-					h1.title.is-1.has-text-warning.has-text-centered Yardy
+					h1.title.is-1.has-text-link.has-text-centered Yardy
