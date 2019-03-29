@@ -6,9 +6,27 @@ block content
 		.container
 			h1.subtitle.has-text-centered
 				strong #{user.username} | #{title}
+			// .tabs.is-centered.is-hidden-desktop.is-hidden-widescreen.is-hidden-fullhd
+			.tabs.is-centered.is-boxed
+				ul
+					li
+						a(href='/users/' + user._id + '/update')
+							span.icon.is-small
+								i.fas.fa-pen(aria-hidden='true')
+							span edit
+					li.is-active
+						a(href='/users/' + user._id)
+							span.icon.is-small
+								i.fas.fa-bookmark(aria-hidden='true')
+							span yardsales
+					li
+						a(href='/users/' + user._id + '/favorites')
+							span.icon.is-small
+								i.fas.fa-heart(aria-hidden='true')
+							span favorites
 			.columns
-				.column.is-one-third
-					nav.panel
+				.column.is-one-quarter
+					nav.panel.is-hidden-mobile
 						p.panel-heading Profile
 						.panel-block
 							img(src='/images/blank_profile.png' alt='profile picture' height=250 width=250)
@@ -17,11 +35,10 @@ block content
 								input.input.is-small(type='text' placeholder='search')
 								span.icon.is-small.is-left
 									i.fas.fa-search(aria-hidden=true)
-						.panel-tabs
-							a.is-active(href='/users/'+user._id) profile
-							a(href='/users/'+user._id+'/update') edit
-							a yardsales
-							a(href='/users/'+user._id+'/favorites') favorites
+						//.panel-tabs
+						//	a(href='/users/'+user._id+'/update') edit
+						//	a.is-active(href='/users/'+user._id) yardsales
+						//	a(href='/users/'+user._id+'/favorites') favorites
 						a.panel-block
 							span.panel-icon
 								i.fas.fa-user(aria-hidden=true)
@@ -36,75 +53,41 @@ block content
 							p #[strong Last Name: ] #{user.lastName}
 						a.panel-block
 							span.panel-icon
-								i.fas.fa-user(aria-hidden=true)
+								i.fas.fa-envelope(aria-hidden=true)
 							p #[strong Email: ] #{user.email}
 						a.panel-block
 							span.panel-icon
-								i.fas.fa-user(aria-hidden=true)
+								i.fas.fa-phone(aria-hidden=true)
 							p #[strong Phone: ] #{user.phone}
 						a.panel-block
 							span.panel-icon
-								i.fas.fa-user(aria-hidden=true)
+								i.fas.fa-map-marker(aria-hidden=true)
 							p #[strong Address: ] #{user.address}
 						a.panel-block
 							span.panel-icon
-								i.fas.fa-user(aria-hidden=true)
+								i.fas.fa-map-marker(aria-hidden=true)
 							p #[strong Address 2: ] #{user.address2}
 						a.panel-block
 							span.panel-icon
-								i.fas.fa-user(aria-hidden=true)
+								i.fas.fa-map-marker(aria-hidden=true)
 							p #[strong City: ] #{user.city}
 						a.panel-block
 							span.panel-icon
-								i.fas.fa-user(aria-hidden=true)
+								i.fas.fa-map-marker(aria-hidden=true)
 							p #[strong State: ] #{user.state}
 						a.panel-block
 							span.panel-icon
-								i.fas.fa-user(aria-hidden=true)
+								i.fas.fa-map-marker(aria-hidden=true)
 							p #[strong Zip Code: ] #{user.zipcode}
 
-
-					//h1
-					//	strong= title
-					//br
-					//img(src='' alt='profile pic')
-					//p #[strong Username: ] #{user.username}
-					//p #[strong First Name: ] #{user.firstName}
-					//p #[strong Last Name: ] #{user.lastName}
-					//p #[strong E-mail: ] #{user.email}
-					//p #[strong Phone: ] #{user.phone}
-					//p #[strong Address: ] #{user.address}
-					//p #[strong Address 2: ] #{user.address2}
-					//p #[strong City: ] #{user.city}
-					//p #[strong State: ]
-					//	if (user.state === 'CT')
-					//		| CT
-					//	else if (user.state === 'MA')
-					//		| MA
-					//	else if (user.state === 'ME')
-					//		| ME
-					//	if (user.state === 'NH')
-					//		| NH
-					//	if (user.state === 'RI')
-					//		| RI
-					//p #[strong Zip Code: ] #{user.zipcode}
-					//hr
-					//p
-					//	a(href=current_user._id+'/update').button.is-link Update Account
-				.column.is-two-thirds
+				.column.is-three-quarters
 					h1
 						strong Your Yard Sales
 					br
 
 					if yardsales
 						each yardsale in yardsales
-							//p #[strong Date: ] #{yardsale.date}
-							//p #[strong Start Time: ] #{yardsale.starttime}
-							//p #[strong Address: ] #{yardsale.address}
-							//p #[strong City: ] #{yardsale.city}
-							//p #[strong State: ] #{yardsale.state}
 							br
-
 							article.media
 								figure.media-left
 									p.image.is-64x64

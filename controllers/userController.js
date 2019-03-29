@@ -306,19 +306,18 @@ exports.update_post = [
 			});
 			return;
 		} else {
-			if (req.params && req.params.id) {
-				// let id = mongoose.Types.ObjectId(req.user._id);
-				debug('Updating user id: ' + req.user._id.toString());
-				// Data from form is valid. Update the record.
-				User
-					.findByIdAndUpdate(req.params.id, user, {}, function(err, theuser) {
-						if (err) {
-							return next(err);
-						}
-						// Successful - redirect to user detail page.
-						res.redirect('/users/'+theuser._id);
-					});
-			}
+			// if (req.params && req.params.id) {
+			debug('Updating user id: ' + req.user._id.toString());
+			// Data from form is valid. Update the record.
+			User
+				.findByIdAndUpdate(req.params.id, user, {}, function(err, theuser) {
+					if (err) {
+						return next(err);
+					}
+					// Successful - redirect to user detail page.
+					res.redirect('/users/'+theuser._id);
+				});
+			// }
 		}
 	}
 ];
