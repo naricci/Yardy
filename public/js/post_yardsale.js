@@ -9,7 +9,6 @@ $(function() {
 		var state             = $('option:selected').val();
 		var zipcode           = $('#zipcode').val();
 		var description       = $('#description').val();
-		// TODO Check how to select/grab date/time values
 		var date              = $('#date').val();
 		var starttime         = $('#starttime').val();
 		var endtime           = $('#endtime').val();

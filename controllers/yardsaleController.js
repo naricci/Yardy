@@ -109,9 +109,12 @@ exports.yardsale_create_post = [
 				// imagename: req.body.imagename
 			});
 
+			// TODO - Add async function to push yardsale id to user's yardsales array
+
 			yardsale.save(function (err) {
 				if (err) { return next(err); }
 
+				// TODO - S3 Image Upload
 				// singleUpload(req, res, function(err, some) {
 				// 	if (err)
 				// 		res.status(422).send({ errors: [{ title: 'Image Upload Error', detail: err.message}] });
