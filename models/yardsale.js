@@ -84,6 +84,6 @@ YardsaleSchema
 		return this.date.toDateString() + ', ' + this.starttime + ' - ' + this.endtime;
 	});
 
-const Yardsale = mongoose.model('Yardsales', YardsaleSchema);
+const Yardsale = mongoose.model('yardsales', YardsaleSchema);
 
 module.exports = Yardsale;

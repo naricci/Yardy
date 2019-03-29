@@ -15,8 +15,8 @@ section.hero
 					// The content below will be visible to users who have logged in.
 					if isAuthenticated
 						.navbar-end
-							//a.navbar-item(href='/')
-							//	| Home
+							a.navbar-item.has-text-primary(href='#')
+								| #{current_user.username}
 							a.navbar-item.has-text-link(href='/catalog/yardsale/create')
 								| Post Yard Sale
 							a.navbar-item.has-text-link(href='/users/' + current_user._id)

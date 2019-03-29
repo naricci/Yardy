@@ -6,7 +6,10 @@ block content
 	section.section
 		.container
 			h1.subtitle.has-text-centered
-				strong #{user.username} | #{title}
+				if isAuthenticated
+					strong #{user.username} | #{title}
+				else
+					strong Registration
 			.columns
 				.column.is-one-third
 					if isAuthenticated
@@ -71,12 +74,12 @@ block content
 						.field
 							label.label Username
 							.control
-								input.input(id='username' type='text' name='username' placeholder='naricci' minlength='4' maxlength='25' required value=(undefined ===
+								input.input(id='username' type='text' name='username' placeholder='johndoe' minlength='4' maxlength='25' required value=(undefined ===
 								user ? '' : user.username))
 						.field
 							label.label Email
 							.control
-								input.input(id='email' type='email' name='email' placeholder='naricci@email.neit.edu' maxlength='25' required value=(undefined ===
+								input.input(id='email' type='email' name='email' placeholder='johndoe@gmail.edu' maxlength='25' required value=(undefined ===
 								user ? '' : user.email))
 
 						if is_update_form
@@ -110,11 +113,11 @@ block content
 							label.label #{is_update_form ? 'Confirm New Password' : 'Confirm Password'}
 							.control
 								input.input(id='cpassword' type='password' name='cpassword' )
-						if !is_update_form
-							.field
-								.control
-									button.button.is-link(type='submit')
-										| Register
+						//if !is_update_form
+						//	.field
+						//		.control
+						//			button.button.is-link(type='submit')
+						//				| Register
 
 				.column.is-one-third
 					br
@@ -158,11 +161,11 @@ block content
 							.control
 								input.input(id='zipcode' type='text' name='zipcode' placeholder='02818' minlength='5' maxlength='5' value=(undefined ===
 								user ? '' : user.zipcode))
-						if is_update_form
-							.field
-								.control
-									button.button.is-link(type='submit')
-										| Update
+						//if is_update_form
+						.field
+							.control
+								button.button.is-link(type='submit')
+									| Update
 						br
 						br
 						if errors

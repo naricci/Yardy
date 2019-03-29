@@ -18,7 +18,6 @@ router.get('/', function(req, res) {
 				yardsale_list: list_yardsales
 			});
 		});
-	// res.render('index', { title: 'Yardy' });
 });
 
 module.exports = router;

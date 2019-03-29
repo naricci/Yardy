@@ -5,11 +5,11 @@ const Schema = mongoose.Schema;
 const FavoriteSchema = new Schema({
 	user: {
 		type: Schema.Types.ObjectId,
-		ref: 'Users'
+		ref: 'users'
 	},
 	// yardsale: {
 	// 	type: Schema.Types.ObjectId,
-	// 	ref: 'Yardsales',
+	// 	ref: 'yardsales',
 	// },
 	isChecked: {
 		type: Boolean,
@@ -17,6 +17,6 @@ const FavoriteSchema = new Schema({
 	}
 });
 
-const Favorite = mongoose.model('Favorites', FavoriteSchema);
+const Favorite = mongoose.model('favorites', FavoriteSchema);
 
 module.exports = Favorite;

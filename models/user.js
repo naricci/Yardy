@@ -66,6 +66,11 @@ const UserSchema = new Schema({
 		minlength: 5,
 		maxlength: 5
 	},
+	yardsales: {
+		type: [Schema.Types.ObjectId],
+		ref: 'yardsales',
+		required: false
+	},
 	createdDate: {
 		type: Date,
 		default: Date.now

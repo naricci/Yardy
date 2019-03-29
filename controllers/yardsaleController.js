@@ -14,6 +14,7 @@ const User = require('../models/user');
 exports.yardsale_list = function(req, res, next) {
 	Yardsale
 		.find()
+		.populate('user')
 		.sort([['date', 'ascending']])
 		.exec(function(err, list_yardsales) {
 			if (err) {
@@ -33,10 +34,11 @@ exports.yardsale_detail = function(req, res, next) {
 		yardsale: function (callback) {
 			Yardsale
 				.findById(req.params.id)
+				.populate('user')
 				.exec(callback);
 		},
 		user: function(callback) {
-			User.find({ 'user': req.params.id })
+			User.findById(req.params.id)
 				.exec(callback);
 		},
 	}, function (err, results) {

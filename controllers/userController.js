@@ -20,6 +20,7 @@ exports.user_profile = (req, res, next) => {
 			},
 			yardsales: function(callback) {
 				Yardsale.find({ 'user': req.params.id }, 'date starttime address city state description')
+					// .populate('user')
 					.exec(callback);
 			},
 		}, function(err, results) {
@@ -198,41 +199,33 @@ exports.register_post = [
 ];
 
 // Display update form on GET.
-exports.update_get = [
-	// isPageOwnedByUser,
-
-	function(req, res, next) {
-		// TODO Figure out why Id is not being cast correctly
-		// ERROR - Cast to ObjectId failed for value "undefined" at path "_id" for model "Users"
-		// var id = req.params.id;
-		// var id = mongoose.Types.ObjectId(req.user._id);
-		User
-			.findById(req.params.id)
-			.exec((err, found_user) => {
-				if (err) {
-					return next(err);
-				}
-				if (found_user == null) {
-					let err = new Error('User not found');
-					err.status = 404;
-					return next(err);
-				}
-				// Successful, so render
-				res.render('user_form', {
-					title: 'Update User',
-					user: found_user,
-					is_update_form: true
-				});
+exports.update_get = (req, res, next) => {
+	User
+		.findById(req.params.id)
+		.exec((err, found_user) => {
+			if (err) {
+				return next(err);
+			}
+			if (found_user == null) {
+				let err = new Error('User not found');
+				err.status = 404;
+				return next(err);
+			}
+			// Successful, so render
+			res.render('user_form', {
+				title: 'Update Profile',
+				user: found_user,
+				is_update_form: true
 			});
-	}
-];
+		});
+};
 
 // Handle update on POST.
 exports.update_post = [
 	// Validate fields.
-	body('username', 'Username must be at least 3 characters long.')
-		.isLength({ min: 4, max: 25 })
-		.trim(),
+	// body('username', 'Username must be at least 4 characters long.')
+	// 	.isLength({ min: 4, max: 25 })
+	// 	.trim(),
 	body('email', 'Please enter a valid email address.')
 		.isEmail()
 		.trim(),
@@ -306,7 +299,7 @@ exports.update_post = [
 		if (errorsArray.length > 0) {
 			// There are errors. Render the form again with sanitized values/error messages.
 			res.render('user_form', {
-				title: 'Update Account',
+				title: 'Update Profile',
 				user: user,
 				errors: errorsArray,
 				is_update_form: true
