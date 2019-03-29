@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function() {
 	$('#search').click(function(req, event) {
 		var sort = $('option:selected').val();
 
