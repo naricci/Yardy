@@ -74,9 +74,14 @@ h1.title.is-1 {
 	/*padding-bottom: 0;*/
 }
 
+/* CUSTOM SECTIONS */
 section.section {
 	padding-bottom: 5px;
 	padding-top: 5px;
+}
+
+#indexSort {
+	flex-grow: 0;
 }
 
 /* FOOTER */

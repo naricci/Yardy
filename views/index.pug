@@ -6,53 +6,37 @@ block content
 	section.section
 		.container
 			h1.subtitle.is-3.has-text-centered Search for Yard Sales in your area!
-			.columns
-				.column.is-three-fifths
-					.field.is-horizontal
-						.field-body
-							.field
-								p.control.has-icons-left
-									input.input(type='text' placeholder='City, State, Zip Code')
-									span.icon.is-small.is-left
-										i.fas.fa-map-marker
+				// .columns
+				// .column.is-three-fifths
+				br
+				br
+				.field.is-horizontal
+					.field-body
+						.field.is-grouped.is-grouped-centered
+							p.control.has-icons-left.is-expanded
+								input.input(type='text' placeholder='City, State, Zip Code')
+								span.icon.is-small.is-left
+									i.fas.fa-map-marker-alt
 
-				.column.is-one-fifth
-					.field.is-horizontal
-						.field-body
-							//- .field
-							//-     .select
-							//-         select
-							//-             option(value='radius') --Radius--
-							//-             option(value='5') 5 miles
-							//-             option(value='10') 10 miles
-							//-             option(value='25') 25 miles
-							//-             option(value='50') 50 miles
-							//-             option(value='100') 100 miles
-							//-             option(value='unlimited') unlimited
-							.field
-								p.control
-									.select
-										select(id='sort' name='sort')
-											option(selected) -- Sort Results --
-											option(value='date') Date
-											option(value='date') Starting Time
-											option(value='date') Distance
-											//- option(value='distance') Distance
-											//- option(value='time') Start Time
-									//a.button.is-primary(type='e' id='search')
-				.column.is-one-fifth
-					.field.is-horizontal
-						.field-body
-							.field
-								a.button.is-link(type='submit')
-									span.icon
-										i.fas.fa-search
-									span Search
-							.field
+								//.fieldd-label
+								//	label.label Sort By:
+								// .field
+							.control#indexSort.has-icons-left
+								.select
+									select(id='sort' name='sort')
+										option(selected) Sort
+										option(value='date') Date
+										option(value='starttime') Starting Time
+										option(value='distance') Distance
+									span.icon.is-small.is-left
+										i.fas.fa-sort
+
+							// .field
+							p.control
 								a.button.is-link(href='/catalog/yardsales')
 									span.icon
 										i.fas.fa-search-location
-									span View All
+									span Search
 	br
 	// MAP OF USA
 	section.section

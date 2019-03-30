@@ -13,16 +13,18 @@ block content
 					form(method='POST' action='')
 						.field
 							label.label Username
-							.control.has-icons-left
+							.control.has-icons-left.has-icons-right
 								input.input#username(type='text' placeholder='username' name='username' required value=(undefined===user ? '' : user.username))
 								span.icon.is-small.is-left
 									i.fas.fa-user
+								span.icon.is-small.is-right
+									i.fas.fa-check
 						.field
 							label.label Password
 							.control.has-icons-left
 								input.input#password(type='password' name='password' required)
 								span.icon.is-small.is-left
-									i.fas.fa-key
+									i.fas.fa-lock
 						.field
 							.control
 								button.button.is-link(type='submit')
