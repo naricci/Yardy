@@ -7,10 +7,10 @@ const FavoriteSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'users'
 	},
-	// yardsale: {
-	// 	type: Schema.Types.ObjectId,
-	// 	ref: 'yardsales',
-	// },
+	yardsale: {
+		type: Schema.Types.ObjectId,
+		ref: 'yardsales',
+	},
 	isChecked: {
 		type: Boolean,
 		required: false
