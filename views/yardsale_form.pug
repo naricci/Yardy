@@ -40,11 +40,11 @@ block content
 								.select.is-primary
 									select(id='state' name='state')
 										option(selected) Select State
-										option(value='CT') CT
-										option(value='MA') MA
-										option(value='ME') ME
-										option(value='NH') NH
-										option(value='RI') RI
+										option(value='CT' selected=(undefined === yardsale || yardsale.state !== 'CT' ? false : 'selected')) CT
+										option(value='MA' selected=(undefined === yardsale || yardsale.state !== 'MA' ? false : 'selected')) MA
+										option(value='ME' selected=(undefined === yardsale || yardsale.state !== 'ME' ? false : 'selected')) ME
+										option(value='NH' selected=(undefined === yardsale || yardsale.state !== 'NH' ? false : 'selected')) NH
+										option(value='RI' selected=(undefined === yardsale || yardsale.state !== 'RI' ? false : 'selected')) RI
 									span.icon.is-small.is-left
 										i.fas.fa-map-marker-alt
 						.field

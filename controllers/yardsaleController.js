@@ -6,6 +6,22 @@ const upload = require('../lib/image-upload');
 const singleUpload = upload.single('image');
 const debug = require('debug')('yardy:yardsale.controller');
 
+
+// AWS Setup
+const AWS = require('aws-sdk');
+const bucketName = 'yardy123' || process.env.S3_BUCKET;
+const bucketRegion = 'us-east-1' || process.env.S3_BUCKET_REGION;
+AWS.config.update({
+	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+	accessKey: process.env.AWS_ACCESS_KEY_ID,
+	region: bucketRegion
+});
+AWS.config.apiVersions = {
+	s3: '2006-03-01'
+};
+const s3 = new AWS.S3();
+
+
 // Models
 const Yardsale = require('../models/yardsale');
 const User = require('../models/user');
@@ -83,6 +99,18 @@ exports.yardsale_create_post = [
 	// Process request after validation and sanitization.
 	(req, res, next) => {
 
+		// S3 Bucket Details
+		const folder = (req.user.username + '/');
+		const file = (req.body.imagename);
+		const params = {
+			Bucket: bucketName,
+			Key: (folder + file),
+			ACL: 'public-read',
+			Body: file
+		};
+		console.log('Folder name: ' + folder);
+		console.log('File: ' + file);
+
 		// Extract the validation errors from a request.
 		const errors = validationResult(req);
 
@@ -105,8 +133,8 @@ exports.yardsale_create_post = [
 				starttime: req.body.starttime,
 				endtime: req.body.endtime,
 				description: req.body.description,
-				user: req.user._id//,
-				// imagename: req.body.imagename
+				user: req.user._id,
+				imagename: req.body.imagename
 			});
 
 			// TODO - Add async function to push yardsale id to user's yardsales array
@@ -115,12 +143,20 @@ exports.yardsale_create_post = [
 				if (err) { return next(err); }
 
 				// TODO - S3 Image Upload
+				s3.putObject(params, function(err, data) {
+					if (err) {
+						console.log('Error: ', err);
+					} else {
+						console.log(data);
+					}
+				});
 				// singleUpload(req, res, function(err, some) {
 				// 	if (err)
 				// 		res.status(422).send({ errors: [{ title: 'Image Upload Error', detail: err.message}] });
 				// 	// res.json({ 'imageUrl': req.file.location });
 				// 	console.log(req.file.location);
 				// });
+
 				// Successful - redirect to new yardsale record.
 				debug(`Yardsale ${yardsale._id} posted Successfully`);
 				debug(yardsale);
@@ -195,15 +231,15 @@ exports.yardsale_update_get = function (req, res, next) {
 exports.yardsale_update_post = [
 
 	// Validate form fields.
-	body('firstname').isLength({ min: 1 }).trim().withMessage('First name must be specified.')
-		.isAlphanumeric().withMessage('First name has non-alphanumeric characters.'),
-	body('lastname').isLength({ min: 1 }).trim().withMessage('Last name must be specified.')
-		.isAlphanumeric().withMessage('Last name has non-alphanumeric characters.'),
+	// body('firstname').isLength({ min: 1 }).trim().withMessage('First name must be specified.')
+	// 	.isAlphanumeric().withMessage('First name has non-alphanumeric characters.'),
+	// body('lastname').isLength({ min: 1 }).trim().withMessage('Last name must be specified.')
+	// 	.isAlphanumeric().withMessage('Last name has non-alphanumeric characters.'),
 	body('date', 'Invalid date').optional({ checkFalsy: true }).isISO8601(),
 
 	// Sanitize fields.
-	sanitizeBody('firstname').trim().escape(),
-	sanitizeBody('lastname').trim().escape(),
+	// sanitizeBody('firstname').trim().escape(),
+	// sanitizeBody('lastname').trim().escape(),
 	sanitizeBody('date').toDate(),
 
 	// Process request after validation and sanitization.
