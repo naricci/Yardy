@@ -4,17 +4,15 @@ block content
 	// Main Content
 	.container
 		h1.subtitle.has-text-centered
-			strong= title
+			strong #{title}: #{yardsale.address}
 
-		h1 #{title}: #{yardsale.address}
-
-		p #[strong Date:] #{yardsale.date}
-		p #[strong Start Time:] #{yardsale.starttime}
-		p #[strong End Time:] #{yardsale.endtime}
-		p #[strong Host:] #{yardsale.firstname} + #{yardsale.lastname}
-		p #[strong Username:]
-			a(href=yardsale.username.url) #{yardsale.username}
-		p #[strong Description:] #{yardsale.description}
+		p #[strong Date: ] #{yardsale.date}
+		p #[strong Start Time: ] #{yardsale.starttime}
+		p #[strong End Time: ] #{yardsale.endtime}
+		p #[strong Host Name: ] #{yardsale.user.firstName}
+		p #[strong Username: ]
+			a(href=yardsale.user._id) #{yardsale.user.username}
+		p #[strong Description: ] #{yardsale.description}
 		hr
 		p Do you really want to delete this Yardsale?
 

@@ -1,11 +1,10 @@
 const async = require('async');
-const { body, validationResult } = require('express-validator/check');
+const { body, check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
-const multer = require('multer');
-const upload = require('../lib/image-upload');
-const singleUpload = upload.single('image');
+// const multer = require('multer');
+// const upload = require('../lib/image-upload');
+// const singleUpload = upload.single('image');
 const debug = require('debug')('yardy:yardsale.controller');
-
 
 // AWS Setup
 const AWS = require('aws-sdk');
@@ -20,7 +19,6 @@ AWS.config.apiVersions = {
 	s3: '2006-03-01'
 };
 const s3 = new AWS.S3();
-
 
 // Models
 const Yardsale = require('../models/yardsale');
@@ -77,24 +75,12 @@ exports.yardsale_create_get = (req, res, next) => {
 // Handle Yardsale create on POST.
 exports.yardsale_create_post = [
 
+	check('date').isAfter(),
 	// Validate fields.
-	// body('phone')
-	// 	.isNumeric().trim().withMessage('Phone number is not valid.'),
-	// body('city')
-	// 	.isEmpty().withMessage('City is required.')
-	// 	.isLength({ max: 25 }).trim().withMessage('City is cannot be more than 25 characters.'),
-	// // body('state')
-	// // 	.isEmpty().withMessage('State is required')
-	// // 	.isLength({ max: 2 }).trim().withMessage('Please use State abbreviation.'),
-	// body('zipcode')
-	// 	.isLength({ max: 5 }).trim().withMessage('Zip Code must be 5 digits.')
-	// 	.isNumeric().withMessage('Zip Code is not valid.'),
+	body('date', 'Invalid date').optional({ checkFalsy: true }).isISO8601(),
+
 	// // Sanitize fields.
-	// sanitizeBody('phone').trim(),
-	// sanitizeBody('city').trim(),
-	// // sanitizeBody('state').trim(),
-	// sanitizeBody('zipcode').trim(),
-	// sanitizeBody('date').toDate(),
+	sanitizeBody('date').toDate(),
 
 	// Process request after validation and sanitization.
 	(req, res, next) => {
@@ -170,7 +156,9 @@ exports.yardsale_create_post = [
 exports.yardsale_delete_get = function (req, res, next) {
 	async.parallel({
 		yardsale: function (callback) {
-			Yardsale.findById(req.params.id).exec(callback);
+			Yardsale.findById(req.params.id)
+				.populate('user')
+				.exec(callback);
 		},
 	}, function (err, results) {
 		if (err) { return next(err); }
