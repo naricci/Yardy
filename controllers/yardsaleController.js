@@ -75,11 +75,19 @@ exports.yardsale_create_get = (req, res, next) => {
 // Handle Yardsale create on POST.
 exports.yardsale_create_post = [
 
-	check('date').isAfter(),
+	// Validate fields
+	check('phone')
+		.isMobilePhone('en-US')
+		.withMessage('Please enter a valid 10-digit phone number.'),
+	check('date')
+		.isAfter()
+		.withMessage('Please select a date that hasn\'t occurred yet.'),
 	// Validate fields.
-	body('date', 'Invalid date').optional({ checkFalsy: true }).isISO8601(),
+
+	// body('date', 'Invalid date').optional({ checkFalsy: true }).isISO8601(),
 
 	// // Sanitize fields.
+	sanitizeBody('phone').toInt(),
 	sanitizeBody('date').toDate(),
 
 	// Process request after validation and sanitization.
@@ -128,23 +136,15 @@ exports.yardsale_create_post = [
 			yardsale.save(function (err) {
 				if (err) { return next(err); }
 
-				// TODO - S3 Image Upload
 				s3.putObject(params, function(err, data) {
 					if (err) {
 						console.log('Error: ', err);
 					} else {
-						console.log(data);
+						debug(data);
 					}
 				});
-				// singleUpload(req, res, function(err, some) {
-				// 	if (err)
-				// 		res.status(422).send({ errors: [{ title: 'Image Upload Error', detail: err.message}] });
-				// 	// res.json({ 'imageUrl': req.file.location });
-				// 	console.log(req.file.location);
-				// });
 
 				// Successful - redirect to new yardsale record.
-				debug(`Yardsale ${yardsale._id} posted Successfully`);
 				debug(yardsale);
 				res.redirect('/catalog/yardsale/'+yardsale._id);
 			});
