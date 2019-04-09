@@ -52,7 +52,8 @@ exports.yardsale_detail = function(req, res, next) {
 				.exec(callback);
 		},
 		user: function(callback) {
-			User.findById(req.params.id)
+			User
+				.findById(req.params.id)
 				.exec(callback);
 		},
 	}, function (err, results) {
@@ -82,8 +83,8 @@ exports.yardsale_create_post = [
 	check('date')
 		.isAfter()
 		.withMessage('Please select a date that hasn\'t occurred yet.'),
-	// Validate fields.
 
+	// Validate fields.
 	// body('date', 'Invalid date').optional({ checkFalsy: true }).isISO8601(),
 
 	// // Sanitize fields.
@@ -219,15 +220,22 @@ exports.yardsale_update_get = function (req, res, next) {
 exports.yardsale_update_post = [
 
 	// Validate form fields.
+	check('phone')
+		.isMobilePhone('en-US')
+		.withMessage('Please enter a valid 10-digit phone number.'),
+	check('date')
+		.isAfter()
+		.withMessage('Please select a date that hasn\'t occurred yet.'),
 	// body('firstname').isLength({ min: 1 }).trim().withMessage('First name must be specified.')
 	// 	.isAlphanumeric().withMessage('First name has non-alphanumeric characters.'),
 	// body('lastname').isLength({ min: 1 }).trim().withMessage('Last name must be specified.')
 	// 	.isAlphanumeric().withMessage('Last name has non-alphanumeric characters.'),
-	body('date', 'Invalid date').optional({ checkFalsy: true }).isISO8601(),
+	// body('date', 'Invalid date').optional({ checkFalsy: true }).isISO8601(),
 
 	// Sanitize fields.
 	// sanitizeBody('firstname').trim().escape(),
 	// sanitizeBody('lastname').trim().escape(),
+	sanitizeBody('phone').toInt(),
 	sanitizeBody('date').toDate(),
 
 	// Process request after validation and sanitization.
@@ -237,7 +245,7 @@ exports.yardsale_update_post = [
 		const errors = validationResult(req);
 
 		// Create Yardsale object with escaped and trimmed data (and the old id!)
-		var yardsale = new Yardsale(
+		let yardsale = new Yardsale(
 			{
 				firstName: req.body.firstname,
 				lastName: req.body.lastname,
