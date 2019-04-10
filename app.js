@@ -13,6 +13,7 @@ require('./db');
 
 // Use dotenv to read .env vars into Node
 require('dotenv').config();
+
 // For Heroku
 const cool = require('cool-ascii-faces');
 const PORT = process.env.PORT || 5000;
@@ -34,14 +35,25 @@ const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/user');
 const flash = require('express-flash');
 const MongoStore = require('connect-mongo')(session);
+const sess = {
+	secret: 'yardy-session-secret',
+	cookie: {},
+	resave: false,
+	saveUninitialized: true,
+	maxAge: 86400000,	// 1 day
+	store: new MongoStore({
+		url: mongoDB,
+		ttl: 7 * 24 * 60 * 60 // 7 days. 14 is Default.
+	})
+};
 
 // Initialize Express App
 const app = express();
 
 // app.get('/', (req, res) => { return res.render('pages/index'); });
 app.get('/cool', (req, res) => { return res.send(cool()); });
-app.listen(PORT, () => { return debug(`Heroku listening on ${ PORT }`); });
-
+// app.listen(PORT, () => { return debug(`Heroku listening on ${ PORT }`); });
+app.listen(PORT);
 
 // Configure the local strategy for use by Passport.
 passport.use(new LocalStrategy(
@@ -81,6 +93,12 @@ app.set('view engine', 'pug');
 // used to display the json in pretty print format
 app.set('json spaces', 2);
 
+// trust first proxy for using cookies with HTTPS
+if (app.get('env') === 'production') {
+	app.set('trust proxy', 1);	// trust first proxy
+	sess.cookie.secure = true;	// serve secure cookies
+}
+
 // Middleware
 app.use(logger('dev'));
 app.use(express.json());
@@ -104,19 +122,7 @@ app.use(favicon(path.join(__dirname, 'public', 'icons', 'favicon.ico')));
 
 // Authentication related middleware.
 app.use(flash());
-app.use(
-	session({
-		secret: 'yardy-session-secret',
-		resave: false,
-		saveUninitialized: true,
-		maxAge: 86400000,	// 1 day
-		store: new MongoStore({
-			url: mongoDB,
-			ttl: 7 * 24 * 60 * 60 // 7 days. 14 is Default.
-		}),
-		// cookie: { secure: true }		// requires HTTPS
-	})
-);
+app.use(session(sess));
 
 // Initialize Passport and restore authentication state, if any,
 // from the session.
@@ -127,7 +133,7 @@ app.use(passport.session());
 app.use(function(req, res, next) {
 	res.locals.isAuthenticated = req.isAuthenticated();
 	// Delete salt and hash fields from req.user object before passing it.
-	var safeUser = req.user;
+	let safeUser = req.user;
 	if (safeUser) {
 		delete safeUser._doc.salt;
 		delete safeUser._doc.hash;
