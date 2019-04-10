@@ -36,6 +36,8 @@ block content
 			h1.subtitle #[strong Description]
 			p #{yardsale.description}
 			hr
+
+			//if (req.user === yardsale.user.username)
 			p
 				a.button.is-link(href=yardsale._id+'/update') Update Yardsale
 				a.button.is-danger(href=yardsale._id+'/delete') Delete Yardsale

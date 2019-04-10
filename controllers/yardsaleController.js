@@ -25,12 +25,12 @@ const Yardsale = require('../models/yardsale');
 const User = require('../models/user');
 
 // Display list of all yardsales.
-exports.yardsale_list = function(req, res, next) {
+exports.yardsale_list = (req, res, next) => {
 	Yardsale
 		.find()
 		.populate('user')
 		.sort([['date', 'ascending']])
-		.exec(function(err, list_yardsales) {
+		.exec((err, list_yardsales) => {
 			if (err) {
 				return next(err);
 			}
@@ -43,20 +43,20 @@ exports.yardsale_list = function(req, res, next) {
 };
 
 // Display detail page for a specific yardsale.
-exports.yardsale_detail = function(req, res, next) {
+exports.yardsale_detail = (req, res, next) => {
 	async.parallel({
-		yardsale: function (callback) {
+		yardsale: (callback) => {
 			Yardsale
 				.findById(req.params.id)
 				.populate('user')
 				.exec(callback);
 		},
-		user: function(callback) {
+		user: (callback) => {
 			User
 				.findById(req.params.id)
 				.exec(callback);
 		},
-	}, function (err, results) {
+	}, (err, results) => {
 		if (err) { return next(err); } // Error in API usage.
 		if (results.yardsale == null) { // No results.
 			err = new Error('Yardsale not found');
@@ -140,10 +140,10 @@ exports.yardsale_create_post = [
 
 			// TODO - Add async function to push yardsale id to user's yardsales array
 
-			yardsale.save(function (err) {
+			yardsale.save((err) => {
 				if (err) { return next(err); }
 
-				s3.putObject(params, function(err, data) {
+				s3.putObject(params, (err, data) => {
 					if (err) {
 						console.log('Error: ', err);
 					} else {
@@ -160,14 +160,14 @@ exports.yardsale_create_post = [
 ];
 
 // Display Yardsale delete form on GET.
-exports.yardsale_delete_get = function (req, res, next) {
+exports.yardsale_delete_get = (req, res, next) => {
 	async.parallel({
-		yardsale: function (callback) {
+		yardsale: (callback) => {
 			Yardsale.findById(req.params.id)
 				.populate('user')
 				.exec(callback);
 		},
-	}, function (err, results) {
+	}, (err, results) => {
 		if (err) { return next(err); }
 		if (results.yardsale == null) { // No results.
 			res.redirect('/catalog/yardsales');
@@ -179,14 +179,14 @@ exports.yardsale_delete_get = function (req, res, next) {
 };
 
 // Handle Yardsale delete on POST.
-exports.yardsale_delete_post = function (req, res, next) {
+exports.yardsale_delete_post = (req, res, next) => {
 	async.parallel({
-		yardsale: function (callback) {
+		yardsale: (callback) => {
 			Yardsale
 				.findById(req.body.yardsaleid)
 				.exec(callback);
 		},
-	}, function (err, results) {
+	}, (err, results) => {
 		if (err) { return next(err); }
 		// Success.
 		if (results.yardsale.length === 1) {
@@ -207,10 +207,10 @@ exports.yardsale_delete_post = function (req, res, next) {
 };
 
 // Display Yardsale update form on GET.
-exports.yardsale_update_get = function (req, res, next) {
+exports.yardsale_update_get = (req, res, next) => {
 
 	Yardsale
-		.findById(req.params.id, function (err, yardsale) {
+		.findById(req.params.id, (err, yardsale) => {
 			if (err) { return next(err); }
 			if (yardsale == null) { // No results.
 				let err = new Error('Yardsale not found.');
@@ -277,7 +277,7 @@ exports.yardsale_update_post = [
 		}
 		else {
 			// Data from form is valid. Update the yardsale record.
-			Yardsale.findByIdAndUpdate(req.params.id, yardsale, {}, function (err, theyardsale) {
+			Yardsale.findByIdAndUpdate(req.params.id, yardsale, {}, (err, theyardsale) => {
 				if (err) { return next(err); }
 				// Successful - redirect to yardsale detail page.
 				res.redirect('/catalog/yardsale/'+theyardsale._id);
