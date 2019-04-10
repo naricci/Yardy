@@ -80,7 +80,12 @@ exports.yardsale_create_post = [
 	check('phone')
 		.isMobilePhone('en-US')
 		.withMessage('Please enter a valid 10-digit phone number.'),
+	check('zipcode')
+		.isPostalCode('US')
+		.withMessage('Please enter a valid 5-digit zip code'),
 	check('date')
+		.optional({ checkFalsy: true }).isISO8601()
+		.withMessage('Please enter a valid date')
 		.isAfter()
 		.withMessage('Please select a date that hasn\'t occurred yet.'),
 
@@ -89,6 +94,7 @@ exports.yardsale_create_post = [
 
 	// // Sanitize fields.
 	sanitizeBody('phone').toInt(),
+	sanitizeBody('zipcode').toString(),
 	sanitizeBody('date').toDate(),
 
 	// Process request after validation and sanitization.
@@ -222,20 +228,20 @@ exports.yardsale_update_post = [
 	// Validate form fields.
 	check('phone')
 		.isMobilePhone('en-US')
-		.withMessage('Please enter a valid 10-digit phone number.'),
+		.withMessage('Please enter a valid 10-digit phone number.')
+		.trim(),
+	check('zipcode')
+		.isPostalCode('US')
+		.withMessage('Please enter a valid 5-digit zip code')
+		.trim(),
 	check('date')
 		.isAfter()
-		.withMessage('Please select a date that hasn\'t occurred yet.'),
-	// body('firstname').isLength({ min: 1 }).trim().withMessage('First name must be specified.')
-	// 	.isAlphanumeric().withMessage('First name has non-alphanumeric characters.'),
-	// body('lastname').isLength({ min: 1 }).trim().withMessage('Last name must be specified.')
-	// 	.isAlphanumeric().withMessage('Last name has non-alphanumeric characters.'),
-	// body('date', 'Invalid date').optional({ checkFalsy: true }).isISO8601(),
+		.withMessage('Please select a date that hasn\'t occurred yet.')
+		.trim(),
 
 	// Sanitize fields.
-	// sanitizeBody('firstname').trim().escape(),
-	// sanitizeBody('lastname').trim().escape(),
 	sanitizeBody('phone').toInt(),
+	sanitizeBody('zipcode').toString(),
 	sanitizeBody('date').toDate(),
 
 	// Process request after validation and sanitization.
