@@ -4,121 +4,74 @@ const favicon = require('serve-favicon');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const debug = require('debug')('yardy:mongo');
-const heroku = require('debug')('yardy:heroku');
+const debug = require('debug')('yardy:heroku');
+
 // Mongoose Connection
-const mongoose = require('mongoose');
-let gracefulShutdown;
-// var dev_db_url = 'mongodb://localhost/yardy';
 let dev_db_url = 'mongodb://nick:Yardy123@ds121475.mlab.com:21475/yardy';
-var mongoDB = process.env.MONGODB_URI || dev_db_url;
-var db = mongoose.connection;
+let mongoDB = process.env.MONGODB_URI || dev_db_url;
+require('./db');
+
 // Use dotenv to read .env vars into Node
 require('dotenv').config();
 // For Heroku
 const cool = require('cool-ascii-faces');
 const PORT = process.env.PORT || 5000;
-// var auth = require('./lib/auth');
+
+// Routes
 const index = require('./routes/index');
 const users = require('./routes/users');
 const catalog = require('./routes/catalog');
+
 // Compression/Security Packages
 const compression = require('compression');
 const helmet = require('helmet');
+
 // Authentication Packages
+// var auth = require('./lib/auth');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/user');
 const flash = require('express-flash');
 const MongoStore = require('connect-mongo')(session);
+
 // Initialize Express App
 const app = express();
 
 // app.get('/', (req, res) => { return res.render('pages/index'); });
 app.get('/cool', (req, res) => { return res.send(cool()); });
-app.listen(PORT, () => { return heroku(`Heroku listening on ${ PORT }`); });
+app.listen(PORT, () => { return debug(`Heroku listening on ${ PORT }`); });
 
-// Set up mongoose connection
-if (process.env.NODE_ENV === 'production') {
-	dev_db_url = process.env.MONGOLAB_URI;
-}
-mongoose.connect(mongoDB, {
-	useNewUrlParser: true
-});
-mongoose.set('useCreateIndex', true);
-mongoose.Promise = global.Promise;
-
-// MongoDB CONNECTION EVENTS
-db.on('connected', function() {
-	debug('Mongoose connected to ' + mongoDB);
-});
-db.on('error', function(err) {
-	debug('Mongoose connection error: ' + err);
-	process.exit(0);
-});
-db.on('disconnected', function() {
-	debug('Mongoose disconnected');
-});
-// CAPTURE APP TERMINATION / RESTART EVENTS
-// To be called when process is restarted or terminated
-gracefulShutdown = function(msg, callback) {
-	db.close(function() {
-		debug('Mongoose disconnected through ' + msg);
-		callback();
-	});
-};
-// For nodemon restarts
-process.once('SIGUSR2', function() {
-	gracefulShutdown('nodemon restart', function() {
-		process.kill(process.pid, 'SIGUSR2');
-	});
-});
-// For app termination
-process.on('SIGINT', function() {
-	gracefulShutdown('app termination', function() {
-		process.exit(0);
-	});
-});
-// For Heroku app termination
-process.on('SIGTERM', function() {
-	gracefulShutdown('Heroku app termination', function() {
-		process.exit(0);
-	});
-});
-process.on('exit', function(code) {
-	debug('About to exit with code: ', code);
-});
 
 // Configure the local strategy for use by Passport.
-passport.use(
-	new LocalStrategy(function(username, password, callback) {
+passport.use(new LocalStrategy(
+	function(username, password, done) {
 		User.findOne({ username: username }, function(err, user) {
 			if (err) {
-				return callback(err);
+				return done(err);
 			}
 			if (!user) {
-				return callback(null, false, { message: 'Incorrect username. ' });
+				return done(null, false, { message: 'Incorrect username. ' });
 			}
 			if (!user.validatePassword(password)) {
-				return callback(null, false, { message: 'Incorrect password.' });
+				return done(null, false, { message: 'Incorrect password.' });
 			}
-			return callback(null, user);
+			return done(null, user);
 		});
-	})
-);
+	}
+));
 
 // Configure Passport authenticated session persistence.
-passport.serializeUser(function(user, callback) {
-	callback(null, user._id);
+passport.serializeUser(function(user, done) {
+	done(null, user._id);
 });
 
-passport.deserializeUser(function(id, callback) {
+passport.deserializeUser(function(id, done) {
 	User.findById(id, function(err, user) {
 		if (err) {
-			return callback(err);
+			return done(err);
 		}
-		callback(null, user);
+		done(null, user);
 	});
 });
 
@@ -131,6 +84,7 @@ app.set('json spaces', 2);
 // Middleware
 app.use(logger('dev'));
 app.use(express.json());
+// app.use(session({ secret: 'yardy' }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
@@ -143,10 +97,10 @@ app.use(favicon(path.join(__dirname, 'public', 'icons', 'favicon.ico')));
 
 // a middleware function with no mount path.
 // This code is executed for every request to the router
-app.use(function (req, res, next) {
-	debug('Time:', Date.now());
-	next();
-});
+// app.use(function (req, res, next) {
+// 	debug('Time:', Date.now());
+// 	next();
+// });
 
 // Authentication related middleware.
 app.use(flash());
@@ -155,10 +109,11 @@ app.use(
 		secret: 'yardy-session-secret',
 		resave: false,
 		saveUninitialized: true,
+		maxAge: 86400000,	// 1 day
 		store: new MongoStore({
 			url: mongoDB,
 			ttl: 7 * 24 * 60 * 60 // 7 days. 14 is Default.
-		})
+		}),
 		// cookie: { secure: true }		// requires HTTPS
 	})
 );
