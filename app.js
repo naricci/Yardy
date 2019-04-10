@@ -4,12 +4,11 @@ const favicon = require('serve-favicon');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const debug = require('debug')('yardy:heroku');
 
 // Mongoose Connection
 let dev_db_url = 'mongodb://nick:Yardy123@ds121475.mlab.com:21475/yardy';
 let mongoDB = process.env.MONGODB_URI || dev_db_url;
-require('./db');
+require('./lib/db');
 
 // Use dotenv to read .env vars into Node
 require('dotenv').config();
@@ -17,6 +16,7 @@ require('dotenv').config();
 // For Heroku
 const cool = require('cool-ascii-faces');
 const PORT = process.env.PORT || 5000;
+// const debug = require('debug')('yardy:heroku');
 
 // Routes
 const index = require('./routes/index');
@@ -42,6 +42,7 @@ const sess = {
 	saveUninitialized: true,
 	maxAge: 86400000,	// 1 day
 	store: new MongoStore({
+		// mongooseConnection: mongoose.connect(mongoDB),
 		url: mongoDB,
 		ttl: 7 * 24 * 60 * 60 // 7 days. 14 is Default.
 	})
@@ -99,7 +100,7 @@ if (app.get('env') === 'production') {
 	sess.cookie.secure = true;	// serve secure cookies
 }
 
-// Middleware
+// Base Middleware
 app.use(logger('dev'));
 app.use(express.json());
 // app.use(session({ secret: 'yardy' }));

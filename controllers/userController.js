@@ -533,10 +533,10 @@ exports.favorites_post = [
 // -- Helper functions -- //
 // Extract flash messages from req.flash and return an array of messages.
 function extractFlashMessages(req) {
-	var messages = [];
+	let messages = [];
 	// Check if flash messages was sent. If so, populate them.
-	var errorFlash = req.flash('error');
-	var successFlash = req.flash('success');
+	let errorFlash = req.flash('error');
+	let successFlash = req.flash('success');
 
 	// Look for error flash.
 	if (errorFlash && errorFlash.length) messages.push({ msg: errorFlash[0] });
