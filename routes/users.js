@@ -45,6 +45,12 @@ router.get('/:id/update', userController.update_get);
 // POST request for update User.
 router.post('/:id/update', userController.update_post);
 
+// GET request for User updating profile pic
+router.get('/:id/profilepic', userController.profilepic_get);
+
+// POST request for User updating profile pic
+router.post('/:id/profilepic', userController.profilepic_post);
+
 // GET request for User favorites
 router.get('/:id/favorites', userController.favorites_get);
 

@@ -9,12 +9,12 @@ block content
 			// .tabs.is-centered.is-hidden-desktop.is-hidden-widescreen.is-hidden-fullhd
 			.tabs.is-centered.is-boxed
 				ul
-					li
+					li.is-active
 						a(href='/users/' + user._id + '/update')
 							span.icon.is-small
 								i.fas.fa-pen(aria-hidden='true')
 							span edit
-					li.is-active
+					li
 						a(href='/users/' + user._id)
 							span.icon.is-small
 								i.fas.fa-bookmark(aria-hidden='true')
@@ -89,40 +89,30 @@ block content
 							p #[strong Zip Code: ] #{user.zipcode}
 
 				.column.is-three-quarters
-					h1
-						strong Your Yard Sales
-					br
+					form(action='' method='POST')
+						.field
+							label.label Add Image
+							.control
+								.file.is-link
+									label.file-label(for=file)
+										input.file-input(type='file' id='file' name='profilepic' accept='image/*' value=(undefined ===
+										user ? '' : user.profilepic))
+										span.file-cta
+											span.file-icon
+												i.fas.fa-upload
+											span.file-label
+												| Upload image&mldr;
+										span.file-name(id='filename') e.g. profilepic.jpg
+						.field
+							.control
+								br
+								button.button.is-link(type='submit')
+									| Submit
+								button.button.is-danger(type='cancel')
+									| Cancel
 
-					if yardsales
-						each yardsale in yardsales
-							br
-							article.media
-								figure.media-left
-									p.image.is-64x64
-										img(src='https://s3.amazonaws.com/yardy123/'+user.username+'/'+yardsale.imagename alt='picture of yardsale')
-								.media-content
-									.content
-										p
-											strong #{yardsale.city}&nbsp;
-											small #{yardsale.date}&nbsp;&nbsp;
-											small #{yardsale.starttime}
-											br
-										p Posted by #{user.username}
-										p #{yardsale.description}
-									nav.level.is-mobile
-										.level-left
-											a.level-item
-												span.icon.is-small
-													i.fas.fa-envelope
-											a.level-item
-												span.icon.is-small
-													i.fab.fa-twitter
-											a.level-item
-												span.icon.is-small
-													i.fas.fa-heart
-								.media-right
-									//ion-icon(name='create' size='large')
-									a(href='/catalog/yardsale/'+yardsale._id+'/update') edit&nbsp;&nbsp;
-									//button.delete
-									a.delete(href='/catalog/yardsale/'+yardsale._id+'/delete')
-							hr
+						if errors
+							ul
+								for error in errors
+									li!= error.msg
+

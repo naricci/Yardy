@@ -27,9 +27,12 @@ block content
 			.columns
 				.column.is-one-quarter
 					nav.panel.is-hidden-mobile
-						p.panel-heading Profile
+						p.panel-heading Profile&nbsp;&nbsp;
+							a(href='/users/' + user._id + '/profilepic') upload picture
 						.panel-block
-							img(src='/images/blank_profile.png' alt='profile picture' height=250 width=250)
+							//img(src='/images/blank_profile.png' alt='profile picture' height=250 width=250)
+							img(src='https://s3.amazonaws.com/yardy123/'+user.username+'/'+user.profilepic alt='profile picture' height=250 width=250)
+
 						.panel-block
 							p.control.has-icons-left
 								input.input.is-small(type='text' placeholder='search')

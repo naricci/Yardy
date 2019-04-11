@@ -3,6 +3,21 @@ const { sanitizeBody } = require('express-validator/filter');
 const passport = require('passport');
 const async = require('async');
 const debug = require('debug')('yardy:user.controller');
+
+// AWS Setup
+const AWS = require('aws-sdk');
+const bucketName = 'yardy123' || process.env.S3_BUCKET;
+const bucketRegion = 'us-east-1' || process.env.S3_BUCKET_REGION;
+AWS.config.update({
+	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+	accessKey: process.env.AWS_ACCESS_KEY_ID,
+	region: bucketRegion
+});
+AWS.config.apiVersions = {
+	s3: '2006-03-01'
+};
+const s3 = new AWS.S3();
+
 // Models
 const User = require('../models/user');
 const Yardsale = require('../models/yardsale');
@@ -297,7 +312,6 @@ exports.update_post = [
 			});
 			return;
 		} else {
-			// if (req.params && req.params.id) {
 			debug('Updating user id: ' + req.user._id.toString());
 			// Data from form is valid. Update the record.
 			User
@@ -308,7 +322,6 @@ exports.update_post = [
 					// Successful - redirect to user detail page.
 					res.redirect('/users/'+theuser._id);
 				});
-			// }
 		}
 	}
 ];
@@ -487,6 +500,82 @@ exports.reset_post_final = [
 				}
 			);
 		}
+	}
+];
+
+// Display profile picture update page on GET
+exports.profilepic_get = (req, res, next) => {
+	User
+		.findById(req.params.id)
+		.exec((err, found_user) => {
+			if (err) {
+				return next(err);
+			}
+			if (found_user == null) {
+				let err = new Error('User not found');
+				err.status = 404;
+				return next(err);
+			}
+			// Successful, so render
+			res.render('user_profilepic', {
+				title: 'Update Profile Pic',
+				user: found_user,
+				is_update_form: true
+			});
+		});
+};
+
+// TODO - Fix profile picture upload
+// Handle profile picture update page on POST
+exports.profilepic_post = [
+	// Validate form fields.
+	check('profilepic')
+		.isLength({max: 100})
+		.withMessage('Image name cannot be longer than 100 characters long.')
+		.trim(),
+
+	// Sanitize fields.
+	sanitizeBody('profilepic').trim().escape(),
+
+	(req, res, next) => {
+		// Extract the validation errors from a request.
+		const errors = validationResult(req);
+
+		// S3 Bucket Details
+		const folder = (req.user.username + '/');
+		const file = (req.body.profilepic);
+		const params = {
+			Bucket: bucketName,
+			Key: (folder + file),
+			ACL: 'public-read',
+			Body: file
+		};
+		console.log('Folder name: ' + folder);
+		console.log('File: ' + file);
+
+		let user = new User({
+			profilepic: req.body.profilepic,
+			_id: req.params.id
+		});
+
+		User
+			.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
+				if (err) {
+					return next(err);
+				}
+				// Upload profile pic to S3 bucket
+				s3.putObject(params, (err, data) => {
+					if (err) {
+						console.log('Error: ', err);
+					} else {
+						debug(data);
+					}
+				});
+
+				debug(theuser.profilepic);
+				// Successful - redirect to user detail page.
+				res.redirect('/users/'+theuser._id);
+			});
 	}
 ];
 

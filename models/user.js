@@ -71,6 +71,11 @@ const UserSchema = new Schema({
 		ref: 'yardsales',
 		required: false
 	},
+	profilepic: {
+		type: String,
+		required: false,
+		maxlength: 100
+	},
 	createdDate: {
 		type: Date,
 		default: Date.now
@@ -80,7 +85,7 @@ const UserSchema = new Schema({
 // Virtual for User's URL.
 UserSchema
 	.virtual('url')
-	.get(function() {
+	.get(() => {
 		return '/users/' + this.user._id;
 	});
 
@@ -90,7 +95,7 @@ UserSchema
 	.get(() => {
 		return this.firstName + ' ' + this.lastName;
 	})
-	.set(function(setFullNameTo) {
+	.set((setFullNameTo) => {
 		var split = setFullNameTo.split(' '),
 			firstName = split[0],
 			lastName = split[1];
@@ -100,7 +105,7 @@ UserSchema
 	});
 
 // Instance method for hashing user-typed password.
-UserSchema.methods.setPassword = function(password) {
+UserSchema.methods.setPassword = (password) => {
 	// Create a salt for the user.
 	this.salt = crypto.randomBytes(16).toString('hex');
 	// Use salt to create hashed password.
@@ -110,7 +115,7 @@ UserSchema.methods.setPassword = function(password) {
 };
 
 // Instance method for comparing user-typed password against hashed-password on db.
-UserSchema.methods.validatePassword = function(password) {
+UserSchema.methods.validatePassword = (password) => {
 	let hash = crypto
 		.pbkdf2Sync(password, this.salt, 10000, 128, 'sha512')
 		.toString('hex');
@@ -118,7 +123,7 @@ UserSchema.methods.validatePassword = function(password) {
 };
 
 // Instance method for comparing user-typed passwords against each other.
-UserSchema.methods.passwordsMatch = function(password, passwordConfirm) {
+UserSchema.methods.passwordsMatch = (password, passwordConfirm) => {
 	return password === passwordConfirm;
 };
 
