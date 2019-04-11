@@ -1,8 +1,9 @@
-const { body, validationResult } = require('express-validator/check');
+const { body, check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 const passport = require('passport');
 const async = require('async');
 const debug = require('debug')('yardy:user.controller');
+// Models
 const User = require('../models/user');
 const Yardsale = require('../models/yardsale');
 
@@ -15,15 +16,17 @@ exports.user_profile = (req, res, next) => {
 
 		async.parallel({
 			user: function(callback) {
-				User.findById(req.params.id)
+				User
+					.findById(req.params.id)
 					.exec(callback);
 			},
 			yardsales: function(callback) {
-				Yardsale.find({ 'user': req.params.id }, 'date starttime address city state description')
+				Yardsale
+					.find({ 'user': req.params.id }, 'date starttime address city state description')
 					// .populate('user')
 					.exec(callback);
 			},
-		}, function(err, results) {
+		}, (err, results) => {
 			if (err) { return next(err); } // Error in API usage.
 			if (results.user == null) { // No results.
 				let err = new Error('User not found');
@@ -39,9 +42,8 @@ exports.user_profile = (req, res, next) => {
 // Display login form on GET.
 exports.login_get = [
 	isAlreadyLoggedIn,
-
-	function(req, res, next) {
-		var messages = extractFlashMessages(req);
+	(req, res, next) => {
+		let messages = extractFlashMessages(req);
 		res.render('user_login', {
 			title: 'Login',
 			errors: messages.length > 0 ? messages : null
@@ -50,41 +52,34 @@ exports.login_get = [
 ];
 
 // Display warning page on GET.
-exports.warning = [
-	function(req, res, next) {
-		var messages = extractFlashMessages(req);
-		res.render('user_warning', {
-			title: 'Sorry!',
-			errors: messages.length > 0 ? messages : null
-		});
-	}
-];
+exports.warning = (req, res, next) => {
+	let messages = extractFlashMessages(req);
+	res.render('user_warning', {
+		title: 'Sorry!',
+		errors: messages.length > 0 ? messages : null
+	});
+};
 
 // Handle login form on POST
-exports.login_post = [
-	passport.authenticate('local', {
-		successRedirect: '/',
-		failureRedirect: '/users/login',
-		failureFlash: true
-	})
-];
+exports.login_post = passport.authenticate('local', {
+	successRedirect: '/',
+	failureRedirect: '/users/login',
+	failureFlash: true
+});
 
 // Handle logout on GET.
-exports.logout_get = [
-	function(req, res, next) {
-		req.logout();
-		req.session.destroy(function(err) {
-			res.redirect('/');
-		});
-	}
-];
+exports.logout_get = (req, res, next) => {
+	req.logout();
+	req.session.destroy((err) => {
+		res.redirect('/');
+	});
+};
 
 // Display register form on GET.
 exports.register_get = [
 	isAlreadyLoggedIn,
-
 	// Continue processing.
-	function(req, res, next) {
+	(req, res, next) => {
 		// 'user_form'
 		res.render('user_form', {
 			title: 'Create User'
@@ -95,8 +90,8 @@ exports.register_get = [
 // Handle register on POST.
 exports.register_post = [
 	// Validate form fields.
-	body('username', 'Username must be at least 3 characters long.')
-		.isLength({ min: 4 })
+	body('username', 'Username must be between 4-32 characters long.')
+		.isLength({ min: 4, max: 32 })
 		.trim(),
 	body('email', 'Please enter a valid email address.')
 		.isEmail()
@@ -116,14 +111,14 @@ exports.register_post = [
 	// Process request after validation and sanitization.
 	(req, res, next) => {
 		// Extract the validation errors from a request.
-		var errors = validationResult(req);
+		let errors = validationResult(req);
 
 		// Get a handle on errors.array() array,
 		// so we can push our own error messages into it.
-		var errorsArray = errors.array();
+		let errorsArray = errors.array();
 
 		// Create a user object with escaped and trimmed data.
-		var user = new User({
+		let user = new User({
 			username: req.body.username,
 			firstName: req.body.firstname,
 			lastName: req.body.lastname,
@@ -184,7 +179,7 @@ exports.register_post = [
 							if (err) {
 								return next(err);
 							}
-							console.log('User Created Successfully\n' + user);
+							debug('User Created Successfully\n' + user);
 							// User saved. Redirect to login page.
 							req.flash(
 								'success',
@@ -223,9 +218,6 @@ exports.update_get = (req, res, next) => {
 // Handle update on POST.
 exports.update_post = [
 	// Validate fields.
-	// body('username', 'Username must be at least 4 characters long.')
-	// 	.isLength({ min: 4, max: 25 })
-	// 	.trim(),
 	body('email', 'Please enter a valid email address.')
 		.isEmail()
 		.trim(),
@@ -247,13 +239,13 @@ exports.update_post = [
 	// Process request after validation and sanitization.
 	(req, res, next) => {
 		// Extract the validation errors from a request.
-		var errors = validationResult(req);
+		let errors = validationResult(req);
 
 		// Get a handle on errors.array() array.
-		var errorsArray = errors.array();
+		let errorsArray = errors.array();
 
 		// Create a user object with escaped and trimmed data and the old _id!
-		var user = new User({
+		let user = new User({
 			username: req.body.username,
 			firstName: req.body.firstname,
 			lastName: req.body.lastname,
@@ -284,7 +276,7 @@ exports.update_post = [
 			// -- The user does not want to change password. -- //
 
 			// Remove warnings that may be coming from the body(..) validation step above.
-			var filteredErrorsArray = [];
+			let filteredErrorsArray = [];
 			errorsArray.forEach(errorObj => {
 				if (
 					!(errorObj.param === 'password' || errorObj.param === 'cpassword')
@@ -310,7 +302,7 @@ exports.update_post = [
 			debug('Updating user id: ' + req.user._id.toString());
 			// Data from form is valid. Update the record.
 			User
-				.findByIdAndUpdate(req.params.id, user, {}, function(err, theuser) {
+				.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
 					if (err) {
 						return next(err);
 					}
@@ -325,8 +317,7 @@ exports.update_post = [
 // Display reset password form on GET.
 exports.reset_get = [
 	isAlreadyLoggedIn,
-
-	function(req, res, next) {
+	(req, res, next) => {
 		res.render('user_reset', {
 			title: 'Reset Password',
 			is_first_step: true
@@ -338,10 +329,9 @@ exports.reset_get = [
 exports.reset_post = [
 	// First step of the password reset process.
 	// Take username and email from form, and try to find a matching user.
-
 	// Validate fields.
-	body('username', 'Username must be at least 3 characters long.')
-		.isLength({ min: 4 })
+	body('username', 'Username must be between 4-32 characters long.')
+		.isLength({ min: 4, max: 32 })
 		.trim(),
 	body('email', 'Please enter a valid email address.')
 		.isEmail()
@@ -355,13 +345,13 @@ exports.reset_post = [
 	// Process request after validation and sanitization.
 	(req, res, next) => {
 		// Extract the validation errors from a request.
-		var errors = validationResult(req);
+		let errors = validationResult(req);
 
 		// Get a handle on errors.array() array.
-		var errorsArray = errors.array();
+		let errorsArray = errors.array();
 
 		// Create a user object with escaped and trimmed data.
-		var user = new User({
+		let user = new User({
 			username: req.body.username,
 			email: req.body.email
 		});
@@ -421,7 +411,6 @@ exports.reset_post_final = [
 	// Second and the final step of the password reset process.
 	// Take userid, password and password_confirm fields from form,
 	// and update the User record.
-
 	body('password', 'Password must be between 4-32 characters long.')
 		.isLength({ min: 4, max: 32 })
 		.trim(),
@@ -437,19 +426,18 @@ exports.reset_post_final = [
 	// Process request after validation and sanitization.
 	(req, res, next) => {
 		// Extract the validation errors from a request.
-		var errors = validationResult(req);
+		let errors = validationResult(req);
 
 		// Get a handle on errors.array() array.
-		var errorsArray = errors.array();
+		let errorsArray = errors.array();
 
 		// Create a user object containing only id field, for now.
 		// We need to use old _id, which is coming from found_user passed in the first step.
-		var user = new User({
+		let user = new User({
 			_id: req.body.userid
 		});
 
 		// -- Custom Validation -- //
-
 		// Check if passwords match or not.
 		if (!user.passwordsMatch(req.body.password, req.body.cpassword)) {
 			// Passwords do not match. Create and push an error message.
@@ -474,16 +462,20 @@ exports.reset_post_final = [
 			// Update the record.
 			async.waterfall(
 				[
-					function(callback) {
-						User.findById(req.body.userid).exec(callback);
+					(callback) => {
+						User
+							.findById(req.body.userid)
+							.exec(callback);
 					},
-					function(found_user, callback) {
+					(found_user, callback) => {
 						// This step is required to keep user role unchanged.
 						// user.role = found_user.role;
-						User.findByIdAndUpdate(req.body.userid, user, {}).exec(callback);
+						User
+							.findByIdAndUpdate(req.body.userid, user, {})
+							.exec(callback);
 					}
 				],
-				function(err, theuser) {
+				(err, theuser) => {
 					if (err) {
 						return next(err);
 					}
@@ -500,30 +492,26 @@ exports.reset_post_final = [
 ];
 
 // Display favorites page on GET
-exports.favorites_get = [
-	// isPageOwnedByUser,
-
-	function(req, res, next) {
-		User
-			.findById(req.params.id)
-			.exec((err, found_user) => {
-				if (err) {
-					return next(err);
-				}
-				if (found_user == null) {
-					let err = new Error('User not found');
-					err.status = 404;
-					return next(err);
-				}
-				// Successful, so render
-				res.render('user_favorites', {
-					title: 'Manage Favorites',
-					user: found_user,
-					is_update_form: true
-				});
+exports.favorites_get = (req, res, next) => {
+	User
+		.findById(req.params.id)
+		.exec((err, found_user) => {
+			if (err) {
+				return next(err);
+			}
+			if (found_user == null) {
+				let err = new Error('User not found');
+				err.status = 404;
+				return next(err);
+			}
+			// Successful, so render
+			res.render('user_favorites', {
+				title: 'Manage Favorites',
+				user: found_user,
+				is_update_form: true
 			});
-	}
-];
+		});
+};
 
 // Handle favorites page on POST
 exports.favorites_post = [
