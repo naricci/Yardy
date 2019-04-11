@@ -20,11 +20,12 @@ exports.user_profile = (req, res, next) => {
 			Yardsale
 				.find({ 'user': req.params.id }, 'date starttime address city state description')
 			// .populate('user')
+				.sort([['date', 'ascending']])
 				.exec(callback);
 		},
 	}, (err, results) => {
 		if (err) { return next(err); } // Error in API usage.
-		if (results.user == null) { // No results.
+		if (results.user === null) { // No results.
 			let err = new Error('User not found');
 			err.status = 404;
 			return next(err);
@@ -199,7 +200,7 @@ exports.update_get = (req, res, next) => {
 			if (err) {
 				return next(err);
 			}
-			if (found_user == null) {
+			if (found_user === null) {
 				let err = new Error('User not found');
 				err.status = 404;
 				return next(err);

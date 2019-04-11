@@ -7,37 +7,40 @@ block content
 			h1.subtitle.has-text-centered
 				strong= title
 
-			// TODO - make image appear properly
-			//img(src='https://s3.amazonaws.com/yardy123/'+yardsale.user.username+'/'+yardsale.imagename[0] alt='picture of yardsale')
-			img(src='https://s3.amazonaws.com/yardy123/naricci/iu.jpeg' alt='picture of yardsale')
-			br
-			br
-			p #[strong Username: ]
-				a(href='/users/'+yardsale.user._id)  #{yardsale.user.username}
-			hr
-			h1.subtitle #[strong Date & Time]
-			p #[strong Date: ] #{yardsale.date}
-			p #[strong Start Time: ] #{yardsale.starttime}
-			p #[strong End Time: ] #{yardsale.endtime}
-			hr
-			h1.subtitle #[strong Contact Info]
-			p #[strong First Name: ] #{yardsale.user.firstName}
-			p #[strong Last Name: ] #{yardsale.user.lastName}
-			p #[strong Phone: ] #{yardsale.phone}
-			p #[strong Email: ] #{yardsale.user.email}
-			hr
-			h1.subtitle #[strong Location]
-			p #[strong Address: ] #{yardsale.address}
-			p #[strong Address 2: ] #{yardsale.address2}
-			p #[strong City: ] #{yardsale.city}
-			p #[strong State: ] #{yardsale.state}
-			p #[strong Zip Code: ] #{yardsale.zipcode}
-			hr
-			h1.subtitle #[strong Description]
-			p #{yardsale.description}
-			hr
+			.columns
+				.column
+					// TODO - make image appear properly
+					//img(src='https://s3.amazonaws.com/yardy123/'+yardsale.user.username+'/'+yardsale.imagename alt='picture of yardsale')
+					img(src='https://s3.amazonaws.com/yardy123/naricci/iu.jpeg' alt='picture of yardsale')
+					br
+					br
+					p #[strong Username: ] #{yardsale.user.username}
+					hr
+					h1.subtitle #[strong Date & Time]
+					p #[strong Date: ] #{yardsale.date}
+					p #[strong Start Time: ] #{yardsale.starttime}
+					p #[strong End Time: ] #{yardsale.endtime}
+					hr
+					h1.subtitle #[strong Contact Info]
+					p #[strong First Name: ] #{yardsale.user.firstName}
+					p #[strong Last Name: ] #{yardsale.user.lastName}
+					p #[strong Phone: ] #{yardsale.phone}
+					p #[strong Email: ] #{yardsale.user.email}
+					hr
 
-			//if (req.user === yardsale.user.username)
-			p
-				a.button.is-link(href=yardsale._id+'/update') Update Yardsale
-				a.button.is-danger(href=yardsale._id+'/delete') Delete Yardsale
+				.column
+					h1.subtitle #[strong Location]
+					p #[strong Address: ] #{yardsale.address}
+					p #[strong Address 2: ] #{yardsale.address2}
+					p #[strong City: ] #{yardsale.city}
+					p #[strong State: ] #{yardsale.state}
+					p #[strong Zip Code: ] #{yardsale.zipcode}
+					hr
+					h1.subtitle #[strong Description]
+					p #{yardsale.description}
+					hr
+
+					//if (req.user === yardsale.user.username)
+					p
+						a.button.is-link(href=yardsale._id+'/update') Update Yardsale
+						a.button.is-danger(href=yardsale._id+'/delete') Delete Yardsale

@@ -10,7 +10,7 @@ block content
 				each yardsale in yardsale_list
 					article.media
 						figure.media-left
-							p.image.is-64x64
+							p.image.is-128x128
 								a(href='/catalog/yardsale/'+yardsale._id)
 									img(src='https://s3.amazonaws.com/yardy123/naricci/yardsale.jpg' alt='picture of yardsale')
 						.media-content
@@ -34,8 +34,8 @@ block content
 									a.level-item
 										span.icon.is-small
 											i.fas.fa-heart
-						.media-right
-							button.delete
+						//.media-right
+						//	button.delete
 
 			else
 				p

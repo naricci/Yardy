@@ -58,8 +58,8 @@ app.listen(PORT);
 
 // Configure the local strategy for use by Passport.
 passport.use(new LocalStrategy(
-	function(username, password, done) {
-		User.findOne({ username: username }, function(err, user) {
+	(username, password, done) => {
+		User.findOne({ username: username }, (err, user) => {
 			if (err) {
 				return done(err);
 			}
@@ -75,12 +75,12 @@ passport.use(new LocalStrategy(
 ));
 
 // Configure Passport authenticated session persistence.
-passport.serializeUser(function(user, done) {
+passport.serializeUser((user, done) => {
 	done(null, user._id);
 });
 
-passport.deserializeUser(function(id, done) {
-	User.findById(id, function(err, user) {
+passport.deserializeUser((id, done) => {
+	User.findById(id, (err, user) => {
 		if (err) {
 			return done(err);
 		}
@@ -131,7 +131,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Pass isAuthenticated and current_user to all views.
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
 	res.locals.isAuthenticated = req.isAuthenticated();
 	// Delete salt and hash fields from req.user object before passing it.
 	let safeUser = req.user;
@@ -151,12 +151,12 @@ app.use('/users', users);
 app.use('/catalog', catalog);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
 	next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
 	// set locals, only providing error in development
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};

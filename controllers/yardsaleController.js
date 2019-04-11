@@ -272,16 +272,21 @@ exports.yardsale_update_post = [
 
 		if (!errors.isEmpty()) {
 			// There are errors. Render the form again with sanitized values and error messages.
-			res.render('yardsale_form', { title: 'Update Yardsale', yardsale: yardsale, errors: errors.array() });
+			res.render('yardsale_form', {
+				title: 'Update Yardsale',
+				yardsale: yardsale,
+				errors: errors.array() });
 			return;
 		}
 		else {
 			// Data from form is valid. Update the yardsale record.
-			Yardsale.findByIdAndUpdate(req.params.id, yardsale, {}, (err, theyardsale) => {
-				if (err) { return next(err); }
-				// Successful - redirect to yardsale detail page.
-				res.redirect('/catalog/yardsale/'+theyardsale._id);
-			});
+			Yardsale
+				.findByIdAndUpdate(req.params.id, yardsale, {}, (err, theyardsale) => {
+					if (err) { return next(err); }
+					// Successful - redirect to yardsale detail page.
+					res.redirect('/catalog/yardsale/'+theyardsale._id);
+					// res.redirect('/users/'+theyardsale.user._id);
+				});
 		}
 	}
 ];
