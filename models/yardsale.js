@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const YardsaleSchema = new Schema({
 	phone: {
 		type: Number,
-		required: false,
+		required: [true, 'Phone is required'],
 		minlength: 10,
 		maxlength: 10
 	},
@@ -26,26 +26,26 @@ const YardsaleSchema = new Schema({
 	},
 	state: {
 		type: String,
-		required: true,
+		required: [true, 'State is required'],
 		maxlength: 2
 	},
 	zipcode: {
 		type: String,
-		required: false,
+		required: [true, 'Zip Code is required'],
 		minlength: 5,
 		maxlength: 5
 	},
 	date: {
 		type: Date,
-		required: true
+		required: [true, 'Date is required']
 	},
 	starttime: {
 		type: String,
-		required: false
+		required: [true, 'Start Time is required']
 	},
 	endtime: {
 		type: String,
-		required: false
+		required: [true, 'End Time is required'],
 	},
 	description: {
 		type: String,
@@ -53,7 +53,7 @@ const YardsaleSchema = new Schema({
 		maxlength: 1000
 	},
 	imagename: {
-		type: Array,
+		type: String,
 		required: false
 	},
 	user: {

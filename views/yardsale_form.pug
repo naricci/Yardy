@@ -13,7 +13,7 @@ block content
 						.field
 							label.label Phone Number
 							.control.has-icons-left
-								input.input.is-primary(type='tel' id='phone' name='phone' placeholder='e.g. 4018843030' maxlength='10' value=(undefined===yardsale ? '' : yardsale.phone))
+								input.input.is-primary(type='tel' id='phone' name='phone' placeholder='e.g. 4018843030' maxlength='10' required value=(undefined===yardsale ? '' : yardsale.phone))
 								span.icon.is-small.is-left
 									i.fas.fa-phone
 						.field
@@ -38,7 +38,7 @@ block content
 							label.label State *
 							.control.has-icons-left
 								.select.is-primary
-									select(id='state' name='state')
+									select(id='state' name='state' required)
 										option(selected) Select State
 										option(value='CT' selected=(undefined === yardsale || yardsale.state !== 'CT' ? false : 'selected')) CT
 										option(value='MA' selected=(undefined === yardsale || yardsale.state !== 'MA' ? false : 'selected')) MA
@@ -50,26 +50,26 @@ block content
 						.field
 							label.label Zip Code
 							.control.has-icons-left
-								input.input.is-primary(type='text' id='zipcode' name='zipcode' placeholder='e.g. 20500' maxlength='5' value=(undefined === yardsale ? '' : yardsale.zipcode))
+								input.input.is-primary(type='text' id='zipcode' name='zipcode' placeholder='e.g. 20500' maxlength='5' required value=(undefined === yardsale ? '' : yardsale.zipcode))
 								span.icon.is-small.is-left
 									i.fas.fa-map-marker-alt
 					.column.is-one-half
 						.field
 							label.label Date *
 							.control.has-icons-left
-								input.input.is-primary(type='date' id='date' name='date' placeholder='e.g. July 4, 2019' value=(undefined===yardsale ? '' : yardsale.date))
+								input.input.is-primary(type='date' id='date' name='date' placeholder='e.g. July 4, 2019' required value=(undefined===yardsale ? '' : yardsale.date))
 								span.icon.is-small.is-left
 									i.fas.fa-calendar
 						.field
 							label.label Start Time
 							.control.has-icons-left
-								input.input.is-primary(type='time' id='starttime' name='starttime' placeholder='e.g. 10:00 AM' value=(undefined===yardsale ? '' : yardsale.starttime))
+								input.input.is-primary(type='time' id='starttime' name='starttime' placeholder='e.g. 10:00 AM' required value=(undefined===yardsale ? '' : yardsale.starttime))
 								span.icon.is-small.is-left
 									i.fas.fa-clock
 						.field
 							label.label End Time
 							.control.has-icons-left
-								input.input.is-primary(type='time' id='endtime' name='endtime' placeholder='e.g. 4:00 PM' value=(undefined===yardsale ? '' : yardsale.endtime))
+								input.input.is-primary(type='time' id='endtime' name='endtime' placeholder='e.g. 4:00 PM' required value=(undefined===yardsale ? '' : yardsale.endtime))
 								span.icon.is-small.is-left
 									i.fas.fa-clock
 						.field
