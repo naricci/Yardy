@@ -25,6 +25,17 @@ const Yardsale = require('../models/yardsale');
 // Display detail page for a specific user.
 exports.user_profile = (req, res, next) => {
 	debug('Gettting user id: ' + req.user._id.toString());
+
+	// S3 Bucket Details
+	const folder = (req.user.username + '/');
+	const file = (req.user.profilepic);
+	const params = {
+		Bucket: bucketName,
+		Key: (folder + file)
+	};
+	debug('Folder name: ' + folder);
+	debug('File name: ' + file);
+
 	async.parallel({
 		user: (callback) => {
 			User
@@ -33,7 +44,7 @@ exports.user_profile = (req, res, next) => {
 		},
 		yardsales: (callback) => {
 			Yardsale
-				.find({ 'user': req.params.id }, 'date starttime address city state description')
+				.find({ 'user': req.params.id }, 'date starttime address city state description imagename')
 			// .populate('user')
 				.sort([['date', 'ascending']])
 				.exec(callback);
@@ -45,6 +56,13 @@ exports.user_profile = (req, res, next) => {
 			err.status = 404;
 			return next(err);
 		}
+
+		// Get Image from S3 bucket
+		s3.getObject(params, function(err, data) {
+			if (err) console.log(err, err.stack);	// an error occurred
+			else 		 console.log(data);
+		});
+
 		res.render('user_profile', {
 			title: 'User Profile',
 			user: results.user,
@@ -134,9 +152,10 @@ exports.register_post = [
 		// Create a user object with escaped and trimmed data.
 		let user = new User({
 			username: req.body.username,
+			email: req.body.email,
+			// TODO - Remove code below & test
 			firstName: req.body.firstname,
 			lastName: req.body.lastname,
-			email: req.body.email,
 			phone: req.body.phone,
 			address: req.body.address,
 			address2: req.body.address2,

@@ -14,7 +14,7 @@
     "dev:mac": "DEBUG=yardy:* nodemon $NODE_DEBUG_OPTION ./bin/www",
     "debug": "DEBUG=yardy:* nodemon --inspect ./bin/www",
     "lint": "eslint -c .eslintrc.json . --fix",
-	  "test": "mocha"
+    "test": "mocha"
   },
   "dependencies": {
     "acorn": "^6.1.1",
