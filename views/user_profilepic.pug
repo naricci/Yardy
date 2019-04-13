@@ -26,67 +26,7 @@ block content
 							span favorites
 			.columns
 				.column.is-one-quarter
-					nav.panel.is-hidden-mobile
-						p.panel-heading Profile&nbsp;&nbsp;
-							a(href='/users/' + user._id + '/profilepic') upload picture
-							//.modal
-							//	.modal-background
-							//	.modal-content
-							//
-							//	button.modal-close.is-large(aria-label='close')
-						.panel-block
-							//img(src='/images/blank_profile.png' alt='profile picture' height=250 width=250)
-							img(src='https://s3.amazonaws.com/yardy123/'+user.username+'/'+user.profilepic alt='profile picture' height=250 width=250)
-
-						.panel-block
-							p.control.has-icons-left
-								input.input.is-small(type='text' placeholder='search')
-								span.icon.is-small.is-left
-									i.fas.fa-search(aria-hidden=true)
-						//.panel-tabs
-						//	a(href='/users/'+user._id+'/update') edit
-						//	a.is-active(href='/users/'+user._id) yardsales
-						//	a(href='/users/'+user._id+'/favorites') favorites
-						a.panel-block
-							span.panel-icon
-								i.fas.fa-user(aria-hidden=true)
-							p #[strong Username: ] #{user.username}
-						a.panel-block
-							span.panel-icon
-								i.fas.fa-user(aria-hidden=true)
-							p #[strong First Name: ] #{user.firstName}
-						a.panel-block
-							span.panel-icon
-								i.fas.fa-user(aria-hidden=true)
-							p #[strong Last Name: ] #{user.lastName}
-						a.panel-block
-							span.panel-icon
-								i.fas.fa-envelope(aria-hidden=true)
-							p #[strong Email: ] #{user.email}
-						a.panel-block
-							span.panel-icon
-								i.fas.fa-phone(aria-hidden=true)
-							p #[strong Phone: ] #{user.phone}
-						a.panel-block
-							span.panel-icon
-								i.fas.fa-map-marker(aria-hidden=true)
-							p #[strong Address: ] #{user.address}
-						a.panel-block
-							span.panel-icon
-								i.fas.fa-map-marker(aria-hidden=true)
-							p #[strong Address 2: ] #{user.address2}
-						a.panel-block
-							span.panel-icon
-								i.fas.fa-map-marker(aria-hidden=true)
-							p #[strong City: ] #{user.city}
-						a.panel-block
-							span.panel-icon
-								i.fas.fa-map-marker(aria-hidden=true)
-							p #[strong State: ] #{user.state}
-						a.panel-block
-							span.panel-icon
-								i.fas.fa-map-marker(aria-hidden=true)
-							p #[strong Zip Code: ] #{user.zipcode}
+					include sidebar
 
 				.column.is-three-quarters
 					form(action='' method='POST')
@@ -115,4 +55,7 @@ block content
 							ul
 								for error in errors
 									li!= error.msg
+
+	script(src='/js/select_image_name.js')
+
 

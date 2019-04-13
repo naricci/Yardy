@@ -1,9 +1,6 @@
 const async = require('async');
 const { body, check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
-// const multer = require('multer');
-// const upload = require('../lib/image-upload');
-// const singleUpload = upload.single('image');
 const debug = require('debug')('yardy:yardsale.controller');
 
 // AWS Setup

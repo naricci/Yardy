@@ -535,11 +535,12 @@ exports.profilepic_post = [
 		.trim(),
 
 	// Sanitize fields.
+	// sanitizeBody('profilepic').contains(' ').replace('+'),
 	sanitizeBody('profilepic').trim().escape(),
 
 	(req, res, next) => {
 		// Extract the validation errors from a request.
-		const errors = validationResult(req);
+		let errors = validationResult(req);
 
 		// S3 Bucket Details
 		const folder = (req.user.username + '/');
@@ -550,8 +551,8 @@ exports.profilepic_post = [
 			ACL: 'public-read',
 			Body: file
 		};
-		console.log('Folder name: ' + folder);
-		console.log('File: ' + file);
+		debug('Folder name: ' + folder);
+		debug('File name: ' + file);
 
 		let user = new User({
 			profilepic: req.body.profilepic,
@@ -571,8 +572,11 @@ exports.profilepic_post = [
 						debug(data);
 					}
 				});
-
-				debug(theuser.profilepic);
+				req.flash(
+					'success',
+					'You have successfully changed your profile picture!'
+				);
+				//debug(theuser.profilepic);
 				// Successful - redirect to user detail page.
 				res.redirect('/users/'+theuser._id);
 			});
