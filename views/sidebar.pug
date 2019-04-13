@@ -1,6 +1,7 @@
 nav.panel.is-hidden-mobile
 	p.panel-heading Profile&nbsp;&nbsp;
-		a(href='/users/' + user._id + '/profilepic') upload picture
+		small
+			a(href='/users/' + user._id + '/profilepic') upload picture
 		//.modal
 		//	.modal-background
 		//	.modal-content
@@ -8,18 +9,14 @@ nav.panel.is-hidden-mobile
 		//	button.modal-close.is-large(aria-label='close')
 	.panel-block
 		//img(src='/images/blank_profile.png' alt='profile picture' height=250 width=250)
-		//img(src='https://s3.amazonaws.com/yardy123/'+user.username+'/'+user.profilepic alt='profile picture')
-		img(src='https://yardy.s3.amazonaws.com/'+user.username+'/'+user.profilepic alt='profile picture')
+		img(src='https://s3.amazonaws.com/yardy123/'+user.username+'/'+user.profilepic alt='profile picture')
+		//img(src='https://s3.amazonaws.com/yardy123/pigs.jpg' alt='profile picture')
 
 	.panel-block
 		p.control.has-icons-left
 			input.input.is-small(type='text' placeholder='search')
 			span.icon.is-small.is-left
 				i.fas.fa-search(aria-hidden=true)
-	//.panel-tabs
-	//	a(href='/users/'+user._id+'/update') edit
-	//	a.is-active(href='/users/'+user._id) yardsales
-	//	a(href='/users/'+user._id+'/favorites') favorites
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-user(aria-hidden=true)

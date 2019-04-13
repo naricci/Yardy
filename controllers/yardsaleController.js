@@ -12,10 +12,10 @@ AWS.config.update({
 	accessKey: process.env.AWS_ACCESS_KEY_ID,
 	region: bucketRegion
 });
-AWS.config.apiVersions = {
-	s3: '2006-03-01'
-};
-const s3 = new AWS.S3();
+// AWS.config.apiVersions = {
+// 	s3: '2006-03-01'
+// };
+const s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
 // Models
 const Yardsale = require('../models/yardsale');
@@ -106,11 +106,11 @@ exports.yardsale_create_post = [
 			ACL: 'public-read',
 			Body: file
 		};
-		console.log('Folder name: ' + folder);
-		console.log('File: ' + file);
+		debug('Folder name: ' + folder);
+		debug('File: ' + file);
 
 		// Extract the validation errors from a request.
-		const errors = validationResult(req);
+		let errors = validationResult(req);
 
 		if (!errors.isEmpty()) {
 			// There are errors. Render form again with sanitized values/errors messages.
@@ -140,6 +140,7 @@ exports.yardsale_create_post = [
 			yardsale.save((err) => {
 				if (err) { return next(err); }
 
+				// Upload yardsale image to S3 Bucket
 				s3.putObject(params, (err, data) => {
 					if (err) {
 						console.log('Error: ', err);

@@ -13,10 +13,10 @@ AWS.config.update({
 	accessKey: process.env.AWS_ACCESS_KEY_ID,
 	region: bucketRegion
 });
-AWS.config.apiVersions = {
-	s3: '2006-03-01'
-};
-const s3 = new AWS.S3();
+// AWS.config.apiVersions = {
+// 	s3: '2006-03-01'
+// };
+const s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
 // Models
 const User = require('../models/user');
@@ -27,9 +27,9 @@ exports.user_profile = (req, res, next) => {
 	debug('Gettting user id: ' + req.user._id.toString());
 
 	// S3 Bucket Details
-	const folder = (req.user.username + '/');
-	const file = (req.user.profilepic);
-	const params = {
+	let folder = (req.user.username + '/');
+	let file = (req.user.profilepic);
+	let params = {
 		Bucket: bucketName,
 		Key: (folder + file)
 	};
@@ -554,7 +554,6 @@ exports.profilepic_post = [
 		.trim(),
 
 	// Sanitize fields.
-	// sanitizeBody('profilepic').contains(' ').replace('+'),
 	sanitizeBody('profilepic').trim().escape(),
 
 	(req, res, next) => {
@@ -567,8 +566,10 @@ exports.profilepic_post = [
 		const params = {
 			Bucket: bucketName,
 			Key: (folder + file),
-			ACL: 'public-read',
-			Body: file
+			// ACL: 'public-read',
+			Body: file,
+			// ServerSideEncryption: 'AES256',
+			ContentType: 'application/jpeg'
 		};
 		debug('Folder name: ' + folder);
 		debug('File name: ' + file);
