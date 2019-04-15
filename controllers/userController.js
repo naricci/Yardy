@@ -13,9 +13,6 @@ AWS.config.update({
 	accessKey: process.env.AWS_ACCESS_KEY_ID,
 	region: bucketRegion
 });
-// AWS.config.apiVersions = {
-// 	s3: '2006-03-01'
-// };
 const s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
 // Models
@@ -31,10 +28,10 @@ exports.user_profile = (req, res, next) => {
 	let file = (req.user.profilepic);
 	let params = {
 		Bucket: bucketName,
-		Key: (folder + file)
+		Key: folder + file
 	};
-	debug('Folder name: ' + folder);
-	debug('File name: ' + file);
+
+	debug('Bucket Path: ' + process.env.S3_BUCKET + '/' + folder + file);
 
 	async.parallel({
 		user: (callback) => {
@@ -152,16 +149,7 @@ exports.register_post = [
 		// Create a user object with escaped and trimmed data.
 		let user = new User({
 			username: req.body.username,
-			email: req.body.email,
-			// TODO - Remove code below & test
-			firstName: req.body.firstname,
-			lastName: req.body.lastname,
-			phone: req.body.phone,
-			address: req.body.address,
-			address2: req.body.address2,
-			city: req.body.city,
-			state: req.body.state,
-			zipcode: req.body.zipcode
+			email: req.body.email
 		});
 
 		// Check if passwords match or not.
@@ -560,46 +548,71 @@ exports.profilepic_post = [
 		// Extract the validation errors from a request.
 		let errors = validationResult(req);
 
-		// S3 Bucket Details
-		const folder = (req.user.username + '/');
-		const file = (req.body.profilepic);
-		const params = {
-			Bucket: bucketName,
-			Key: (folder + file),
-			// ACL: 'public-read',
-			Body: file,
-			// ServerSideEncryption: 'AES256',
-			ContentType: 'application/jpeg'
-		};
-		debug('Folder name: ' + folder);
-		debug('File name: ' + file);
+		// Get a handle on errors.array() array.
+		let errorsArray = errors.array();
 
 		let user = new User({
 			profilepic: req.body.profilepic,
 			_id: req.params.id
 		});
 
-		User
-			.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
-				if (err) {
-					return next(err);
-				}
-				// Upload profile pic to S3 bucket
-				s3.putObject(params, (err, data) => {
-					if (err) {
-						console.log('Error: ', err);
-					} else {
-						debug(data);
-					}
-				});
-				req.flash(
-					'success',
-					'You have successfully changed your profile picture!'
-				);
-				//debug(theuser.profilepic);
-				// Successful - redirect to user detail page.
-				res.redirect('/users/'+theuser._id);
+		// Find image file extension
+		let ext = getFileExtension(req.body.profilepic);
+		let contentType;
+
+		// find S3 file upload content type
+		if (ext === 'png') {
+			contentType = 'image/png';
+		} else if (ext === 'jpg' || ext === 'jpeg') {
+			contentType = 'image/jpeg';
+		}
+
+		// S3 Bucket Details
+		var folder = (req.user.username + '/');
+		var file = (req.body.profilepic);
+		var buffer = new Buffer(ext, 'base64');
+		var params = {
+			Bucket: bucketName,
+			Key: (folder + file),
+			Body: buffer,
+			ACL: 'public-read-write',
+			// ServerSideEncryption: 'AES256',
+			// ContentType: ext
+			Metadata: {
+				'ContentType': contentType
+			}
+		};
+
+		if (errorsArray.length > 0) {
+			// There are errors. Render the form again with sanitized values/error messages.
+			res.render('user_form', {
+				title: 'Update Profile',
+				user: user,
+				errors: errorsArray
 			});
+			return;
+		} else {
+			debug('Bucket Path: ' + process.env.S3_BUCKET + '/' + folder + file);
+
+			// Save profile pic to users table
+			User
+				.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
+					if (err) {
+						return next(err);
+					}
+					// Upload profile pic to S3 bucket
+					s3.putObject(params, function(err, data) {
+						if (err) {
+							debug('Error: ', err);
+						} else {
+							debug(data);
+						}
+					});
+
+					// Successful - redirect to user detail page.
+					res.redirect('/users/' + theuser._id);
+				});
+		}
 	}
 ];
 
@@ -680,3 +693,9 @@ function sendJSONresponse(res, status, content) {
 	res.json(content);
 }
 
+// Function that returns the file extension of a filename as a string.
+function getFileExtension(filename) {
+	// return filename.split('.').pop();
+	let ext = /^.+\.([^.]+)$/.exec(filename);
+	return ext === null ? '' : ext[1];
+}
