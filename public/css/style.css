@@ -84,6 +84,12 @@ section.section {
 	flex-grow: 0;
 }
 
+.divider{
+	width:5px;
+	height:auto;
+	display:inline-block;
+}
+
 /* FOOTER */
 footer {
 	/*flex: 1;*/

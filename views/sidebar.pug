@@ -1,17 +1,13 @@
 nav.panel.is-hidden-mobile
 	p.panel-heading Profile&nbsp;&nbsp;
 		small
-			a(href='/users/' + user._id + '/profilepic') upload picture
-		//.modal
-		//	.modal-background
-		//	.modal-content
-		//
-		//	button.modal-close.is-large(aria-label='close')
+			a(href='/users/' + user._id +'/profilepic') upload picture
+			// TODO - Possibly add a modal here
 	.panel-block
+		// TODO - Fix S3 Image display issues
 		//img(src='/images/blank_profile.png' alt='profile picture' height=250 width=250)
 		img(src='https://s3.amazonaws.com/yardy123/'+user.username+'/'+user.profilepic alt='profile picture')
 		//img(src='https://s3.amazonaws.com/yardy123/molly.jpeg' alt='profile picture')
-
 	.panel-block
 		p.control.has-icons-left
 			input.input.is-small(type='text' placeholder='search')

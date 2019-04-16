@@ -12,9 +12,6 @@ AWS.config.update({
 	accessKey: process.env.AWS_ACCESS_KEY_ID,
 	region: bucketRegion
 });
-// AWS.config.apiVersions = {
-// 	s3: '2006-03-01'
-// };
 const s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
 // Models
@@ -67,7 +64,16 @@ exports.yardsale_detail = (req, res, next) => {
 
 // Display yardsale create form on GET.
 exports.yardsale_create_get = (req, res, next) => {
-	res.render('yardsale_form', { title: 'Create Yardsale' });
+	User
+		.findById(req.user._id, (err, results) => {
+			if (err) { return next(err); }
+			if (results === null || undefined) { // No results.
+				let err = new Error('User not found.');
+				err.status = 404;
+				return next(err);
+			}
+			res.render('yardsale_form', { title: 'Create Yardsale', user: results });
+		})
 };
 
 // Handle Yardsale create on POST.
@@ -86,9 +92,6 @@ exports.yardsale_create_post = [
 		.isAfter()
 		.withMessage('Please select a date that hasn\'t occurred yet.'),
 
-	// Validate fields.
-	// body('date', 'Invalid date').optional({ checkFalsy: true }).isISO8601(),
-
 	// // Sanitize fields.
 	sanitizeBody('phone').toInt(),
 	sanitizeBody('zipcode').toString(),
@@ -106,8 +109,7 @@ exports.yardsale_create_post = [
 			ACL: 'public-read',
 			Body: file
 		};
-		debug('Folder name: ' + folder);
-		debug('File: ' + file);
+		debug('Bucket Path: ' + process.env.S3_BUCKET + '/' + folder + file);
 
 		// Extract the validation errors from a request.
 		let errors = validationResult(req);
@@ -136,7 +138,6 @@ exports.yardsale_create_post = [
 			});
 
 			// TODO - Add async function to push yardsale id to user's yardsales array
-
 			yardsale.save((err) => {
 				if (err) { return next(err); }
 
@@ -161,18 +162,28 @@ exports.yardsale_create_post = [
 exports.yardsale_delete_get = (req, res, next) => {
 	async.parallel({
 		yardsale: (callback) => {
-			Yardsale.findById(req.params.id)
+			Yardsale
+				.findById(req.params.id)
 				.populate('user')
+				.exec(callback);
+		},
+		user: (callback) => {
+			User
+				.find({ 'yardsale': req.params.id }, 'username email firstName lastName phone profilepic')
 				.exec(callback);
 		},
 	}, (err, results) => {
 		if (err) { return next(err); }
-		if (results.yardsale == null) { // No results.
+		if (results.yardsale === null) { // No results.
 			res.redirect('/catalog/yardsales');
 		}
-		debug('Yardsale id: ' + req.params.id + ' deleted.');
+
 		// Successful, so render.
-		res.render('yardsale_delete', { title: 'Delete Yardsale', yardsale: results.yardsale });
+		res.render('yardsale_delete', {
+			title: 'Delete Yardsale',
+			yardsale: results.yardsale,
+			user: results.user
+		});
 	});
 };
 
@@ -189,7 +200,10 @@ exports.yardsale_delete_post = (req, res, next) => {
 		// Success.
 		if (results.yardsale.length === 1) {
 			// yardsale has books. Render in same way as for GET route.
-			res.render('yardsale_delete', { title: 'Delete Yardsale', yardsale: results.yardsale });
+			res.render('yardsale_delete', {
+				title: 'Delete Yardsale',
+				yardsale: results.yardsale
+			});
 			return;
 		}
 		else {
@@ -216,7 +230,10 @@ exports.yardsale_update_get = (req, res, next) => {
 				return next(err);
 			}
 			// Success.
-			res.render('yardsale_form', { title: 'Update Yardsale', yardsale: yardsale });
+			res.render('yardsale_form', {
+				title: 'Update Yardsale',
+				yardsale: yardsale
+			});
 		});
 };
 
@@ -264,6 +281,7 @@ exports.yardsale_update_post = [
 				starttime: req.body.starttime,
 				endtime: req.body.endtime,
 				description: req.body.description,
+				imagename: req.body.imagename,
 				_id: req.params.id
 			}
 		);

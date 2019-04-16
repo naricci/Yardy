@@ -1,22 +1,53 @@
 extends layout
 
 block content
-	// Main Content
-	.container
-		h1.subtitle.has-text-centered
-			strong #{title}: #{yardsale.address}
+	// Main content
+	section.section
+		.container
+			h1.subtitle.has-text-centered
+				strong #{title} | #{yardsale.address}
+			.tabs.is-centered.is-boxed
+				ul
+					li.is-active
+						a(href='/users/' + yardsale.user._id + '/update')
+							span.icon.is-small
+								i.fas.fa-pen(aria-hidden='true')
+							span edit
+					li
+						a(href='/users/' + yardsale.user._id)
+							span.icon.is-small
+								i.fas.fa-bookmark(aria-hidden='true')
+							span yardsales
+					li
+						a(href='/users/' + yardsale.user._id + '/favorites')
+							span.icon.is-small
+								i.fas.fa-heart(aria-hidden='true')
+							span favorites
+			.columns
+				.column.is-one-quarter
+					include sidebar
 
-		p #[strong Date: ] #{yardsale.date}
-		p #[strong Start Time: ] #{yardsale.starttime}
-		p #[strong End Time: ] #{yardsale.endtime}
-		p #[strong Host Name: ] #{yardsale.user.firstName}
-		p #[strong Username: ]
-			a(href=yardsale.user._id) #{yardsale.user.username}
-		p #[strong Description: ] #{yardsale.description}
-		hr
-		p Do you really want to delete this Yardsale?
+				.column.is-three-quarters
 
-		form(method='POST' action='')
-			div.form-group
-				input#id.form-control(type='hidden' name='yardsaleid' required='true' value=yardsale._id )
-			button.btn.btn-primary(type='submit') Delete
+					p #[strong Address: ] #{yardsale.full_address}
+					br
+					p #[strong Date: ] #{yardsale.date}
+					br
+					p #[strong Start Time: ] #{yardsale.starttime}
+					br
+					p #[strong End Time: ] #{yardsale.endtime}
+					br
+					p #[strong Host Name: ] #{yardsale.user.firstName} #{yardsale.user.lastName}
+					br
+					p #[strong Username: ]
+						a(href='/users/'+user._id) #{yardsale.user.username}
+					br
+					p #[strong Description: ] #{yardsale.description}
+					hr
+					p Do you really want to delete this Yardsale?
+
+					form(method='POST' action='')
+						div.form-group
+							input#id.form-control(type='hidden' name='yardsaleid' required='true' value=yardsale._id )
+						br
+						a.button.is-danger(type='submit') Delete

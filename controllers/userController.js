@@ -55,10 +55,10 @@ exports.user_profile = (req, res, next) => {
 		}
 
 		// Get Image from S3 bucket
-		s3.getObject(params, function(err, data) {
-			if (err) console.log(err, err.stack);	// an error occurred
-			else 		 console.log(data);
-		});
+		// s3.getObject(params, function(err, data) {
+		// 	if (err) console.log(err, err.stack);	// an error occurred
+		// 	else 		 console.log(data);
+		// });
 
 		res.render('user_profile', {
 			title: 'User Profile',

@@ -5,7 +5,7 @@ function initMap() {
 		// center: new google.maps.LatLng(44.5886,-104.6985),
 		center: new google.maps.LatLng(41.8240,-71.4128),
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
-		zoom: 8
+		zoom: 9
 	});
 	let locations = [
 		// new google.maps.LatLng(41.6617218,-71.5049636),

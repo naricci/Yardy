@@ -1,15 +1,34 @@
 extends layout
 
 block content
-
 	// Main content
 	section.section
 		.container
 			h1.subtitle.has-text-centered
-				strong= title
-			form(method='POST' action='')
-				.columns
-					.column.is-one-half
+				strong #{title}
+			.tabs.is-centered.is-boxed
+				ul
+					li.is-active
+						a(href='/users/' + user._id + '/update')
+							span.icon.is-small
+								i.fas.fa-pen(aria-hidden='true')
+							span edit
+					li
+						a(href='/users/' + user._id)
+							span.icon.is-small
+								i.fas.fa-bookmark(aria-hidden='true')
+							span yardsales
+					li
+						a(href='/users/' + user._id + '/favorites')
+							span.icon.is-small
+								i.fas.fa-heart(aria-hidden='true')
+							span favorites
+			.columns
+				.column.is-one-quarter
+					include sidebar
+				.column.is-three-fourths
+
+					form(method='POST' action='')
 						.field
 							label.label Phone Number
 							.control.has-icons-left
@@ -48,12 +67,12 @@ block content
 									span.icon.is-small.is-left
 										i.fas.fa-map-marker-alt
 						.field
-							label.label Zip Code
+							label.label Zip Code *
 							.control.has-icons-left
 								input.input.is-primary(type='text' id='zipcode' name='zipcode' placeholder='e.g. 20500' maxlength='5' required value=(undefined === yardsale ? '' : yardsale.zipcode))
 								span.icon.is-small.is-left
 									i.fas.fa-map-marker-alt
-					.column.is-one-half
+						//.column.is-one-half
 						.field
 							label.label Date *
 							.control.has-icons-left

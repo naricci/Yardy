@@ -1,50 +1,67 @@
 extends layout
 
-block content 
+block content
 
 	// Main content
 	section.section
 		.container
 			h1.subtitle.is-3.has-text-centered Search for Yard Sales in your area!
-				// .columns
-				// .column.is-three-fifths
-				br
-				br
-				.field.is-horizontal
-					.field-body
-						.field.is-grouped.is-grouped-centered
-							p.control.has-icons-left.is-expanded
-								input.input(type='text' placeholder='City, State, Zip Code')
-								span.icon.is-small.is-left
-									i.fas.fa-map-marker-alt
+			#demo.has-text-centered.has-text-success
+			script.
+				let x = document.getElementById('demo');
 
-								//.fieldd-label
-								//	label.label Sort By:
-								// .field
-							.control#indexSort.has-icons-left
-								.select
-									select(id='sort' name='sort')
-										option(selected) Sort
-										option(value='date') Date
-										option(value='starttime') Starting Time
-										option(value='distance') Distance
-									span.icon.is-small.is-left
-										i.fas.fa-sort
+				function getLocation() {
+					if (navigator.geolocation) {
+						navigator.geolocation.getCurrentPosition(showPosition);
+					} else {
+						x.innerHTML = 'Geolocation is not supported by this browser.';
+					}
+				}
 
+				function showPosition(position) {
+					x.innerHTML = 'Latitude: ' + position.coords.latitude +
+						' ' + 'Longitude: ' + position.coords.longitude;
+				}
+			br
+			.field.is-horizontal
+				.field-body
+					.field.is-grouped.is-grouped-centered
+						p.control.has-icons-left.is-expanded
+							input.input(type='text' placeholder='City, State, Zip Code')
+							span.icon.is-small.is-left
+								i.fas.fa-map-marker-alt
+
+							//.fieldd-label
+							//	label.label Sort By:
 							// .field
-							p.control
-								a.button.is-link(href='/catalog/yardsales')
-									span.icon
-										i.fas.fa-search-location
-									span Search
+						.control#indexSort.has-icons-left
+							.select
+								select(id='sort' name='sort')
+									option(selected) Sort (optional)
+									option(value='date') Date
+									option(value='starttime') Starting Time
+									option(value='distance') Distance
+								span.icon.is-small.is-left
+									i.fas.fa-sort
+						// .field
+						p.control
+							a.button.is-success(onclick='getLocation()')
+								span.icon
+									i.fas.fa-home
+								span Get Location
+						// .field
+						p.control
+							a.button.is-link(href='/catalog/yardsales')
+								span.icon
+									i.fas.fa-search-location
+								span Search
 	br
 	// MAP OF USA
 	section.section
 		.container
 			#map(style='width:100%;height:400px')
 			script(src='/js/index_map.js')
-			script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCQZTrgfsk848vQb70eG-wEaJwbFnvUUpk&callback=initMap' async='' defer='')
-		// api key AIzaSyCQZTrgfsk848vQb70eG-wEaJwbFnvUUpk
+			script(async defer src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDxjeLMjAFvZUwypcu0UpoCkAk4lJXShPQ&callback=initMap')
 
 	// Results
 	section.section
@@ -53,13 +70,13 @@ block content
 				each yardsale in yardsale_list
 					article.media
 						figure.media-left
-							p.image.is-64x64
+							p.image.is-128x128
 								a(href='/catalog/yardsale/'+yardsale._id)
 									img(src='https://s3.amazonaws.com/yardy123/'+yardsale.user.username+'/'+yardsale.imagename alt='picture of yardsale')
 						.media-content
 							.content
 								p
-									strong #{yardsale.city}&nbsp;
+									strong #{yardsale.city}, #{yardsale.state}&nbsp;
 									small #{yardsale.date}&nbsp;@&nbsp;
 									small #{yardsale.starttime}
 									br
@@ -77,7 +94,6 @@ block content
 										span.icon.is-small
 											i.fas.fa-heart
 						.media-right
-							button.delete
-
+							a.button.is-link Add
 			else
 				p.has-text-centered Please sign in to view yard sales in your area.
