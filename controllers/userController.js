@@ -570,17 +570,19 @@ exports.profilepic_post = [
 		// S3 Bucket Details
 		var folder = (req.user.username + '/');
 		var file = (req.body.profilepic);
-		var buffer = new Buffer(ext, 'base64');
+		//var buffer = new Buffer(ext, 'base64');
 		var params = {
+			//ACL: 'public-read-write',
+			Body: new Buffer(ext, 'base64'),	// folder + file
+			// Body: folder + file,
 			Bucket: bucketName,
+			//ContentEncoding: 'utf-8',
+			// ContentType: ext,
 			Key: (folder + file),
-			Body: buffer,
-			ACL: 'public-read-write',
-			// ServerSideEncryption: 'AES256',
-			// ContentType: ext
-			Metadata: {
-				'ContentType': contentType
-			}
+			//Metadata: {
+			//	'ContentType': contentType
+			//}
+			// ServerSideEncryption: 'AES256'
 		};
 
 		if (errorsArray.length > 0) {
@@ -590,7 +592,7 @@ exports.profilepic_post = [
 				user: user,
 				errors: errorsArray
 			});
-			return;
+			// return;
 		} else {
 			debug('Bucket Path: ' + process.env.S3_BUCKET + '/' + folder + file);
 
