@@ -2,11 +2,12 @@ const { body, check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 const passport = require('passport');
 const async = require('async');
+const { S3StreamUploader, S3WriteStream } = require('s3-upload-stream');
 const debug = require('debug')('yardy:user.controller');
 
 // AWS Setup
 const AWS = require('aws-sdk');
-const bucketName = 'yardy123' || process.env.S3_BUCKET;
+const bucketName = 'yardy-pics' || process.env.S3_BUCKET;
 const bucketRegion = 'us-east-1' || process.env.S3_BUCKET_REGION;
 AWS.config.update({
 	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -21,16 +22,13 @@ const Yardsale = require('../models/yardsale');
 
 // Display detail page for a specific user.
 exports.user_profile = (req, res, next) => {
-	debug('Gettting user id: ' + req.user._id.toString());
-
 	// S3 Bucket Details
-	let folder = (req.user.username + '/');
-	let file = (req.user.profilepic);
-	let params = {
+	const folder = (req.user.username + '/');
+	const file = (req.user.profilepic);
+	const params = {
 		Bucket: bucketName,
-		Key: folder + file
+		Key: (folder + file)
 	};
-
 	debug('Bucket Path: ' + process.env.S3_BUCKET + '/' + folder + file);
 
 	async.parallel({
@@ -55,9 +53,9 @@ exports.user_profile = (req, res, next) => {
 		}
 
 		// Get Image from S3 bucket
-		// s3.getObject(params, function(err, data) {
-		// 	if (err) console.log(err, err.stack);	// an error occurred
-		// 	else 		 console.log(data);
+		// s3.getObject(params, (err, data) => {
+		// 	if (err) debug(err, err.stack);	// an error occurred
+		// 	else 		 debug(data);
 		// });
 
 		res.render('user_profile', {
@@ -542,7 +540,7 @@ exports.profilepic_post = [
 		.trim(),
 
 	// Sanitize fields.
-	sanitizeBody('profilepic').trim().escape(),
+	sanitizeBody('profilepic').toString(),
 
 	(req, res, next) => {
 		// Extract the validation errors from a request.
@@ -565,23 +563,34 @@ exports.profilepic_post = [
 			contentType = 'image/png';
 		} else if (ext === 'jpg' || ext === 'jpeg') {
 			contentType = 'image/jpeg';
+		} else if (ext === 'gif') {
+			contentType = 'image/gif';
+		} else if (ext === 'tiff') {
+			contentType = 'image/tiff';
+		} else if (ext === 'svg') {
+			contentType = 'image/svg+xml';
+		} else if (ext === 'ico') {
+			contentType = 'image/vnd.microsoft.icon';
 		}
 
 		// S3 Bucket Details
-		var folder = (req.user.username + '/');
-		var file = (req.body.profilepic);
-		//var buffer = new Buffer(ext, 'base64');
-		var params = {
-			//ACL: 'public-read-write',
-			Body: new Buffer(ext, 'base64'),	// folder + file
-			// Body: folder + file,
+		const folder = (req.user.username + '/');
+		const file = (req.body.profilepic);
+		//var buffer = Buffer.from(ext, 'base64');
+
+		const params = {
+			ACL: 'public-read-write',
+			// Body: Buffer.from(ext, 'base64'),	// folder + file
+			Body: file,
 			Bucket: bucketName,
-			//ContentEncoding: 'utf-8',
-			// ContentType: ext,
-			Key: (folder + file),
-			//Metadata: {
-			//	'ContentType': contentType
-			//}
+			// ContentDisposition: 'inline',
+			// ContentEncoding: 'base64',
+			// ContentType: 'application/octet-stream',
+			ContentType: contentType,
+			Key: (folder + file)
+			// Metadata: {
+			// 	'x-amz-meta-fieldname': contentType
+			// },
 			// ServerSideEncryption: 'AES256'
 		};
 
@@ -594,7 +603,7 @@ exports.profilepic_post = [
 			});
 			// return;
 		} else {
-			debug('Bucket Path: ' + process.env.S3_BUCKET + '/' + folder + file);
+			debug(`Posting ${params.Key} to ${bucketName} in S3`);
 
 			// Save profile pic to users table
 			User
@@ -603,13 +612,19 @@ exports.profilepic_post = [
 						return next(err);
 					}
 					// Upload profile pic to S3 bucket
-					s3.putObject(params, function(err, data) {
-						if (err) {
-							debug('Error: ', err);
-						} else {
-							debug(data);
-						}
+					s3.upload(params, function(err, data) {
+						if (err) debug('Error: ', err);
+						else debug(data);
 					});
+
+					// call S3 to retrieve upload file to specified bucket
+					// s3.upload (params, function (err, data) {
+					// 	if (err) {
+					// 		console.log("Error", err);
+					// 	} if (data) {
+					// 		console.log("Upload Success", data.Location);
+					// 	}
+					// });
 
 					// Successful - redirect to user detail page.
 					res.redirect('/users/' + theuser._id);

@@ -29,13 +29,13 @@ block content
 					include sidebar
 
 				.column.is-three-quarters
-					form(action='' method='POST')
+					form(method='post')
 						.field
 							label.label Add Image
 							.control
 								.file.is-link
 									label.file-label(for=file)
-										input.file-input(type='file' id='file' name='profilepic' accept='image/*' value=(undefined ===
+										input.file-input(type='file' id='file' name='profilepic' value=(undefined ===
 										user ? '' : user.profilepic))
 										span.file-cta
 											span.file-icon
@@ -48,6 +48,7 @@ block content
 								br
 								button.button.is-link(type='submit')
 									| Submit
+								.divider
 								button.button.is-danger(type='cancel')
 									| Cancel
 

@@ -1,6 +1,6 @@
-const gulp = require('gulp'),
-	eslint = require('gulp-eslint'),
-	nodemon = require('gulp-nodemon');
+const gulp = require('gulp');
+const eslint = require('gulp-eslint');
+const nodemon = require('gulp-nodemon');
 
 // Location of JS files
 const jsFiles = [
@@ -9,11 +9,12 @@ const jsFiles = [
 	'./lib/*.js',
 	'./models/*.js',
 	'./public/**/*.js',
-	'./routes/*.js'
+	'./routes/*.js',
+	'./test/*.js'
 ];
 
 // function to style/lint JS code
-gulp.task('lint', () => {
+gulp.task('lint', (next) => {
 	gulp.src(jsFiles)
 		.pipe(eslint())
 		// .pipe(eslint.result(result => {
@@ -25,19 +26,20 @@ gulp.task('lint', () => {
 		// }))
 		.pipe(eslint.format())
 		.pipe(eslint.failAfterError());
+	next();
 });
 
 // function to inject bootstrap css/js files into html page
 gulp.task('inject', () => {
-	var wiredep = require('wiredep').stream;
-	var inject = require('gulp-inject');
-	var injectSrc = gulp.src(['./public/css/*.css', './public/js/*.js']);
+	const wiredep = require('wiredep').stream;
+	const inject = require('gulp-inject');
+	const injectSrc = gulp.src(['./public/css/*.css', './public/js/*.js']);
 
-	var injectOptions = {
+	const injectOptions = {
 		ignorePath: './public'
 	};
 
-	var options = {
+	const options = {
 		bowerJson: require('./bower.json'),
 		directory: './bower_components',
 		ignorePath: './bower_components'
@@ -64,8 +66,8 @@ gulp.task('start', (done) => {
 			console.log('Restarting Server...');
 		})
 		.on('crash', function() {
-			console.error('Application has crashed!\n')
-				.emit('restart', 2);  // restart the server in 2 seconds
+			console.error('Application has crashed!\n');
+			stream.emit('restart', 2);  // restart the server in 2 seconds
 		});
 });
 

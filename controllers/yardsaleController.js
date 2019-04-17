@@ -1,5 +1,5 @@
 const async = require('async');
-const { body, check, validationResult } = require('express-validator/check');
+const { check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 const debug = require('debug')('yardy:yardsale.controller');
 
@@ -73,7 +73,7 @@ exports.yardsale_create_get = (req, res, next) => {
 				return next(err);
 			}
 			res.render('yardsale_form', { title: 'Create Yardsale', user: results });
-		})
+		});
 };
 
 // Handle Yardsale create on POST.
