@@ -8,7 +8,7 @@ const logger = require('morgan');
 // Mongoose Connection
 let dev_db_url = 'mongodb://nick:Yardy123@ds121475.mlab.com:21475/yardy';
 let mongoDB = process.env.MONGODB_URI || dev_db_url;
-require('./lib/db');
+require('./config/db');
 
 // Use dotenv to read .env vars into Node
 require('dotenv').config();

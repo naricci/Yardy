@@ -583,6 +583,7 @@ exports.profilepic_post = [
 
 		// S3 Bucket Details
 		var folder = (req.user.username + '/');
+		// var file = req.profilepic;
 		var file = req.body.profilepic;
 		var buffer = Buffer.from(ext, 'base64');
 		var params = {
@@ -607,7 +608,6 @@ exports.profilepic_post = [
 				user: user,
 				errors: errorsArray
 			});
-			res.flash(errorsArray);
 			return;
 		} else {
 			debug(`Posting ${params.Key} to ${bucketName} in S3`);
