@@ -2,7 +2,8 @@ const { body, check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 const passport = require('passport');
 const async = require('async');
-const { S3StreamUploader, S3WriteStream } = require('s3-upload-stream');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
 const debug = require('debug')('yardy:user.controller');
 
 // AWS Setup
@@ -14,7 +15,7 @@ AWS.config.update({
 	accessKey: process.env.AWS_ACCESS_KEY_ID,
 	region: bucketRegion
 });
-const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+var s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
 // Models
 const User = require('../models/user');
@@ -575,9 +576,10 @@ exports.profilepic_post = [
 
 		// S3 Bucket Details
 		const folder = (req.user.username + '/');
-		const file = (req.body.profilepic);
+		const file = (req.file);
+		// const file = (req.body.profilepic);
 		//var buffer = Buffer.from(ext, 'base64');
-
+		// var busboy = new Busboy({ headers: req.headers });
 		const params = {
 			ACL: 'public-read-write',
 			// Body: Buffer.from(ext, 'base64'),	// folder + file
@@ -587,12 +589,27 @@ exports.profilepic_post = [
 			// ContentEncoding: 'base64',
 			// ContentType: 'application/octet-stream',
 			ContentType: contentType,
-			Key: (folder + file)
+			Key: (folder + req.body.profilepic)
 			// Metadata: {
 			// 	'x-amz-meta-fieldname': contentType
 			// },
 			// ServerSideEncryption: 'AES256'
 		};
+
+		var upload = multer({
+			storage: multerS3({
+				s3: s3,
+				bucket: process.env.S3_BUCKET_NAME,
+				contentType: multerS3.AUTO_CONTENT_TYPE,
+				acl: 'public-read',
+				metadata: function (req, file, cb) {
+					cb(null, { fieldName: file.fieldname });
+				},
+				key: function (req, file, cb) {
+					cb(null, Date.now().toString());
+				}
+			})
+		});
 
 		if (errorsArray.length > 0) {
 			// There are errors. Render the form again with sanitized values/error messages.
@@ -601,7 +618,7 @@ exports.profilepic_post = [
 				user: user,
 				errors: errorsArray
 			});
-			// return;
+			return;
 		} else {
 			debug(`Posting ${params.Key} to ${bucketName} in S3`);
 
@@ -611,20 +628,12 @@ exports.profilepic_post = [
 					if (err) {
 						return next(err);
 					}
-					// Upload profile pic to S3 bucket
-					s3.upload(params, function(err, data) {
-						if (err) debug('Error: ', err);
-						else debug(data);
-					});
 
-					// call S3 to retrieve upload file to specified bucket
-					// s3.upload (params, function (err, data) {
-					// 	if (err) {
-					// 		console.log("Error", err);
-					// 	} if (data) {
-					// 		console.log("Upload Success", data.Location);
-					// 	}
-					// });
+					// Upload profile pic to S3 bucket putObject/upload
+					s3.putObject(params, function(err, data) {
+						if (err) debug('Error: ', err);
+						else 		 debug(data);
+					});
 
 					// Successful - redirect to user detail page.
 					res.redirect('/users/' + theuser._id);
