@@ -16,7 +16,6 @@ require('dotenv').config();
 // For Heroku
 const cool = require('cool-ascii-faces');
 const PORT = process.env.PORT || 5000;
-// const debug = require('debug')('yardy:heroku');
 
 // Routes
 const index = require('./routes/index');
@@ -28,7 +27,6 @@ const compression = require('compression');
 const helmet = require('helmet');
 
 // Authentication Packages
-// var auth = require('./lib/auth');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -103,7 +101,6 @@ if (app.get('env') === 'production') {
 // Base Middleware
 app.use(logger('dev'));
 app.use(express.json());
-// app.use(session({ secret: 'yardy' }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
@@ -114,19 +111,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public', 'icons', 'favicon.ico')));
 // app.use(express.static('bower_components'));	// not using on final deployment
 
-// a middleware function with no mount path.
-// This code is executed for every request to the router
-// app.use(function (req, res, next) {
-// 	debug('Time:', Date.now());
-// 	next();
-// });
-
 // Authentication related middleware.
 app.use(flash());
 app.use(session(sess));
 
-// Initialize Passport and restore authentication state, if any,
-// from the session.
+// Initialize Passport and restore authentication state, if any, from the session.
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -143,9 +132,7 @@ app.use((req, res, next) => {
 	next();
 });
 
-// Use our Authentication and Authorization middleware.
-// app.use(auth);
-
+// Use the Routes
 app.use('/', index);
 app.use('/users', users);
 app.use('/catalog', catalog);

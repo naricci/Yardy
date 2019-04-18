@@ -24,13 +24,13 @@ const Yardsale = require('../models/yardsale');
 // Display detail page for a specific user.
 exports.user_profile = (req, res, next) => {
 	// S3 Bucket Details
-	const folder = (req.user.username + '/');
-	const file = (req.user.profilepic);
-	const params = {
-		Bucket: bucketName,
-		Key: (folder + file)
-	};
-	debug('Bucket Path: ' + process.env.S3_BUCKET + '/' + folder + file);
+	// const folder = (req.user.username + '/');
+	// const file = (req.user.profilepic);
+	// const params = {
+	// 	Bucket: bucketName,
+	// 	Key: (folder + file)
+	// };
+	// debug('Bucket Path: ' + process.env.S3_BUCKET + '/' + folder + file);
 
 	async.parallel({
 		user: (callback) => {
@@ -486,17 +486,14 @@ exports.reset_post_final = [
 							.exec(callback);
 					},
 					(found_user, callback) => {
-						// This step is required to keep user role unchanged.
-						// user.role = found_user.role;
 						User
 							.findByIdAndUpdate(req.body.userid, user, {})
 							.exec(callback);
 					}
 				],
 				(err, theuser) => {
-					if (err) {
+					if (err)
 						return next(err);
-					}
 					// Success, redirect to login page and show a flash message.
 					req.flash(
 						'success',
@@ -514,9 +511,8 @@ exports.profilepic_get = (req, res, next) => {
 	User
 		.findById(req.params.id)
 		.exec((err, found_user) => {
-			if (err) {
+			if (err)
 				return next(err);
-			}
 			if (found_user == null) {
 				let err = new Error('User not found');
 				err.status = 404;
@@ -541,7 +537,7 @@ exports.profilepic_post = [
 		.trim(),
 
 	// Sanitize fields.
-	sanitizeBody('profilepic').toString(),
+	// sanitizeBody('profilepic').toString(),
 
 	(req, res, next) => {
 		// Extract the validation errors from a request.
@@ -559,57 +555,50 @@ exports.profilepic_post = [
 		let ext = getFileExtension(req.body.profilepic);
 		let contentType;
 
-		// find S3 file upload content type
-		if (ext === 'png') {
-			contentType = 'image/png';
-		} else if (ext === 'jpg' || ext === 'jpeg') {
-			contentType = 'image/jpeg';
-		} else if (ext === 'gif') {
-			contentType = 'image/gif';
-		} else if (ext === 'tiff') {
-			contentType = 'image/tiff';
-		} else if (ext === 'svg') {
-			contentType = 'image/svg+xml';
-		} else if (ext === 'ico') {
-			contentType = 'image/vnd.microsoft.icon';
+		switch (ext) {
+			case 'png':
+				contentType = 'image/png';
+				break;
+			case 'jpg':
+				contentType = 'image/jpeg';
+				break;
+			case 'jpeg':
+				contentType = 'image/jpeg';
+				break;
+			case 'gif':
+				contentType = 'image/gif';
+				break;
+			case 'tiff':
+				contentType = 'image/tiff';
+				break;
+			case 'svg':
+				contentType = 'image/svg+xml';
+				break;
+			case 'ico':
+				contentType = 'image/vnd.microsoft.icon';
+				break;
+			default:
+				contentType = 'application/octet-stream';
 		}
 
 		// S3 Bucket Details
-		const folder = (req.user.username + '/');
-		const file = (req.file);
-		// const file = (req.body.profilepic);
-		//var buffer = Buffer.from(ext, 'base64');
-		// var busboy = new Busboy({ headers: req.headers });
-		const params = {
-			ACL: 'public-read-write',
-			// Body: Buffer.from(ext, 'base64'),	// folder + file
-			Body: file,
+		var folder = (req.user.username + '/');
+		var file = req.body.profilepic;
+		var buffer = Buffer.from(ext, 'base64');
+		var params = {
+			ACL: 'public-read',
+			Body: buffer,
 			Bucket: bucketName,
 			// ContentDisposition: 'inline',
 			// ContentEncoding: 'base64',
 			// ContentType: 'application/octet-stream',
 			ContentType: contentType,
-			Key: (folder + req.body.profilepic)
+			Key: (folder + file)
 			// Metadata: {
 			// 	'x-amz-meta-fieldname': contentType
 			// },
 			// ServerSideEncryption: 'AES256'
 		};
-
-		var upload = multer({
-			storage: multerS3({
-				s3: s3,
-				bucket: process.env.S3_BUCKET_NAME,
-				contentType: multerS3.AUTO_CONTENT_TYPE,
-				acl: 'public-read',
-				metadata: function (req, file, cb) {
-					cb(null, { fieldName: file.fieldname });
-				},
-				key: function (req, file, cb) {
-					cb(null, Date.now().toString());
-				}
-			})
-		});
 
 		if (errorsArray.length > 0) {
 			// There are errors. Render the form again with sanitized values/error messages.
@@ -618,6 +607,7 @@ exports.profilepic_post = [
 				user: user,
 				errors: errorsArray
 			});
+			res.flash(errorsArray);
 			return;
 		} else {
 			debug(`Posting ${params.Key} to ${bucketName} in S3`);
@@ -625,7 +615,10 @@ exports.profilepic_post = [
 			// Save profile pic to users table
 			User
 				.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
-					if (err) {
+					if (err) return next(err);
+					if (user === null) {
+						let err = new Error('User not found');
+						err.status = 404;
 						return next(err);
 					}
 
@@ -647,10 +640,8 @@ exports.favorites_get = (req, res, next) => {
 	User
 		.findById(req.params.id)
 		.exec((err, found_user) => {
-			if (err) {
-				return next(err);
-			}
-			if (found_user == null) {
+			if (err) return next(err);
+			if (found_user === null) {
 				let err = new Error('User not found');
 				err.status = 404;
 				return next(err);
@@ -690,11 +681,10 @@ function extractFlashMessages(req) {
 // Function to prevent user who already logged in from
 // accessing login and register routes.
 function isAlreadyLoggedIn(req, res, next) {
-	if (req.user && req.isAuthenticated()) {
+	if (req.user && req.isAuthenticated())
 		res.redirect('/');
-	} else {
+	else
 		next();
-	}
 }
 
 // Function that confirms that user is logged in and is the 'owner' of the page.

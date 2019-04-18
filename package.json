@@ -9,7 +9,7 @@
     "url": "https://www.github.com/naricci/Yardy"
   },
   "scripts": {
-    "start": "node --inspect ./bin/www",
+    "start": "DEBUG=yardy:* node --inspect ./bin/www",
     "dev:pc": "SET DEBUG=yardy:* & nodemon $NODE_DEBUG_OPTION ./bin/www",
     "dev:mac": "DEBUG=yardy:* nodemon $NODE_DEBUG_OPTION ./bin/www",
     "debug": "DEBUG=yardy:* nodemon --inspect ./bin/www",

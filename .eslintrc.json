@@ -20,7 +20,7 @@
 			"error",
 			"consistent"
 		],
-		"arrow-body-style": ["error", "always"],
+		"arrow-body-style": ["warn", "always"],
 		"block-spacing": "error",
 		"indent": [
 			"warn",
@@ -42,6 +42,7 @@
 		"semi": [
 			"error",
 			"always"
-		]
+		],
+		"switch-colon-spacing": "error"
 	}
 }
