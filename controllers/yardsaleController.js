@@ -77,12 +77,12 @@ exports.yardsale_create_get = (req, res, next) => {
 	User
 		.findById(req.user._id, (err, results) => {
 			if (err) return next(err);
-			if (results === null || undefined) { // No results.
+			if (results.user === null) { // No results.
 				let err = new Error('User not found.');
 				err.status = 404;
 				return next(err);
 			}
-			res.render('yardsale_form', { title: 'Create Yardsale', user: results });
+			res.render('yardsale_form', { title: 'Create Yardsale', user: results.user });
 		});
 };
 
@@ -146,17 +146,13 @@ exports.yardsale_create_post = [
 				imagename: req.body.imagename
 			});
 
-			// TODO - Add async function to push yardsale id to user's yardsales array
 			yardsale.save((err) => {
-				if (err) { return next(err); }
+				if (err) return next(err);
 
 				// Upload yardsale image to S3 Bucket
 				s3.putObject(params, (err, data) => {
-					if (err) {
-						console.log('Error: ', err);
-					} else {
-						debug(data);
-					}
+					if (err) debug('Error: ', err);
+					else debug(data);
 				});
 
 				// Successful - redirect to new yardsale record.
@@ -167,6 +163,7 @@ exports.yardsale_create_post = [
 	}
 ];
 
+// TODO Fix issue grabbing user data on GET
 // Display Yardsale delete form on GET.
 exports.yardsale_delete_get = (req, res, next) => {
 	async.parallel({
@@ -178,7 +175,7 @@ exports.yardsale_delete_get = (req, res, next) => {
 		},
 		user: (callback) => {
 			User
-				.find({ 'yardsale': req.params.id }, 'username email firstName lastName phone profilepic')
+				.find({ 'user': req.user._id }, 'username email firstName lastName phone profilepic')
 				.exec(callback);
 		},
 	}, (err, results) => {
@@ -229,17 +226,21 @@ exports.yardsale_delete_post = (req, res, next) => {
 
 // Display Yardsale update form on GET.
 exports.yardsale_update_get = (req, res, next) => {
-
 	Yardsale
-		.findById(req.params.id, (err, yardsale) => {
+		.findById(req.params.id)
+		.populate('user')
+		.exec()
+		.catch((err, yardsale) => {
 			if (err) { return next(err); }
-			if (yardsale == null) { // No results.
+			if (yardsale === null) { // No results.
 				let err = new Error('Yardsale not found.');
 				err.status = 404;
 				return next(err);
 			}
+		})
+		.then((yardsale) => {
 			// Success.
-			res.render('yardsale_form', {
+			res.render('yardsale_edit', {
 				title: 'Update Yardsale',
 				yardsale: yardsale
 			});

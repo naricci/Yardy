@@ -1,11 +1,11 @@
 nav.panel.is-hidden-mobile
-	p.panel-heading #{user.username}&nbsp;&nbsp;
+	p.panel-heading #{yardsale.user.username}&nbsp;&nbsp;
 		small
-			a(href='/users/' + user._id +'/profilepic') upload picture
+			a(href='/users/' + yardsale.user._id +'/profilepic') upload picture
 			// TODO - Possibly add a modal here
 	.panel-block
-		if (user.profilepic !== undefined)
-			img.is-128x128(src='https://s3.amazonaws.com/yardy-pics/'+user.username+'/'+user.profilepic alt='profile picture')
+		if (yardsale.user.profilepic !== undefined)
+			img.is-128x128(src='https://s3.amazonaws.com/yardy-pics/'+yardsale.user.username+'/'+yardsale.user.profilepic alt='profile picture')
 		else
 			img.is-128x128(src='/images/blank_profile.png' alt='profile picture')
 	.panel-block
@@ -16,40 +16,40 @@ nav.panel.is-hidden-mobile
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-user(aria-hidden=true)
-		p #[strong Username: ] #{user.username}
+		p #[strong Username: ] #{yardsale.user.username}
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-user(aria-hidden=true)
-		p #[strong First Name: ] #{user.firstName}
+		p #[strong First Name: ] #{yardsale.user.firstName}
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-user(aria-hidden=true)
-		p #[strong Last Name: ] #{user.lastName}
+		p #[strong Last Name: ] #{yardsale.user.lastName}
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-envelope(aria-hidden=true)
-		p #[strong Email: ] #{user.email}
+		p #[strong Email: ] #{yardsale.user.email}
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-phone(aria-hidden=true)
-		p #[strong Phone: ] #{user.phone}
+		p #[strong Phone: ] #{yardsale.user.phone}
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-map-marker(aria-hidden=true)
-		p #[strong Address: ] #{user.address}
+		p #[strong Address: ] #{yardsale.user.address}
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-map-marker(aria-hidden=true)
-		p #[strong Address 2: ] #{user.address2}
+		p #[strong Address 2: ] #{yardsale.user.address2}
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-map-marker(aria-hidden=true)
-		p #[strong City: ] #{user.city}
+		p #[strong City: ] #{yardsale.user.city}
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-map-marker(aria-hidden=true)
-		p #[strong State: ] #{user.state}
+		p #[strong State: ] #{yardsale.user.state}
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-map-marker(aria-hidden=true)
-		p #[strong Zip Code: ] #{user.zipcode}
+		p #[strong Zip Code: ] #{yardsale.user.zipcode}

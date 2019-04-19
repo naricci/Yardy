@@ -8,12 +8,12 @@ block content
 				strong #{title} | #{yardsale.address}
 			.tabs.is-centered.is-boxed
 				ul
-					li.is-active
+					li
 						a(href='/users/' + yardsale.user._id + '/update')
 							span.icon.is-small
 								i.fas.fa-pen(aria-hidden='true')
 							span edit
-					li
+					li.is-active
 						a(href='/users/' + yardsale.user._id)
 							span.icon.is-small
 								i.fas.fa-bookmark(aria-hidden='true')

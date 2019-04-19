@@ -6,7 +6,6 @@ block content
 		.container
 			h1.subtitle.has-text-centered
 				strong #{user.username} | #{title}
-			// .tabs.is-centered.is-hidden-desktop.is-hidden-widescreen.is-hidden-fullhd
 			.tabs.is-centered.is-boxed
 				ul
 					li.is-active
@@ -50,8 +49,8 @@ block content
 							.control
 								br
 								button.button.is-link(type='submit') Upload
-								.divider
-								button.button.is-danger(type='cancel') Cancel
+								//.divider
+								//button.button.is-danger(type='cancel') Cancel
 								br
 
 						if errors
