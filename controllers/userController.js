@@ -592,25 +592,13 @@ function extractFlashMessages(req) {
 	return messages;
 }
 
+/*** Helper Functions ***/
 // Function to prevent user who already logged in from
 // accessing login and register routes.
 function isAlreadyLoggedIn(req, res, next) {
 	if (req.user && req.isAuthenticated())
 		res.redirect('/');
 	else next();
-}
-
-// Function that confirms that user is logged in and is the 'owner' of the page.
-function isPageOwnedByUser(req, res, next) {
-	if (req.user && req.isAuthenticated()) {
-		if (req.user._id.toString() === req.params.id.toString())
-			// User's own page. Allow request.
-			next();
-		else res.redirect('/'); // Deny and redirect.
-	} else {
-		// Not authenticated. Redirect.
-		res.redirect('/');
-	}
 }
 
 // Function sends a JSON response
