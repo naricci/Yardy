@@ -1,10 +1,10 @@
 const async = require('async');
+const AWS = require('aws-sdk');
 const debug = require('debug')('yardy:yardsale.controller');
 const { check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
 // AWS Setup
-const AWS = require('aws-sdk');
 const bucketName = 'yardy123' || process.env.S3_BUCKET;
 const bucketRegion = 'us-east-1' || process.env.S3_BUCKET_REGION;
 AWS.config.update({
@@ -48,18 +48,27 @@ exports.yardsale_detail = (req, res, next) => {
 		},
 		user: (callback) => {
 			User
-				.findById(req.params.id)
+				.findById(req.user._id)
 				.exec(callback);
 		},
 	}, (err, results) => {
-		if (err) { return next(err); } // Error in API usage.
-		if (results.yardsale == null) { // No results.
+		if (err) return next(err); // Error in API usage.
+		if (results.yardsale === null) { // No yardsales.
 			err = new Error('Yardsale not found');
 			err.status = 404;
 			return next(err);
 		}
+		if (results.user === null) { // No users.
+			err = new Error('User not found');
+			err.status = 404;
+			return next(err);
+		}
 		// Successful, so render.
-		res.render('yardsale_detail', { title: 'Yardsale Details', yardsale: results.yardsale, user: results.user });
+		res.render('yardsale_detail', {
+			title: 'Yardsale Details',
+			yardsale: results.yardsale,
+			user: results.user
+		});
 	});
 };
 
@@ -67,7 +76,7 @@ exports.yardsale_detail = (req, res, next) => {
 exports.yardsale_create_get = (req, res, next) => {
 	User
 		.findById(req.user._id, (err, results) => {
-			if (err) { return next(err); }
+			if (err) return next(err);
 			if (results === null || undefined) { // No results.
 				let err = new Error('User not found.');
 				err.status = 404;
@@ -79,7 +88,6 @@ exports.yardsale_create_get = (req, res, next) => {
 
 // Handle Yardsale create on POST.
 exports.yardsale_create_post = [
-
 	// Validate fields
 	check('phone')
 		.isMobilePhone('en-US')
@@ -174,7 +182,7 @@ exports.yardsale_delete_get = (req, res, next) => {
 				.exec(callback);
 		},
 	}, (err, results) => {
-		if (err) { return next(err); }
+		if (err) return next(err);
 		if (results.yardsale === null) { // No results.
 			res.redirect('/catalog/yardsales');
 		}

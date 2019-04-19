@@ -2,7 +2,7 @@ extends layout
 
 block content
 
-	// Main content
+	// Title & Search Bar
 	section.section
 		.container
 			h1.title.is-3.has-text-centered Search for Yard Sales in your area!
@@ -30,10 +30,6 @@ block content
 							input.input(type='text' placeholder='City, State, Zip Code')
 							span.icon.is-small.is-left
 								i.fas.fa-map-marker-alt
-
-							//.fieldd-label
-							//	label.label Sort By:
-							// .field
 						.control#indexSort.has-icons-left
 							.select
 								select(id='sort' name='sort')
@@ -43,13 +39,11 @@ block content
 									option(value='distance') Distance
 								span.icon.is-small.is-left
 									i.fas.fa-sort
-						// .field
 						p.control
 							a.button.is-success(onclick='getLocation()')
 								span.icon
 									i.fas.fa-home
 								span Get Location
-						// .field
 						p.control
 							a.button.is-link(href='/catalog/yardsales')
 								span.icon
@@ -64,7 +58,7 @@ block content
 			//script(async defer src='https://maps.googleapis.com/maps/api/js?key='+process.env.MAPS_API_KEY+'&callback=initMap')
 			script(async defer src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDxjeLMjAFvZUwypcu0UpoCkAk4lJXShPQ&callback=initMap')
 
-	// Results
+	// Results Section
 	section.section
 		.container
 			if yardsale_list && isAuthenticated
