@@ -5,4 +5,4 @@ const aws_env = {
 	BUCKET: process.env.S3_BUCKET
 };
 
-//module.exports = aws_env;
+// module.exports = aws_env;

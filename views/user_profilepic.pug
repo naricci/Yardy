@@ -29,9 +29,7 @@ block content
 					include sidebar
 
 				.column.is-three-quarters
-					// TODO - Use Multer-S3 to upload files to S3
-					//form(method='post' action='http://s3.amazonaws.com/yardy-pics/' enctype='multipart/form-data')
-					form(method='post')
+					form(method='post' enctype='multipart/form-data')
 						.field
 							label.label Add Image
 							.control

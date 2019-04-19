@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
+const multer = require('multer');
+// Multer ships with storage engines DiskStorage and MemoryStorage
+// And Multer adds a body object and a file or files object to the request object. The body object contains the values of the text fields of the form, the file or files object contains the files uploaded via the form.
+var storage = multer.memoryStorage();
+var upload = multer({ storage: storage });
 
 // Handler for all types of requests pointed to '/' route.
 router.all('/', (req, res) => {
@@ -47,7 +52,8 @@ router.post('/:id/update', userController.update_post);
 router.get('/:id/profilepic', userController.profilepic_get);
 
 // POST request for User updating profile pic
-router.post('/:id/profilepic', userController.profilepic_post);
+// router.post('/:id/profilepic', userController.profilepic_post);
+router.post('/:id/profilepic', upload.single('profilepic'), userController.profilepic_post);
 
 // GET request for User favorites
 router.get('/:id/favorites', userController.favorites_get);

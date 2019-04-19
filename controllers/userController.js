@@ -3,6 +3,10 @@ const { sanitizeBody } = require('express-validator/filter');
 const passport = require('passport');
 const async = require('async');
 const multer = require('multer');
+// Multer ships with storage engines DiskStorage and MemoryStorage
+// And Multer adds a body object and a file or files object to the request object. The body object contains the values of the text fields of the form, the file or files object contains the files uploaded via the form.
+var storage = multer.memoryStorage();
+var upload = multer({ storage: storage });
 const multerS3 = require('multer-s3');
 const debug = require('debug')('yardy:user.controller');
 
@@ -510,6 +514,7 @@ exports.profilepic_get = (req, res, next) => {
 };
 
 // TODO - Fix profile picture upload
+/*
 // Handle profile picture update page on POST
 exports.profilepic_post = [
 	// Validate form fields.
@@ -584,6 +589,7 @@ exports.profilepic_post = [
 			// ServerSideEncryption: 'AES256'
 		};
 		*/
+/*
 		if (errorsArray.length > 0) {
 			// There are errors. Render the form again with sanitized values/error messages.
 			res.render('user_form', {
@@ -610,6 +616,74 @@ exports.profilepic_post = [
 					// 	if (err) debug('Error: ', err);
 					// 	else 		 debug(data);
 					// });
+
+					// Successful - redirect to user detail page.
+					res.redirect('/users/' + theuser._id);
+				});
+		}
+	}
+];
+*/
+
+exports.profilepic_post = [
+	// Validate form fields.
+	check('profilepic')
+		.isLength({max: 100})
+		.withMessage('Image name cannot be longer than 100 characters long.')
+		.trim(),
+	// Sanitize fields.
+	sanitizeBody('profilepic').toString(),
+
+	(req, res, next) => {
+		// Extract the validation errors from a request.
+		let errors = validationResult(req);
+		// Get a handle on errors.array() array.
+		let errorsArray = errors.array();
+		var file = req.file;
+		var user = new User({
+			profilepic: req.file.originalname,
+			_id: req.params.id
+		});
+
+
+		var key = (req.user.username + '/' + file.originalname);
+		var s3bucket = new AWS.S3({
+			accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+			secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+			region: process.env.S3_BUCKET_REGION
+		});
+		var params = {
+			Bucket: process.env.S3_BUCKET,
+			Key: key,
+			Body: file.buffer,
+			ContentType: file.mimetype,
+			ACL: 'public-read'
+		};
+
+		if (errorsArray.length > 0) {
+			// There are errors. Render the form again with sanitized values/error messages.
+			res.render('user_form', {
+				title: 'Update Profile',
+				user: user,
+				errors: errorsArray
+			});
+			return;
+		} else {
+			debug(`Posting ${params.Key} to ${process.env.S3_BUCKET} in S3`);
+			User
+				.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
+					if (err) return next(err);
+					if (user === null) {
+						let err = new Error('User not found');
+						err.status = 404;
+						return next(err);
+					}
+					s3bucket.upload(params, (err, data) => {
+						// if (err) res.status(500).json({ error: true, Message: err });
+						if (err) debug('Error: ', err);
+						else 		 debug(data);
+						// res.send({data});
+					});
 
 					// Successful - redirect to user detail page.
 					res.redirect('/users/' + theuser._id);

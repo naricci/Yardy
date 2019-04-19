@@ -10,11 +10,12 @@ const s3Client = new AWS.S3({
 const uploadParams = {
 	Bucket: aws_env.BUCKET,
 	Key: '',	// pass key
-	Body: null	// pass file body
+	Body: null,	// pass file body
+	ACL: 'public-read'
 };
 
 const s3 = {};
 s3.s3Client = s3Client;
 s3.uploadParams = uploadParams;
 
-//module.exports = s3;
+// module.exports = s3;
