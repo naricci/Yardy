@@ -29,3 +29,7 @@ block content
 					include sidebar
 
 				.column.is-three-quarters
+					#map(style='width:100%;height:400px')
+						script(src='/js/index_map.js')
+						//script(async defer src='https://maps.googleapis.com/maps/api/js?key='+process.env.MAPS_API_KEY+'&callback=initMap')
+						script(async defer src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDxjeLMjAFvZUwypcu0UpoCkAk4lJXShPQ&callback=initMap')

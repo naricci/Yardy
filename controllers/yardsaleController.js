@@ -31,7 +31,7 @@ exports.yardsale_list = (req, res, next) => {
 			}
 			// Successful, so render
 			res.render('yardsale_list', {
-				title: 'Yardsales',
+				title: 'Yard Sale Search Results',
 				yardsale_list: list_yardsales
 			});
 		});

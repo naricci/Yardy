@@ -1,19 +1,17 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+const yardsaleController = require('../controllers/yardsaleController');
 
-// Require Yardsale controller.
-var yardsaleController = require('../controllers/yardsaleController');
+// GET request for list of all Yardsales.
+router.get('/yardsales', yardsaleController.yardsale_list);
 
-// GET post_yardsale test page
-// router.get('/yardsale_form', (req, res, next) => {
-// 	res.render('yardsale_form');
-// });
+// GET request for one Yardsale.
+router.get('/yardsale/:id', yardsaleController.yardsale_detail);
 
-// Yardsale Routes
-// GET catalog home page.
-// router.get('/yardsale', yardsaleController.index);
-
-// GET request for creating a Yardsale. NOTE This must come before routes that display Yardsale (uses id).
+// GET request for creating a Yardsale.
 router.get('/yardsale/create', yardsaleController.yardsale_create_get);
 
 // POST request for creating Yardsale.
@@ -29,13 +27,7 @@ router.post('/yardsale/:id/delete', yardsaleController.yardsale_delete_post);
 router.get('/yardsale/:id/update', yardsaleController.yardsale_update_get);
 
 // POST request to update Yardsale.
-router.post('/yardsale/:id/update', yardsaleController.yardsale_update_post);
-
-// GET request for one Yardsale.
-router.get('/yardsale/:id', yardsaleController.yardsale_detail);
-
-// GET request for list of all Yardsales.
-router.get('/yardsales', yardsaleController.yardsale_list);
+router.post('/yardsale/:id/update', upload.single('imagename'), yardsaleController.yardsale_update_post);
 
 /*try to display some yahdsales*/
 router.get('/yardsale', yardsaleController.all_yardsales);

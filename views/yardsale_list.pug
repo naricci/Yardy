@@ -6,17 +6,18 @@ block content
 			h1.subtitle.has-text-centered
 				strong= title
 
-			if yardsale_list
+			if yardsale_list && isAuthenticated
 				each yardsale in yardsale_list
 					article.media
 						figure.media-left
 							p.image.is-128x128
-								a(href='/catalog/yardsale/'+yardsale._id)
-									img(src='https://s3.amazonaws.com/yardy123/naricci/yardsale.jpg' alt='picture of yardsale')
+								a(href='/catalog/yardsale/' + yardsale._id)
+									img(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
+									yardsale.imagename alt='picture of yardsale')
 						.media-content
 							.content
 								p
-									strong #{yardsale.city}, #{yardsale.state}&nbsp;&nbsp;
+									strong #{yardsale.city}, #{yardsale.state}&nbsp;
 									small #{yardsale.date}&nbsp;@&nbsp;
 									small #{yardsale.starttime}
 									br
@@ -26,18 +27,29 @@ block content
 								.level-left
 									a.level-item
 										span.icon.is-small
-											i.fas.fa-reply
+											i.fas.fa-envelope
 									a.level-item
 										span.icon.is-small
-											i.fas.fa-retweet
+											i.fab.fa-twitter
 									a.level-item
 										span.icon.is-small
 											i.fas.fa-heart
-						//.media-right
-						//	button.delete
-
+						.media-right
+							a.button.is-link Add
 			else
-				p
-					strong There are no yardsales.
-					
-
+				h1.subtitle.has-text-centered.has-text-danger Please sign in to view more details about our yard sales!
+				each yardsale in yardsale_list
+					article.media
+						figure.media-left
+							p.image.is-128x128
+								a(href='/catalog/yardsale/' + yardsale._id)
+									img(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
+									yardsale.imagename alt='picture of yardsale')
+						.media-content
+							.content
+								p
+									strong #{yardsale.state}&nbsp;
+									small #{yardsale.date}
+									br
+								p #{yardsale.description}
+						.media-right

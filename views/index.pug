@@ -5,8 +5,8 @@ block content
 	// Main content
 	section.section
 		.container
-			h1.subtitle.is-3.has-text-centered Search for Yard Sales in your area!
-			#demo.has-text-centered.has-text-success
+			h1.title.is-3.has-text-centered Search for Yard Sales in your area!
+			#demo.has-text-centered.has-text-link
 			script.
 				let x = document.getElementById('demo');
 
@@ -73,7 +73,8 @@ block content
 						figure.media-left
 							p.image.is-128x128
 								a(href='/catalog/yardsale/'+yardsale._id)
-									img(src='https://s3.amazonaws.com/yardy123/'+yardsale.user.username+'/'+yardsale.imagename alt='picture of yardsale')
+									img(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
+									yardsale.imagename alt='picture of yardsale')
 						.media-content
 							.content
 								p
@@ -97,4 +98,19 @@ block content
 						.media-right
 							a.button.is-link Add
 			else
-				p.has-text-centered Please sign in to view yard sales in your area.
+				h1.subtitle.has-text-centered.has-text-danger Please sign in to view more details about our yard sales.
+				each yardsale in yardsale_list
+					article.media
+						figure.media-left
+							p.image.is-128x128
+								a(href='/catalog/yardsale/' + yardsale._id)
+									img(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
+									yardsale.imagename alt='picture of yardsale')
+						.media-content
+							.content
+								p
+									strong #{yardsale.state}&nbsp;
+									small #{yardsale.date}
+									br
+								p #{yardsale.description}
+						.media-right
