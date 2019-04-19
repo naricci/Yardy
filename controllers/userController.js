@@ -1,41 +1,15 @@
+const async = require('async');
+const AWS = require('aws-sdk');
+const debug = require('debug')('yardy:user.controller');
 const { body, check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 const passport = require('passport');
-const async = require('async');
-const multer = require('multer');
-// Multer ships with storage engines DiskStorage and MemoryStorage
-// And Multer adds a body object and a file or files object to the request object. The body object contains the values of the text fields of the form, the file or files object contains the files uploaded via the form.
-var storage = multer.memoryStorage();
-var upload = multer({ storage: storage });
-const multerS3 = require('multer-s3');
-const debug = require('debug')('yardy:user.controller');
-
-// AWS Setup
-const AWS = require('aws-sdk');
-const bucketName = 'yardy-pics' || process.env.S3_BUCKET;
-const bucketRegion = 'us-east-1' || process.env.S3_BUCKET_REGION;
-AWS.config.update({
-	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-	accessKey: process.env.AWS_ACCESS_KEY_ID,
-	region: bucketRegion
-});
-var s3 = new AWS.S3({apiVersion: '2006-03-01'});
-
 // Models
 const User = require('../models/user');
 const Yardsale = require('../models/yardsale');
 
 // Display detail page for a specific user.
 exports.user_profile = (req, res, next) => {
-	// S3 Bucket Details
-	// const folder = (req.user.username + '/');
-	// const file = (req.user.profilepic);
-	// const params = {
-	// 	Bucket: bucketName,
-	// 	Key: (folder + file)
-	// };
-	// debug('Bucket Path: ' + process.env.S3_BUCKET + '/' + folder + file);
-
 	async.parallel({
 		user: (callback) => {
 			User
@@ -45,7 +19,6 @@ exports.user_profile = (req, res, next) => {
 		yardsales: (callback) => {
 			Yardsale
 				.find({ 'user': req.params.id }, 'date starttime address city state description imagename')
-			// .populate('user')
 				.sort([['date', 'ascending']])
 				.exec(callback);
 		},
@@ -56,12 +29,6 @@ exports.user_profile = (req, res, next) => {
 			err.status = 404;
 			return next(err);
 		}
-
-		// Get Image from S3 bucket
-		// s3.getObject(params, (err, data) => {
-		// 	if (err) debug(err, err.stack);	// an error occurred
-		// 	else 		 debug(data);
-		// });
 
 		res.render('user_profile', {
 			title: 'User Profile',
@@ -495,6 +462,7 @@ exports.reset_post_final = [
 
 // Display profile picture update page on GET
 exports.profilepic_get = (req, res, next) => {
+	debug(`Getting user ${req.user.username}'s profilepic page`);
 	User
 		.findById(req.params.id)
 		.exec((err, found_user) => {
@@ -513,118 +481,7 @@ exports.profilepic_get = (req, res, next) => {
 		});
 };
 
-// TODO - Fix profile picture upload
-/*
-// Handle profile picture update page on POST
-exports.profilepic_post = [
-	// Validate form fields.
-	check('profilepic')
-		.isLength({max: 100})
-		.withMessage('Image name cannot be longer than 100 characters long.')
-		.trim(),
-
-	// Sanitize fields.
-	sanitizeBody('profilepic').toString(),
-
-	(req, res, next) => {
-		// Extract the validation errors from a request.
-		let errors = validationResult(req);
-
-		// Get a handle on errors.array() array.
-		let errorsArray = errors.array();
-
-		let user = new User({
-			profilepic: req.body.profilepic,
-			_id: req.params.id
-		});
-
-		// Find image file extension
-		let ext = getFileExtension(req.body.profilepic);
-		let contentType;
-
-		switch (ext) {
-			case 'png':
-				contentType = 'image/png';
-				break;
-			case 'jpg':
-				contentType = 'image/jpeg';
-				break;
-			case 'jpeg':
-				contentType = 'image/jpeg';
-				break;
-			case 'gif':
-				contentType = 'image/gif';
-				break;
-			case 'tiff':
-				contentType = 'image/tiff';
-				break;
-			case 'svg':
-				contentType = 'image/svg+xml';
-				break;
-			case 'ico':
-				contentType = 'image/vnd.microsoft.icon';
-				break;
-			default:
-				contentType = 'application/octet-stream';
-		}
-
-		// S3 Bucket Details
-		var folder = (req.user.username + '/');
-		// var file = req.profilepic;
-		var file = req.body.profilepic;
-		var buffer = Buffer.from(ext, 'base64');
-		/*
-		var params = {
-			ACL: 'public-read',
-			Body: buffer,
-			Bucket: bucketName,
-			// ContentDisposition: 'inline',
-			// ContentEncoding: 'base64',
-			// ContentType: 'application/octet-stream',
-			ContentType: contentType,
-			Key: (folder + file)
-			// Metadata: {
-			// 	'x-amz-meta-fieldname': contentType
-			// },
-			// ServerSideEncryption: 'AES256'
-		};
-		*/
-/*
-		if (errorsArray.length > 0) {
-			// There are errors. Render the form again with sanitized values/error messages.
-			res.render('user_form', {
-				title: 'Update Profile',
-				user: user,
-				errors: errorsArray
-			});
-			return;
-		} else {
-			//debug(`Posting ${params.Key} to ${bucketName} in S3`);
-
-			// Save profile pic to users table
-			User
-				.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
-					if (err) return next(err);
-					if (user === null) {
-						let err = new Error('User not found');
-						err.status = 404;
-						return next(err);
-					}
-
-					// Upload profile pic to S3 bucket putObject/upload
-					// s3.putObject(params, function(err, data) {
-					// 	if (err) debug('Error: ', err);
-					// 	else 		 debug(data);
-					// });
-
-					// Successful - redirect to user detail page.
-					res.redirect('/users/' + theuser._id);
-				});
-		}
-	}
-];
-*/
-
+// Handle profilepic page on POST to DB and S3
 exports.profilepic_post = [
 	// Validate form fields.
 	check('profilepic')
@@ -636,28 +493,29 @@ exports.profilepic_post = [
 
 	(req, res, next) => {
 		// Extract the validation errors from a request.
-		let errors = validationResult(req);
+		var errors = validationResult(req);
 		// Get a handle on errors.array() array.
-		let errorsArray = errors.array();
+		var errorsArray = errors.array();
+
 		var file = req.file;
 		var user = new User({
-			profilepic: req.file.originalname,
+			profilepic: file.originalname,
 			_id: req.params.id
 		});
-
-
-		var key = (req.user.username + '/' + file.originalname);
-		var s3bucket = new AWS.S3({
+		const key = (req.user.username + '/' + file.originalname);
+		const s3 = new AWS.S3({
+			apiVersion: '2006-03-01',
 			accessKeyId: process.env.AWS_ACCESS_KEY_ID,
 			secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 			region: process.env.S3_BUCKET_REGION
 		});
-		var params = {
-			Bucket: process.env.S3_BUCKET,
-			Key: key,
+		const params = {
+			ACL: 'public-read',
 			Body: file.buffer,
+			Bucket: process.env.S3_BUCKET,
 			ContentType: file.mimetype,
-			ACL: 'public-read'
+			Key: key,
+			ServerSideEncryption: 'AES256'
 		};
 
 		if (errorsArray.length > 0) {
@@ -667,9 +525,7 @@ exports.profilepic_post = [
 				user: user,
 				errors: errorsArray
 			});
-			return;
 		} else {
-			debug(`Posting ${params.Key} to ${process.env.S3_BUCKET} in S3`);
 			User
 				.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
 					if (err) return next(err);
@@ -678,13 +534,14 @@ exports.profilepic_post = [
 						err.status = 404;
 						return next(err);
 					}
-					s3bucket.upload(params, (err, data) => {
-						// if (err) res.status(500).json({ error: true, Message: err });
+					// S3 Image upload
+					s3.putObject(params, (err, data) => {
 						if (err) debug('Error: ', err);
-						else 		 debug(data);
-						// res.send({data});
+						else {
+							debug(`Posting ${params.Key} to ${process.env.S3_BUCKET} in S3`);
+							debug(data);
+						}
 					});
-
 					// Successful - redirect to user detail page.
 					res.redirect('/users/' + theuser._id);
 				});

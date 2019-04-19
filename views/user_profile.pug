@@ -66,3 +66,7 @@ block content
 									//button.delete
 									a.delete(href='/catalog/yardsale/'+yardsale._id+'/delete')
 							hr
+		if errors
+			ul
+				for error in errors
+					li.has-text-danger!= error.msg
