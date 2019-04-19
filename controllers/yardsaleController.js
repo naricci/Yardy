@@ -1,7 +1,7 @@
 const async = require('async');
+const debug = require('debug')('yardy:yardsale.controller');
 const { check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
-const debug = require('debug')('yardy:yardsale.controller');
 
 // AWS Setup
 const AWS = require('aws-sdk');
@@ -17,6 +17,7 @@ const s3 = new AWS.S3({apiVersion: '2006-03-01'});
 // Models
 const Yardsale = require('../models/yardsale');
 const User = require('../models/user');
+
 
 // Display list of all yardsales.
 exports.yardsale_list = (req, res, next) => {

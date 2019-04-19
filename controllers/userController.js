@@ -140,7 +140,6 @@ exports.register_post = [
 	(req, res, next) => {
 		// Extract the validation errors from a request.
 		let errors = validationResult(req);
-
 		// Get a handle on errors.array() array,
 		// so we can push our own error messages into it.
 		let errorsArray = errors.array();
@@ -175,9 +174,7 @@ exports.register_post = [
 			User
 				.findOne({ username: req.body.username, email: req.body.email })
 				.exec((err, found_user, found_email) => {
-					if (err) {
-						return next(err);
-					}
+					if (err) return next(err);
 					if (found_user) {
 						// Username exists, re-render the form with error message.
 						res.render('user_form', {
@@ -196,9 +193,7 @@ exports.register_post = [
 					} else {
 						// User does not exist. Create it.
 						user.save(err => {
-							if (err) {
-								return next(err);
-							}
+							if (err) return next(err);
 							debug('User Created Successfully\n' + user);
 							// User saved. Redirect to login page.
 							req.flash(
@@ -218,9 +213,7 @@ exports.update_get = (req, res, next) => {
 	User
 		.findById(req.params.id)
 		.exec((err, found_user) => {
-			if (err) {
-				return next(err);
-			}
+			if (err) return next(err);
 			if (found_user === null) {
 				let err = new Error('User not found');
 				err.status = 404;
@@ -260,7 +253,6 @@ exports.update_post = [
 	(req, res, next) => {
 		// Extract the validation errors from a request.
 		let errors = validationResult(req);
-
 		// Get a handle on errors.array() array.
 		let errorsArray = errors.array();
 
@@ -298,11 +290,8 @@ exports.update_post = [
 			// Remove warnings that may be coming from the body(..) validation step above.
 			let filteredErrorsArray = [];
 			errorsArray.forEach(errorObj => {
-				if (
-					!(errorObj.param === 'password' || errorObj.param === 'cpassword')
-				) {
+				if (!(errorObj.param === 'password' || errorObj.param === 'cpassword'))
 					filteredErrorsArray.push(errorObj);
-				}
 			});
 			// Assign filtered array back to original array.
 			errorsArray = filteredErrorsArray;
@@ -322,9 +311,7 @@ exports.update_post = [
 			// Data from form is valid. Update the record.
 			User
 				.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
-					if (err) {
-						return next(err);
-					}
+					if (err) return next(err);
 					// Successful - redirect to user detail page.
 					res.redirect('/users/'+theuser._id);
 				});
@@ -364,7 +351,6 @@ exports.reset_post = [
 	(req, res, next) => {
 		// Extract the validation errors from a request.
 		let errors = validationResult(req);
-
 		// Get a handle on errors.array() array.
 		let errorsArray = errors.array();
 
@@ -392,9 +378,7 @@ exports.reset_post = [
 				.findOne({ username: req.body.username, email: req.body.email })
 				.exec(
 					(err, found_user) => {
-						if (err) {
-							return next(err);
-						}
+						if (err) return next(err);
 						if (found_user) {
 							// User exists and credentials did match. Proceed to the second step.
 							// And pass found_user to the form. We'll need user._id in the final step.
@@ -492,8 +476,7 @@ exports.reset_post_final = [
 					}
 				],
 				(err, theuser) => {
-					if (err)
-						return next(err);
+					if (err) return next(err);
 					// Success, redirect to login page and show a flash message.
 					req.flash(
 						'success',
@@ -511,8 +494,7 @@ exports.profilepic_get = (req, res, next) => {
 	User
 		.findById(req.params.id)
 		.exec((err, found_user) => {
-			if (err)
-				return next(err);
+			if (err) return next(err);
 			if (found_user == null) {
 				let err = new Error('User not found');
 				err.status = 404;
@@ -537,7 +519,7 @@ exports.profilepic_post = [
 		.trim(),
 
 	// Sanitize fields.
-	// sanitizeBody('profilepic').toString(),
+	sanitizeBody('profilepic').toString(),
 
 	(req, res, next) => {
 		// Extract the validation errors from a request.
@@ -586,6 +568,7 @@ exports.profilepic_post = [
 		// var file = req.profilepic;
 		var file = req.body.profilepic;
 		var buffer = Buffer.from(ext, 'base64');
+		/*
 		var params = {
 			ACL: 'public-read',
 			Body: buffer,
@@ -600,7 +583,7 @@ exports.profilepic_post = [
 			// },
 			// ServerSideEncryption: 'AES256'
 		};
-
+		*/
 		if (errorsArray.length > 0) {
 			// There are errors. Render the form again with sanitized values/error messages.
 			res.render('user_form', {
@@ -610,7 +593,7 @@ exports.profilepic_post = [
 			});
 			return;
 		} else {
-			debug(`Posting ${params.Key} to ${bucketName} in S3`);
+			//debug(`Posting ${params.Key} to ${bucketName} in S3`);
 
 			// Save profile pic to users table
 			User
@@ -623,10 +606,10 @@ exports.profilepic_post = [
 					}
 
 					// Upload profile pic to S3 bucket putObject/upload
-					s3.putObject(params, function(err, data) {
-						if (err) debug('Error: ', err);
-						else 		 debug(data);
-					});
+					// s3.putObject(params, function(err, data) {
+					// 	if (err) debug('Error: ', err);
+					// 	else 		 debug(data);
+					// });
 
 					// Successful - redirect to user detail page.
 					res.redirect('/users/' + theuser._id);
@@ -683,20 +666,16 @@ function extractFlashMessages(req) {
 function isAlreadyLoggedIn(req, res, next) {
 	if (req.user && req.isAuthenticated())
 		res.redirect('/');
-	else
-		next();
+	else next();
 }
 
 // Function that confirms that user is logged in and is the 'owner' of the page.
 function isPageOwnedByUser(req, res, next) {
 	if (req.user && req.isAuthenticated()) {
-		if (req.user._id.toString() === req.params.id.toString()) {
+		if (req.user._id.toString() === req.params.id.toString())
 			// User's own page. Allow request.
 			next();
-		} else {
-			// Deny and redirect.
-			res.redirect('/');
-		}
+		else res.redirect('/'); // Deny and redirect.
 	} else {
 		// Not authenticated. Redirect.
 		res.redirect('/');

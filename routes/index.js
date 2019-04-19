@@ -1,23 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const Yardsale = require('../models/yardsale');
+const indexController = require('../controllers/indexController');
 
 /* GET home page. */
-router.get('/', function(req, res) {
-	Yardsale
-		.find()
-		.populate('user')
-		.sort([['date', 'ascending']])
-		.exec(function(err, list_yardsales) {
-			if (err) {
-				return next(err);
-			}
-			// Successful, so render
-			res.render('index', {
-				title: 'Yardy',
-				yardsale_list: list_yardsales
-			});
-		});
-});
+router.get('/', indexController.index);
 
 module.exports = router;
+

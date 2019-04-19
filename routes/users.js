@@ -3,9 +3,7 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 
 // Handler for all types of requests pointed to '/' route.
-router.all('/', function(req, res) {
-	// We don't have a 'landing page' for users route.
-	// So, redirect to home page.
+router.all('/', (req, res) => {
 	res.redirect('/');
 });
 
