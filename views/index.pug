@@ -39,16 +39,17 @@ block content
 									option(value='distance') Distance
 								span.icon.is-small.is-left
 									i.fas.fa-sort
-						p.control
-							a.button.is-success(onclick='getLocation()')
-								span.icon
-									i.fas.fa-home
-								span Get Location
-						p.control
-							a.button.is-link(href='/catalog/yardsales')
-								span.icon
-									i.fas.fa-search-location
-								span Search
+						.buttons
+							p.control
+								a.button.is-success(onclick='getLocation()')
+										span.icon
+											i.fas.fa-map-marker-alt
+										span Get Location
+							p.control
+								a.button.is-link(href='/catalog/yardsales')
+									span.icon
+										i.fas.fa-search-location
+									span Search
 	br
 	// MAP OF USA
 	section.section
@@ -65,13 +66,13 @@ block content
 				each yardsale in yardsale_list
 					article.media
 						figure.media-left
-							p.image.is-128x128
+							figure.image.is-128x128
 								a(href='/catalog/yardsale/'+yardsale._id)
 									if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
-										img.is-128x128(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
-										yardsale.imagename alt='profile picture')
+										img(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
+										yardsale.imagename alt='yard sale')
 									else
-										img.is-128x128(src='/images/yardsale_poster.jpg' alt='profile picture')
+										img(src='/images/yardsale_poster.jpg' alt='yard sale')
 						.media-content
 							.content
 								p
@@ -99,12 +100,12 @@ block content
 				each yardsale in yardsale_list
 					article.media
 						figure.media-left
-							p.image.is-128x128
+							figure.image.is-128x128
 								if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
-									img.is-128x128(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
-									yardsale.imagename alt='profile picture')
+									img(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
+									yardsale.imagename alt='yard sale')
 								else
-									img.is-128x128(src='/images/yardsale_poster.jpg' alt='profile picture')
+									img(src='/images/yardsale_poster.jpg' alt='yard sale')
 						.media-content
 							.content
 								p
