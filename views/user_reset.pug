@@ -9,7 +9,7 @@ block content
 				h1.subtitle.has-text-centered
 					strong= title
 
-				form(method="POST" action=is_first_step ? "/users/reset" : "/users/resetfinal")
+				form(method="post" action=is_first_step ? "/users/reset" : "/users/resetfinal")
 
 					if is_first_step
 						p Please enter your username and email. If they match a user, you will be redirected to the password reset page.
@@ -29,12 +29,18 @@ block content
 					if is_second_step
 						p Almost there. Enter your new password twice and you're good to go!
 						br
-						div.form-group
-							label(for="password") New Password:
-							input#password.form-control(type="password" name="password" required=is_second_step)
-						div.form-group
-							label(for="cpassword") Confirm New Password:
-							input#password_confirm.form-control(type="password" name="cpassword" required=is_second_step)
+						.field
+							label.label New Password:
+							.control.has-icons-left.has-icons-right
+								input#password.input(type="password" name="password" required=is_second_step)
+								span.icon.is-small.is-left
+									i.fas.fa-lock
+						.field
+							label.label Confirm New Password:
+							.control.has-icons-left.has-icons-right
+								input#password_confirm.input(type="password" name="cpassword" required=is_second_step)
+								span.icon.is-small.is-left
+									i.fas.fa-lock
 						input(type="hidden" name="userid" value=user._id)
 					br
 					button.button.is-link(type="submit") #{is_first_step ? "Next" : "Done"}

@@ -229,7 +229,6 @@ exports.yardsale_update_get = (req, res, next) => {
 
 // Handle Yardsale update on POST.
 exports.yardsale_update_post = [
-
 	// Validate form fields.
 	check('phone')
 		.isMobilePhone('en-US')
@@ -255,8 +254,13 @@ exports.yardsale_update_post = [
 
 		// Extract the validation errors from a request.
 		const errors = validationResult(req);
-
-		var file = req.file;
+		const s3 = new AWS.S3({
+			apiVersion: '2006-03-01',
+			accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+			secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+			region: process.env.S3_BUCKET_REGION
+		});
+		var ysFile = req.file;
 		// Create Yardsale object with escaped and trimmed data (and the old id!)
 		var yardsale = new Yardsale({
 			firstName: req.body.firstname,
@@ -272,29 +276,23 @@ exports.yardsale_update_post = [
 			starttime: req.body.starttime,
 			endtime: req.body.endtime,
 			description: req.body.description,
-			imagename: req.body.imagename,
+			imagename: ysFile.originalname,
 			_id: req.params.id
 		});
 
-		const key = (req.user.username + '/' + req.body.imagename);
-		const s3 = new AWS.S3({
-			apiVersion: '2006-03-01',
-			accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-			secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-			region: process.env.S3_BUCKET_REGION
-		});
+		const key = (req.user.username + '/' + ysFile.originalname);
 		const params = {
 			ACL: 'public-read',
-			Body: file.buffer,
+			Body: ysFile.buffer,
 			Bucket: process.env.S3_BUCKET,
-			ContentType: file.mimetype,
+			ContentType: ysFile.mimetype,
 			Key: key,
 			ServerSideEncryption: 'AES256'
 		};
 
 		if (!errors.isEmpty()) {
 			// There are errors. Render the form again with sanitized values and error messages.
-			res.render('yardsale_form', {
+			res.render('yardsale_edit', {
 				title: 'Update Yardsale',
 				yardsale: yardsale,
 				errors: errors.array() });
@@ -305,15 +303,16 @@ exports.yardsale_update_post = [
 			Yardsale
 				.findByIdAndUpdate(req.params.id, yardsale, {}, (err, theyardsale) => {
 					if (err) return next(err);
-
+					//if (ysFile.originalname !== '') {
 					// S3 Image upload
-					s3.putObject(params, (err, data) => {
+					s3.upload(params, (err, data) => {
 						if (err) debug('Error: ', err);
 						else {
 							debug(`Posting ${params.Key} to ${process.env.S3_BUCKET} in S3`);
 							debug(data);
 						}
 					});
+					// }
 					// Successful - redirect to yardsale detail page.
 					res.redirect('/catalog/yardsale/'+theyardsale._id);
 					// res.redirect('/users/'+theyardsale.user._id);

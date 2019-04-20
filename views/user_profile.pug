@@ -37,8 +37,12 @@ block content
 							br
 							article.media
 								figure.media-left
-									p.image.is-64x64
-										img(src='https://s3.amazonaws.com/yardy123/'+user.username+'/'+yardsale.imagename alt='picture of yardsale')
+									p.image.is-128x128
+										if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
+											img(src='https://s3.amazonaws.com/yardy-pics/' + user.username + '/' +
+											yardsale.imagename alt='preview')
+										else
+											img(src='/images/yardsale_poster.jpg' alt='preview')
 								.media-content
 									.content
 										p

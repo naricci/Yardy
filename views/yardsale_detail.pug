@@ -31,7 +31,11 @@ block content
 						include sidebar
 
 				.column.is-three-quarters
-					img(src='https://s3.amazonaws.com/yardy123/'+yardsale.user.username+'/'+yardsale.imagename alt='picture of yardsale')
+					if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
+						img.is-128x128(src='https://s3.amazonaws.com/yardy-pics/' + user.username + '/' +
+						yardsale.imagename alt='profile picture')
+					else
+						img.is-128x128(src='/images/yardsale_poster.jpg' alt='profile picture' )
 					br
 					br
 					p #[strong Username: ] #{yardsale.user.username}
