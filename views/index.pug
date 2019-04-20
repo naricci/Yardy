@@ -25,39 +25,39 @@ block content
 			br
 			.field.is-horizontal
 				.field-body
-					.field.is-grouped.is-grouped-centered
+					.field.has-addons
 						p.control.has-icons-left.is-expanded
-							input.input(type='text' placeholder='City, State, Zip Code')
+							input.input(type='text' placeholder='City, State, Zip Code, etc.')
 							span.icon.is-small.is-left
 								i.fas.fa-map-marker-alt
-						.control#indexSort.has-icons-left
-							.select
-								select(id='sort' name='sort')
-									option(selected) Sort (optional)
-									option(value='date') Date
-									option(value='starttime') Starting Time
-									option(value='distance') Distance
-								span.icon.is-small.is-left
-									i.fas.fa-sort
-						.buttons
-							p.control
-								a.button.is-success(onclick='getLocation()')
-										span.icon
-											i.fas.fa-map-marker-alt
-										span Get Location
-							p.control
-								a.button.is-link(href='/catalog/yardsales')
-									span.icon
-										i.fas.fa-search-location
-									span Search
+						//.control#indexSort.has-icons-left
+						//	.select
+						//		select(id='sort' name='sort')
+						//			option(selected) Sort (optional)
+						//			option(value='date') Date
+						//			option(value='starttime') Starting Time
+						//			option(value='distance') Distance
+						//		span.icon.is-small.is-left
+						//			i.fas.fa-sort
+						//p.control
+						//	a.button.is-success(onclick='getLocation()')
+						//			span.icon
+						//				i.fas.fa-map-marker-alt
+						//			span Get Location
+						//.divider
+						p.control
+							a.button.is-link(href='/catalog/yardsales')
+								span.icon
+									i.fas.fa-search-location
+								span Search
 	br
 	// MAP OF USA
 	section.section
 		.container
-			#map(style='width:100%;height:400px')
+			#map(style='width:100%;height:500px')
 			script(src='/js/index_map.js')
-			//script(async defer src='https://maps.googleapis.com/maps/api/js?key='+process.env.MAPS_API_KEY+'&callback=initMap')
-			script(async defer src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDxjeLMjAFvZUwypcu0UpoCkAk4lJXShPQ&callback=initMap')
+			script(async defer src='https://maps.googleapis.com/maps/api/js?key='+process.env.MAPS_API_KEY+'&callback=initMap')
+			//script(async defer src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDxjeLMjAFvZUwypcu0UpoCkAk4lJXShPQ&callback=initMap')
 
 	// Results Section
 	section.section
