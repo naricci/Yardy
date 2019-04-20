@@ -4,7 +4,7 @@ nav.panel.is-hidden-mobile
 			a(href='/users/' + yardsale.user._id +'/profilepic') upload picture
 			// TODO - Possibly add a modal here
 	.panel-block
-		if (yardsale.user.profilepic !== undefined)
+		if (yardsale.user.profilepic !== undefined && yardsale.user.profilepic !== '' && yardsale.user.profilepic !== null)
 			img.is-128x128(src='https://s3.amazonaws.com/yardy-pics/'+yardsale.user.username+'/'+yardsale.user.profilepic alt='profile picture')
 		else
 			img.is-128x128(src='/images/blank_profile.png' alt='profile picture')

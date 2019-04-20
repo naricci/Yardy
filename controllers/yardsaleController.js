@@ -52,6 +52,7 @@ exports.yardsale_detail = (req, res, next) => {
 			err.status = 404;
 			return next(err);
 		}
+
 		// Successful, so render.
 		res.render('yardsale_detail', {
 			title: 'Yardsale Details',
@@ -64,14 +65,21 @@ exports.yardsale_detail = (req, res, next) => {
 // Display yardsale create form on GET.
 exports.yardsale_create_get = (req, res, next) => {
 	User
-		.findById(req.user._id, (err, results) => {
+		.findById(req.params.id)
+		.exec()
+		.catch((err, results) => {
 			if (err) return next(err);
-			if (results.user === null) { // No results.
+			if (results == null) { // No results.
 				let err = new Error('User not found.');
 				err.status = 404;
 				return next(err);
 			}
-			res.render('yardsale_form', { title: 'Create Yardsale', user: results.user });
+		})
+		.then((results) => {
+			res.render('yardsale_form', {
+				title: 'Create Yardsale',
+				user: results
+			});
 		});
 };
 

@@ -475,8 +475,8 @@ exports.profilepic_get = (req, res, next) => {
 			// Successful, so render
 			res.render('user_profilepic', {
 				title: 'Update Profile Pic',
-				user: found_user,
-				is_update_form: true
+				user: found_user
+				// is_update_form: true
 			});
 		});
 };

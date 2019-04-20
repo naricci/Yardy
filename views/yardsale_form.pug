@@ -6,27 +6,27 @@ block content
 		.container
 			h1.subtitle.has-text-centered
 				strong #{title}
-			.tabs.is-centered.is-boxed
-				ul
-					li.is-active
-						a(href='/users/' + user._id + '/update')
-							span.icon.is-small
-								i.fas.fa-pen(aria-hidden='true')
-							span edit profile
-					li
-						a(href='/users/' + user._id)
-							span.icon.is-small
-								i.fas.fa-bookmark(aria-hidden='true')
-							span yardsales
-					li
-						a(href='/users/' + user._id + '/favorites')
-							span.icon.is-small
-								i.fas.fa-heart(aria-hidden='true')
-							span favorites
+			//.tabs.is-centered.is-boxed
+			//	ul
+			//		li.is-active
+			//			a(href='/users/' + user._id + '/update')
+			//				span.icon.is-small
+			//					i.fas.fa-pen(aria-hidden='true')
+			//				span edit profile
+			//		li
+			//			a(href='/users/' + user._id)
+			//				span.icon.is-small
+			//					i.fas.fa-bookmark(aria-hidden='true')
+			//				span yardsales
+			//		li
+			//			a(href='/users/' + user._id + '/favorites')
+			//				span.icon.is-small
+			//					i.fas.fa-heart(aria-hidden='true')
+			//				span favorites
 			.columns
-				.column.is-one-quarter
-					include sidebar
-				.column.is-three-fourths
+				.column.is-one-fifth
+					//include sidebar2
+				.column.is-three-fifths
 
 					form(method='post' enctype='multipart/form-data')
 						.field
@@ -111,11 +111,12 @@ block content
 							.control
 								button.button.is-link(type='submit')
 									| Post your yard sale!
-
+				.column.is-one-fith
 			if errors
 				ul
 					for error in errors
 						li!= error.msg
+
 
 	script(src='/js/select_image_name.js')
 

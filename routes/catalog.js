@@ -8,9 +8,6 @@ const yardsaleController = require('../controllers/yardsaleController');
 // GET request for list of all Yardsales.
 router.get('/yardsales', yardsaleController.yardsale_list);
 
-// GET request for one Yardsale.
-router.get('/yardsale/:id', yardsaleController.yardsale_detail);
-
 // GET request for creating a Yardsale.
 router.get('/yardsale/create', yardsaleController.yardsale_create_get);
 
@@ -28,6 +25,9 @@ router.get('/yardsale/:id/update', yardsaleController.yardsale_update_get);
 
 // POST request to update Yardsale.
 router.post('/yardsale/:id/update', upload.single('imagename'), yardsaleController.yardsale_update_post);
+
+// GET request for one Yardsale.
+router.get('/yardsale/:id', yardsaleController.yardsale_detail);
 
 /*try to display some yahdsales*/
 router.get('/yardsale', yardsaleController.all_yardsales);
