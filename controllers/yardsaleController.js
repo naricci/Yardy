@@ -3,21 +3,10 @@ const AWS = require('aws-sdk');
 const debug = require('debug')('yardy:yardsale.controller');
 const { check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
-
-// AWS Setup
-const bucketName = 'yardy123' || process.env.S3_BUCKET;
-const bucketRegion = 'us-east-1' || process.env.S3_BUCKET_REGION;
-AWS.config.update({
-	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-	accessKey: process.env.AWS_ACCESS_KEY_ID,
-	region: bucketRegion
-});
-const s3 = new AWS.S3({apiVersion: '2006-03-01'});
-
+const multer = require('multer');
 // Models
-const Yardsale = require('../models/yardsale');
 const User = require('../models/user');
-
+const Yardsale = require('../models/yardsale');
 
 // Display list of all yardsales.
 exports.yardsale_list = (req, res, next) => {
@@ -109,16 +98,7 @@ exports.yardsale_create_post = [
 	// Process request after validation and sanitization.
 	(req, res, next) => {
 
-		// S3 Bucket Details
-		const folder = (req.user.username + '/');
-		const file = (req.body.imagename);
-		const params = {
-			Bucket: bucketName,
-			Key: (folder + file),
-			ACL: 'public-read',
-			Body: file
-		};
-		debug('Bucket Path: ' + process.env.S3_BUCKET + '/' + folder + file);
+		// debug('Bucket Path: ' + process.env.S3_BUCKET + '/' + folder + file);
 
 		// Extract the validation errors from a request.
 		let errors = validationResult(req);
@@ -150,10 +130,10 @@ exports.yardsale_create_post = [
 				if (err) return next(err);
 
 				// Upload yardsale image to S3 Bucket
-				s3.putObject(params, (err, data) => {
-					if (err) debug('Error: ', err);
-					else debug(data);
-				});
+				// s3.putObject(params, (err, data) => {
+				// 	if (err) debug('Error: ', err);
+				// 	else debug(data);
+				// });
 
 				// Successful - redirect to new yardsale record.
 				debug(yardsale);
@@ -268,6 +248,7 @@ exports.yardsale_update_post = [
 	sanitizeBody('phone').toInt(),
 	sanitizeBody('zipcode').toString(),
 	sanitizeBody('date').toDate(),
+	sanitizeBody('imagename').toString(),
 
 	// Process request after validation and sanitization.
 	(req, res, next) => {
@@ -275,26 +256,41 @@ exports.yardsale_update_post = [
 		// Extract the validation errors from a request.
 		const errors = validationResult(req);
 
+		var file = req.file;
 		// Create Yardsale object with escaped and trimmed data (and the old id!)
-		let yardsale = new Yardsale(
-			{
-				firstName: req.body.firstname,
-				lastName: req.body.lastname,
-				username: req.body.username,
-				phone: req.body.phone,
-				address: req.body.address,
-				address2: req.body.address2,
-				city: req.body.city,
-				state: req.body.state,
-				zipcode: req.body.zipcode,
-				date: req.body.date,
-				starttime: req.body.starttime,
-				endtime: req.body.endtime,
-				description: req.body.description,
-				imagename: req.body.imagename,
-				_id: req.params.id
-			}
-		);
+		var yardsale = new Yardsale({
+			firstName: req.body.firstname,
+			lastName: req.body.lastname,
+			username: req.body.username,
+			phone: req.body.phone,
+			address: req.body.address,
+			address2: req.body.address2,
+			city: req.body.city,
+			state: req.body.state,
+			zipcode: req.body.zipcode,
+			date: req.body.date,
+			starttime: req.body.starttime,
+			endtime: req.body.endtime,
+			description: req.body.description,
+			imagename: req.body.imagename,
+			_id: req.params.id
+		});
+
+		const key = (req.user.username + '/' + req.body.imagename);
+		const s3 = new AWS.S3({
+			apiVersion: '2006-03-01',
+			accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+			secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+			region: process.env.S3_BUCKET_REGION
+		});
+		const params = {
+			ACL: 'public-read',
+			Body: file.buffer,
+			Bucket: process.env.S3_BUCKET,
+			ContentType: file.mimetype,
+			Key: key,
+			ServerSideEncryption: 'AES256'
+		};
 
 		if (!errors.isEmpty()) {
 			// There are errors. Render the form again with sanitized values and error messages.
@@ -308,7 +304,16 @@ exports.yardsale_update_post = [
 			// Data from form is valid. Update the yardsale record.
 			Yardsale
 				.findByIdAndUpdate(req.params.id, yardsale, {}, (err, theyardsale) => {
-					if (err) { return next(err); }
+					if (err) return next(err);
+
+					// S3 Image upload
+					s3.putObject(params, (err, data) => {
+						if (err) debug('Error: ', err);
+						else {
+							debug(`Posting ${params.Key} to ${process.env.S3_BUCKET} in S3`);
+							debug(data);
+						}
+					});
 					// Successful - redirect to yardsale detail page.
 					res.redirect('/catalog/yardsale/'+theyardsale._id);
 					// res.redirect('/users/'+theyardsale.user._id);
