@@ -151,7 +151,6 @@ exports.yardsale_create_post = [
 	}
 ];
 
-// TODO Fix issue grabbing user data on GET
 // Display Yardsale delete form on GET.
 exports.yardsale_delete_get = (req, res, next) => {
 	async.parallel({
@@ -163,12 +162,12 @@ exports.yardsale_delete_get = (req, res, next) => {
 		},
 		user: (callback) => {
 			User
-				.find({ 'user': req.user._id }, 'username email firstName lastName phone profilepic')
+				.find({ 'user': req.params.id }, 'username email firstName lastName phone profilepic')
 				.exec(callback);
 		},
 	}, (err, results) => {
 		if (err) return next(err);
-		if (results.yardsale === null) { // No results.
+		if (results === null) { // No results.
 			res.redirect('/catalog/yardsales');
 		}
 
@@ -181,35 +180,22 @@ exports.yardsale_delete_get = (req, res, next) => {
 	});
 };
 
+// TODO - Fix DELETE Function
 // Handle Yardsale delete on POST.
 exports.yardsale_delete_post = (req, res, next) => {
-	async.parallel({
-		yardsale: (callback) => {
-			Yardsale
-				.findById(req.body.yardsaleid)
-				.exec(callback);
-		},
-	}, (err, results) => {
-		if (err) { return next(err); }
-		// Success.
-		if (results.yardsale.length === 1) {
-			// yardsale has books. Render in same way as for GET route.
-			res.render('yardsale_delete', {
-				title: 'Delete Yardsale',
-				yardsale: results.yardsale
-			});
-			return;
-		}
-		else {
-			// Delete yardsale object and redirect to the list of yardsales.
-			Yardsale
-				.findByIdAndDelete(req.body.yardsaleid, function deleteYardsale(err) {
-					if (err) { return next(err); }
-					// Success - go to yardsale list.
-					res.redirect('/catalog/yardsales');
-				});
-		}
-	});
+	Yardsale
+		.findByIdAndRemove(req.params.id)
+		// .populate('user')
+		// .exec()
+		.then((data) => {
+			debug('Yardsale id ' + req.params.id + ' deleted');
+			debug(data);
+			res.redirect('/catalog/yardsales');
+		})
+		.catch((err) => {
+			return next(err);
+		});
+
 };
 
 // Display Yardsale update form on GET.

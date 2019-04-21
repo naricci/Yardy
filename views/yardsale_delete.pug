@@ -49,6 +49,6 @@ block content
 					hr
 					p Do you really want to delete this Yardsale?
 					br
-					form(method='post')
-						input#id.form-control(type='hidden' name='yardsaleid' required='true' value=yardsale._id )
+					form(method='post' action='')
+						input(type='hidden' name='id' required='true' value=yardsale._id )
 						a.button.is-danger(type='submit') Delete
