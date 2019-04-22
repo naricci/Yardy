@@ -10,32 +10,24 @@ block content
 			.columns
 				.column.is-one-third
 				.column.is-one-third
-					form(method='POST' action='')
+					form(method='post' action='')
 						.field
 							label.label Username
-							.control.has-icons-left.has-icons-right
+							.control.has-icons-left
 								input.input#username(type='text' placeholder='username' name='username' required value=(undefined===user ? '' : user.username))
 								span.icon.is-small.is-left
 									i.fas.fa-user
-								span.icon.is-small.is-right
-									i.fas.fa-check
 						.field
 							label.label Password
 							.control.has-icons-left
 								input.input#password(type='password' name='password' required)
 								span.icon.is-small.is-left
 									i.fas.fa-lock
+								a(href='/users/reset') Forgot your password?
 						.field
 							.control
-								button.button.is-link(type='submit')
-									| Log in
-							.control
-								a(href='/users/reset') Forgot your password?
+								button.button.is-link(type='submit') Log in
 						br
-
-						br
-						br
-
 						if errors
 							ul
 								for error in errors

@@ -55,18 +55,10 @@ block content
 										p #{yardsale.description}
 									nav.level.is-mobile
 										.level-left
-											a.level-item
-												span.icon.is-small
-													i.fas.fa-envelope
-											a.level-item
-												span.icon.is-small
-													i.fab.fa-twitter
-											a.level-item
-												span.icon.is-small
-													i.fas.fa-heart
+											a.level-item(href='/catalog/yardsale/' + yardsale._id) view details
 								.media-right
 									.buttons
-										a(href='/catalog/yardsale/'+yardsale._id) view
+										a(href='/catalog/yardsale/'+yardsale._id+'/update') edit
 										.divider
 										a.delete(href='/catalog/yardsale/'+yardsale._id+'/delete')
 							hr

@@ -29,13 +29,14 @@ body {
 #navbar-title {
 	font-family: 'Permanent Marker', cursive;
 	color: hsl(217, 71%, 53%);
-	font-size: 2rem;
+	font-size: 2.5rem;
 	padding-top: 0;
 	padding-bottom: 0;
 }
 
 .navbar-end > a.navbar-item {
-	font-family: 'Permanent Marker', cursive;
+	font-family: 'Lato', sans-serif;
+	font-size: 16px;
 }
 
 .navbar-item > .buttons > a.button {
@@ -43,17 +44,18 @@ body {
 }
 
 .navbar-end > a.navbar-item {
-	font-size: 18px;
+	font-size: 16px;
 	/*color: hsl(217, 71%, 53%);*/
 	color: hsl(48, 100%, 67%);
 	font-weight: bold;
 }
 
 .navbar-end > a:hover.navbar-item {
-	font-size: 18px;
+	font-size: 16px;
 	color: hsl(217, 71%, 53%);
 	/*color: hsl(48, 100%, 67%);*/
 	font-weight: bold;
+	text-decoration: underline;
 }
 
 a:hover.button.is-link {
@@ -63,21 +65,25 @@ a:hover.button.is-link {
 /* HERO TITLE */
 h1.title.is-1 {
 	font-family: 'Permanent Marker', cursive;
-	font-size: 132px;
-	/*text-decoration: underline;*/
+	font-size: 144px;
+
 }
 
 .hero-body.has-background-warning.is-hidden-touch {
-	/*border-top: 2px solid hsl(48, 100%, 67%);*/
-	padding: 0;
-	/*padding-top: 0;*/
-	/*padding-bottom: 0;*/
+	padding-top: 0;
+	padding-bottom: 5px;
 }
 
 /* CUSTOM SECTIONS */
 section.section {
 	padding-bottom: 5px;
-	padding-top: 5px;
+	padding-top: 10px;
+}
+
+#navbarSection {
+	padding-bottom: 0;
+	padding-top: 0;
+	padding-right: 0;
 }
 
 #indexSort {
@@ -85,22 +91,18 @@ section.section {
 }
 
 .divider{
-	width:5px;
-	height:auto;
-	display:inline-block;
+	width: 5px;
+	height: auto;
+	display: inline-block;
 }
 
 /* FOOTER */
 footer {
-	/*flex: 1;*/
-	padding-bottom: 48px;
+	flex: 1;
+	padding: 32px;
 	position: absolute;
-	bottom: 0;
 	width: 100%;
-}
-
-footer.content {
-	margin-bottom: 0;
+	bottom: 0;
 }
 
 strong#footer-text {

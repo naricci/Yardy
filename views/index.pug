@@ -1,11 +1,10 @@
 extends layout
 
 block content
-
-	// Title & Search Bar
-	section.section
+	// TITLE & SEARCH BAR
+	section.section.has-background-light
 		.container
-			h1.title.is-3.has-text-centered Search for Yard Sales in your area!
+			h1.title.is-3.has-text-centered Search for yard sales in your area!
 			#demo.has-text-centered.has-text-link
 			script.
 				let x = document.getElementById('demo');
@@ -22,7 +21,6 @@ block content
 					x.innerHTML = 'Latitude: ' + position.coords.latitude +
 						' ' + 'Longitude: ' + position.coords.longitude;
 				}
-			br
 			.field.is-horizontal
 				.field-body
 					.field.has-addons
@@ -50,16 +48,14 @@ block content
 								span.icon
 									i.fas.fa-search-location
 								span Search
-	br
 	// MAP OF USA
-	section.section
+	section.section.has-background-light
 		.container
 			#map(style='width:100%;height:500px')
 			script(src='/js/index_map.js')
 			script(async defer src='https://maps.googleapis.com/maps/api/js?key='+process.env.MAPS_API_KEY+'&callback=initMap')
-			//script(async defer src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDxjeLMjAFvZUwypcu0UpoCkAk4lJXShPQ&callback=initMap')
-
-	// Results Section
+			br
+	// YARD SALE LIST
 	section.section
 		.container
 			if yardsale_list && isAuthenticated
@@ -75,28 +71,30 @@ block content
 										img(src='/images/yardsale_poster.jpg' alt='yard sale')
 						.media-content
 							.content
-								p
-									strong #{yardsale.city}, #{yardsale.state}&nbsp;
-									small #{yardsale.date}&nbsp;@&nbsp;
-									small #{yardsale.starttime}
-									br
-								p Posted by #{yardsale.user.username}
+								p Location:&nbsp;&nbsp;
+									strong #{yardsale.full_address}
+								p Date:&nbsp;&nbsp;
+									strong #{yardsale.date}&nbsp;
 								p #{yardsale.description}
 							nav.level.is-mobile
 								.level-left
-									a.level-item
-										span.icon.is-small
-											i.fas.fa-envelope
-									a.level-item
-										span.icon.is-small
-											i.fab.fa-twitter
-									a.level-item
-										span.icon.is-small
-											i.fas.fa-heart
+									//a.level-item
+									//	span.icon.is-small
+									//		i.fas.fa-envelope
+									//a.level-item
+									//	span.icon.is-small
+									//		i.fab.fa-twitter
+									//a.level-item
+									//	span.icon.is-small
+									//		i.fas.fa-heart
+									a.level-item(href='/catalog/yardsale/'+yardsale._id) view details
 						.media-right
-							a.button.is-link Add
+							a.button.is-link.is-rounded
+								span.icon
+									i.fas.fa-star
 			else
-				h1.subtitle.has-text-centered.has-text-danger Please sign in to view more details about our yard sales.
+				h1.subtitle.has-text-centered
+					strong.has-text-danger Please sign in to view more details about our yard sales.
 				each yardsale in yardsale_list
 					article.media
 						figure.media-left
@@ -108,9 +106,9 @@ block content
 									img(src='/images/yardsale_poster.jpg' alt='yard sale')
 						.media-content
 							.content
-								p
-									strong #{yardsale.state}&nbsp;
-									small #{yardsale.date}
-									br
+								p Locaion:&nbsp;&nbsp;
+									strong #{yardsale.city}, #{yardsale.state}&nbsp;
+								p Date:&nbsp;&nbsp;
+									strong #{yardsale.date}
 								p #{yardsale.description}
 						.media-right

@@ -1,66 +1,56 @@
 // Hero banner/Navbar
-section.hero
-	.hero-head.has-background-warning
-		.container
-			nav.navbar.has-text-weight-bold(role='navigation' aria-label='main navigation')
-				// Mobile Navigation Bar
-				.navbar-brand.has-background-warning
-					a.navbar-item.is-hidden-desktop#navbar-title(href='/') Yardy
-					a.navbar-burger.burger(role='button' aria-label='menu' aria-expanded='false' data-target='navbarMenuHeroA')
-						span.has-background-link(aria-hidden='true')
-						span.has-background-link(aria-hidden='true')
-						span.has-background-link(aria-hidden='true')
-				// Desktop Navigation Bar
-				.navbar-menu.has-background-warning#navbarMenuHeroA
-					// The content below will be visible to users who have logged in.
-					if isAuthenticated
-						.navbar-end
-							a.navbar-item.has-text-primary(href='#')
-								| #{current_user.username}
-							a.navbar-item.has-text-link(href='/catalog/yardsale/create')
-								| Post Yard Sale
-							a.navbar-item.has-text-link(href='/users/' + current_user._id)
-								| Account
-							a.navbar-item.has-text-link(href='/users/' + current_user._id + '/favorites')
-								| Favorites
-							.navbar-item
-								.buttons
-									a.button.is-dark(href='https://github.com/naricci/Yardy')
-										span.icon
-											i.fab.fa-github
-										span GitHub
-							.navbar-item
-								.buttons
-									a.button.is-link(href='/users/logout')
-										span.icon
-											i.fas.i.fa.fa-sign-out-alt
-										span Logout
-
-					// The content below will be visible to users who have NOT logged in.
-					if isAuthenticated === false
-						.navbar-end
-							.navbar-item
-								.buttons
-									a.button.is-dark(href='https://github.com/naricci/Yardy')
-										span.icon
-											i.fab.fa-github
-										span GitHub
-							.navbar-item
-								.buttons
-									a.button.is-light(href='/users/register')
-										span.icon
-											i.fas.fa-user-plus
-										span Register
-							.navbar-item
-								.buttons
-									a.button.is-link(href='/users/login')
-										span.icon
-											i.fas.fa-sign-in-alt
-										span Login
-
-		.hero-body.has-background-warning.is-hidden-touch
+section.section.has-background-warning#navbarSection
+	.hero
+		.hero-head.has-background-warning
 			.container
-				a(href='/')
-					h1.title.is-1.has-text-link.has-text-centered Yardy
-				h2.subtitle.has-text-link.has-text-centered
-					i a place for yard sale enthusiasts
+				// NAVIGATION BAR
+				nav.navbar.has-text-weight-bold(role='navigation' aria-label='main navigation')
+					// Mobile Navigation Bar
+					.navbar-brand.has-background-warning
+						a.navbar-item.is-hidden-desktop#navbar-title(href='/') Yardy
+						a.navbar-burger.burger(role='button' aria-label='menu' aria-expanded='false' data-target='navbarMenuHeroA')
+							span.has-background-link(aria-hidden='true')
+							span.has-background-link(aria-hidden='true')
+							span.has-background-link(aria-hidden='true')
+					// Desktop Navigation Bar
+					.navbar-menu.has-background-warning#navbarMenuHeroA
+						// The content below will be visible to users who have logged in.
+						if isAuthenticated
+							.navbar-end
+								a.navbar-item.has-text-link(href='/catalog/yardsale/create') Post Yard Sale
+								a.navbar-item.has-text-link(href='/users/' + current_user._id) Account
+								a.navbar-item.has-text-link(href='/users/' + current_user._id + '/favorites') Favorites
+								.navbar-item
+									a.button.is-dark(href='https://github.com/naricci/Yardy')
+										span.icon.is-small
+											i.fab.fa-github
+										span GitHub
+								.navbar-item
+									.field.has-addons
+										p.control
+											a.button.has-text-primary(href='#') #{current_user.username}
+										p.control
+											a.button.is-inverted(href='/users/logout') Logout
+						// The content below will be visible to users who have NOT logged in.
+						if isAuthenticated === false
+							.navbar-end
+								.navbar-item
+									a.button.is-dark(href='https://github.com/naricci/Yardy')
+										span.icon.is-small
+											i.fab.fa-github
+										span GitHub
+								.navbar-item
+									.field.has-addons
+										p.control
+											a.button(href='/users/register')
+												span Register
+										p.control
+											a.button(href='/users/login')
+												span Login
+		// HERO/HEADER
+		.hero-body.has-background-warning.is-hidden-touch
+				.container
+					h1.title.is-1.has-text-link.has-text-centered
+						a(href='/') Yardy
+					h2.subtitle.has-text-link.has-text-centered
+								i a place for yard sale enthusiasts
