@@ -21,33 +21,20 @@ block content
 					x.innerHTML = 'Latitude: ' + position.coords.latitude +
 						' ' + 'Longitude: ' + position.coords.longitude;
 				}
-			.field.is-horizontal
-				.field-body
-					.field.has-addons
-						p.control.has-icons-left.is-expanded
-							input.input(type='text' placeholder='City, State, Zip Code, etc.')
-							span.icon.is-small.is-left
-								i.fas.fa-map-marker-alt
-						//.control#indexSort.has-icons-left
-						//	.select
-						//		select(id='sort' name='sort')
-						//			option(selected) Sort (optional)
-						//			option(value='date') Date
-						//			option(value='starttime') Starting Time
-						//			option(value='distance') Distance
-						//		span.icon.is-small.is-left
-						//			i.fas.fa-sort
-						//p.control
-						//	a.button.is-success(onclick='getLocation()')
-						//			span.icon
-						//				i.fas.fa-map-marker-alt
-						//			span Get Location
-						//.divider
-						p.control
-							a.button.is-link(href='/catalog/yardsales')
-								span.icon
-									i.fas.fa-search-location
-								span Search
+			form(method='post')
+				.field.is-horizontal
+					.field-body
+						.field.has-addons
+
+							p.control.has-icons-left.is-expanded
+								input.input(type='text' name='searchParams' placeholder='City, State, Zip Code, etc.')
+								span.icon.is-small.is-left
+									i.fas.fa-map-marker-alt
+							p.control
+								a.button.is-link(href='/catalog/yardsales')
+									span.icon
+										i.fas.fa-search-location
+									span Search
 	// MAP OF USA
 	section.section.has-background-light
 		.container
@@ -78,15 +65,6 @@ block content
 								p #{yardsale.description}
 							nav.level.is-mobile
 								.level-left
-									//a.level-item
-									//	span.icon.is-small
-									//		i.fas.fa-envelope
-									//a.level-item
-									//	span.icon.is-small
-									//		i.fab.fa-twitter
-									//a.level-item
-									//	span.icon.is-small
-									//		i.fas.fa-heart
 									a.level-item(href='/catalog/yardsale/'+yardsale._id) view details
 						.media-right
 							a.button.is-link.is-rounded

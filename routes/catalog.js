@@ -12,7 +12,7 @@ router.get('/yardsales', yardsaleController.yardsale_list);
 router.get('/yardsale/create', yardsaleController.yardsale_create_get);
 
 // POST request for creating Yardsale.
-router.post('/yardsale/create', yardsaleController.yardsale_create_post);
+router.post('/yardsale/create', upload.single('imagename'), yardsaleController.yardsale_create_post);
 
 // GET request for one Yardsale.
 router.get('/yardsale/:id', yardsaleController.yardsale_detail);

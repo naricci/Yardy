@@ -27,7 +27,11 @@ block content
 				.column.is-one-quarter
 					include sidebar2
 				.column.is-three-fourths
-
+					if errors
+						ul
+							for error in errors
+								li.has-text-danger!= error.msg
+						br
 					form(method='post' enctype='multipart/form-data')
 						.field
 							label.label Phone Number
@@ -130,11 +134,6 @@ block content
 							.control
 								button.button.is-link(type='submit')
 									| Post your yard sale!
-
-			if errors
-				ul
-					for error in errors
-						li!= error.msg
 
 	script(src='/js/select_image_name.js')
 

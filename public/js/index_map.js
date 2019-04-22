@@ -24,7 +24,7 @@ function initMap() {
 			infowindow.open(map, marker);
 		});
 	});
-	// TODO - Add loop to display all yardsales on the map
+	// TODO - Add loop to display all yardsales on the map as markers
 	let contentString = '<div id="content">'+
 		'<div id="siteNotice">'+
 		'</div>'+

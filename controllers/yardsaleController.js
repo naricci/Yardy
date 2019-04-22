@@ -1,7 +1,7 @@
 const async = require('async');
 const AWS = require('aws-sdk');
 const debug = require('debug')('yardy:yardsale.controller');
-const { check, validationResult } = require('express-validator/check');
+const { body, check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 const multer = require('multer');
 // Models
@@ -10,20 +10,23 @@ const Yardsale = require('../models/yardsale');
 
 // Display list of all yardsales.
 exports.yardsale_list = (req, res, next) => {
-	Yardsale
-		.find()
-		.populate('user')
-		.sort([['date', 'ascending']])
-		.exec((err, list_yardsales) => {
-			if (err) {
-				return next(err);
-			}
-			// Successful, so render
-			res.render('yardsale_list', {
-				title: 'Yard Sale Search Results',
-				yardsale_list: list_yardsales
+	var params = req.body.searchParams;
+	if (params === undefined || params === null || params === '') {
+		Yardsale
+			.find()
+			.populate('user')
+			.sort([['date', 'ascending']])
+			.exec((err, list_yardsales) => {
+				if (err) {
+					return next(err);
+				}
+				// Successful, so render
+				res.render('yardsale_list', {
+					title: 'Yard Sale Search Results',
+					yardsale_list: list_yardsales
+				});
 			});
-		});
+	}
 };
 
 // Display detail page for a specific yardsale.
@@ -75,10 +78,9 @@ exports.yardsale_create_get = (req, res, next) => {
 				return next(err);
 			}
 		})
-		.then((results) => {
+		.then(() => {
 			res.render('yardsale_form', {
-				title: 'Create Yardsale',
-				user: results
+				title: 'Create Yardsale'
 			});
 		});
 };
@@ -86,12 +88,19 @@ exports.yardsale_create_get = (req, res, next) => {
 // Handle Yardsale create on POST.
 exports.yardsale_create_post = [
 	// Validate fields
-	check('phone')
-		.isMobilePhone('en-US')
-		.withMessage('Please enter a valid 10-digit phone number.'),
-	check('zipcode')
-		.isPostalCode('US')
-		.withMessage('Please enter a valid 5-digit zip code'),
+	body('phone', 'Please enter a 10-digit phone number.').isLength({ max: 10 }).trim(),
+	// check('phone')
+	// 	// .isMobilePhone('en-US')
+	// 	.isLength({ min: 10, max: 10 })
+	// 	.withMessage('Please enter a 10-digit phone number.')
+	// 	.trim()
+	// 	.isNumeric()
+	// 	.withMessage('Please enter a 10-digit phone number.')
+	// 	.trim(),
+	// check('zipcode')
+	// 	.trim()
+	// 	.isPostalCode('US')
+	// 	.withMessage('Please enter a valid 5-digit zip code'),
 	check('date')
 		.optional({ checkFalsy: true }).isISO8601()
 		.withMessage('Please enter a valid date')
@@ -99,15 +108,13 @@ exports.yardsale_create_post = [
 		.withMessage('Please select a date that hasn\'t occurred yet.'),
 
 	// // Sanitize fields.
-	sanitizeBody('phone').toInt(),
-	sanitizeBody('zipcode').toString(),
+	// sanitizeBody('phone').trim().escape(),
+	// sanitizeBody('zipcode').toString(),
 	sanitizeBody('date').toDate(),
+	sanitizeBody('imagename').toString(),
 
 	// Process request after validation and sanitization.
 	(req, res, next) => {
-
-		// debug('Bucket Path: ' + process.env.S3_BUCKET + '/' + folder + file);
-
 		// Extract the validation errors from a request.
 		let errors = validationResult(req);
 
@@ -118,6 +125,14 @@ exports.yardsale_create_post = [
 		}
 		else {
 			// Data from form is valid.
+			const s3 = new AWS.S3({
+				apiVersion: '2006-03-01',
+				accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+				secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+				region: process.env.S3_BUCKET_REGION
+			});
+			var ysFile = req.file;
+
 			// Create an Yardsale object with escaped and trimmed data.
 			let yardsale = new Yardsale({
 				phone: req.body.phone,
@@ -131,17 +146,30 @@ exports.yardsale_create_post = [
 				endtime: req.body.endtime,
 				description: req.body.description,
 				user: req.user._id,
-				imagename: req.body.imagename
+				imagename: ysFile.originalname
 			});
+
+			const key = (req.user.username + '/' + ysFile.originalname);
+			const params = {
+				ACL: 'public-read',
+				Body: ysFile.buffer,
+				Bucket: process.env.S3_BUCKET,
+				ContentType: ysFile.mimetype,
+				Key: key,
+				ServerSideEncryption: 'AES256'
+			};
 
 			yardsale.save((err) => {
 				if (err) return next(err);
 
-				// Upload yardsale image to S3 Bucket
-				// s3.putObject(params, (err, data) => {
-				// 	if (err) debug('Error: ', err);
-				// 	else debug(data);
-				// });
+				// S3 Image upload
+				s3.upload(params, (err, data) => {
+					if (err) debug('Error: ', err);
+					else {
+						debug(`Posting ${params.Key} to ${process.env.S3_BUCKET} in S3`);
+						debug(data);
+					}
+				});
 
 				// Successful - redirect to new yardsale record.
 				debug(yardsale);
@@ -180,22 +208,32 @@ exports.yardsale_delete_get = (req, res, next) => {
 	});
 };
 
-// TODO - Fix DELETE Function
 // Handle Yardsale delete on POST.
 exports.yardsale_delete_post = (req, res, next) => {
-	Yardsale
-		.findByIdAndRemove(req.params.id)
-		// .populate('user')
-		// .exec()
-		.then((data) => {
-			debug('Yardsale id ' + req.params.id + ' deleted');
-			debug(data);
-			res.redirect('/catalog/yardsales');
-		})
-		.catch((err) => {
-			return next(err);
-		});
-
+	async.parallel({
+		yardsale: function (callback) {
+			Yardsale
+				.findById(req.body.id)
+				.exec(callback);
+		},
+	}, function (err, results) {
+		if (err) { return next(err); }
+		// Success.
+		if (results.yardsale.length === 1) {
+			// yardsale has books. Render in same way as for GET route.
+			res.render('yardsale_delete', { title: 'Delete Yardsale', yardsale: results.yardsale });
+			return;
+		}
+		else {
+			// Delete yardsale object and redirect to the list of yardsales.
+			Yardsale
+				.findByIdAndDelete(req.body.id, function deleteYardsale(err) {
+					if (err) { return next(err); }
+					// Success - go to yardsale list.
+					res.redirect('/catalog/yardsales');
+				});
+		}
+	});
 };
 
 // Display Yardsale update form on GET.
@@ -205,7 +243,7 @@ exports.yardsale_update_get = (req, res, next) => {
 		.populate('user')
 		.exec()
 		.catch((err, yardsale) => {
-			if (err) { return next(err); }
+			if (err) return next(err);
 			if (yardsale === null) { // No results.
 				let err = new Error('Yardsale not found.');
 				err.status = 404;
@@ -216,7 +254,8 @@ exports.yardsale_update_get = (req, res, next) => {
 			// Success.
 			res.render('yardsale_edit', {
 				title: 'Update Yardsale',
-				yardsale: yardsale
+				yardsale: yardsale,
+				user: yardsale.user
 			});
 		});
 };
@@ -309,7 +348,6 @@ exports.yardsale_update_post = [
 					// }
 					// Successful - redirect to yardsale detail page.
 					res.redirect('/catalog/yardsale/'+theyardsale._id);
-					// res.redirect('/users/'+theyardsale.user._id);
 				});
 		}
 	}
