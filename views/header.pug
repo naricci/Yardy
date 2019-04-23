@@ -28,9 +28,9 @@ section.section.has-background-warning#navbarSection
 								.navbar-item
 									.field.has-addons
 										p.control
-											a.button.has-text-primary(href='#') #{current_user.username}
+											a.button.has-text-primary(href='/users/' + current_user._id) #{current_user.username}
 										p.control
-											a.button.is-inverted(href='/users/logout') Logout
+											a.button.has-text-link(href='/users/logout') Logout
 						// The content below will be visible to users who have NOT logged in.
 						if isAuthenticated === false
 							.navbar-end
@@ -42,15 +42,15 @@ section.section.has-background-warning#navbarSection
 								.navbar-item
 									.field.has-addons
 										p.control
-											a.button(href='/users/register')
+											a.button.has-text-link(href='/users/register')
 												span Register
 										p.control
-											a.button(href='/users/login')
+											a.button.has-text-link(href='/users/login')
 												span Login
 		// HERO/HEADER
 		.hero-body.has-background-warning.is-hidden-touch
-				.container
-					h1.title.is-1.has-text-link.has-text-centered
-						a(href='/') Yardy
-					h2.subtitle.has-text-link.has-text-centered
-								i a place for yard sale enthusiasts
+			.container
+				h1.title.is-1.has-text-link.has-text-centered
+					a(href='/') Yardy
+				h2.subtitle.has-text-link.has-text-centered
+							i a place for yard sale enthusiasts
