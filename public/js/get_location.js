@@ -1,14 +1,17 @@
-var x = document.getElementById('demo');
+var searchParams = document.getElementById('searchParams');
 
 function getLocation() {
+	// Check geolocation support
 	if (navigator.geolocation) {
+		console.log('Geolocation is supported!');
 		navigator.geolocation.getCurrentPosition(showPosition);
 	} else {
-		x.innerHTML = 'Geolocation is not supported by this browser.';
+		console.log('Geolocation is not supported for this browser.');
+		searchParams.innerHTML = 'Geolocation is not supported by this browser.';
 	}
 }
 
 function showPosition(position) {
-	x.innerHTML = 'Latitude: ' + position.coords.latitude +
-		' ' + 'Longitude: ' + position.coords.longitude;
+	console.log(position.coords.latitude + ', ' + position.coords.longitude);
+	searchParams.value = position.coords.latitude + ', ' + position.coords.longitude;
 }
