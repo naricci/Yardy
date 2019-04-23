@@ -25,7 +25,7 @@ block content
 							span favorites
 			.columns
 				.column.is-one-quarter
-					include sidebar2
+					include components/sidebar2
 				.column.is-three-fourths
 					if errors
 						ul
@@ -91,7 +91,6 @@ block content
 								yardsale ? '' : yardsale.zipcode))
 								span.icon.is-small.is-left
 									i.fas.fa-map-marker-alt
-						//.column.is-one-half
 						.field
 							label.label Date *
 							.control.has-icons-left
@@ -132,8 +131,7 @@ block content
 										span.file-name(id='filename') no file selected
 						.field
 							.control
-								button.button.is-link(type='submit')
-									| Post your yard sale!
+								button.button.is-link(type='submit') Post your yard sale!
 
 	script(src='/js/select_image_name.js')
 

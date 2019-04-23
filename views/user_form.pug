@@ -31,7 +31,7 @@ block content
 			.columns
 				.column.is-one-quarter
 					if isAuthenticated
-						include sidebar.pug
+						include components/sidebar
 
 				.column.is-two-quarters
 					br
@@ -129,11 +129,10 @@ block content
 								.control
 									button.button.is-link(type='submit')
 										| Register
-
 						br
 						br
 						if errors
 							ul
 								for error in errors
-									li!= error.msg
+									li.has-text-danger!= error.msg
 				.column.is-one-quarter

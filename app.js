@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 5000;
 // Routes
 const index = require('./routes/index');
 const users = require('./routes/users');
-const catalog = require('./routes/catalog');
+const yardsales = require('./routes/yardsales');
 
 // Compression/Security Packages
 const compression = require('compression');
@@ -135,7 +135,7 @@ app.use((req, res, next) => {
 // Use the Routes
 app.use('/', index);
 app.use('/users', users);
-app.use('/catalog', catalog);
+app.use('/yardsales', yardsales);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

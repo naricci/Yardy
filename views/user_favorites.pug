@@ -6,7 +6,6 @@ block content
 		.container
 			h1.subtitle.has-text-centered
 				strong #{user.username} | #{title}
-			// .tabs.is-centered.is-hidden-desktop.is-hidden-widescreen.is-hidden-fullhd
 			.tabs.is-centered.is-boxed
 				ul
 					li
@@ -26,10 +25,9 @@ block content
 							span favorites
 			.columns
 				.column.is-one-quarter
-					include sidebar
+					include components/sidebar
 
 				.column.is-three-quarters
 					#map(style='width:100%;height:400px')
 						script(src='/js/index_map.js')
-						//script(async defer src='https://maps.googleapis.com/maps/api/js?key='+process.env.MAPS_API_KEY+'&callback=initMap')
-						script(async defer src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDxjeLMjAFvZUwypcu0UpoCkAk4lJXShPQ&callback=initMap')
+						script(async defer src='https://maps.googleapis.com/maps/api/js?key='+process.env.MAPS_API_KEY+'&callback=initMap')

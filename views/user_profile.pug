@@ -25,7 +25,7 @@ block content
 							span favorites
 			.columns
 				.column.is-one-quarter
-					include sidebar
+					include components/sidebar
 
 				.column.is-three-quarters
 					h1
@@ -38,7 +38,7 @@ block content
 							article.media
 								figure.media-left
 									figure.image.is-128x128
-										a(href='/catalog/yardsale/'+yardsale._id)
+										a(href='/yardsales/'+yardsale._id)
 											if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
 												img(src='https://s3.amazonaws.com/yardy-pics/' + user.username + '/' +
 												yardsale.imagename alt='preview')
@@ -55,12 +55,12 @@ block content
 										p #{yardsale.description}
 									nav.level.is-mobile
 										.level-left
-											a.level-item(href='/catalog/yardsale/' + yardsale._id) view details
+											a.level-item(href='/yardsales/' + yardsale._id) view details
 								.media-right
 									.buttons
-										a(href='/catalog/yardsale/'+yardsale._id+'/update') edit
+										a(href='/yardsales/'+yardsale._id+'/update') edit
 										.divider
-										a.delete(href='/catalog/yardsale/'+yardsale._id+'/delete')
+										a.delete(href='/yardsales/'+yardsale._id+'/delete')
 							hr
 		if errors
 			ul

@@ -25,7 +25,7 @@ block content
 							span favorites
 			.columns
 				.column.is-one-quarter
-					include sidebar
+					include components/sidebar
 
 				.column.is-three-quarters
 					form(method='post' enctype='multipart/form-data')
@@ -38,8 +38,7 @@ block content
 										span.file-cta
 											span.file-icon
 												i.fas.fa-upload
-											span.file-label
-												| Upload image&mldr;
+											span.file-label Upload image&mldr;
 										span.file-name(id='filename') no file selected
 										br
 										//input(type='image' name='profilepic')
@@ -48,10 +47,7 @@ block content
 							.control
 								br
 								button.button.is-link(type='submit') Upload
-								//.divider
-								//button.button.is-danger(type='cancel') Cancel
 								br
-
 						if errors
 							ul
 								for error in errors

@@ -3,7 +3,6 @@ const AWS = require('aws-sdk');
 const debug = require('debug')('yardy:yardsale.controller');
 const { body, check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
-const multer = require('multer');
 // Models
 const User = require('../models/user');
 const Yardsale = require('../models/yardsale');
@@ -173,7 +172,7 @@ exports.yardsale_create_post = [
 
 				// Successful - redirect to new yardsale record.
 				debug(yardsale);
-				res.redirect('/catalog/yardsale/'+yardsale._id);
+				res.redirect('/yardsales/'+yardsale._id);
 			});
 		}
 	}
@@ -196,7 +195,7 @@ exports.yardsale_delete_get = (req, res, next) => {
 	}, (err, results) => {
 		if (err) return next(err);
 		if (results === null) { // No results.
-			res.redirect('/catalog/yardsales');
+			res.redirect('/yardsales');
 		}
 
 		// Successful, so render.
@@ -230,7 +229,7 @@ exports.yardsale_delete_post = (req, res, next) => {
 				.findByIdAndDelete(req.body.id, function deleteYardsale(err) {
 					if (err) { return next(err); }
 					// Success - go to yardsale list.
-					res.redirect('/catalog/yardsales');
+					res.redirect('/yardsales');
 				});
 		}
 	});
@@ -347,7 +346,7 @@ exports.yardsale_update_post = [
 					});
 					// }
 					// Successful - redirect to yardsale detail page.
-					res.redirect('/catalog/yardsale/'+theyardsale._id);
+					res.redirect('/yardsales/'+theyardsale._id);
 				});
 		}
 	}

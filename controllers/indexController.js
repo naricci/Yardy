@@ -18,19 +18,3 @@ exports.index = (req, res, next) => {
 			});
 		});
 };
-
-/* Old way */
-// exports.index = (req, res, next) => {
-// 	Yardsale
-// 		.find()
-// 		.populate('user')
-// 		.sort([['date', 'ascending']])
-// 		.exec((err, list_yardsales) => {
-// 			if (err) return next(err);
-// 			// Successful, so render
-// 			res.render('index', {
-// 				title: 'Yardy',
-// 				yardsale_list: list_yardsales
-// 			});
-// 		});
-// };
