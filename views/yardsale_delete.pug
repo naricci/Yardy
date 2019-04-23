@@ -12,7 +12,7 @@ block content
 						a(href='/users/' + yardsale.user._id + '/update')
 							span.icon.is-small
 								i.fas.fa-pen(aria-hidden='true')
-							span edit
+							span edit profile
 					li.is-active
 						a(href='/users/' + yardsale.user._id)
 							span.icon.is-small
@@ -32,7 +32,7 @@ block content
 					br
 					p #[strong Address: ] #{yardsale.full_address}
 					br
-					p #[strong Date: ] #{yardsale.date}
+					p #[strong Date: ] #{yardsale.date.toDateString()}
 					br
 					p #[strong Start Time: ] #{yardsale.starttime}
 					br

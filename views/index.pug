@@ -25,7 +25,6 @@ block content
 				.field.is-horizontal
 					.field-body
 						.field.has-addons
-
 							p.control.has-icons-left.is-expanded
 								input.input(type='text' name='searchParams' placeholder='City, State, Zip Code, etc.')
 								span.icon.is-small.is-left
@@ -50,7 +49,7 @@ block content
 					article.media
 						figure.media-left
 							figure.image.is-128x128
-								a(href='/catalog/yardsale/'+yardsale._id)
+								a(href='/yardsales/'+yardsale._id)
 									if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
 										img(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
 										yardsale.imagename alt='yard sale')
@@ -61,7 +60,7 @@ block content
 								p Location:&nbsp;&nbsp;
 									strong #{yardsale.full_address}
 								p Date:&nbsp;&nbsp;
-									strong #{yardsale.date}&nbsp;
+									strong #{yardsale.date.toDateString()}&nbsp;
 								p #{yardsale.description}
 							nav.level.is-mobile
 								.level-left
@@ -87,6 +86,6 @@ block content
 								p Locaion:&nbsp;&nbsp;
 									strong #{yardsale.city}, #{yardsale.state}&nbsp;
 								p Date:&nbsp;&nbsp;
-									strong #{yardsale.date}
+									strong #{yardsale.date.toDateString()}&nbsp;
 								p #{yardsale.description}
 						.media-right

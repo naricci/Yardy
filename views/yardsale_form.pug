@@ -61,7 +61,7 @@ block content
 						.field
 							label.label Date *
 							.control.has-icons-left
-								input.input.is-primary(type='date' id='date' name='date' placeholder='e.g. July 4, 2019' required selected=(undefined===yardsale ? '' : yardsale.date) value=(undefined===yardsale ? '' : yardsale.date))
+								input.input.is-primary(type='date' id='date' name='date' placeholder='e.g. July 4, 2019' required selected=(undefined===yardsale ? '' : yardsale.date.toDateString()) value=(undefined===yardsale ? '' : yardsale.date.toDateString()))
 								span.icon.is-small.is-left
 									i.fas.fa-calendar
 						.field

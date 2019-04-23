@@ -1,7 +1,6 @@
 extends layout
 
 block content
-	// Main content
 	section.section
 		.container
 			h1.subtitle.has-text-centered
@@ -27,15 +26,13 @@ block content
 								span.icon.is-small
 									i.fas.fa-heart(aria-hidden='true')
 								span favorites
-
 			.columns
 				.column.is-one-quarter
 					if isAuthenticated
 						include components/sidebar
-
 				.column.is-two-quarters
 					br
-					form(method='POST' action='')
+					form(method='post' action='')
 						if is_update_form
 							.field
 								label.label Username

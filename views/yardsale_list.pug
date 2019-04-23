@@ -22,19 +22,10 @@ block content
 								p Location:&nbsp;&nbsp;
 									strong #{yardsale.full_address}
 								p Date:&nbsp;&nbsp;
-									strong #{yardsale.date}&nbsp;
+									strong #{yardsale.date.toDateString()}&nbsp;
 								p #{yardsale.description}
 							nav.level.is-mobile
 								.level-left
-									//a.level-item
-									//	span.icon.is-small
-									//		i.fas.fa-envelope
-									//a.level-item
-									//	span.icon.is-small
-									//		i.fab.fa-twitter
-									//a.level-item
-									//	span.icon.is-small
-									//		i.fas.fa-heart
 									a.level-item(href='/yardsales/' + yardsale._id) view details
 						.media-right
 							a.button.is-link.is-rounded
@@ -57,6 +48,6 @@ block content
 								p Locaion:&nbsp;&nbsp;
 									strong #{yardsale.city}, #{yardsale.state}&nbsp;
 								p Date:&nbsp;&nbsp;
-									strong #{yardsale.date}
+									strong #{yardsale.date.toDateString()}
 								p #{yardsale.description}
 						.media-right

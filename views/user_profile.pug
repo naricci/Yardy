@@ -1,7 +1,6 @@
 extends layout
 
 block content
-	// Main content
 	section.section
 		.container
 			h1.subtitle.has-text-centered
@@ -26,12 +25,10 @@ block content
 			.columns
 				.column.is-one-quarter
 					include components/sidebar
-
 				.column.is-three-quarters
 					h1
 						strong Your Yard Sales
 					br
-
 					if yardsales
 						each yardsale in yardsales
 							br
@@ -47,8 +44,8 @@ block content
 								.media-content
 									.content
 										p
-											strong #{yardsale.city}&nbsp;
-											small #{yardsale.date}&nbsp;&nbsp;
+											strong #{yardsale.city}, #{yardsale.state}&nbsp;
+											small #{yardsale.date.toDateString()}&nbsp;&nbsp;
 											small #{yardsale.starttime}
 											br
 										p Posted by #{user.username}

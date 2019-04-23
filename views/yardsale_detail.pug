@@ -1,12 +1,10 @@
 extends layout
 
 block content
-	// Main content
 	section.section
 		.container
 			h1.subtitle.has-text-centered
 				strong= title
-
 			.tabs.is-centered.is-boxed
 				ul
 					li
@@ -24,29 +22,27 @@ block content
 							span.icon.is-small
 								i.fas.fa-heart(aria-hidden='true')
 							span favorites
-
 			.columns
 				.column.is-one-quarter
 					if isAuthenticated
 						include components/sidebar
-
 				.column.is-three-quarters
-					p #[strong Username: ] #{yardsale.user.username}
+					p #[strong Username: ]&nbsp;#{yardsale.user.username}
 					hr
 					h1.subtitle #[strong Date & Time]
-					p #[strong Date: ] #{yardsale.date}
+					p #[strong Date: ] #{yardsale.date.toDateString()}
 					p #[strong Start Time: ] #{yardsale.starttime}
 					p #[strong End Time: ] #{yardsale.endtime}
 					hr
 					h1.subtitle #[strong Contact Info]
-					p #[strong First Name: ] #{yardsale.user.firstName}
-					p #[strong Last Name: ] #{yardsale.user.lastName}
+					p #[strong Full Name: ] #{yardsale.user.firstName} #{yardsale.user.lastName}
 					p #[strong Phone: ] #{yardsale.phone}
 					p #[strong Email: ] #{yardsale.user.email}
 					hr
 					h1.subtitle #[strong Location]
 					p #[strong Address: ] #{yardsale.address}
-					p #[strong Address 2: ] #{yardsale.address2}
+					if (yardsale.user.address2 !== '')
+						p #[strong Address 2: ] #{yardsale.address2}
 					p #[strong City: ] #{yardsale.city}
 					p #[strong State: ] #{yardsale.state}
 					p #[strong Zip Code: ] #{yardsale.zipcode}
@@ -62,7 +58,6 @@ block content
 						else
 							img(src='/images/yardsale_poster.jpg' alt='profile picture' )
 					hr
-
 					if isAuthenticated
 						if (user.username === yardsale.user.username)
 							.buttons
