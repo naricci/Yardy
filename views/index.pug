@@ -16,14 +16,17 @@ block content
 							p.control
 								a.button.is-success(onclick='getLocation()') Find Me
 							// Search returns all yardsales in DB on new page
+							//p.control
+							//	a.button.is-link(href='/yardsales')
+							//		span.icon
+							//			i.fas.fa-search-location
+							//		span Search
+							// Search returns a view of user's current location
 							p.control
-								a.button.is-link(href='/yardsales')
+								button.button.is-link#submit(type='submit')
 									span.icon
 										i.fas.fa-search-location
 									span Search
-							// Search returns a view of user's current location
-							//p.control
-							//	input#submit(type='submit' value='Search')
 	// MAP OF USA
 	section.section.has-background-light
 		.container
