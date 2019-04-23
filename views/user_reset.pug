@@ -1,16 +1,13 @@
 extends layout
 
 block content
-	// Main content
 	.container
 		.columns
 			.column.is-one-third
 			.column.is-one-third
 				h1.subtitle.has-text-centered
 					strong= title
-
 				form(method="post" action=is_first_step ? "/users/reset" : "/users/resetfinal")
-
 					if is_first_step
 						p Please enter your username and email. If they match a user, you will be redirected to the password reset page.
 						br
@@ -44,7 +41,6 @@ block content
 						input(type="hidden" name="userid" value=user._id)
 					br
 					button.button.is-link(type="submit") #{is_first_step ? "Next" : "Done"}
-
 				br
 				if errors
 					ul

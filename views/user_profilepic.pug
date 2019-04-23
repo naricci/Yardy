@@ -1,28 +1,11 @@
 extends layout
 
 block content
-	// Main content
 	section.section
 		.container
 			h1.subtitle.has-text-centered
 				strong #{user.username} | #{title}
-			.tabs.is-centered.is-boxed
-				ul
-					li.is-active
-						a(href='/users/' + user._id + '/update')
-							span.icon.is-small
-								i.fas.fa-pen(aria-hidden='true')
-							span edit profile
-					li
-						a(href='/users/' + user._id)
-							span.icon.is-small
-								i.fas.fa-bookmark(aria-hidden='true')
-							span yardsales
-					li
-						a(href='/users/' + user._id + '/favorites')
-							span.icon.is-small
-								i.fas.fa-heart(aria-hidden='true')
-							span favorites
+			include components/panel
 			.columns
 				.column.is-one-quarter
 					include components/sidebar
@@ -41,8 +24,6 @@ block content
 											span.file-label Upload image&mldr;
 										span.file-name(id='filename') no file selected
 										br
-										//input(type='image' name='profilepic')
-
 						.field
 							.control
 								br

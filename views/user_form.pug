@@ -9,23 +9,7 @@ block content
 				else
 					strong Registration
 			if isAuthenticated
-				.tabs.is-centered.is-boxed
-					ul
-						li.is-active
-							a(href='/users/' + user._id + '/update')
-								span.icon.is-small
-									i.fas.fa-pen(aria-hidden='true')
-								span edit profile
-						li
-							a(href='/users/' + user._id)
-								span.icon.is-small
-									i.fas.fa-bookmark(aria-hidden='true')
-								span yardsales
-						li
-							a(href='/users/' + user._id + '/favorites')
-								span.icon.is-small
-									i.fas.fa-heart(aria-hidden='true')
-								span favorites
+				include components/panel
 			.columns
 				.column.is-one-quarter
 					if isAuthenticated

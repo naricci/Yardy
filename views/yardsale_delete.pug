@@ -1,32 +1,14 @@
 extends layout
 
 block content
-	// Main content
 	section.section
 		.container
 			h1.subtitle.has-text-centered
 				strong #{title} | #{yardsale.address}
-			.tabs.is-centered.is-boxed
-				ul
-					li
-						a(href='/users/' + yardsale.user._id + '/update')
-							span.icon.is-small
-								i.fas.fa-pen(aria-hidden='true')
-							span edit profile
-					li.is-active
-						a(href='/users/' + yardsale.user._id)
-							span.icon.is-small
-								i.fas.fa-bookmark(aria-hidden='true')
-							span yardsales
-					li
-						a(href='/users/' + yardsale.user._id + '/favorites')
-							span.icon.is-small
-								i.fas.fa-heart(aria-hidden='true')
-							span favorites
+			include components/panel2
 			.columns
 				.column.is-one-quarter
 					include components/sidebar2
-
 				.column.is-three-quarters
 					p #[strong Host Name: ] #{yardsale.user.firstName} #{yardsale.user.lastName}
 					br

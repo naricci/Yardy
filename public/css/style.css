@@ -9,8 +9,6 @@
 
 html,
 body {
-	/*padding: 50px;*/
-	/*font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;*/
 	font: 14px 'Lato', sans-serif;
 	height: 100%;
 	position: relative;
@@ -53,7 +51,6 @@ body {
 .navbar-end > a:hover.navbar-item {
 	font-size: 16px;
 	color: hsl(217, 71%, 53%);
-	/*color: hsl(48, 100%, 67%);*/
 	font-weight: bold;
 	text-decoration: underline;
 }
@@ -66,7 +63,7 @@ a:hover.button.is-link {
 h1.title.is-1 {
 	font-family: 'Permanent Marker', cursive;
 	font-size: 144px;
-
+	top: 0;
 }
 
 .hero-body.has-background-warning.is-hidden-touch {
@@ -74,10 +71,14 @@ h1.title.is-1 {
 	padding-bottom: 5px;
 }
 
-/* CUSTOM SECTIONS */
+/* CUSTOM */
 section.section {
 	padding-bottom: 5px;
 	padding-top: 10px;
+}
+
+h1.subtitle.subTitle {
+	 margin-bottom: .5rem;
 }
 
 #navbarSection {

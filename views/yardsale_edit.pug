@@ -1,28 +1,11 @@
 extends layout
 
 block content
-	// Main content
 	section.section
 		.container
 			h1.subtitle.has-text-centered
 				strong #{title}
-			.tabs.is-centered.is-boxed
-				ul
-					li.is-active
-						a(href='/users/' + yardsale.user._id + '/update')
-							span.icon.is-small
-								i.fas.fa-pen(aria-hidden='true')
-							span edit profile
-					li
-						a(href='/users/' + yardsale.user._id)
-							span.icon.is-small
-								i.fas.fa-bookmark(aria-hidden='true')
-							span yardsales
-					li
-						a(href='/users/' + yardsale.user._id + '/favorites')
-							span.icon.is-small
-								i.fas.fa-heart(aria-hidden='true')
-							span favorites
+			include components/panel2
 			.columns
 				.column.is-one-quarter
 					include components/sidebar2

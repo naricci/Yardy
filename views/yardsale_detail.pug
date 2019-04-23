@@ -5,52 +5,36 @@ block content
 		.container
 			h1.subtitle.has-text-centered
 				strong= title
-			.tabs.is-centered.is-boxed
-				ul
-					li
-						a(href='/users/' + user._id + '/update')
-							span.icon.is-small
-								i.fas.fa-pen(aria-hidden='true')
-							span edit profile
-					li.is-active
-						a(href='/users/' + user._id)
-							span.icon.is-small
-								i.fas.fa-bookmark(aria-hidden='true')
-							span yardsales
-					li
-						a(href='/users/' + user._id + '/favorites')
-							span.icon.is-small
-								i.fas.fa-heart(aria-hidden='true')
-							span favorites
+			include components/panel
 			.columns
 				.column.is-one-quarter
 					if isAuthenticated
 						include components/sidebar
 				.column.is-three-quarters
-					p #[strong Username: ]&nbsp;#{yardsale.user.username}
+					h1.subtitle.subTitle #[strong Username:&nbsp;] #{yardsale.user.username}
 					hr
-					h1.subtitle #[strong Date & Time]
-					p #[strong Date: ] #{yardsale.date.toDateString()}
-					p #[strong Start Time: ] #{yardsale.starttime}
-					p #[strong End Time: ] #{yardsale.endtime}
-					hr
-					h1.subtitle #[strong Contact Info]
-					p #[strong Full Name: ] #{yardsale.user.firstName} #{yardsale.user.lastName}
-					p #[strong Phone: ] #{yardsale.phone}
-					p #[strong Email: ] #{yardsale.user.email}
-					hr
-					h1.subtitle #[strong Location]
-					p #[strong Address: ] #{yardsale.address}
+					h1.subtitle.subTitle #[strong Location]
+					p #[strong Address:&nbsp;] #{yardsale.address}
 					if (yardsale.user.address2 !== '')
-						p #[strong Address 2: ] #{yardsale.address2}
-					p #[strong City: ] #{yardsale.city}
-					p #[strong State: ] #{yardsale.state}
-					p #[strong Zip Code: ] #{yardsale.zipcode}
+						p #[strong Address 2:&nbsp;] #{yardsale.address2}
+					p #[strong City:&nbsp;] #{yardsale.city}
+					p #[strong State:&nbsp;] #{yardsale.state}
+					p #[strong Zip Code:&nbsp;] #{yardsale.zipcode}
 					hr
-					h1.subtitle #[strong Description]
+					h1.subtitle.subTitle #[strong Date & Time]
+					p #[strong Date:&nbsp;] #{yardsale.date.toDateString()}
+					p #[strong Start Time:&nbsp;] #{yardsale.starttime}
+					p #[strong End Time:&nbsp;] #{yardsale.endtime}
+					hr
+					h1.subtitle.subTitle #[strong Contact Info]
+					p #[strong Full Name:&nbsp;] #{yardsale.user.firstName} #{yardsale.user.lastName}
+					p #[strong Phone:&nbsp;] #{yardsale.phone}
+					p #[strong Email:&nbsp;] #{yardsale.user.email}
+					hr
+					h1.subtitle.subTitle #[strong Description]
 					p #{yardsale.description}
 					hr
-					h1.subtitle #[strong Images]
+					h1.subtitle.subTitle #[strong Images]
 					figure.image.is-256x256(style='margin-bottom:0;')
 						if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
 							img(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
