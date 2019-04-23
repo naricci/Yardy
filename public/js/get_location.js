@@ -13,5 +13,5 @@ function getLocation() {
 
 function showPosition(position) {
 	console.log(position.coords.latitude + ', ' + position.coords.longitude);
-	searchParams.value = position.coords.latitude + ', ' + position.coords.longitude;
+	searchParams.value = position.coords.latitude + ',' + position.coords.longitude;
 }

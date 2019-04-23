@@ -15,16 +15,21 @@ block content
 									i.fas.fa-map-marker-alt
 							p.control
 								a.button.is-success(onclick='getLocation()') Find Me
+							// Search returns all yardsales in DB on new page
 							p.control
 								a.button.is-link(href='/yardsales')
 									span.icon
 										i.fas.fa-search-location
 									span Search
+							// Search returns a view of user's current location
+							//p.control
+							//	input#submit(type='submit' value='Search')
 	// MAP OF USA
 	section.section.has-background-light
 		.container
 			#map(style='width:100%;height:500px')
 			script(type='text/javascript' src='/js/index_map.js')
+			//script(type='text/javascript' src='/js/reverse_geocoder.js')
 			script(async defer src='https://maps.googleapis.com/maps/api/js?key='+process.env.MAPS_API_KEY+'&callback=initMap')
 			script(type='text/javascript' src='/js/get_location.js')
 			br
