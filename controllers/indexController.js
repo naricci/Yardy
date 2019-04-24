@@ -1,4 +1,5 @@
 const Yardsale = require('../models/yardsale');
+const debug = require('debug')('yardy:index.controller');
 
 exports.index = (req, res, next) => {
 	Yardsale
@@ -18,24 +19,29 @@ exports.index = (req, res, next) => {
 		});
 };
 
+// TODO - Displaying results not working
 exports.search = (req, res, next) => {
-	let params = req.body.searchParams;
-	let query = Yardsale
-		.find({ 'address': params });
-	query.select('phone address address2 city state zipcode date starttime endtime description imagename user');
-	query.populate('user');
-	query.exec((err, list_yardsales) => {
-		if (err) return next(err);
-		if (list_yardsales === null) { // No yardsales.
-			err = new Error('Yardsale not found');
-			err.status = 404;
-			return next(err);
-		}
-		console.log(yardsale.address);
-		// Successful, so render
-		res.render('index', {
-			title: 'Yardy Search Results',
-			yardsale_list: list_yardsales
+	debug('Searching for yard sales.');
+	var params = req.body.searchParams;
+	let paramsLike = '/'+params+'/i';
+	req.query.address = params;
+	Yardsale
+		.find()
+		.where({ 'city': paramsLike })
+		// .populate('user')
+		// .sort([['date', 'ascending']])
+		.exec((err, list_yardsales) => {
+			if (err) return next(err);
+			if (list_yardsales === null) { // No yardsales.
+				err = new Error('Yardsale not found');
+				err.status = 404;
+				return next(err);
+			}
+			debug(list_yardsales);
+			// Successful, so render
+			res.render('index', {
+				title: 'Yardy Search Results',
+				yardsale_list: list_yardsales
+			});
 		});
-	});
 };
