@@ -22,14 +22,13 @@ exports.index = (req, res, next) => {
 // TODO - Displaying results not working
 exports.search = (req, res, next) => {
 	debug('Searching for yard sales.');
-	var params = req.body.searchParams;
+	var params = req.query.address;
 	let paramsLike = '/'+params+'/i';
-	req.query.address = params;
 	Yardsale
 		.find()
-		.where({ 'city': paramsLike })
-		// .populate('user')
-		// .sort([['date', 'ascending']])
+		.where({ city: params })
+		.populate('user')
+		.sort([['date', 'ascending']])
 		.exec((err, list_yardsales) => {
 			if (err) return next(err);
 			if (list_yardsales === null) { // No yardsales.
@@ -37,7 +36,9 @@ exports.search = (req, res, next) => {
 				err.status = 404;
 				return next(err);
 			}
-			debug(list_yardsales);
+			Object.keys(list_yardsales).forEach((item) => {
+				debug(item);
+			});
 			// Successful, so render
 			res.render('index', {
 				title: 'Yardy Search Results',
