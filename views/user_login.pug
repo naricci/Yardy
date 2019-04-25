@@ -26,8 +26,5 @@ block content
 							.control
 								button.button.is-link(type='submit') Log in
 						br
-						if errors
-							ul
-								for error in errors
-									li.has-text-danger!= error.msg
+						include components/errors
 				.column.is-one-third

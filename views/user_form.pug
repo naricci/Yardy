@@ -3,10 +3,10 @@ extends layout
 block content
 	section.section
 		.container
-			h1.subtitle.has-text-centered
-				if isAuthenticated
-					strong #{user.username} | #{title}
-				else
+			if isAuthenticated
+				include components/title_user
+			else
+				h1.subtitle.has-text-centered
 					strong Registration
 			if isAuthenticated
 				include components/panel
@@ -15,7 +15,6 @@ block content
 					if isAuthenticated
 						include components/sidebar
 				.column.is-two-quarters
-					br
 					form(method='post' action='')
 						if is_update_form
 							.field
@@ -111,9 +110,5 @@ block content
 									button.button.is-link(type='submit')
 										| Register
 						br
-						br
-						if errors
-							ul
-								for error in errors
-									li.has-text-danger!= error.msg
+						include components/errors
 				.column.is-one-quarter

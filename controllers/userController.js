@@ -31,7 +31,7 @@ exports.user_profile = (req, res, next) => {
 		}
 
 		res.render('user_profile', {
-			title: 'User Profile',
+			title: 'Your Yard Sales',
 			user: results.user,
 			yardsales: results.yardsales
 		});

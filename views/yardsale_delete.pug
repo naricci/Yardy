@@ -3,34 +3,20 @@ extends layout
 block content
 	section.section
 		.container
-			h1.subtitle.has-text-centered
-				strong #{title} | #{yardsale.address}
+			include components/title_yardsale
 			include components/panel2
 			.columns
 				.column.is-one-quarter
 					include components/sidebar2
 				.column.is-three-quarters
-					p #[strong Host Name: ] #{yardsale.user.firstName} #{yardsale.user.lastName}
-					br
-					p #[strong Address: ] #{yardsale.full_address}
-					br
-					p #[strong Date: ] #{yardsale.date.toDateString()}
-					br
-					p #[strong Start Time: ] #{yardsale.starttime}
-					br
-					p #[strong End Time: ] #{yardsale.endtime}
-					br
-					p #[strong Description: ] #{yardsale.description}
-					br
-					figure.image.is-256x256
-						if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
-							img(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
-							yardsale.imagename alt='yard sale image')
-						else
-							img(src='/images/yardsale_poster.jpg' alt='preview')
-					hr
-					p Do you really want to delete this Yardsale?
-					br
-					form(method='post' action='')
-						input(type='hidden' name='id' required='true' value=yardsale._id )
-						button.button.is-danger(type='submit') Delete
+					include components/errors
+						.columns
+							.column
+								p Do you really want to delete this yard sale?  This process is irreversible.
+							.column
+								form(method='post' action='')
+									input(type='hidden' name='id' required='true' value=yardsale._id )
+									button.button.is-danger(type='submit') Delete
+						hr
+					include components/yardsale
+

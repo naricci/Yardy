@@ -3,14 +3,11 @@ extends layout
 block content
 	section.section
 		.container
-			h1.subtitle.has-text-centered
-				strong #{user.username} | #{title}
+			include components/title_user
 			include components/panel
 			.columns
 				.column.is-one-quarter
 					include components/sidebar
 
 				.column.is-three-quarters
-					#map
-						script(src='/js/index_map.js')
-						script(async defer src='https://maps.googleapis.com/maps/api/js?key='+process.env.MAPS_API_KEY+'&callback=initMap')
+					include components/map

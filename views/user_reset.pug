@@ -42,8 +42,5 @@ block content
 					br
 					button.button.is-link(type="submit") #{is_first_step ? "Next" : "Done"}
 				br
-				if errors
-					ul
-						for error in errors
-							li.has-text-danger!= error.msg
+				include components/errors
 			.column.is-one-third

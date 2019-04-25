@@ -1,0 +1,29 @@
+h1.subtitle.subTitle #[strong Location]
+p #[strong Address:&nbsp;] #{yardsale.address}
+if (yardsale.user.address2 !== '')
+	p #[strong Address 2:&nbsp;] #{yardsale.address2}
+p #[strong City:&nbsp;] #{yardsale.city}
+p #[strong State:&nbsp;] #{yardsale.state}
+p #[strong Zip Code:&nbsp;] #{yardsale.zipcode}
+hr
+h1.subtitle.subTitle #[strong Date & Time]
+p #[strong Date:&nbsp;] #{yardsale.date.toDateString()}
+p #[strong Start Time:&nbsp;] #{yardsale.starttime}
+p #[strong End Time:&nbsp;] #{yardsale.endtime}
+hr
+h1.subtitle.subTitle #[strong Contact Info]
+p #[strong Full Name:&nbsp;] #{yardsale.user.firstName} #{yardsale.user.lastName}
+p #[strong Username:&nbsp;] #{yardsale.user.username}
+p #[strong Phone:&nbsp;] #{yardsale.phone}
+p #[strong Email:&nbsp;] #{yardsale.user.email}
+hr
+h1.subtitle.subTitle #[strong Description]
+p #{yardsale.description}
+hr
+h1.subtitle.subTitle #[strong Images]
+figure.image.is-256x256
+	if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
+		img(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
+		yardsale.imagename alt='profile picture')
+	else
+		img(src='/images/yardsale_poster.jpg' alt='profile picture' )

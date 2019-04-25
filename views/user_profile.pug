@@ -3,8 +3,7 @@ extends layout
 block content
 	section.section
 		.container
-			h1.subtitle.has-text-centered
-				strong #{user.username} | #{title}
+			include components/title_user
 			include components/panel
 			.columns
 				.column.is-one-quarter
@@ -12,7 +11,6 @@ block content
 				.column.is-three-quarters
 					h1
 						strong Your Yard Sales
-					br
 					if yardsales
 						each yardsale in yardsales
 							br
@@ -28,9 +26,9 @@ block content
 								.media-content
 									.content
 										p
-											strong #{yardsale.city}, #{yardsale.state}&nbsp;
-											small #{yardsale.date.toDateString()}&nbsp;&nbsp;
-											small #{yardsale.starttime}
+											strong #{yardsale.city}, #{yardsale.state}&nbsp;-&nbsp;
+											strong #{yardsale.date.toDateString()}&nbsp;-&nbsp;
+											strong #{yardsale.starttime}
 											br
 										p Posted by #{user.username}
 										p #{yardsale.description}
@@ -43,7 +41,4 @@ block content
 										.divider
 										a.delete(href='/yardsales/'+yardsale._id+'/delete')
 							hr
-		if errors
-			ul
-				for error in errors
-					li.has-text-danger!= error.msg
+		include components/errors

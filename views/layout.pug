@@ -40,9 +40,14 @@ html(lang='en')
 		// Font Awesome Icons
 		script(defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js")
 
+		// jQuery
+		script(src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous")
+
+		// Custom JavaScript
+		script(src='/js/menu.js')
+
 	body
-		.main-container.has-background-
+		.main-container
 			include components/header
 			block content
 			include components/footer
-		include components/scripts

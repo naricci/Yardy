@@ -3,119 +3,102 @@ extends layout
 block content
 	section.section
 		.container
-			h1.subtitle.has-text-centered
-				strong #{title}
+			include components/title_yardsale
 			include components/panel2
 			.columns
 				.column.is-one-quarter
 					include components/sidebar2
-				.column.is-three-fourths
-					if errors
-						ul
-							for error in errors
-								li.has-text-danger!= error.msg
-						br
+				.column.is-half
+					include components/errors
 					form(method='post' enctype='multipart/form-data')
 						.field
-							label.label Phone Number
+							label.label Phone Number *
 							.control.has-icons-left
-								input.input.is-primary(type='tel' id='phone' name='phone' placeholder='e.g. 4018843030' maxlength='10' required value=(undefined ===
+								input.input(type='tel' id='phone' name='phone' placeholder='e.g. 4018843030' maxlength='10' required value=(undefined ===
 								yardsale ? '' : yardsale.phone))
 								span.icon.is-small.is-left
 									i.fas.fa-phone
 						.field
 							label.label Address *
 							.control.has-icons-left
-								input.input.is-primary(type='text' id='address' name='address' placeholder='e.g. 1600 Pennsylvania Ave' maxlength='250' value=(undefined ===
+								input.input(type='text' id='address' name='address' placeholder='e.g. 1600 Pennsylvania Ave' maxlength='250' value=(undefined ===
 								yardsale ? '' : yardsale.address))
 								span.icon.is-small.is-left
 									i.fas.fa-map-marker-alt
 						.field
 							label.label Address 2
 							.control.has-icons-left
-								input.input.is-primary(type='text' id='address2' name='address2' maxlength='250' placeholder=(undefined ===
+								input.input(type='text' id='address2' name='address2' maxlength='250' placeholder=(undefined ===
 								yardsale ? '' : yardsale.address2))
 								span.icon.is-small.is-left
 									i.fas.fa-map-marker-alt
 						.field
 							label.label City *
 							.control.has-icons-left
-								input.input.is-primary(type='text' id='city' name='city' placeholder='e.g. Washington' maxlength='25' required value=(undefined ===
+								input.input(type='text' id='city' name='city' placeholder='e.g. Washington' maxlength='25' required value=(undefined ===
 								yardsale ? '' : yardsale.city))
 								span.icon.is-small.is-left
 									i.fas.fa-city
 						.field
 							label.label State *
 							.control.has-icons-left
-								.select.is-primary
+								.select
 									select(id='state' name='state' required)
 										option(selected) Select State
-										option(value='CT' selected=(undefined === yardsale || yardsale.state !== 'CT' ?
-											false :
-											'selected')) CT
-										option(value='MA' selected=(undefined === yardsale || yardsale.state !== 'MA' ?
-											false :
-											'selected')) MA
-										option(value='ME' selected=(undefined === yardsale || yardsale.state !== 'ME' ?
-											false :
-											'selected')) ME
-										option(value='NH' selected=(undefined === yardsale || yardsale.state !== 'NH' ?
-											false :
-											'selected')) NH
-										option(value='RI' selected=(undefined === yardsale || yardsale.state !== 'RI' ?
-											false :
-											'selected')) RI
+										option(value='CT' selected=(undefined === yardsale || yardsale.state !== 'CT' ? false : 'selected')) CT
+										option(value='MA' selected=(undefined === yardsale || yardsale.state !== 'MA' ? false : 'selected')) MA
+										option(value='ME' selected=(undefined === yardsale || yardsale.state !== 'ME' ? false : 'selected')) ME
+										option(value='NH' selected=(undefined === yardsale || yardsale.state !== 'NH' ? false : 'selected')) NH
+										option(value='RI' selected=(undefined === yardsale || yardsale.state !== 'RI' ? false : 'selected')) RI
 									span.icon.is-small.is-left
 										i.fas.fa-map-marker-alt
 						.field
 							label.label Zip Code *
 							.control.has-icons-left
-								input.input.is-primary(type='text' id='zipcode' name='zipcode' placeholder='e.g. 20500' maxlength='5' required value=(undefined ===
+								input.input(type='text' id='zipcode' name='zipcode' placeholder='e.g. 20500' maxlength='5' required value=(undefined ===
 								yardsale ? '' : yardsale.zipcode))
 								span.icon.is-small.is-left
 									i.fas.fa-map-marker-alt
 						.field
 							label.label Date *
 							.control.has-icons-left
-								input.input.is-primary(type='date' id='date' name='date' placeholder='e.g. July 4, 2019' required value=(undefined ===
+								input.input(type='date' id='date' name='date' placeholder='e.g. July 4, 2019' required value=(undefined ===
 								yardsale ? '' : yardsale.date.toDateString()))
 								span.icon.is-small.is-left
 									i.fas.fa-calendar
 						.field
-							label.label Start Time
+							label.label Start Time *
 							.control.has-icons-left
-								input.input.is-primary(type='time' id='starttime' name='starttime' placeholder='e.g. 10:00 AM' required value=(undefined ===
+								input.input(type='time' id='starttime' name='starttime' placeholder='e.g. 10:00 AM' required value=(undefined ===
 								yardsale ? '' : yardsale.starttime))
 								span.icon.is-small.is-left
 									i.fas.fa-clock
 						.field
-							label.label End Time
+							label.label End Time *
 							.control.has-icons-left
-								input.input.is-primary(type='time' id='endtime' name='endtime' placeholder='e.g. 4:00 PM' required value=(undefined ===
+								input.input(type='time' id='endtime' name='endtime' placeholder='e.g. 4:00 PM' required value=(undefined ===
 								yardsale ? '' : yardsale.endtime))
 								span.icon.is-small.is-left
 									i.fas.fa-clock
 						.field
 							label.label Description
 							.control
-								textarea.textarea.is-primary(maxlength='1000' id='description' name='description' placeholder='Add your comments here...' value=(undefined ===
+								textarea.textarea(maxlength='1000' id='description' name='description' placeholder='Add your comments here...' value=(undefined ===
 								yardsale ? '' : yardsale.description))
 						.field
 							label.label Add Image
 							.control
-								.file.is-primary
+								.file
 									label.file-label(for=file)
 										input.file-input(type='file' id='file' name='imagename')
 										span.file-cta
 											span.file-icon
 												i.fas.fa-upload
-											span.file-label
-												| Upload image&mldr;
+											span.file-label Upload image&mldr;
 										span.file-name(id='filename') no file selected
 						.field
 							.control
-								button.button.is-link(type='submit') Post your yard sale!
-
+								button.button.is-link(type='submit') Submit
 	script(src='/js/select_image_name.js')
 
 
