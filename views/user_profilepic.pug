@@ -9,6 +9,7 @@ block content
 				.column.is-one-quarter
 					include components/sidebar
 				.column.is-three-quarters
+					include components/errors
 					form(method='post' enctype='multipart/form-data')
 						.field
 							label.label Add Image
@@ -21,13 +22,11 @@ block content
 												i.fas.fa-upload
 											span.file-label Upload image&mldr;
 										span.file-name(id='filename') no file selected
-										br
+						.field
+							img#imagePreview(width=128 height=128)
 						.field
 							.control
-								br
 								button.button.is-link(type='submit') Upload
-								br
-						include components/errors
 	script(src='/js/select_image_name.js')
 
 
