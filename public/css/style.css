@@ -16,20 +16,20 @@ body {
 
 /* MAIN CONTENT */
 .main-container {
+	display: block;
 	min-height: 100vh; /* will cover the 100% of viewport */
 	overflow: hidden;
-	display: block;
-	position: relative;
 	padding-bottom: 100px; /* height of your footer */
+	position: relative;
 }
 
 /* NAVIGATION BAR */
 #navbar-title {
-	font-family: 'Permanent Marker', cursive;
 	color: hsl(217, 71%, 53%);
+	font-family: 'Permanent Marker', cursive;
 	font-size: 2.5rem;
-	padding-top: 0;
 	padding-bottom: 0;
+	padding-top: 0;
 }
 
 .navbar-end > a.navbar-item {
@@ -42,15 +42,14 @@ body {
 }
 
 .navbar-end > a.navbar-item {
-	font-size: 16px;
-	/*color: hsl(217, 71%, 53%);*/
 	color: hsl(48, 100%, 67%);
+	font-size: 16px;
 	font-weight: bold;
 }
 
 .navbar-end > a:hover.navbar-item {
-	font-size: 16px;
 	color: hsl(217, 71%, 53%);
+	font-size: 16px;
 	font-weight: bold;
 	text-decoration: underline;
 }
@@ -67,8 +66,14 @@ h1.title.is-1 {
 }
 
 .hero-body.has-background-warning.is-hidden-touch {
-	padding-top: 0;
 	padding-bottom: 5px;
+	padding-top: 0;
+}
+
+/* INDEX PAGE MAP */
+#map {
+	height: 450px;
+	width: 100%;
 }
 
 /* CUSTOM */
@@ -77,33 +82,41 @@ section.section {
 	padding-top: 10px;
 }
 
+section.section.has-background-light {
+	/*padding-bottom: 0;*/
+}
+
+#yardsaleResults {
+	/*padding-bottom: 0;*/
+}
+
 h1.subtitle.subTitle {
 	 margin-bottom: .5rem;
 }
 
 #navbarSection {
 	padding-bottom: 0;
-	padding-top: 0;
 	padding-right: 0;
+	padding-top: 0;
 }
 
 #indexSort {
 	flex-grow: 0;
 }
 
-.divider{
-	width: 5px;
-	height: auto;
+.divider {
 	display: inline-block;
+	height: auto;
+	width: 5px;
 }
 
 /* FOOTER */
 footer {
+	bottom: 0;
 	flex: 1;
 	padding: 32px;
 	position: absolute;
 	width: 100%;
-	bottom: 0;
 }
 
 strong#footer-text {

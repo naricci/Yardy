@@ -30,14 +30,14 @@ block content
 	// MAP OF USA
 	section.section.has-background-light
 		.container
-			#map(style='width:100%;height:500px')
+			#map
 			script(type='text/javascript' src='/js/index_map.js')
 			//script(type='text/javascript' src='/js/reverse_geocoder.js')
 			script(async defer src='https://maps.googleapis.com/maps/api/js?key='+process.env.MAPS_API_KEY+'&callback=initMap')
 			script(type='text/javascript' src='/js/get_location.js')
 			br
 	// YARD SALE LIST
-	section.section
+	section.section#yardsaleResults
 		.container
 			if yardsale_list && isAuthenticated
 				each yardsale in yardsale_list
@@ -84,3 +84,4 @@ block content
 									strong #{yardsale.date.toDateString()}&nbsp;
 								p #{yardsale.description}
 						.media-right
+				br

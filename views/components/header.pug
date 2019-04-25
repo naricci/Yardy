@@ -17,6 +17,7 @@ section.section.has-background-warning#navbarSection
 						// The content below will be visible to users who have logged in.
 						if isAuthenticated
 							.navbar-end
+								a.navbar-item.has-text-link(href='/') Home
 								a.navbar-item.has-text-link(href='/yardsales/create') Post Yard Sale
 								a.navbar-item.has-text-link(href='/users/' + current_user._id) Account
 								a.navbar-item.has-text-link(href='/users/' + current_user._id + '/favorites') Favorites

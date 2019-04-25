@@ -27,6 +27,7 @@ const YardsaleSchema = new Schema({
 	state: {
 		type: String,
 		required: [true, 'State is required'],
+		index: true,
 		maxlength: 2
 	},
 	zipcode: {
