@@ -99,7 +99,7 @@ exports.search = (req, res, next) => {
 					});
 					// Successful, so render
 					res.render('index', {
-						title: 'Yardy Search Results(dt)',
+						title: 'Yardy Search Results(dt1)',
 						yardsale_list: list_yardsales
 					});
 				});
@@ -120,7 +120,7 @@ exports.search = (req, res, next) => {
 					});
 					// Successful, so render
 					res.render('index', {
-						title: 'Yardy Search Results(strttm)',
+						title: 'Yardy Search Results(strttm1)',
 						yardsale_list: list_yardsales
 					});
 				});
@@ -145,7 +145,7 @@ exports.search = (req, res, next) => {
 					});
 					// Successful, so render
 					res.render('index', {
-						title: 'Yardy Search Results(deflt)',
+						title: 'Yardy Search Results(deflt1)',
 						yardsale_list: list_yardsales
 					});
 				});
@@ -168,7 +168,7 @@ exports.search = (req, res, next) => {
 					});
 					// Successful, so render
 					res.render('index', {
-						title: 'Yardy Search Results(dt)',
+						title: 'Yardy Search Results(dt2)',
 						yardsale_list: list_yardsales
 					});
 				});
@@ -189,7 +189,7 @@ exports.search = (req, res, next) => {
 					});
 					// Successful, so render
 					res.render('index', {
-						title: 'Yardy Search Results(strttm)',
+						title: 'Yardy Search Results(strttm2)',
 						yardsale_list: list_yardsales
 					});
 				});
@@ -214,7 +214,7 @@ exports.search = (req, res, next) => {
 					});
 					// Successful, so render
 					res.render('index', {
-						title: 'Yardy Search Results(deflt)',
+						title: 'Yardy Search Results(deflt2)',
 						yardsale_list: list_yardsales
 					});
 				});
