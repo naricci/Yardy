@@ -5,17 +5,16 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
-// Mongoose Connection
-let dev_db_url = 'mongodb://nick:Yardy123@ds121475.mlab.com:21475/yardy';
-let mongoDB = process.env.MONGODB_URI || dev_db_url;
-require('./config/db');
-
 // Use dotenv to read .env vars into Node
 require('dotenv').config();
 
+// Mongoose Connection
+let mongoDB = process.env.MONGODB_URI;
+require('./config/db');
+
 // For Heroku
 const cool = require('cool-ascii-faces');
-const PORT = process.env.PORT || 5000;
+const PORT2 = process.env.PORT2;
 
 // Routes
 const index = require('./routes/index');
@@ -40,7 +39,6 @@ const sess = {
 	saveUninitialized: true,
 	maxAge: 86400000,	// 1 day
 	store: new MongoStore({
-		// mongooseConnection: mongoose.connect(mongoDB),
 		url: mongoDB,
 		ttl: 7 * 24 * 60 * 60 // 7 days. 14 is Default.
 	})
@@ -52,7 +50,7 @@ const app = express();
 // app.get('/', (req, res) => { return res.render('pages/index'); });
 app.get('/cool', (req, res) => { return res.send(cool()); });
 // app.listen(PORT, () => { return debug(`Heroku listening on ${ PORT }`); });
-app.listen(PORT);
+app.listen(PORT2);
 
 // Configure the local strategy for use by Passport.
 passport.use(new LocalStrategy(

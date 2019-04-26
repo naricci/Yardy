@@ -1,21 +1,17 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const debug = require('debug')('yardy:mongo');
+const mongoDB = process.env.MONGODB_URI;
 const options = {
 	useNewUrlParser: true,
 	useCreateIndex: true,
 	autoReconnect: true,
 	useFindAndModify: false
 };
+const db = mongoose.connection;
 let gracefulShutdown;
-let dev_db_url = 'mongodb://nick:Yardy123@ds121475.mlab.com:21475/yardy';
-let mongoDB = process.env.MONGODB_URI || dev_db_url;
-let db = mongoose.connection;
 
 // Set up mongoose connection
-if (process.env.NODE_ENV === 'production') {
-	dev_db_url = process.env.MONGOLAB_URI;
-}
 mongoose.connect(mongoDB, options)
 	.catch((err) => {
 		debug(err);

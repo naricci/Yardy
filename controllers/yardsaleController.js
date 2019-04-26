@@ -1,15 +1,16 @@
 const async = require('async');
-const AWS = require('aws-sdk');
 const debug = require('debug')('yardy:yardsale.controller');
 const { body, check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
+const S3 = require('../config/s3_config');
+
 // Models
 const User = require('../models/user');
 const Yardsale = require('../models/yardsale');
 
 // Display list of all yardsales.
 exports.yardsale_list = (req, res, next) => {
-	var params = req.body.searchParams;
+	var params = req.body.address;
 	if (params === undefined || params === null || params === '') {
 		Yardsale
 			.find()
@@ -71,7 +72,7 @@ exports.yardsale_create_get = (req, res, next) => {
 		.exec()
 		.catch((err, results) => {
 			if (err) return next(err);
-			if (results == null) { // No results.
+			if (results === null) { // No results.
 				let err = new Error('User not found.');
 				err.status = 404;
 				return next(err);
@@ -124,13 +125,11 @@ exports.yardsale_create_post = [
 		}
 		else {
 			// Data from form is valid.
-			const s3 = new AWS.S3({
-				apiVersion: '2006-03-01',
-				accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-				secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-				region: process.env.S3_BUCKET_REGION
-			});
-			var ysFile = req.file;
+			const ysFile = req.file;
+			let key = (req.user.username + '/' + ysFile.originalname);
+			S3.params.Body = ysFile.buffer;
+			S3.params.ContentType = ysFile.mimetype;
+			S3.params.Key = key;
 
 			// Create an Yardsale object with escaped and trimmed data.
 			let yardsale = new Yardsale({
@@ -140,6 +139,7 @@ exports.yardsale_create_post = [
 				city: req.body.city,
 				state: req.body.state,
 				zipcode: req.body.zipcode,
+				full_address: req.body.address + req.body.city + req.body.state + req.body.zipcode,
 				date: req.body.date,
 				starttime: req.body.starttime,
 				endtime: req.body.endtime,
@@ -148,24 +148,14 @@ exports.yardsale_create_post = [
 				imagename: ysFile.originalname
 			});
 
-			const key = (req.user.username + '/' + ysFile.originalname);
-			const params = {
-				ACL: 'public-read',
-				Body: ysFile.buffer,
-				Bucket: process.env.S3_BUCKET,
-				ContentType: ysFile.mimetype,
-				Key: key,
-				ServerSideEncryption: 'AES256'
-			};
-
 			yardsale.save((err) => {
 				if (err) return next(err);
 
 				// S3 Image upload
-				s3.upload(params, (err, data) => {
+				S3.s3Client.putObject(S3.params, (err, data) => {
 					if (err) debug('Error: ', err);
 					else {
-						debug(`Posting ${params.Key} to ${process.env.S3_BUCKET} in S3`);
+						debug(`Posting ${S3.params.Key} to ${process.env.S3_BUCKET} in S3`);
 						debug(data);
 					}
 				});
@@ -210,12 +200,12 @@ exports.yardsale_delete_get = (req, res, next) => {
 // Handle Yardsale delete on POST.
 exports.yardsale_delete_post = (req, res, next) => {
 	async.parallel({
-		yardsale: function (callback) {
+		yardsale: (callback) =>{
 			Yardsale
 				.findById(req.body.id)
 				.exec(callback);
 		},
-	}, function (err, results) {
+	}, (err, results) => {
 		if (err) { return next(err); }
 		// Success.
 		if (results.yardsale.length === 1) {
@@ -286,18 +276,15 @@ exports.yardsale_update_post = [
 
 		// Extract the validation errors from a request.
 		const errors = validationResult(req);
-		const s3 = new AWS.S3({
-			apiVersion: '2006-03-01',
-			accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-			secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-			region: process.env.S3_BUCKET_REGION
-		});
-		var ysFile = req.file;
+
+		const ysFile = req.file;
+		const key = (req.user.username + '/' + ysFile.originalname);
+		S3.params.Body = ysFile.buffer;
+		S3.params.ContentType = ysFile.mimetype;
+		S3.params.Key = key;
+
 		// Create Yardsale object with escaped and trimmed data (and the old id!)
-		var yardsale = new Yardsale({
-			firstName: req.body.firstname,
-			lastName: req.body.lastname,
-			username: req.body.username,
+		let yardsale = new Yardsale({
 			phone: req.body.phone,
 			address: req.body.address,
 			address2: req.body.address2,
@@ -312,16 +299,6 @@ exports.yardsale_update_post = [
 			_id: req.params.id
 		});
 
-		const key = (req.user.username + '/' + ysFile.originalname);
-		const params = {
-			ACL: 'public-read',
-			Body: ysFile.buffer,
-			Bucket: process.env.S3_BUCKET,
-			ContentType: ysFile.mimetype,
-			Key: key,
-			ServerSideEncryption: 'AES256'
-		};
-
 		if (!errors.isEmpty()) {
 			// There are errors. Render the form again with sanitized values and error messages.
 			res.render('yardsale_edit', {
@@ -335,49 +312,17 @@ exports.yardsale_update_post = [
 			Yardsale
 				.findByIdAndUpdate(req.params.id, yardsale, {}, (err, theyardsale) => {
 					if (err) return next(err);
-					//if (ysFile.originalname !== '') {
 					// S3 Image upload
-					s3.upload(params, (err, data) => {
+					S3.s3Client.putObject(S3.params, (err, data) => {
 						if (err) debug('Error: ', err);
 						else {
-							debug(`Posting ${params.Key} to ${process.env.S3_BUCKET} in S3`);
+							debug(`Posting ${S3.params.Key} to ${process.env.S3_BUCKET} in S3`);
 							debug(data);
 						}
 					});
-					// }
 					// Successful - redirect to yardsale detail page.
 					res.redirect('/yardsales/'+theyardsale._id);
 				});
 		}
 	}
 ];
-
-//////////for search
-exports.all_yardsales = function (req, res) {
-	console.log('All Yardsales Unsorted');
-
-	Yardsale.find()
-		.exec()
-		.then (index => {
-			res.send(index);
-		}).catch(err => {
-			res.status(500).send({
-				message: err.message
-			});
-		});
-};
-
-exports.all_yardsales_sorted = function (req, res) {
-	console.log('All Yardsales Sorted');
-
-	Yardsale.find()
-		.sort([['date', 'ascending']])
-		.exec()
-		.then (index => {
-			res.send(index);
-		}).catch(err => {
-			res.status(500).send({
-				message: err.message
-			});
-		});
-};

@@ -1,21 +1,23 @@
 const AWS = require('aws-sdk');
-const aws_env = require('./s3_env');
 
+// AWS S3 Configuration
 const s3Client = new AWS.S3({
-	secretAccessKey: aws_env.AWS_SECRET_ACCESS_KEY,
-	accessKey: aws_env.AWS_ACCESS_KEY_ID,
-	region: aws_env.REGION
+	apiVersion: '2006-03-01',
+	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+	region: process.env.AWS_REGION
 });
-
-const uploadParams = {
-	Bucket: aws_env.BUCKET,
-	Key: '',	// pass key
-	Body: null,	// pass file body
-	ACL: 'public-read'
+const params = {
+	ACL: 'public-read',
+	Body: '',
+	Bucket: process.env.S3_BUCKET,
+	ContentType: '',
+	Key: '',
+	ServerSideEncryption: 'AES256'
 };
 
-const s3 = {};
-s3.s3Client = s3Client;
-s3.uploadParams = uploadParams;
+const S3 = {};
+S3.s3Client = s3Client;
+S3.params = params;
 
-// module.exports = s3;
+module.exports = S3;

@@ -1,9 +1,10 @@
 const async = require('async');
-const AWS = require('aws-sdk');
 const debug = require('debug')('yardy:user.controller');
 const { body, check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 const passport = require('passport');
+const S3 = require('../config/s3_config');
+
 // Models
 const User = require('../models/user');
 const Yardsale = require('../models/yardsale');
@@ -95,11 +96,11 @@ exports.register_post = [
 	body('email', 'Please enter a valid email address.')
 		.isEmail()
 		.trim(),
-	body('password', 'Password must be between 4-32 characters long.')
-		.isLength({ min: 4, max: 32 })
+	body('password', 'Password must be between 4-25 characters long.')
+		.isLength({ min: 4, max: 25 })
 		.trim(),
-	body('cpassword', 'Password must be between 4-32 characters long.')
-		.isLength({ min: 4, max: 32 })
+	body('cpassword', 'Password must be between 4-25 characters long.')
+		.isLength({ min: 4, max: 25 })
 		.trim(),
 
 	// Sanitize fields with wildcard operator.
@@ -205,11 +206,11 @@ exports.update_post = [
 	body('email', 'Please enter a valid email address.')
 		.isEmail()
 		.trim(),
-	body('password', 'Password must be between 4-32 characters long.')
-		.isLength({ min: 4, max: 32 })
+	body('password', 'Password must be between 4-25 characters long.')
+		.isLength({ min: 4, max: 25 })
 		.trim(),
-	body('cpassword', 'Password must be between 4-32 characters long.')
-		.isLength({ min: 4, max: 32 })
+	body('cpassword', 'Password must be between 4-25 characters long.')
+		.isLength({ min: 4, max: 25 })
 		.trim(),
 	body('zipcode', 'Zip Code must be 5 characters long.')
 		.isLength({ min: 5, max: 5 })
@@ -476,7 +477,6 @@ exports.profilepic_get = (req, res, next) => {
 			res.render('user_profilepic', {
 				title: 'Update Profile Pic',
 				user: found_user
-				// is_update_form: true
 			});
 		});
 };
@@ -497,26 +497,16 @@ exports.profilepic_post = [
 		// Get a handle on errors.array() array.
 		var errorsArray = errors.array();
 
-		var file = req.file;
-		var user = new User({
-			profilepic: file.originalname,
+		const ysFile = req.file;
+		const key = (req.user.username + '/' + ysFile.originalname);
+		S3.params.Body = ysFile.buffer;
+		S3.params.ContentType = ysFile.mimetype;
+		S3.params.Key = key;
+
+		let user = new User({
+			profilepic: ysFile.originalname,
 			_id: req.params.id
 		});
-		const key = (req.user.username + '/' + file.originalname);
-		const s3 = new AWS.S3({
-			apiVersion: '2006-03-01',
-			accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-			secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-			region: process.env.S3_BUCKET_REGION
-		});
-		const params = {
-			ACL: 'public-read',
-			Body: file.buffer,
-			Bucket: process.env.S3_BUCKET,
-			ContentType: file.mimetype,
-			Key: key,
-			ServerSideEncryption: 'AES256'
-		};
 
 		if (errorsArray.length > 0) {
 			// There are errors. Render the form again with sanitized values/error messages.
@@ -529,16 +519,16 @@ exports.profilepic_post = [
 			User
 				.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
 					if (err) return next(err);
-					if (user === null) {
+					if (theuser === null) {
 						let err = new Error('User not found');
 						err.status = 404;
 						return next(err);
 					}
 					// S3 Image upload
-					s3.putObject(params, (err, data) => {
+					S3.s3Client.putObject(S3.params, (err, data) => {
 						if (err) debug('Error: ', err);
 						else {
-							debug(`Posting ${params.Key} to ${process.env.S3_BUCKET} in S3`);
+							debug(`Posting ${S3.params.Key} to ${process.env.S3_BUCKET} in S3`);
 							debug(data);
 						}
 					});
@@ -564,7 +554,6 @@ exports.favorites_get = (req, res, next) => {
 			res.render('user_favorites', {
 				title: 'Manage Favorites',
 				user: found_user,
-				is_update_form: true
 			});
 		});
 };
