@@ -63,7 +63,7 @@ block content
 							label.label Date *
 							.control.has-icons-left
 								input.input(type='date' id='date' name='date' placeholder='e.g. July 4, 2019' required value=(undefined ===
-								yardsale ? '' : yardsale.date.toDateString()))
+								yardsale ? '' : yardsale.date))
 								span.icon.is-small.is-left
 									i.fas.fa-calendar
 						.field
@@ -84,7 +84,7 @@ block content
 							label.label Description
 							.control
 								textarea.textarea(maxlength='1000' id='description' name='description' placeholder='Add your comments here...' value=(undefined ===
-								yardsale ? '' : yardsale.description))
+								yardsale ? '' : yardsale.description)) #{yardsale.description}
 						.field
 							label.label Add Image
 							.control

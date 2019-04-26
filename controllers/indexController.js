@@ -5,7 +5,7 @@ exports.index = (req, res, next) => {
 	Yardsale
 		.find()
 		.populate('user')
-		.sort([['date', 'ascending']])
+		// .sort([['date', 'ascending']])
 		.exec()
 		.catch((err) => {
 			if (err) return next(err);
@@ -38,7 +38,6 @@ exports.search = (req, res, next) => {
 			.find({ $text: { $search: params } })
 			.populate('user')
 			.sort([sortType])
-			// .sort([['date', 'ascending']])
 			.exec((err, list_yardsales) => {
 				if (err) return next(err);
 				if (list_yardsales === null) { // No yardsales.
