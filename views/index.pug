@@ -10,18 +10,18 @@ block content
 					.field-body
 						.field.has-addons
 							p.control.has-icons-left.is-expanded
-								input.input#searchParams(type='text' name='address' placeholder="Enter your city's name here")
+								input.input#searchParams(type='text' name='search' placeholder="Enter your city's name here")
 								span.icon.is-small.is-left
 									i.fas.fa-map-marker-alt
+							p.control.has-icons-left
+								.select
+									select#sort(name='sort')
+										option(selected, value='') Sort
+										option(value='date') Date
+										option(value='starttime') Starting Time
+										option(value='distance') Distance
 							p.control
 								a.button.is-success(onclick='getLocation()') Find Me
-							// Search returns all yardsales in DB on new page
-							//p.control
-							//	a.button.is-link(href='/')
-							//		span.icon
-							//			i.fas.fa-search-location
-							//		span Search
-							// Search returns a view of user's current location
 							p.control
 								button.button.is-link#submit(type='submit')
 									span.icon
@@ -37,8 +37,10 @@ block content
 			if yardsale_list && isAuthenticated
 				each yardsale in yardsale_list
 					include components/results_auth
-			else
+			else if yardsale_list && isAuthenticated === false
 				h1.subtitle.has-text-centered
 					strong.has-text-danger Please sign in to view more details about our yard sales.
 				each yardsale in yardsale_list
 					include components/results_nonauth
+			else
+				p #{results}
