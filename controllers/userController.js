@@ -19,7 +19,7 @@ exports.user_profile = (req, res, next) => {
 		},
 		yardsales: (callback) => {
 			Yardsale
-				.find({ 'user': req.params.id }, 'date starttime address city state description imagename')
+				.find({ 'user': req.params.id }, 'date starttime endtime address city state zipcode description imagename')
 				.sort([['date', 'ascending']])
 				.exec(callback);
 		},

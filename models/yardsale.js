@@ -11,6 +11,7 @@ const YardsaleSchema = new Schema({
 	},
 	address: {
 		type: String,
+		text: true,
 		required: false,
 		maxlength: 250
 	},
@@ -21,11 +22,13 @@ const YardsaleSchema = new Schema({
 	},
 	city: {
 		type: String,
+		text: true,
 		required: true,
 		maxlength: 25
 	},
 	state: {
 		type: String,
+		text: true,
 		required: [true, 'State is required'],
 		index: true,
 		maxlength: 2
@@ -66,6 +69,10 @@ const YardsaleSchema = new Schema({
 		default: Date.now
 	}
 });
+
+// Create Index
+// YardsaleSchema.index({ 'address':'text', 'city':'text', 'state': 'text',});
+YardsaleSchema.index({ 'full_address':'text' });
 
 // Virtual for this yardsale instance URL.
 YardsaleSchema

@@ -8,8 +8,20 @@ p #[strong Zip Code:&nbsp;] #{yardsale.zipcode}
 hr
 h1.subtitle.subTitle #[strong Date & Time]
 p #[strong Date:&nbsp;] #{yardsale.date.toDateString()}
-p #[strong Start Time:&nbsp;] #{yardsale.starttime}
-p #[strong End Time:&nbsp;] #{yardsale.endtime}
+if parseInt(yardsale.starttime) < 12
+	p #[strong Start Time:&nbsp;] #{parseInt(yardsale.starttime)} AM
+else
+	if parseInt(yardsale.starttime) - 12 === 0
+		p #[strong Start Time:&nbsp;] #{parseInt(yardsale.starttime)} PM
+	else
+		p #[strong Start Time:&nbsp;] #{parseInt(yardsale.starttime) - 12} PM
+if parseInt(yardsale.endtime) < 12
+	p #[strong End Time:&nbsp;] #{parseInt(yardsale.endtime) - 12} AM
+else
+	if parseInt(yardsale.endtime) - 12 === 0
+		p #[strong End Time:&nbsp;] #{parseInt(yardsale.endtime)} PM
+	else
+		p #[strong End Time:&nbsp;] #{parseInt(yardsale.endtime) - 12} PM
 hr
 h1.subtitle.subTitle #[strong Contact Info]
 p #[strong Full Name:&nbsp;] #{yardsale.user.firstName} #{yardsale.user.lastName}

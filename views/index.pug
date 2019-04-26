@@ -8,7 +8,7 @@ block content
 			form(method='get' action='')
 				.field.is-horizontal
 					.field-body
-						.field.has-addons
+						.field.is-grouped.is-grouped-multiline
 							p.control.has-icons-left.is-expanded
 								input.input#searchParams(type='text' name='search' placeholder="Enter your city's name here")
 								span.icon.is-small.is-left
@@ -16,10 +16,11 @@ block content
 							p.control.has-icons-left
 								.select
 									select#sort(name='sort')
-										option(selected, value='') Sort
+										option(selected, value='') Sort By
 										option(value='date') Date
 										option(value='starttime') Starting Time
-										option(value='distance') Distance
+										//option(value='distance') Distance
+						.field.is-grouped
 							p.control
 								a.button.is-success(onclick='getLocation()') Find Me
 							p.control

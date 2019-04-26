@@ -76,6 +76,11 @@ h1.title.is-1 {
 	width: 100%;
 }
 
+/* SEARCH BAR */
+.field-body.field.searchBar {
+	/*margin-right: 10px;*/
+}
+
 /* CUSTOM */
 section.section {
 	padding-bottom: 5px;
