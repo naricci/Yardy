@@ -11,8 +11,8 @@ require('dotenv').config();
 // Mongoose Configuration
 require('./config/db');
 // For Heroku
-const cool = require('cool-ascii-faces');
-const PORT2 = process.env.PORT2;
+// const cool = require('cool-ascii-faces');
+const PORT2 = process.env.PORT2 || 5000;
 // Routes
 const index = require('./routes/index');
 const users = require('./routes/users');
@@ -42,7 +42,7 @@ const sess = {
 const app = express();
 
 // Heroku Listening on Port ...
-app.get('/cool', (req, res) => { return res.send(cool()); });
+// app.get('/cool', (req, res) => { return res.send(cool()); });
 app.listen(PORT2, () => {
 	return debug(`Heroku listening on ${ PORT2 }`);
 });
