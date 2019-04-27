@@ -21,21 +21,29 @@ exports.index = (req, res, next) => {
 
 exports.search = (req, res, next) => {
 	let params = req.query.search;
+	let paramsLike = '/'+req.query.search+'/';
+	let sort = req.query.sort;
 	let sortType = [];
-	if (req.query.sort === 'date')
+	if (sort === 'date')
 		sortType = ['date', 'ascending'];
-	else if (req.query.sort === 'starttime')
-		sortType = ['starttime', 'ascending'];
+	else if (sort === 'city')
+		sortType = ['city', 'ascending'];
+	else if (sort === 'state')
+		sortType = ['state', 'ascending'];
+	else if (sort === 'zipcode')
+		sortType = ['zipcode', 'ascending'];
 	else
 		sortType = [];
+
 	if (params !== null && params !== '' &&
 			params !== undefined && req.method === 'GET') {
 		debug('Searching for yard sales.');
 
 		Yardsale
-			// .find({ $or: [{address: params}, {city: params}, {state: params}, {zipcode: params}] })
+			.find({ $or: [{address: params}, {city: params}, {state: params}, {zipcode: params}] })
+			// TODO - Finish full-text search for full_address
 			// Full-Text Search
-			.find({ $text: { $search: params } })
+			// .find({ $text: { $search: params } })
 			.populate('user')
 			.sort([sortType])
 			.exec((err, list_yardsales) => {
