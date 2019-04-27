@@ -1,30 +1,24 @@
 const createError = require('http-errors');
 const express = require('express');
+const expressValidator = require('express-validator');
 const favicon = require('serve-favicon');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-
+const debug = require('debug')('yard:app');
 // Use dotenv to read .env vars into Node
 require('dotenv').config();
-
-// Mongoose Connection
-let mongoDB = process.env.MONGODB_URI;
+// Mongoose Configuration
 require('./config/db');
-
 // For Heroku
-const cool = require('cool-ascii-faces');
-// const PORT = process.env.PORT;
-
+const PORT = process.env.PORT || 5000;
 // Routes
 const index = require('./routes/index');
 const users = require('./routes/users');
 const yardsales = require('./routes/yardsales');
-
 // Compression/Security Packages
 const compression = require('compression');
 const helmet = require('helmet');
-
 // Authentication Packages
 const session = require('express-session');
 const passport = require('passport');
@@ -39,18 +33,17 @@ const sess = {
 	saveUninitialized: true,
 	maxAge: 86400000,	// 1 day
 	store: new MongoStore({
-		url: mongoDB,
-		ttl: 7 * 24 * 60 * 60 // 7 days. 14 is Default.
+		url: process.env.MONGODB_URI,
+		ttl: 7 * 24 * 60 * 60 // 7 days
 	})
 };
-
 // Initialize Express App
 const app = express();
 
-// app.get('/', (req, res) => { return res.render('pages/index'); });
-// app.get('/cool', (req, res) => { return res.send(cool()); });
-// app.listen(PORT, () => { return debug(`Heroku listening on ${ PORT }`); });
-// app.listen(PORT);
+// Heroku Listening on Port ...
+app.listen(PORT, () => {
+	return debug(`Heroku listening on ${ PORT }`);
+});
 
 // Configure the local strategy for use by Passport.
 passport.use(new LocalStrategy(
@@ -101,6 +94,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(expressValidator());
 
 app.use(compression()); // Compress all routes
 app.use(helmet());
@@ -112,7 +106,8 @@ app.use(favicon(path.join(__dirname, 'public', 'icons', 'favicon.ico')));
 app.use(flash());
 app.use(session(sess));
 
-// Initialize Passport and restore authentication state, if any, from the session.
+// Initialize Passport and restore authentication state,
+// if any, from the session.
 app.use(passport.initialize());
 app.use(passport.session());
 

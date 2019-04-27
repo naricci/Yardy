@@ -4,7 +4,7 @@ const { body, check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 const passport = require('passport');
 const S3 = require('../config/s3_config');
-
+const helpers = require('../util/helpers');
 // Models
 const User = require('../models/user');
 const Yardsale = require('../models/yardsale');
@@ -41,9 +41,9 @@ exports.user_profile = (req, res, next) => {
 
 // Display login form on GET.
 exports.login_get = [
-	isAlreadyLoggedIn,
+	helpers.isAlreadyLoggedIn,
 	(req, res, next) => {
-		let messages = extractFlashMessages(req);
+		let messages = helpers.extractFlashMessages(req);
 		res.render('user_login', {
 			title: 'Login',
 			errors: messages.length > 0 ? messages : null
@@ -53,7 +53,7 @@ exports.login_get = [
 
 // Display warning page on GET.
 exports.warning = (req, res, next) => {
-	let messages = extractFlashMessages(req);
+	let messages = helpers.extractFlashMessages(req);
 	res.render('user_warning', {
 		title: 'Sorry!',
 		errors: messages.length > 0 ? messages : null
@@ -77,7 +77,7 @@ exports.logout_get = (req, res, next) => {
 
 // Display register form on GET.
 exports.register_get = [
-	isAlreadyLoggedIn,
+	helpers.isAlreadyLoggedIn,
 	// Continue processing.
 	(req, res, next) => {
 		// 'user_form'
@@ -293,7 +293,7 @@ exports.update_post = [
 
 // Display reset password form on GET.
 exports.reset_get = [
-	isAlreadyLoggedIn,
+	helpers.isAlreadyLoggedIn,
 	(req, res, next) => {
 		res.render('user_reset', {
 			title: 'Reset Password',
@@ -562,43 +562,3 @@ exports.favorites_get = (req, res, next) => {
 exports.favorites_post = [
 	// TODO Finish writing function to POST/PUT favorites
 ];
-
-// -- Helper functions -- //
-// Extract flash messages from req.flash and return an array of messages.
-function extractFlashMessages(req) {
-	let messages = [];
-	// Check if flash messages was sent. If so, populate them.
-	let errorFlash = req.flash('error');
-	let successFlash = req.flash('success');
-
-	// Look for error flash.
-	if (errorFlash && errorFlash.length) messages.push({ msg: errorFlash[0] });
-
-	// Look for success flash.
-	if (successFlash && successFlash.length)
-		messages.push({ msg: successFlash[0] });
-
-	return messages;
-}
-
-/*** Helper Functions ***/
-// Function to prevent user who already logged in from
-// accessing login and register routes.
-function isAlreadyLoggedIn(req, res, next) {
-	if (req.user && req.isAuthenticated())
-		res.redirect('/');
-	else next();
-}
-
-// Function sends a JSON response
-function sendJSONresponse(res, status, content) {
-	res.status(status);
-	res.json(content);
-}
-
-// Function that returns the file extension of a filename as a string.
-function getFileExtension(filename) {
-	// return filename.split('.').pop();
-	let ext = /^.+\.([^.]+)$/.exec(filename);
-	return ext === null ? '' : ext[1];
-}

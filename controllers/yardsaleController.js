@@ -3,7 +3,6 @@ const debug = require('debug')('yardy:yardsale.controller');
 const { body, check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 const S3 = require('../config/s3_config');
-
 // Models
 const User = require('../models/user');
 const Yardsale = require('../models/yardsale');
