@@ -14,7 +14,7 @@ require('./config/db');
 
 // For Heroku
 const cool = require('cool-ascii-faces');
-const PORT2 = process.env.PORT2;
+const PORT = process.env.PORT;
 
 // Routes
 const index = require('./routes/index');
@@ -50,7 +50,7 @@ const app = express();
 // app.get('/', (req, res) => { return res.render('pages/index'); });
 app.get('/cool', (req, res) => { return res.send(cool()); });
 // app.listen(PORT, () => { return debug(`Heroku listening on ${ PORT }`); });
-app.listen(PORT2);
+app.listen(PORT);
 
 // Configure the local strategy for use by Passport.
 passport.use(new LocalStrategy(
