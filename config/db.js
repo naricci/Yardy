@@ -13,7 +13,7 @@ let gracefulShutdown;
 
 // Set up mongoose connection
 mongoose.connect(mongoDB, options)
-	.catch((err) => {
+	.catch(err => {
 		debug(err);
 	});
 

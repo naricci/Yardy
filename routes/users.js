@@ -4,6 +4,7 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 const userController = require('../controllers/userController');
+const validators = require('../middlewares/validators');
 
 // Handler for all types of requests pointed to '/' route.
 router.all('/', (req, res) => {
@@ -23,7 +24,7 @@ router.get('/logout', userController.logout_get);
 router.get('/register', userController.register_get);
 
 // POST request for create User.
-router.post('/register', userController.register_post);
+router.post('/register', validators.validate('register_post'), userController.register_post);
 
 // GET request for reset User password.
 router.get('/reset', userController.reset_get);
@@ -44,7 +45,7 @@ router.get('/:id', userController.user_profile);
 router.get('/:id/update', userController.update_get);
 
 // POST request for update User.
-router.post('/:id/update', userController.update_post);
+router.post('/:id/update', validators.validate('update_post'), userController.update_post);
 
 // GET request for User updating profile pic
 router.get('/:id/profilepic', userController.profilepic_get);

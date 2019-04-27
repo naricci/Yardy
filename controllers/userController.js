@@ -89,24 +89,7 @@ exports.register_get = [
 
 // Handle register on POST.
 exports.register_post = [
-	// Validate form fields.
-	body('username', 'Username must be between 4-32 characters long.')
-		.isLength({ min: 4, max: 32 })
-		.trim(),
-	body('email', 'Please enter a valid email address.')
-		.isEmail()
-		.trim(),
-	body('password', 'Password must be between 4-25 characters long.')
-		.isLength({ min: 4, max: 25 })
-		.trim(),
-	body('cpassword', 'Password must be between 4-25 characters long.')
-		.isLength({ min: 4, max: 25 })
-		.trim(),
 
-	// Sanitize fields with wildcard operator.
-	sanitizeBody('*')
-		.trim()
-		.escape(),
 
 	// Process request after validation and sanitization.
 	(req, res, next) => {
@@ -201,95 +184,72 @@ exports.update_get = (req, res, next) => {
 };
 
 // Handle update on POST.
-exports.update_post = [
-	// Validate fields.
-	body('email', 'Please enter a valid email address.')
-		.isEmail()
-		.trim(),
-	body('password', 'Password must be between 4-25 characters long.')
-		.isLength({ min: 4, max: 25 })
-		.trim(),
-	body('cpassword', 'Password must be between 4-25 characters long.')
-		.isLength({ min: 4, max: 25 })
-		.trim(),
-	body('zipcode', 'Zip Code must be 5 characters long.')
-		.isLength({ min: 5, max: 5 })
-		.trim(),
+exports.update_post = (req, res, next) => {
+	// Extract the validation errors from a request.
+	let errors = validationResult(req);
+	// Get a handle on errors.array() array.
+	let errorsArray = errors.array();
 
-	// Sanitize fields with wildcard operator.
-	sanitizeBody('*')
-		.trim()
-		.escape(),
+	// Create a user object with escaped and trimmed data and the old _id!
+	let user = new User({
+		username: req.body.username,
+		firstName: req.body.firstname,
+		lastName: req.body.lastname,
+		fullname: req.body.fullname,
+		email: req.body.email,
+		phone: req.body.phone,
+		address: req.body.address,
+		address2: req.body.address2,
+		city: req.body.city,
+		state: req.body.state,
+		zipcode: req.body.zipcode,
+		_id: req.params.id
+	});
 
-	// Process request after validation and sanitization.
-	(req, res, next) => {
-		// Extract the validation errors from a request.
-		let errors = validationResult(req);
-		// Get a handle on errors.array() array.
-		let errorsArray = errors.array();
+	// Update password only if the user filled both password fields
+	if (req.body.password !== '' && req.body.cpassword !== '') {
+		// -- The user wants to change password. -- //
 
-		// Create a user object with escaped and trimmed data and the old _id!
-		let user = new User({
-			username: req.body.username,
-			firstName: req.body.firstname,
-			lastName: req.body.lastname,
-			fullname: req.body.fullname,
-			email: req.body.email,
-			phone: req.body.phone,
-			address: req.body.address,
-			address2: req.body.address2,
-			city: req.body.city,
-			state: req.body.state,
-			zipcode: req.body.zipcode,
-			_id: req.params.id
+		// Check if passwords match or not.
+		if (!user.passwordsMatch(req.body.password, req.body.cpassword)) {
+			// Passwords do not match. Create and push an error message.
+			errorsArray.push({ msg: 'Passwords do not match.' });
+		} else {
+			// Passwords match. Set password.
+			user.setPassword(req.body.password);
+		}
+	} else {
+		// -- The user does not want to change password. -- //
+
+		// Remove warnings that may be coming from the body(..) validation step above.
+		let filteredErrorsArray = [];
+		errorsArray.forEach(errorObj => {
+			if (!(errorObj.param === 'password' || errorObj.param === 'cpassword'))
+				filteredErrorsArray.push(errorObj);
 		});
-
-		// Update password only if the user filled both password fields
-		if (req.body.password !== '' && req.body.cpassword !== '') {
-			// -- The user wants to change password. -- //
-
-			// Check if passwords match or not.
-			if (!user.passwordsMatch(req.body.password, req.body.cpassword)) {
-				// Passwords do not match. Create and push an error message.
-				errorsArray.push({ msg: 'Passwords do not match.' });
-			} else {
-				// Passwords match. Set password.
-				user.setPassword(req.body.password);
-			}
-		} else {
-			// -- The user does not want to change password. -- //
-
-			// Remove warnings that may be coming from the body(..) validation step above.
-			let filteredErrorsArray = [];
-			errorsArray.forEach(errorObj => {
-				if (!(errorObj.param === 'password' || errorObj.param === 'cpassword'))
-					filteredErrorsArray.push(errorObj);
-			});
-			// Assign filtered array back to original array.
-			errorsArray = filteredErrorsArray;
-		}
-
-		if (errorsArray.length > 0) {
-			// There are errors. Render the form again with sanitized values/error messages.
-			res.render('user_form', {
-				title: 'Update Profile',
-				user: user,
-				errors: errorsArray,
-				is_update_form: true
-			});
-			return;
-		} else {
-			debug('Updating user id: ' + req.user._id.toString());
-			// Data from form is valid. Update the record.
-			User
-				.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
-					if (err) return next(err);
-					// Successful - redirect to user detail page.
-					res.redirect('/users/'+theuser._id);
-				});
-		}
+		// Assign filtered array back to original array.
+		errorsArray = filteredErrorsArray;
 	}
-];
+
+	if (errorsArray.length > 0) {
+		// There are errors. Render the form again with sanitized values/error messages.
+		res.render('user_form', {
+			title: 'Update Profile',
+			user: user,
+			errors: errorsArray,
+			is_update_form: true
+		});
+	} else {
+		debug('Updating user id: ' + req.user._id.toString());
+		// Data from form is valid. Update the record.
+		User
+			.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
+				if (err) return next(err);
+				// Successful - redirect to user detail page.
+				res.redirect('/users/'+theuser._id);
+			});
+	}
+};
 
 // Display reset password form on GET.
 exports.reset_get = [
