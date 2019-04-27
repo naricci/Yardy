@@ -21,19 +21,26 @@ exports.index = (req, res, next) => {
 
 exports.search = (req, res, next) => {
 	let params = req.query.search;
-	let paramsLike = '/'+req.query.search+'/';
+	// let paramsLike = '/'+req.query.search+'/';
 	let sort = req.query.sort;
 	let sortType = [];
-	if (sort === 'date')
-		sortType = ['date', 'ascending'];
-	else if (sort === 'city')
-		sortType = ['city', 'ascending'];
-	else if (sort === 'state')
-		sortType = ['state', 'ascending'];
-	else if (sort === 'zipcode')
-		sortType = ['zipcode', 'ascending'];
-	else
-		sortType = [];
+	switch (sort) {
+		case 'date':
+			sortType = ['date', 'ascending'];
+			break;
+		case 'city':
+			sortType = ['city', 'ascending'];
+			break;
+		case 'state':
+			sortType = ['state', 'ascending'];
+			break;
+		case 'zipcode':
+			sortType = ['zipcode', 'ascending'];
+			break;
+		default:
+			sortType = [];
+			break;
+	}
 
 	if (params !== null && params !== '' &&
 			params !== undefined && req.method === 'GET') {
