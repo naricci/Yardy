@@ -11,7 +11,8 @@ require('dotenv').config();
 // Mongoose Configuration
 require('./config/db');
 // For Heroku
-const PORT = process.env.PORT || 5000;
+const cool = require('cool-ascii-faces');
+const PORT2 = process.env.PORT2;
 // Routes
 const index = require('./routes/index');
 const users = require('./routes/users');
@@ -41,8 +42,9 @@ const sess = {
 const app = express();
 
 // Heroku Listening on Port ...
-app.listen(PORT, () => {
-	return debug(`Heroku listening on ${ PORT }`);
+app.get('/cool', (req, res) => { return res.send(cool()); });
+app.listen(PORT2, () => {
+	return debug(`Heroku listening on ${ PORT2 }`);
 });
 
 // Configure the local strategy for use by Passport.
