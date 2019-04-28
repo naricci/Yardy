@@ -1,18 +1,17 @@
 .tabs.is-centered.is-boxed
 	ul
 		li
-			a(href='/users/' + user._id + '/update')
+			a.panel(href='/users/' + user._id + '/update')
 				span.icon.is-small
 					i.fas.fa-pen(aria-hidden='true')
 				span edit profile
-		li.is-active
-			a(href='/users/' + user._id)
+		li
+			a.panel(href='/users/' + user._id)
 				span.icon.is-small
 					i.fas.fa-bookmark(aria-hidden='true')
 				span yardsales
 		li
-			a(href='/users/' + user._id + '/favorites')
+			a.panel(href='/users/' + user._id + '/favorites')
 				span.icon.is-small
 					i.fas.fa-heart(aria-hidden='true')
 				span favorites
-

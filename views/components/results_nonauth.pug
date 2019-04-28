@@ -1,0 +1,17 @@
+.box
+	article.media
+		figure.media-left
+			figure.image.is-128x128
+				if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
+					img(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
+					yardsale.imagename alt='yard sale')
+				else
+					img(src='/img/yardsale_poster.jpg' alt='yard sale')
+		.media-content
+			.content
+				p Locaion:&nbsp;&nbsp;
+					strong #{yardsale.city}, #{yardsale.state}&nbsp;
+				p Date:&nbsp;&nbsp;
+					strong #{yardsale.date.toDateString()}&nbsp;
+				p #{yardsale.description}
+		.media-right

@@ -3,8 +3,7 @@ extends layout
 block content
 	section.section
 		.container
-			h1.subtitle.has-text-centered
-				strong #{user.username} | #{title}
+			include components/title_user
 			include components/panel
 			.columns
 				.column.is-one-quarter
@@ -12,38 +11,45 @@ block content
 				.column.is-three-quarters
 					h1
 						strong Your Yard Sales
-					br
 					if yardsales
 						each yardsale in yardsales
-							br
-							article.media
-								figure.media-left
-									figure.image.is-128x128
-										a(href='/yardsales/'+yardsale._id)
-											if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
-												img(src='https://s3.amazonaws.com/yardy-pics/' + user.username + '/' +
-												yardsale.imagename alt='preview')
+							.box
+								article.media
+									figure.media-left
+										figure.image.is-128x128
+											a(href='/yardsales/'+yardsale._id)
+												if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
+													img(src='https://s3.amazonaws.com/yardy-pics/' + user.username + '/' +
+													yardsale.imagename alt='preview')
+												else
+													img(src='/img/yardsale_poster.jpg' alt='preview')
+									.media-content
+										.content
+											p
+												strong #{yardsale.full_address}
+											p
+												strong Date: #{yardsale.date.toDateString()}
+											if parseInt(yardsale.starttime) < 12
+												p #[strong Start Time:&nbsp;] #{parseInt(yardsale.starttime)} AM
 											else
-												img(src='/images/yardsale_poster.jpg' alt='preview')
-								.media-content
-									.content
-										p
-											strong #{yardsale.city}, #{yardsale.state}&nbsp;
-											small #{yardsale.date.toDateString()}&nbsp;&nbsp;
-											small #{yardsale.starttime}
-											br
-										p Posted by #{user.username}
-										p #{yardsale.description}
-									nav.level.is-mobile
-										.level-left
-											a.level-item(href='/yardsales/' + yardsale._id) view details
-								.media-right
-									.buttons
-										a(href='/yardsales/'+yardsale._id+'/update') edit
-										.divider
-										a.delete(href='/yardsales/'+yardsale._id+'/delete')
-							hr
-		if errors
-			ul
-				for error in errors
-					li.has-text-danger!= error.msg
+												if parseInt(yardsale.starttime) - 12 === 0
+													p #[strong Start Time:&nbsp;] #{parseInt(yardsale.starttime)} PM
+												else
+													p #[strong Start Time:&nbsp;] #{parseInt(yardsale.starttime) - 12} PM
+											if parseInt(yardsale.endtime) < 12
+												p #[strong End Time:&nbsp;] #{parseInt(yardsale.endtime) - 12} AM
+											else
+												if parseInt(yardsale.endtime) - 12 === 0
+													p #[strong End Time:&nbsp;] #{parseInt(yardsale.endtime)} PM
+												else
+													p #[strong End Time:&nbsp;] #{parseInt(yardsale.endtime) - 12} PM
+											p #{yardsale.description}
+										nav.level.is-mobile
+											.level-left
+												a.level-item(href='/yardsales/' + yardsale._id) view details
+									.media-right
+										.buttons
+											a(href='/yardsales/'+yardsale._id+'/update') edit
+											.divider
+											a.delete(href='/yardsales/'+yardsale._id+'/delete')
+		include components/errors

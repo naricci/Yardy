@@ -1,0 +1,6 @@
+#map
+	script(type='text/javascript' src='/js/index_map.js')
+	//script(type='text/javascript' src='/js/reverse_geocoder.js')
+	script(async defer src='https://maps.googleapis.com/maps/api/js?key='+process.env.MAPS_API_KEY+'&callback=initMap')
+	script(type='text/javascript' src='/js/get_location.js')
+	br

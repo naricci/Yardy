@@ -29,8 +29,4 @@ router.get('/:id/delete', yardsaleController.yardsale_delete_get);
 // POST request to delete Yardsale.
 router.post('/:id/delete', yardsaleController.yardsale_delete_post);
 
-/*try to display some yahdsales*/
-router.get('/yardsales', yardsaleController.all_yardsales);
-router.get('/yardsale_by_date', yardsaleController.all_yardsales_sorted);
-
 module.exports = router;

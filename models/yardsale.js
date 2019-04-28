@@ -11,6 +11,7 @@ const YardsaleSchema = new Schema({
 	},
 	address: {
 		type: String,
+		text: true,
 		required: false,
 		maxlength: 250
 	},
@@ -21,17 +22,20 @@ const YardsaleSchema = new Schema({
 	},
 	city: {
 		type: String,
+		text: true,
 		required: true,
 		maxlength: 25
 	},
 	state: {
 		type: String,
+		text: true,
 		required: [true, 'State is required'],
 		index: true,
 		maxlength: 2
 	},
 	zipcode: {
 		type: String,
+		text: true,
 		required: [true, 'Zip Code is required'],
 		minlength: 5,
 		maxlength: 5
@@ -67,10 +71,13 @@ const YardsaleSchema = new Schema({
 	}
 });
 
+// Create Index
+YardsaleSchema.index({ 'address':'text', 'city':'text', 'state': 'text', 'zipcode': 'text' });
+
 // Virtual for this yardsale instance URL.
 YardsaleSchema
 	.virtual('url').get(function() {
-		return '/catalog/yardsale/' + this._id;
+		return '/yardsale/' + this._id;
 	});
 
 // Full address

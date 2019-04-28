@@ -3,14 +3,13 @@ extends layout
 block content
 	section.section
 		.container
-			h1.subtitle.has-text-centered
-				strong #{user.username} | #{title}
+			include components/title_user
 			include components/panel
 			.columns
 				.column.is-one-quarter
 					include components/sidebar
-
 				.column.is-three-quarters
+					include components/errors
 					form(method='post' enctype='multipart/form-data')
 						.field
 							label.label Add Image
@@ -23,17 +22,11 @@ block content
 												i.fas.fa-upload
 											span.file-label Upload image&mldr;
 										span.file-name(id='filename') no file selected
-										br
+						.field
+							img#imagePreview(width=128 height=128)
 						.field
 							.control
-								br
 								button.button.is-link(type='submit') Upload
-								br
-						if errors
-							ul
-								for error in errors
-									li!= error.msg
-
 	script(src='/js/select_image_name.js')
 
 

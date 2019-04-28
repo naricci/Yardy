@@ -1,9 +1,10 @@
 const async = require('async');
-const AWS = require('aws-sdk');
 const debug = require('debug')('yardy:user.controller');
 const { body, check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 const passport = require('passport');
+const S3 = require('../config/s3_config');
+const helpers = require('../util/helpers');
 // Models
 const User = require('../models/user');
 const Yardsale = require('../models/yardsale');
@@ -18,7 +19,7 @@ exports.user_profile = (req, res, next) => {
 		},
 		yardsales: (callback) => {
 			Yardsale
-				.find({ 'user': req.params.id }, 'date starttime address city state description imagename')
+				.find({ 'user': req.params.id }, 'date starttime endtime address city state zipcode description imagename')
 				.sort([['date', 'ascending']])
 				.exec(callback);
 		},
@@ -31,7 +32,7 @@ exports.user_profile = (req, res, next) => {
 		}
 
 		res.render('user_profile', {
-			title: 'User Profile',
+			title: 'Your Yard Sales',
 			user: results.user,
 			yardsales: results.yardsales
 		});
@@ -40,9 +41,9 @@ exports.user_profile = (req, res, next) => {
 
 // Display login form on GET.
 exports.login_get = [
-	isAlreadyLoggedIn,
+	helpers.isAlreadyLoggedIn,
 	(req, res, next) => {
-		let messages = extractFlashMessages(req);
+		let messages = helpers.extractFlashMessages(req);
 		res.render('user_login', {
 			title: 'Login',
 			errors: messages.length > 0 ? messages : null
@@ -52,7 +53,7 @@ exports.login_get = [
 
 // Display warning page on GET.
 exports.warning = (req, res, next) => {
-	let messages = extractFlashMessages(req);
+	let messages = helpers.extractFlashMessages(req);
 	res.render('user_warning', {
 		title: 'Sorry!',
 		errors: messages.length > 0 ? messages : null
@@ -76,7 +77,7 @@ exports.logout_get = (req, res, next) => {
 
 // Display register form on GET.
 exports.register_get = [
-	isAlreadyLoggedIn,
+	helpers.isAlreadyLoggedIn,
 	// Continue processing.
 	(req, res, next) => {
 		// 'user_form'
@@ -88,24 +89,7 @@ exports.register_get = [
 
 // Handle register on POST.
 exports.register_post = [
-	// Validate form fields.
-	body('username', 'Username must be between 4-32 characters long.')
-		.isLength({ min: 4, max: 32 })
-		.trim(),
-	body('email', 'Please enter a valid email address.')
-		.isEmail()
-		.trim(),
-	body('password', 'Password must be between 4-32 characters long.')
-		.isLength({ min: 4, max: 32 })
-		.trim(),
-	body('cpassword', 'Password must be between 4-32 characters long.')
-		.isLength({ min: 4, max: 32 })
-		.trim(),
 
-	// Sanitize fields with wildcard operator.
-	sanitizeBody('*')
-		.trim()
-		.escape(),
 
 	// Process request after validation and sanitization.
 	(req, res, next) => {
@@ -200,99 +184,76 @@ exports.update_get = (req, res, next) => {
 };
 
 // Handle update on POST.
-exports.update_post = [
-	// Validate fields.
-	body('email', 'Please enter a valid email address.')
-		.isEmail()
-		.trim(),
-	body('password', 'Password must be between 4-32 characters long.')
-		.isLength({ min: 4, max: 32 })
-		.trim(),
-	body('cpassword', 'Password must be between 4-32 characters long.')
-		.isLength({ min: 4, max: 32 })
-		.trim(),
-	body('zipcode', 'Zip Code must be 5 characters long.')
-		.isLength({ min: 5, max: 5 })
-		.trim(),
+exports.update_post = (req, res, next) => {
+	// Extract the validation errors from a request.
+	let errors = validationResult(req);
+	// Get a handle on errors.array() array.
+	let errorsArray = errors.array();
 
-	// Sanitize fields with wildcard operator.
-	sanitizeBody('*')
-		.trim()
-		.escape(),
+	// Create a user object with escaped and trimmed data and the old _id!
+	let user = new User({
+		username: req.body.username,
+		firstName: req.body.firstname,
+		lastName: req.body.lastname,
+		fullname: req.body.fullname,
+		email: req.body.email,
+		phone: req.body.phone,
+		address: req.body.address,
+		address2: req.body.address2,
+		city: req.body.city,
+		state: req.body.state,
+		zipcode: req.body.zipcode,
+		_id: req.params.id
+	});
 
-	// Process request after validation and sanitization.
-	(req, res, next) => {
-		// Extract the validation errors from a request.
-		let errors = validationResult(req);
-		// Get a handle on errors.array() array.
-		let errorsArray = errors.array();
+	// Update password only if the user filled both password fields
+	if (req.body.password !== '' && req.body.cpassword !== '') {
+		// -- The user wants to change password. -- //
 
-		// Create a user object with escaped and trimmed data and the old _id!
-		let user = new User({
-			username: req.body.username,
-			firstName: req.body.firstname,
-			lastName: req.body.lastname,
-			fullname: req.body.fullname,
-			email: req.body.email,
-			phone: req.body.phone,
-			address: req.body.address,
-			address2: req.body.address2,
-			city: req.body.city,
-			state: req.body.state,
-			zipcode: req.body.zipcode,
-			_id: req.params.id
+		// Check if passwords match or not.
+		if (!user.passwordsMatch(req.body.password, req.body.cpassword)) {
+			// Passwords do not match. Create and push an error message.
+			errorsArray.push({ msg: 'Passwords do not match.' });
+		} else {
+			// Passwords match. Set password.
+			user.setPassword(req.body.password);
+		}
+	} else {
+		// -- The user does not want to change password. -- //
+
+		// Remove warnings that may be coming from the body(..) validation step above.
+		let filteredErrorsArray = [];
+		errorsArray.forEach(errorObj => {
+			if (!(errorObj.param === 'password' || errorObj.param === 'cpassword'))
+				filteredErrorsArray.push(errorObj);
 		});
-
-		// Update password only if the user filled both password fields
-		if (req.body.password !== '' && req.body.cpassword !== '') {
-			// -- The user wants to change password. -- //
-
-			// Check if passwords match or not.
-			if (!user.passwordsMatch(req.body.password, req.body.cpassword)) {
-				// Passwords do not match. Create and push an error message.
-				errorsArray.push({ msg: 'Passwords do not match.' });
-			} else {
-				// Passwords match. Set password.
-				user.setPassword(req.body.password);
-			}
-		} else {
-			// -- The user does not want to change password. -- //
-
-			// Remove warnings that may be coming from the body(..) validation step above.
-			let filteredErrorsArray = [];
-			errorsArray.forEach(errorObj => {
-				if (!(errorObj.param === 'password' || errorObj.param === 'cpassword'))
-					filteredErrorsArray.push(errorObj);
-			});
-			// Assign filtered array back to original array.
-			errorsArray = filteredErrorsArray;
-		}
-
-		if (errorsArray.length > 0) {
-			// There are errors. Render the form again with sanitized values/error messages.
-			res.render('user_form', {
-				title: 'Update Profile',
-				user: user,
-				errors: errorsArray,
-				is_update_form: true
-			});
-			return;
-		} else {
-			debug('Updating user id: ' + req.user._id.toString());
-			// Data from form is valid. Update the record.
-			User
-				.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
-					if (err) return next(err);
-					// Successful - redirect to user detail page.
-					res.redirect('/users/'+theuser._id);
-				});
-		}
+		// Assign filtered array back to original array.
+		errorsArray = filteredErrorsArray;
 	}
-];
+
+	if (errorsArray.length > 0) {
+		// There are errors. Render the form again with sanitized values/error messages.
+		res.render('user_form', {
+			title: 'Update Profile',
+			user: user,
+			errors: errorsArray,
+			is_update_form: true
+		});
+	} else {
+		debug('Updating user id: ' + req.user._id.toString());
+		// Data from form is valid. Update the record.
+		User
+			.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
+				if (err) return next(err);
+				// Successful - redirect to user detail page.
+				res.redirect('/users/'+theuser._id);
+			});
+	}
+};
 
 // Display reset password form on GET.
 exports.reset_get = [
-	isAlreadyLoggedIn,
+	helpers.isAlreadyLoggedIn,
 	(req, res, next) => {
 		res.render('user_reset', {
 			title: 'Reset Password',
@@ -476,7 +437,6 @@ exports.profilepic_get = (req, res, next) => {
 			res.render('user_profilepic', {
 				title: 'Update Profile Pic',
 				user: found_user
-				// is_update_form: true
 			});
 		});
 };
@@ -497,26 +457,16 @@ exports.profilepic_post = [
 		// Get a handle on errors.array() array.
 		var errorsArray = errors.array();
 
-		var file = req.file;
-		var user = new User({
-			profilepic: file.originalname,
+		const ysFile = req.file;
+		const key = (req.user.username + '/' + ysFile.originalname);
+		S3.params.Body = ysFile.buffer;
+		S3.params.ContentType = ysFile.mimetype;
+		S3.params.Key = key;
+
+		let user = new User({
+			profilepic: ysFile.originalname,
 			_id: req.params.id
 		});
-		const key = (req.user.username + '/' + file.originalname);
-		const s3 = new AWS.S3({
-			apiVersion: '2006-03-01',
-			accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-			secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-			region: process.env.S3_BUCKET_REGION
-		});
-		const params = {
-			ACL: 'public-read',
-			Body: file.buffer,
-			Bucket: process.env.S3_BUCKET,
-			ContentType: file.mimetype,
-			Key: key,
-			ServerSideEncryption: 'AES256'
-		};
 
 		if (errorsArray.length > 0) {
 			// There are errors. Render the form again with sanitized values/error messages.
@@ -529,16 +479,16 @@ exports.profilepic_post = [
 			User
 				.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
 					if (err) return next(err);
-					if (user === null) {
+					if (theuser === null) {
 						let err = new Error('User not found');
 						err.status = 404;
 						return next(err);
 					}
 					// S3 Image upload
-					s3.putObject(params, (err, data) => {
+					S3.s3Client.putObject(S3.params, (err, data) => {
 						if (err) debug('Error: ', err);
 						else {
-							debug(`Posting ${params.Key} to ${process.env.S3_BUCKET} in S3`);
+							debug(`Posting ${S3.params.Key} to ${process.env.S3_BUCKET} in S3`);
 							debug(data);
 						}
 					});
@@ -564,7 +514,6 @@ exports.favorites_get = (req, res, next) => {
 			res.render('user_favorites', {
 				title: 'Manage Favorites',
 				user: found_user,
-				is_update_form: true
 			});
 		});
 };
@@ -573,43 +522,3 @@ exports.favorites_get = (req, res, next) => {
 exports.favorites_post = [
 	// TODO Finish writing function to POST/PUT favorites
 ];
-
-// -- Helper functions -- //
-// Extract flash messages from req.flash and return an array of messages.
-function extractFlashMessages(req) {
-	let messages = [];
-	// Check if flash messages was sent. If so, populate them.
-	let errorFlash = req.flash('error');
-	let successFlash = req.flash('success');
-
-	// Look for error flash.
-	if (errorFlash && errorFlash.length) messages.push({ msg: errorFlash[0] });
-
-	// Look for success flash.
-	if (successFlash && successFlash.length)
-		messages.push({ msg: successFlash[0] });
-
-	return messages;
-}
-
-/*** Helper Functions ***/
-// Function to prevent user who already logged in from
-// accessing login and register routes.
-function isAlreadyLoggedIn(req, res, next) {
-	if (req.user && req.isAuthenticated())
-		res.redirect('/');
-	else next();
-}
-
-// Function sends a JSON response
-function sendJSONresponse(res, status, content) {
-	res.status(status);
-	res.json(content);
-}
-
-// Function that returns the file extension of a filename as a string.
-function getFileExtension(filename) {
-	// return filename.split('.').pop();
-	let ext = /^.+\.([^.]+)$/.exec(filename);
-	return ext === null ? '' : ext[1];
-}
