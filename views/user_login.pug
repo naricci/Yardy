@@ -8,11 +8,11 @@ block content
 			.columns
 				.column.is-one-third
 				.column.is-one-third
-					form(method='post' action='')
+					form(method='post' action='' autocomplete='on')
 						.field
 							label.label Username
 							.control.has-icons-left
-								input.input#username(type='text' placeholder='username' name='username' required value=(undefined===user ? '' : user.username))
+								input.input#username(type='text' placeholder='username' name='username' value=(undefined===user ? '' : user.username) autofocus required)
 								span.icon.is-small.is-left
 									i.fas.fa-user
 						.field

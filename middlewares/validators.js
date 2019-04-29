@@ -25,11 +25,22 @@ exports.validate = (method) => {
 				body('lastname', 'Last Name must be between 2-25 characters long.').isLength({ min: 2, max: 25 })
 					 .isAlpha().withMessage('Last Name must strictly contain letters.'),
 				body('phone', 'Phone number is not valid.').isMobilePhone('en-US'),
-				// TODO - Finish address, address2, city, & state validation
-				body('zipcode', 'Zip Code must be 5 digits long.').isLength({ min: 5, max: 5 })
-					.isNumeric().withMessage('Please enter a valid 5-digit US zip code.'),
+				body('address', 'Address cannot be more than 250 characters.').isLength({ min: 0, max: 250 }),
+				// .isAlphanumeric('en-US').withMessage('Address not valid.  Please enter a proper alpha-numeric address.'),
+				body('address2', 'Address 2 cannot be more than 250 characters.').isLength({ min: 0, max: 250 }),
+				body('city', 'City cannot be more than 25 characters.').isLength({ min: 0, max: 25 }),
+				// body('state', 'Please select a state.').isEmpty(),
+				body('zipcode', 'Zip Code is not valid.').isPostalCode('US'),
 				// Sanitize fields with wildcard operator.
 				sanitizeBody('*').trim().escape()
+			];
+		}
+		case 'profilepic_post': {
+			return [
+				// Validate form fields.
+				check('profilepic', 'Image name cannot be longer than 100 characters long.').isLength({ max: 50 }),
+				// Sanitize fields.
+				sanitizeBody('profilepic').toString(),
 			];
 		}
 	}

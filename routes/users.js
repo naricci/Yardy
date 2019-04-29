@@ -51,8 +51,7 @@ router.post('/:id/update', validators.validate('update_post'), userController.up
 router.get('/:id/profilepic', userController.profilepic_get);
 
 // POST request for User updating profile pic
-// router.post('/:id/profilepic', userController.profilepic_post);
-router.post('/:id/profilepic', upload.single('profilepic'), userController.profilepic_post);
+router.post('/:id/profilepic', upload.single('profilepic'), validators.validate('profilepic_post'),userController.profilepic_post);
 
 // GET request for User favorites
 router.get('/:id/favorites', userController.favorites_get);

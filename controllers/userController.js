@@ -442,62 +442,52 @@ exports.profilepic_get = (req, res, next) => {
 };
 
 // Handle profilepic page on POST to DB and S3
-exports.profilepic_post = [
-	// Validate form fields.
-	check('profilepic')
-		.isLength({max: 100})
-		.withMessage('Image name cannot be longer than 100 characters long.')
-		.trim(),
-	// Sanitize fields.
-	sanitizeBody('profilepic').toString(),
+exports.profilepic_post = (req, res, next) => {
+	// Extract the validation errors from a request.
+	var errors = validationResult(req);
+	// Get a handle on errors.array() array.
+	var errorsArray = errors.array();
 
-	(req, res, next) => {
-		// Extract the validation errors from a request.
-		var errors = validationResult(req);
-		// Get a handle on errors.array() array.
-		var errorsArray = errors.array();
+	const ysFile = req.file;
+	const key = (req.user.username + '/' + ysFile.originalname);
+	S3.params.Body = ysFile.buffer;
+	S3.params.ContentType = ysFile.mimetype;
+	S3.params.Key = key;
 
-		const ysFile = req.file;
-		const key = (req.user.username + '/' + ysFile.originalname);
-		S3.params.Body = ysFile.buffer;
-		S3.params.ContentType = ysFile.mimetype;
-		S3.params.Key = key;
+	let user = new User({
+		profilepic: ysFile.originalname,
+		_id: req.params.id
+	});
 
-		let user = new User({
-			profilepic: ysFile.originalname,
-			_id: req.params.id
+	if (errorsArray.length > 0) {
+		// There are errors. Render the form again with sanitized values/error messages.
+		res.render('user_form', {
+			title: 'Update Profile',
+			user: user,
+			errors: errorsArray
 		});
-
-		if (errorsArray.length > 0) {
-			// There are errors. Render the form again with sanitized values/error messages.
-			res.render('user_form', {
-				title: 'Update Profile',
-				user: user,
-				errors: errorsArray
-			});
-		} else {
-			User
-				.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
-					if (err) return next(err);
-					if (theuser === null) {
-						let err = new Error('User not found');
-						err.status = 404;
-						return next(err);
+	} else {
+		User
+			.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
+				if (err) return next(err);
+				if (theuser === null) {
+					let err = new Error('User not found');
+					err.status = 404;
+					return next(err);
+				}
+				// S3 Image upload
+				S3.s3Client.putObject(S3.params, (err, data) => {
+					if (err) debug('Error: ', err);
+					else {
+						debug(`Posting ${S3.params.Key} to ${process.env.S3_BUCKET} in S3`);
+						debug(data);
 					}
-					// S3 Image upload
-					S3.s3Client.putObject(S3.params, (err, data) => {
-						if (err) debug('Error: ', err);
-						else {
-							debug(`Posting ${S3.params.Key} to ${process.env.S3_BUCKET} in S3`);
-							debug(data);
-						}
-					});
-					// Successful - redirect to user detail page.
-					res.redirect('/users/' + theuser._id);
 				});
-		}
+				// Successful - redirect to user detail page.
+				res.redirect('/users/' + theuser._id);
+			});
 	}
-];
+};
 
 // Display favorites page on GET
 exports.favorites_get = (req, res, next) => {

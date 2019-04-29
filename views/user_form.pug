@@ -17,76 +17,95 @@ block content
 				.column.is-two-quarters
 					include components/errors
 					br
-					form(method='post' action='')
+					form(method='post' action='' autocomplete='on')
 						if is_update_form
 							.field
 								label.label Username
-								.control
-									input.input(id='username' type='text' name='username' placeholder='johndoe' minlength='4' maxlength='25' disabled value=(undefined ===
-									user ? '' : user.username))
+								.control.has-icons-left
+									input.input#username(type='text' name='username' value=(undefined ===
+									user ? '' : user.username) disabled)
+									span.icon.is-small.is-left
+										i.fas.fa-user
 						else
 							.field
 								label.label Username
-								.control
-									input.input(id='username' type='text' name='username' placeholder='johndoe' minlength='4' maxlength='25' required value=(undefined ===
-									user ? '' : user.username))
+								.control.has-icons-left
+									input.input#username(type='text' name='username' placeholder='johndoe' maxlength='25' value=(undefined ===
+									user ? '' : user.username) required autofocus)
+									span.icon.is-small.is-left
+										i.fas.fa-user
 						.field
 							label.label Email
-							.control
-								input.input(id='email' type='email' name='email' placeholder='johndoe@gmail.edu' maxlength='25' required value=(undefined ===
-								user ? '' : user.email))
+							.control.has-icons-left
+								input.input#email(type='email' name='email' placeholder='johndoe@gmail.edu' maxlength='25' required value=(undefined ===
+								user ? '' : user.email) autofocus)
+								span.icon.is-small.is-left
+									i.fas.fa-envelope
 						if is_update_form
 							hr
 							p Use the fields below if you want to change your password. Otherwise, leave blank.
 							hr
 						.field
 							label.label #{is_update_form ? 'New Password' : 'Password'}
-							.control
-								input.input(id='password' type='password' name='password' )
-						.field
+							.control.has-icons-left
+								input.input#password(type='password' name='password')
+								span.icon.is-small.is-left
+									i.fas.fa-lock
+						.field.has-icons-left
 							label.label #{is_update_form ? 'Confirm New Password' : 'Confirm Password'}
-							.control
-								input.input(id='cpassword' type='password' name='cpassword' )
-
+							.control.has-icons-left
+								input.input#cpassword(type='password' name='cpassword')
+								span.icon.is-small.is-left
+									i.fas.fa-lock
 						if is_update_form
 							hr
 							p The fields below are all optional.
 							hr
 							.field
 								label.label First Name
-								.control
-									input.input(id='firstname' type='text' name='firstname' placeholder='John' maxlength='25' value=(undefined ===
+								.control.has-icons-left
+									input.input#firstname(type='text' name='firstname' placeholder='John' maxlength='25' value=(undefined ===
 									user ? '' : user.firstName))
+									span.icon.is-small.is-left
+										i.fas.fa-user
 							.field
 								label.label Last Name
-								.control
-									input.input(id='lastname' type='text' name='lastname' placeholder='Doe' maxlength='25' value=(undefined ===
+								.control.has-icons-left
+									input.input#lastname(type='text' name='lastname' placeholder='Doe' maxlength='25' value=(undefined ===
 									user ? '' : user.lastName))
+									span.icon.is-small.is-left
+										i.fas.fa-user
 							.field
 								label.label Phone
-								.control
-									input.input(id='phone' type='tel' name='phone' placeholder='4028287902' maxlength='10' value=(undefined ===
+								.control.has-icons-left
+									input.input#lastname(type='tel' name='phone' placeholder='4028287902' maxlength='10' value=(undefined ===
 									user ? '' : user.phone))
+									span.icon.is-small.is-left
+										i.fas.fa-map-marker
 							.field
 								label.label Address
-								.control
-									input.input(id='address' type='text' name='address' maxlength='250' placeholder='123 Yardy Street' value=(undefined ===
+								.control.has-icons-left
+									input.input#address(type='text' name='address' maxlength='250' placeholder='123 Yardy Street' value=(undefined ===
 									user ? '' : user.address))
+									span.icon.is-small.is-left
+										i.fas.fa-map-marker
 							.field
 								label.label Address 2
-								.control
-									input.input(id='address2' type='text' name='address2' maxlength='250' value=(undefined === user ?
-										'' :
-										user.address2))
+								.control.has-icons-left
+									input.input#address2(type='text' name='address2' maxlength='250' value=(undefined === user ?
+										'' : user.address2))
+									span.icon.is-small.is-left
+										i.fas.fa-map-marker
 							.field
 								label.label City
-								.control
-									input.input(id='city' type='text' name='city' placeholder='Providence' value=(undefined === user ?
-										'' :
-										user.city))
+								.control.has-icons-left
+									input.input#city(type='text' name='city' placeholder='Providence' value=(undefined === user ?
+										'' : user.city))
+									span.icon.is-small.is-left
+										i.fas.fa-map-marker
 							.field
 								label.label State
-								.control
+								.control.has-icons-left
 									select.input(name='state')
 										option(value="" selected=(undefined === user || user.state !== '' ?
 											false :
@@ -96,19 +115,21 @@ block content
 										option(value='ME' selected=(undefined === user || user.state !== 'ME' ? false : 'selected')) ME
 										option(value='NH' selected=(undefined === user || user.state !== 'NH' ? false : 'selected')) NH
 										option(value='RI' selected=(undefined === user || user.state !== 'RI' ? false : 'selected')) RI
+									span.icon.is-small.is-left
+										i.fas.fa-map-marker
 							.field
 								label.label Zip Code
-								.control
-									input.input(id='zipcode' type='text' name='zipcode' placeholder='02818' minlength='5' maxlength='5' value=(undefined ===
+								.control.has-icons-left
+									input.input#zipcode(type='text' name='zipcode' placeholder='02818' maxlength='5' value=(undefined ===
 									user ? '' : user.zipcode))
+									span.icon.is-small.is-left
+										i.fas.fa-map-marker
 						if is_update_form && isAuthenticated
 							.field
 								.control
-									button.button.is-link(type='submit')
-										| Update
+									button.button.is-link(type='submit') Update
 						if !is_update_form
 							.field
 								.control
-									button.button.is-link(type='submit')
-										| Register
+									button.button.is-link(type='submit') Register
 				.column.is-one-quarter
