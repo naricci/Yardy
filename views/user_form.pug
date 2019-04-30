@@ -1,6 +1,37 @@
 extends layout
 
 block content
+	script.
+		$('#loginBtn').on('click', () => {
+			$.ajax({
+				url: '/users/register',
+				type: 'POST',
+				cache: false,
+				data: {
+					username: $('#username').val(),
+					email: $('#email').val(),
+					password: $('#password').val(),
+					cpassword: $('#cpassword').val(),
+				},
+				success: function() {
+					$('#error-group').css('display', 'none');
+					alert('Your submission was successful');
+				},
+				error: function(data) {
+					console.log(data);
+					$('#error-group').css('display', 'block');
+					var errors = JSON.parse(data.responseText);
+					var errorsContainer = $('#errors');
+					errorsContainer.innerHTML = '';
+					var errorsList = '';
+
+					for (let i = 0; i < errors.length; i++) {
+						errorsList += '<li>' + errors[i].msg + '</li>';
+					}
+					errorsContainer.html(errorsList);
+				}
+			});
+		});
 	section.section
 		.container
 			if isAuthenticated
@@ -16,14 +47,17 @@ block content
 						include components/sidebar
 				.column.is-two-quarters
 					include components/errors
+					.notification#error-group(role="notification" style="display: none")
+						button.delete
+						ul#errors
 					br
-					form(method='post' action='' autocomplete='on')
+					form(method='POST' action='' autocomplete='on')
 						if is_update_form
 							.field
 								label.label Username
 								.control.has-icons-left
 									input.input#username(type='text' name='username' value=(undefined ===
-									user ? '' : user.username) disabled)
+									user ? '' : user.username) disabled autofocus)
 									span.icon.is-small.is-left
 										i.fas.fa-user
 						else
@@ -38,7 +72,7 @@ block content
 							label.label Email
 							.control.has-icons-left
 								input.input#email(type='email' name='email' placeholder='johndoe@gmail.edu' maxlength='25' required value=(undefined ===
-								user ? '' : user.email) autofocus)
+								user ? '' : user.email))
 								span.icon.is-small.is-left
 									i.fas.fa-envelope
 						if is_update_form
@@ -131,5 +165,6 @@ block content
 						if !is_update_form
 							.field
 								.control
-									button.button.is-link(type='submit') Register
+									//button.button.is-link#loginBtn(type='button') Register
+									button.button.is-link#loginBtn(type='submit') Register
 				.column.is-one-quarter

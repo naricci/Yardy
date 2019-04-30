@@ -90,7 +90,7 @@ exports.register_get = [
 // Handle register on POST.
 exports.register_post = (req, res, next) => {
 	// Extract the validation errors from a request.
-	let errors = validationResult(req);
+	const errors = validationResult(req);
 	// Get a handle on errors.array() array,
 	// so we can push our own error messages into it.
 	let errorsArray = errors.array();
@@ -107,14 +107,15 @@ exports.register_post = (req, res, next) => {
 		errorsArray.push({ msg: 'Passwords do not match.' });
 	}
 
-	if (errorsArray.length > 0) {
+	if (!errors.isEmpty()) {
 		// There are errors. Render the form again with sanitized values/error messages.
-		res.render('user_form', {
-			title: 'Create User',
-			user: user,
-			errors: errorsArray
-		});
-		return;
+		return res.status(422).jsonp(errorsArray);
+		// res.render('user_form', {
+		// 	title: 'Create User',
+		// 	user: user,
+		// 	errors: errorsArray
+		// });
+		// return;
 	} else {
 		// Data from form is valid.
 

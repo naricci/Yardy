@@ -1,4 +1,4 @@
-const { body } = require('express-validator/check');
+const { body, check } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
 exports.validate = (method) => {
@@ -6,10 +6,10 @@ exports.validate = (method) => {
 		case 'register_post': {
 			return [
 				// Validate form fields.
-				body('username', 'Username must be between 4-32 characters long.').isLength({ min: 4, max: 25 }),
-				body('email', 'Please enter a valid email address.').isEmail(),
-				body('password', 'Password must be between 4-25 characters long.').isLength({ min: 4, max: 25 }),
-				body('cpassword', 'Password must be between 4-25 characters long.').isLength({ min: 4, max: 25 }),
+				check('username', 'Username must be between 4-32 characters long.').isLength({ min: 4, max: 25 }),
+				check('email', 'Please enter a valid email address.').isEmail(),
+				check('password', 'Password must be between 4-25 characters long.').isLength({ min: 4, max: 25 }),
+				check('cpassword', 'Password must be between 4-25 characters long.').isLength({ min: 4, max: 25 }),
 				// Sanitize fields with wildcard operator.
 				sanitizeBody('*').trim().escape()
 			];
