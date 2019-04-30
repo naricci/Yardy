@@ -1,7 +1,7 @@
 nav.panel.is-hidden-mobile
 	p.panel-heading #{yardsale.user.username}&nbsp;&nbsp;
 		small
-			a(href='/users/' + yardsale.user._id +'/profilepic') upload picture
+			a(href='/users/' + user._id +'/profilepic') upload picture
 			// TODO - Possibly add a modal here
 	.panel-block
 		if (yardsale.user.profilepic !== undefined && yardsale.user.profilepic !== '' && yardsale.user.profilepic !== null)
@@ -26,22 +26,22 @@ nav.panel.is-hidden-mobile
 		p #[strong Phone:&nbsp;] #{yardsale.user.phone}
 	a.panel-block
 		span.panel-icon
-			i.fas.fa-map-marker(aria-hidden=true)
+			i.fas.fa-map-marker-alt(aria-hidden=true)
 		p #[strong Address:&nbsp;] #{yardsale.user.address}
 	if (yardsale.user.address2 !== '')
 		a.panel-block
 			span.panel-icon
-				i.fas.fa-map-marker(aria-hidden=true)
+				i.fas.fa-map-marker-alt(aria-hidden=true)
 			p #[strong Address 2:&nbsp;] #{user.address2}
 	a.panel-block
 		span.panel-icon
-			i.fas.fa-map-marker(aria-hidden=true)
+			i.fas.fa-city(aria-hidden=true)
 		p #[strong City:&nbsp;] #{yardsale.user.city}
 	a.panel-block
 		span.panel-icon
-			i.fas.fa-map-marker(aria-hidden=true)
+			i.fas.fa-map-marker-alt(aria-hidden=true)
 		p #[strong State:&nbsp;] #{yardsale.user.state}
 	a.panel-block
 		span.panel-icon
-			i.fas.fa-map-marker(aria-hidden=true)
+			i.fas.fa-map-marker-alt(aria-hidden=true)
 		p #[strong Zip Code:&nbsp;] #{yardsale.user.zipcode}

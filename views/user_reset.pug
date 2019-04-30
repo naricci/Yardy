@@ -7,6 +7,7 @@ block content
 			.column.is-one-third
 				h1.subtitle.has-text-centered
 					strong= title
+				include components/errors
 				form(method="post" action=is_first_step ? "/users/reset" : "/users/resetfinal")
 					if is_first_step
 						p Please enter your username and email. If they match a user, you will be redirected to the password reset page.
@@ -14,13 +15,13 @@ block content
 						.field
 							label.label Username
 							.control.has-icons-left.has-icons-right
-								input.input(type="text" placeholder="johndoe" name="username" required=is_first_step value=(undefined === user ? "" : user.username))
+								input.input(type="text" name="username" placeholder="username" required=is_first_step value=(undefined === user ? "" : user.username))
 								span.icon.is-small.is-left
 									i.fas.fa-user
 						.field
 							label.label E-mail:
 							.control.has-icons-left.has-icons-right
-								input.input(type="email" placeholder="johndoe@john.doe" name="email" required=is_first_step value=(undefined === user ? "" : user.email))
+								input.input(type="email" name="email" placeholder="email" required=is_first_step value=(undefined === user ? "" : user.email))
 								span.icon.is-small.is-left
 									i.fas.fa-envelope
 					if is_second_step
@@ -29,18 +30,16 @@ block content
 						.field
 							label.label New Password:
 							.control.has-icons-left.has-icons-right
-								input#password.input(type="password" name="password" required=is_second_step)
+								input#password.input(type="password" name="password" placeholder='password' required=is_second_step)
 								span.icon.is-small.is-left
 									i.fas.fa-lock
 						.field
 							label.label Confirm New Password:
 							.control.has-icons-left.has-icons-right
-								input#password_confirm.input(type="password" name="cpassword" required=is_second_step)
+								input#cpassword.input(type="password" name="cpassword" placeholder='password' required=is_second_step)
 								span.icon.is-small.is-left
 									i.fas.fa-lock
 						input(type="hidden" name="userid" value=user._id)
 					br
 					button.button.is-link(type="submit") #{is_first_step ? "Next" : "Done"}
-				br
-				include components/errors
 			.column.is-one-third

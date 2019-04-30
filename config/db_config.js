@@ -8,7 +8,7 @@ const options = {
 	autoReconnect: true,
 	useFindAndModify: false
 };
-const db = mongoose.connection;
+const db_config = mongoose.connection;
 let gracefulShutdown;
 
 // Set up mongoose connection
@@ -18,20 +18,20 @@ mongoose.connect(mongoDB, options)
 	});
 
 // MongoDB CONNECTION EVENTS
-db.on('connected', () => {
+db_config.on('connected', () => {
 	debug('Mongoose connected to ' + mongoDB);
 });
-db.on('error', (err) => {
+db_config.on('error', (err) => {
 	debug('Mongoose connection error: ' + err);
 	process.exit(0);
 });
-db.on('disconnected', () => {
+db_config.on('disconnected', () => {
 	debug('Mongoose disconnected');
 });
 // CAPTURE APP TERMINATION / RESTART EVENTS
 // To be called when process is restarted or terminated
 gracefulShutdown = (msg, callback) => {
-	db.close(() => {
+	db_config.close(() => {
 		debug('Mongoose disconnected through ' + msg);
 		callback();
 	});

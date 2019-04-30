@@ -7,7 +7,7 @@ exports.validate = (method) => {
 			return [
 				// Validate form fields.
 				check('username', 'Username must be between 4-32 characters long.').isLength({ min: 4, max: 25 }),
-				check('email', 'Please enter a valid email address.').isEmail(),
+				check('email', 'Please enter a valid email address.').isEmail().normalizeEmail(),
 				check('password', 'Password must be between 4-25 characters long.').isLength({ min: 4, max: 25 }),
 				check('cpassword', 'Password must be between 4-25 characters long.').isLength({ min: 4, max: 25 }),
 				// Sanitize fields with wildcard operator.
@@ -17,7 +17,7 @@ exports.validate = (method) => {
 		case 'update_post': {
 			return [
 				// Validate fields.
-				body('email', 'Please enter a valid email address.').isEmail(),
+				body('email', 'Please enter a valid email address.').isEmail().normalizeEmail(),
 				body('password', 'Password must be between 4-25 characters long.').isLength({ min: 4, max: 25 }),
 				body('cpassword', 'Password must be between 4-25 characters long.').isLength({ min: 4, max: 25 }),
 				body('firstname', 'First Name must be between 2-25 characters long.').isLength({ min: 2, max: 25 })
@@ -49,7 +49,7 @@ exports.validate = (method) => {
 				// Take username and email from form, and try to find a matching user.
 				// Validate fields.
 				body('username', 'Username must be between 4-32 characters long.').isLength({ min: 4, max: 32 }),
-				body('email', 'Please enter a valid email address.').isEmail(),
+				body('email', 'Please enter a valid email address.').isEmail().normalizeEmail(),
 				// Sanitize fields with wildcard operator.
 				sanitizeBody('*').trim().escape(),
 			];
@@ -69,7 +69,7 @@ exports.validate = (method) => {
 			return [
 				// Validate fields
 				body('phone', 'Phone number is not valid.').isMobilePhone('en-US').optional(),
-				// check('zipcode').isPostalCode('US').withMessage('Please enter a valid 5-digit zip code'),
+				body('zipcode', 'Please enter a valid 5-digit zip code.').isPostalCode('US'),
 				body('date').optional({ checkFalsy: true }).isISO8601().withMessage('Please enter a valid date')
 					.isAfter().withMessage('Please select a date that hasn\'t occurred yet.'),
 				// // Sanitize fields.
@@ -85,12 +85,13 @@ exports.validate = (method) => {
 				body('phone', 'Phone number is not valid.').isMobilePhone('en-US').optional(),
 				body('zipcode', 'Please enter a valid 5-digit zip code.').isPostalCode('US'),
 				body('date', 'Date is not valid.').optional({ checkFalsy: true }).isISO8601()
-				 	.isAfter().withMessage('Please select a date that hasn\'t occurred yet.').trim(),
+				 	.isAfter().withMessage('Please select a date that hasn\'t occurred yet.'),
 				// Sanitize fields.
 				sanitizeBody('phone').toInt(),
 				sanitizeBody('zipcode').toString(),
 				sanitizeBody('date').toDate(),
 				sanitizeBody('imagename').toString(),
+				sanitizeBody('*').trim().escape(),
 			];
 		}
 	}

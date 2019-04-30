@@ -9,29 +9,29 @@ block content
 				.column.is-one-fifth
 				.column.is-three-fifths
 					include components/errors
-					form(method='post' enctype='multipart/form-data' autocomplete='on')
+					form(method='POST' enctype='multipart/form-data' autocomplete='on')
 						.field
 							label.label Phone Number
 							.control.has-icons-left
-								input.input#phone(type='tel' name='phone' placeholder='e.g. 4018843030' maxlength='10' value=(undefined===yardsale ? '' : yardsale.phone) required autofocus)
+								input.input#phone(type='tel' name='phone' placeholder='4018843030' maxlength='10' value=(undefined===yardsale ? '' : yardsale.phone) required autofocus)
 								span.icon.is-small.is-left
 									i.fas.fa-phone
 						.field
 							label.label Address
 							.control.has-icons-left
-								input.input#address(type='text' name='address' placeholder='e.g. 1600 Pennsylvania Ave' maxlength='250' value=(undefined === yardsale ? '' : yardsale.address))
+								input.input#address(type='text' name='address' placeholder='1600 Pennsylvania Ave' maxlength='250' value=(undefined === yardsale ? '' : yardsale.address))
 								span.icon.is-small.is-left
 									i.fas.fa-map-marker-alt
 						.field
 							label.label Address 2
 							.control.has-icons-left
-								input.input#address2(type='text' name='address2' maxlength='250' placeholder=(undefined === yardsale ? '' : yardsale.address2))
+								input.input#address2(type='text' name='address2' placeholder='Apartment 12B' maxlength='250' value=(undefined === yardsale ? '' : yardsale.address2))
 								span.icon.is-small.is-left
 									i.fas.fa-map-marker-alt
 						.field
 							label.label City *
 							.control.has-icons-left
-								input.input#city(type='text' name='city' placeholder='e.g. Washington' maxlength='25' value=(undefined === yardsale ? '' : yardsale.city) required)
+								input.input#city(type='text' name='city' placeholder='Washington' maxlength='25' value=(undefined === yardsale ? '' : yardsale.city) required)
 								span.icon.is-small.is-left
 									i.fas.fa-city
 						.field
@@ -50,25 +50,25 @@ block content
 						.field
 							label.label Zip Code *
 							.control.has-icons-left
-								input.input#zipcode(type='text' name='zipcode' placeholder='e.g. 20500' maxlength='5' value=(undefined === yardsale ? '' : yardsale.zipcode) required)
+								input.input#zipcode(type='text' name='zipcode' placeholder='20500' maxlength='5' value=(undefined === yardsale ? '' : yardsale.zipcode) required)
 								span.icon.is-small.is-left
 									i.fas.fa-map-marker-alt
 						.field
 							label.label Date *
 							.control.has-icons-left
-								input.input#date(type='date' name='date' placeholder='e.g. July 4, 2019' value=(undefined===yardsale ? '' : yardsale.date.toDateString()) required)
+								input.input#date(type='date' name='date' placeholder='July 4, 2019' value=(undefined===yardsale ? '' : yardsale.date.toDateString()) required)
 								span.icon.is-small.is-left
 									i.fas.fa-calendar
 						.field
-							label.label Start Time
+							label.label Start Time *
 							.control.has-icons-left
-								input.input#starttime(type='time' name='starttime' placeholder='e.g. 10:00 AM' value=(undefined===yardsale ? '' : yardsale.starttime) required)
+								input.input#starttime(type='time' name='starttime' placeholder='10:00 AM' value=(undefined===yardsale ? '' : yardsale.starttime) required)
 								span.icon.is-small.is-left
 									i.fas.fa-clock
 						.field
-							label.label End Time
+							label.label End Time *
 							.control.has-icons-left
-								input.input#endtime(type='time' name='endtime' placeholder='e.g. 4:00 PM' value=(undefined===yardsale ? '' : yardsale.endtime) required)
+								input.input#endtime(type='time' name='endtime' placeholder='4:00 PM' value=(undefined===yardsale ? '' : yardsale.endtime) required)
 								span.icon.is-small.is-left
 									i.fas.fa-clock
 						.field
@@ -93,5 +93,3 @@ block content
 							.control
 								button.button.is-link(type='submit') Post your yard sale!
 				.column.is-one-fifth
-	script(src='/js/select_image_name.js')
-

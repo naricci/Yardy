@@ -1,7 +1,6 @@
 const async = require('async');
 const debug = require('debug')('yardy:user.controller');
-const { body, check, validationResult } = require('express-validator/check');
-const { sanitizeBody } = require('express-validator/filter');
+const { validationResult } = require('express-validator/check');
 const passport = require('passport');
 const S3 = require('../config/s3_config');
 const helpers = require('../util/helpers');
@@ -80,7 +79,6 @@ exports.register_get = [
 	helpers.isAlreadyLoggedIn,
 	// Continue processing.
 	(req, res, next) => {
-		// 'user_form'
 		res.render('user_form', {
 			title: 'Create User'
 		});
@@ -109,16 +107,14 @@ exports.register_post = (req, res, next) => {
 
 	if (!errors.isEmpty()) {
 		// There are errors. Render the form again with sanitized values/error messages.
-		return res.status(422).jsonp(errorsArray);
-		// res.render('user_form', {
-		// 	title: 'Create User',
-		// 	user: user,
-		// 	errors: errorsArray
-		// });
-		// return;
+		// return res.status(422).jsonp(errorsArray);
+		res.render('user_form', {
+			title: 'Create User',
+			user: user,
+			errors: errorsArray
+		});
+		return;
 	} else {
-		// Data from form is valid.
-
 		// Passwords match. Set password.
 		user.setPassword(req.body.password);
 

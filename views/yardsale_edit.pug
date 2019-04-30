@@ -14,28 +14,28 @@ block content
 						.field
 							label.label Phone Number *
 							.control.has-icons-left
-								input.input#phone(type='tel' name='phone' placeholder='e.g. 4018843030' maxlength='10' value=(undefined ===
+								input.input#phone(type='tel' name='phone' placeholder='Phone Number' maxlength='10' value=(undefined ===
 								yardsale ? '' : yardsale.phone) required)
 								span.icon.is-small.is-left
 									i.fas.fa-phone
 						.field
 							label.label Address
 							.control.has-icons-left
-								input.input#address(type='text' name='address' placeholder='e.g. 1600 Pennsylvania Ave' maxlength='250' value=(undefined ===
+								input.input#address(type='text' name='address' placeholder='Address' maxlength='250' value=(undefined ===
 								yardsale ? '' : yardsale.address))
 								span.icon.is-small.is-left
 									i.fas.fa-map-marker-alt
 						.field
 							label.label Address 2
 							.control.has-icons-left
-								input.input#address2(type='text' name='address2' maxlength='250' placeholder=(undefined ===
+								input.input#address2(type='text' name='address2' placeholder='Address continued' maxlength='250' value=(undefined ===
 								yardsale ? '' : yardsale.address2))
 								span.icon.is-small.is-left
 									i.fas.fa-map-marker-alt
 						.field
 							label.label City *
 							.control.has-icons-left
-								input.input#city(type='text' name='city' placeholder='e.g. Washington' maxlength='25' value=(undefined ===
+								input.input#city(type='text' name='city' placeholder='City' maxlength='25' value=(undefined ===
 								yardsale ? '' : yardsale.city) required)
 								span.icon.is-small.is-left
 									i.fas.fa-city
@@ -55,28 +55,28 @@ block content
 						.field
 							label.label Zip Code *
 							.control.has-icons-left
-								input.input#zipcode(type='text' name='zipcode' placeholder='e.g. 20500' maxlength='5' value=(undefined ===
+								input.input#zipcode(type='text' name='zipcode' placeholder='Zip Code' maxlength='5' value=(undefined ===
 								yardsale ? '' : yardsale.zipcode) required)
 								span.icon.is-small.is-left
 									i.fas.fa-map-marker-alt
 						.field
 							label.label Date *
 							.control.has-icons-left
-								input.input#date(type='date' name='date' placeholder='e.g. July 4, 2019' value=(undefined ===
+								input.input#date(type='date' name='date' placeholder='Date' value=(undefined ===
 								yardsale ? '' : yardsale.date) required)
 								span.icon.is-small.is-left
 									i.fas.fa-calendar
 						.field
 							label.label Start Time *
 							.control.has-icons-left
-								input.input#starttime(type='time' name='starttime' placeholder='e.g. 10:00 AM' value=(undefined ===
+								input.input#starttime(type='time' name='starttime' placeholder='' value=(undefined ===
 								yardsale ? '' : yardsale.starttime) required)
 								span.icon.is-small.is-left
 									i.fas.fa-clock
 						.field
 							label.label End Time *
 							.control.has-icons-left
-								input.input(type='time' id='endtime' name='endtime' placeholder='e.g. 4:00 PM' value=(undefined ===
+								input.input#endtime(type='time' name='endtime' placeholder='' value=(undefined ===
 								yardsale ? '' : yardsale.endtime) required)
 								span.icon.is-small.is-left
 									i.fas.fa-clock
@@ -97,12 +97,13 @@ block content
 										span.file-name#filename no file selected
 						.field
 							label.label Current Image
-							img#imagePreview(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
-							yardsale.imagename alt='preview' width='200' height='200')
+							//img#imagePreview(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
+							//yardsale.imagename alt='preview' width='200' height='200')
+							label.label Preview
+							img#imagePreview(width='200' height='200')
 						.field
 							.control
 								button.button.is-link(type='submit') Submit
-	script(src='/js/select_image_name.js')
 
 
 

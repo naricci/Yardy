@@ -1,6 +1,6 @@
 const createError = require('http-errors');
 const express = require('express');
-const expressValidator = require('express-validator');
+// const expressValidator = require('express-validator');
 const favicon = require('serve-favicon');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -9,7 +9,7 @@ const debug = require('debug')('yard:app');
 // Use dotenv to read .env vars into Node
 require('dotenv').config();
 // Mongoose Configuration
-require('./config/db');
+require('./config/db_config');
 // For Heroku
 const PORT = process.env.PORT || 5000;
 // Routes
@@ -53,7 +53,7 @@ passport.use(new LocalStrategy(
 				return done(err);
 			}
 			if (!user) {
-				return done(null, false, { message: 'Incorrect username. ' });
+				return done(null, false, { message: 'Username does not exist. ' });
 			}
 			if (!user.validatePassword(password)) {
 				return done(null, false, { message: 'Incorrect password.' });
@@ -92,9 +92,9 @@ if (app.get('env') === 'production') {
 // Base Middleware
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(expressValidator());
+// app.use(expressValidator());
 
 app.use(compression()); // Compress all routes
 app.use(helmet());

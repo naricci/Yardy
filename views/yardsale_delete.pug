@@ -10,13 +10,13 @@ block content
 					include components/sidebar2
 				.column.is-three-quarters
 					include components/errors
-						.columns
-							.column
-								p Do you really want to delete this yard sale?  This process is irreversible.
-							.column
-								form(method='post' action='')
-									input(type='hidden' name='id' required='true' value=yardsale._id )
-									button.button.is-danger(type='submit') Delete
+					.columns
+						.column
+							p Do you really want to delete this yard sale?  This process is irreversible.
+						.column
+							form(method='POST' action='')
+								input(type='hidden' name='id' required='true' value=yardsale._id )
+								button.button.is-danger(type='submit') Delete
 						hr
 					include components/yardsale
 

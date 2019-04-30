@@ -8,9 +8,9 @@ const Yardsale = require('../models/yardsale');
 
 // Display list of all yardsales.
 exports.yardsale_list = (req, res, next) => {
-	var params = req.body.address;
+	const params = req.body.address;
 	if (params === undefined || params === null || params === '') {
-		Yardsale
+	  Yardsale
 			.find()
 			.populate('user')
 			.sort([['date', 'ascending']])
@@ -222,6 +222,7 @@ exports.yardsale_update_get = (req, res, next) => {
 exports.yardsale_update_post = (req, res, next) => {
 	// Extract the validation errors from a request.
 	const errors = validationResult(req);
+	const errorArray = errors.array();
 
 	const ysFile = req.file;
 	const key = (req.user.username + '/' + ysFile.originalname);
@@ -250,7 +251,8 @@ exports.yardsale_update_post = (req, res, next) => {
 		res.render('yardsale_edit', {
 			title: 'Update Yardsale',
 			yardsale: yardsale,
-			errors: errors.array() });
+			errors: errorArray
+		});
 		return;
 	}
 	else {

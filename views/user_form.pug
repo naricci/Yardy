@@ -1,37 +1,6 @@
 extends layout
 
 block content
-	script.
-		$('#loginBtn').on('click', () => {
-			$.ajax({
-				url: '/users/register',
-				type: 'POST',
-				cache: false,
-				data: {
-					username: $('#username').val(),
-					email: $('#email').val(),
-					password: $('#password').val(),
-					cpassword: $('#cpassword').val(),
-				},
-				success: function() {
-					$('#error-group').css('display', 'none');
-					alert('Your submission was successful');
-				},
-				error: function(data) {
-					console.log(data);
-					$('#error-group').css('display', 'block');
-					var errors = JSON.parse(data.responseText);
-					var errorsContainer = $('#errors');
-					errorsContainer.innerHTML = '';
-					var errorsList = '';
-
-					for (let i = 0; i < errors.length; i++) {
-						errorsList += '<li>' + errors[i].msg + '</li>';
-					}
-					errorsContainer.html(errorsList);
-				}
-			});
-		});
 	section.section
 		.container
 			if isAuthenticated
@@ -47,32 +16,25 @@ block content
 						include components/sidebar
 				.column.is-two-quarters
 					include components/errors
-					.notification#error-group(role="notification" style="display: none")
-						button.delete
-						ul#errors
-					br
 					form(method='POST' action='' autocomplete='on')
 						if is_update_form
 							.field
 								label.label Username
 								.control.has-icons-left
-									input.input#username(type='text' name='username' value=(undefined ===
-									user ? '' : user.username) disabled autofocus)
+									input.input#username(type='text' name='username' value=(undefined === user ? '' : user.username) disabled autofocus)
 									span.icon.is-small.is-left
 										i.fas.fa-user
 						else
 							.field
 								label.label Username
 								.control.has-icons-left
-									input.input#username(type='text' name='username' placeholder='johndoe' maxlength='25' value=(undefined ===
-									user ? '' : user.username) required autofocus)
+									input.input#username(type='text' name='username' placeholder='username' maxlength='25' value=(undefined === user ? '' : user.username) required autofocus)
 									span.icon.is-small.is-left
 										i.fas.fa-user
 						.field
 							label.label Email
 							.control.has-icons-left
-								input.input#email(type='email' name='email' placeholder='johndoe@gmail.edu' maxlength='25' required value=(undefined ===
-								user ? '' : user.email))
+								input.input#email(type='email' name='email' placeholder='email' maxlength='25' required value=(undefined === user ? '' : user.email))
 								span.icon.is-small.is-left
 									i.fas.fa-envelope
 						if is_update_form
@@ -82,13 +44,13 @@ block content
 						.field
 							label.label #{is_update_form ? 'New Password' : 'Password'}
 							.control.has-icons-left
-								input.input#password(type='password' name='password')
+								input.input#password(type='password' name='password' placeholder='password' maxlength='32')
 								span.icon.is-small.is-left
 									i.fas.fa-lock
 						.field.has-icons-left
 							label.label #{is_update_form ? 'Confirm New Password' : 'Confirm Password'}
 							.control.has-icons-left
-								input.input#cpassword(type='password' name='cpassword')
+								input.input#cpassword(type='password' name='cpassword' placeholder='password' maxlength='32')
 								span.icon.is-small.is-left
 									i.fas.fa-lock
 						if is_update_form
@@ -98,66 +60,57 @@ block content
 							.field
 								label.label First Name
 								.control.has-icons-left
-									input.input#firstname(type='text' name='firstname' placeholder='John' maxlength='25' value=(undefined ===
-									user ? '' : user.firstName))
+									input.input#firstname(type='text' name='firstname' placeholder='first name' maxlength='25' value=(undefined === user ? '' : user.firstName))
 									span.icon.is-small.is-left
 										i.fas.fa-user
 							.field
 								label.label Last Name
 								.control.has-icons-left
-									input.input#lastname(type='text' name='lastname' placeholder='Doe' maxlength='25' value=(undefined ===
-									user ? '' : user.lastName))
+									input.input#lastname(type='text' name='lastname' placeholder='last name' maxlength='25' value=(undefined === user ? '' : user.lastName))
 									span.icon.is-small.is-left
 										i.fas.fa-user
 							.field
 								label.label Phone
 								.control.has-icons-left
-									input.input#lastname(type='tel' name='phone' placeholder='4028287902' maxlength='10' value=(undefined ===
-									user ? '' : user.phone))
+									input.input#lastname(type='tel' name='phone' placeholder='phone' maxlength='10' value=(undefined === user ? '' : user.phone))
 									span.icon.is-small.is-left
-										i.fas.fa-map-marker
+										i.fas.fa-phone
 							.field
 								label.label Address
 								.control.has-icons-left
-									input.input#address(type='text' name='address' maxlength='250' placeholder='123 Yardy Street' value=(undefined ===
-									user ? '' : user.address))
+									input.input#address(type='text' name='address' placeholder='address' maxlength='250' value=(undefined === user ? '' : user.address))
 									span.icon.is-small.is-left
-										i.fas.fa-map-marker
+										i.fas.fa-map-marker-alt
 							.field
 								label.label Address 2
 								.control.has-icons-left
-									input.input#address2(type='text' name='address2' maxlength='250' value=(undefined === user ?
-										'' : user.address2))
+									input.input#address2(type='text' name='address2' placeholder='address continued' maxlength='250' value=(undefined === user ? '' : user.address2))
 									span.icon.is-small.is-left
-										i.fas.fa-map-marker
+										i.fas.fa-map-marker-alt
 							.field
 								label.label City
 								.control.has-icons-left
-									input.input#city(type='text' name='city' placeholder='Providence' value=(undefined === user ?
-										'' : user.city))
+									input.input#city(type='text' name='city' placeholder='city' value=(undefined === user ? '' : user.city))
 									span.icon.is-small.is-left
-										i.fas.fa-map-marker
+										i.fas.fa-city
 							.field
 								label.label State
 								.control.has-icons-left
 									select.input(name='state')
-										option(value="" selected=(undefined === user || user.state !== '' ?
-											false :
-											'selected')) Select State
+										option(value=""   selected=(undefined === user || user.state !== '' ? false : 'selected')) Select State
 										option(value='CT' selected=(undefined === user || user.state !== 'CT' ? false : 'selected')) CT
 										option(value='MA' selected=(undefined === user || user.state !== 'MA' ? false : 'selected')) MA
 										option(value='ME' selected=(undefined === user || user.state !== 'ME' ? false : 'selected')) ME
 										option(value='NH' selected=(undefined === user || user.state !== 'NH' ? false : 'selected')) NH
 										option(value='RI' selected=(undefined === user || user.state !== 'RI' ? false : 'selected')) RI
 									span.icon.is-small.is-left
-										i.fas.fa-map-marker
+										i.fas.fa-map-marker-alt
 							.field
 								label.label Zip Code
 								.control.has-icons-left
-									input.input#zipcode(type='text' name='zipcode' placeholder='02818' maxlength='5' value=(undefined ===
-									user ? '' : user.zipcode))
+									input.input#zipcode(type='text' name='zipcode' placeholder='zip code' maxlength='5' value=(undefined === user ? '' : user.zipcode))
 									span.icon.is-small.is-left
-										i.fas.fa-map-marker
+										i.fas.fa-map-marker-alt
 						if is_update_form && isAuthenticated
 							.field
 								.control
@@ -165,6 +118,5 @@ block content
 						if !is_update_form
 							.field
 								.control
-									//button.button.is-link#loginBtn(type='button') Register
-									button.button.is-link#loginBtn(type='submit') Register
+									button.button.is-link(type='submit') Register
 				.column.is-one-quarter

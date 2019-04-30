@@ -14,6 +14,35 @@ body {
 	position: relative;
 }
 
+/*input {*/
+/*	border: 2px solid;*/
+/*}*/
+
+/*#username:valid,*/
+/*#email:valid,*/
+/*#password:valid,*/
+/*#cpassword:valid,*/
+/*#firstname:valid,*/
+/*#lastname:valid,*/
+/*#phone:valid,*/
+/*#profilepic:valid,*/
+/*#address:valid,*/
+/*#address2:valid,*/
+/*#city:valid,*/
+/*#zipcode:valid,*/
+/*#date:valid,*/
+/*#starttime:valid,*/
+/*#endtime:valid,*/
+/*#description:valid,*/
+/*#imagename:valid,*/
+/*#file:valid {*/
+/*	border: 2px solid green;*/
+/*}*/
+
+input:invalid {
+	border: 2px solid red;
+}
+
 /* MAIN CONTENT */
 .main-container {
 	display: block;

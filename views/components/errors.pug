@@ -1,5 +1,6 @@
 if errors
-	ul
-		for error in errors
-			li.has-text-danger!= error.msg
-	br
+	.notification.is-danger
+		button.delete
+		ul
+			for error in errors
+				li!= error.msg
