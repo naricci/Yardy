@@ -18,6 +18,9 @@ router.post('/create', validators.validate('yardsale_create_post'), upload.singl
 // GET request for one Yardsale.
 router.get('/:id', yardsaleController.yardsale_detail);
 
+// POST request to delete Favorite.
+router.post('/:id', yardsaleController.favorites_post);
+
 // GET request to update Yardsale.
 router.get('/:id/update', yardsaleController.yardsale_update_get);
 

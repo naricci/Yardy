@@ -3,6 +3,7 @@ const debug = require('debug')('yardy:yardsale.controller');
 const { validationResult } = require('express-validator/check');
 const S3 = require('../config/s3_config');
 // Models
+const Favorite = require('../models/favorite');
 const User = require('../models/user');
 const Yardsale = require('../models/yardsale');
 
@@ -272,4 +273,22 @@ exports.yardsale_update_post = (req, res, next) => {
 				res.redirect('/yardsales/'+theyardsale._id);
 			});
 	}
+};
+
+// Handle favorites page on POST
+exports.favorites_post = (req, res, next) => {
+	debug(`User ID: ${req.body.userId}`);
+	debug(`Yard Sale ID: ${req.body.yardsale}`);
+	let favorite = new Favorite({
+		user: req.body.userId,
+		yardsale: req.body.yardsale,
+		isChecked: true
+	});
+
+	// POST favorite object and redirect to the home page.
+	favorite.save((err) => {
+		if (err) return next(err);
+		// Success - go to yardsale list.
+		res.redirect('/');
+	});
 };

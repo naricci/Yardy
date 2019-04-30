@@ -11,3 +11,35 @@ block content
 
 				.column.is-three-quarters
 					include components/map
+					if favorites_list && isAuthenticated
+						each favorite in favorites_list
+							.box
+								article.media
+									figure.media-left
+										figure.image.is-128x128
+											a(href='/yardsales/' + favorite.yardsale._id)
+												if (yardsale.imagename !== undefined && favorite.yardsale.imagename !== '' && favorite.yardsale.imagename !== null)
+													img(src='https://s3.amazonaws.com/yardy-pics/' + favorite.yardsale.user.username + '/' + favorite.yardsale.imagename alt='yard sale')
+												else
+													img(src='/img/yardsale_poster.jpg' alt='yard sale')
+									.media-content
+										.content
+											p Location:&nbsp;&nbsp;
+												strong #{favorite.yardsale.full_address}
+											p Date:&nbsp;&nbsp;
+												strong #{favorite.yardsale.date.toDateString()}
+											p Start Time:&nbsp;
+												if parseInt(favorite.yardsale.starttime) < 12
+													strong #{parseInt(favorite.yardsale.starttime)} AM
+												else
+													if parseInt(favorite.yardsale.starttime) - 12 === 0
+														strong #{parseInt(favorite.yardsale.starttime)} PM
+													else
+														strong #{parseInt(favorite.yardsale.starttime) - 12} PM
+											p #{favorite.yardsale.description}
+										nav.level.is-mobile
+											.level-left
+												a.level-item(href='/yardsales/' + favorite.yardsale._id) view details
+									.media-right
+										include components/favorites_button
+

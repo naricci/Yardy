@@ -5,6 +5,7 @@ const passport = require('passport');
 const S3 = require('../config/s3_config');
 const helpers = require('../util/helpers');
 // Models
+const Favorite = require('../models/favorite');
 const User = require('../models/user');
 const Yardsale = require('../models/yardsale');
 
@@ -464,7 +465,20 @@ exports.favorites_get = (req, res, next) => {
 		});
 };
 
+// TODO Finish writing function to POST favorites
 // Handle favorites page on POST
-exports.favorites_post = [
-	// TODO Finish writing function to POST/PUT favorites
-];
+exports.favorites_post = (req, res, next) => {
+	let favorite = new Favorite({
+		user: req.user._id,
+		yardsale: req.yardsale._id,
+		isChecked: true
+	});
+	debug(favorite);
+	// POST favorite object and redirect to the home page.
+	favorite.save((err) => {
+		if (err) return next(err);
+
+		// Success - go to yardsale list.
+		res.redirect('/');
+	});
+};

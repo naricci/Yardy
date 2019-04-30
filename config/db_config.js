@@ -3,10 +3,11 @@ mongoose.Promise = global.Promise;
 const debug = require('debug')('yardy:mongo');
 const mongoDB = process.env.MONGODB_URI;
 const options = {
-	useNewUrlParser: true,
-	useCreateIndex: true,
+	autoIndex: false,	// set to false in production to prevent performance issues
 	autoReconnect: true,
-	useFindAndModify: false
+	useCreateIndex: true,
+	useFindAndModify: false,
+	useNewUrlParser: true
 };
 const db_config = mongoose.connection;
 let gracefulShutdown;
