@@ -99,3 +99,15 @@ exports.search = (req, res, next) => {
 			});
 	}
 };
+
+// Handle favorites page on POST
+exports.favorites_post = [
+	// TODO Finish writing function to POST favorites
+
+];
+
+// Handle favorites page on DELETE
+exports.favorites_delete = [
+	// TODO Finish writing function to POST favorites
+
+];

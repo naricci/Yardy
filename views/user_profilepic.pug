@@ -10,7 +10,7 @@ block content
 					include components/sidebar
 				.column.is-three-quarters
 					include components/errors
-					form(method='post' enctype='multipart/form-data')
+					form(method='POST' enctype='multipart/form-data')
 						.field
 							label.label Add Image
 							.control
@@ -20,13 +20,14 @@ block content
 										span.file-cta
 											span.file-icon
 												i.fas.fa-upload
-											span.file-label Upload image&mldr;
+											span.file-label Upload&mldr;
 										span.file-name#filename no file selected
 						.field
 							.control
 								label.label Preview
-								img#imagePreview(width='128' height='128')
+								img#imagePreview(width='200' height='200')
 						.field
 							.control
 								button.button.is-link(type='submit') Upload
+	script(src='/js/select_image_name.js')
 
