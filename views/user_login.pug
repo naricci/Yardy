@@ -8,6 +8,8 @@ block content
 			.columns
 				.column.is-one-third
 				.column.is-one-third
+					.alert#error-group(class="alert-danger" role="alert" style="display: none")
+						ul#errors
 					form(method='post' action='' autocomplete='on')
 						.field
 							label.label Username
@@ -24,7 +26,7 @@ block content
 								a(href='/users/reset') Forgot your password?
 						.field
 							.control
-								button.button.is-link(type='submit') Log in
+								button.button.is-link#loginBtn(type='submit') Log in
 						br
 						include components/errors
 				.column.is-one-third

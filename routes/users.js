@@ -30,7 +30,7 @@ router.post('/register', validators.validate('register_post'), userController.re
 router.get('/reset', userController.reset_get);
 
 // POST request for reset User password (1st step).
-router.post('/reset', userController.reset_post);
+router.post('/reset', validators.validate('reset_post'), userController.reset_post);
 
 // POST request for reset User password (2nd step).
 router.post('/resetfinal', userController.reset_post_final);
@@ -51,7 +51,7 @@ router.post('/:id/update', validators.validate('update_post'), userController.up
 router.get('/:id/profilepic', userController.profilepic_get);
 
 // POST request for User updating profile pic
-router.post('/:id/profilepic', upload.single('profilepic'), validators.validate('profilepic_post'),userController.profilepic_post);
+router.post('/:id/profilepic', validators.validate('profilepic_post'), upload.single('profilepic'), userController.profilepic_post);
 
 // GET request for User favorites
 router.get('/:id/favorites', userController.favorites_get);

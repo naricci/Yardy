@@ -1,7 +1,6 @@
 const async = require('async');
 const debug = require('debug')('yardy:yardsale.controller');
-const { body, check, validationResult } = require('express-validator/check');
-const { sanitizeBody } = require('express-validator/filter');
+const { validationResult } = require('express-validator/check');
 const S3 = require('../config/s3_config');
 // Models
 const User = require('../models/user');
@@ -85,87 +84,58 @@ exports.yardsale_create_get = (req, res, next) => {
 };
 
 // Handle Yardsale create on POST.
-exports.yardsale_create_post = [
-	// Validate fields
-	body('phone', 'Please enter a 10-digit phone number.').isLength({ max: 10 }).trim(),
-	// check('phone')
-	// 	// .isMobilePhone('en-US')
-	// 	.isLength({ min: 10, max: 10 })
-	// 	.withMessage('Please enter a 10-digit phone number.')
-	// 	.trim()
-	// 	.isNumeric()
-	// 	.withMessage('Please enter a 10-digit phone number.')
-	// 	.trim(),
-	// check('zipcode')
-	// 	.trim()
-	// 	.isPostalCode('US')
-	// 	.withMessage('Please enter a valid 5-digit zip code'),
-	check('date')
-		.optional({ checkFalsy: true }).isISO8601()
-		.withMessage('Please enter a valid date')
-		.isAfter()
-		.withMessage('Please select a date that hasn\'t occurred yet.'),
+exports.yardsale_create_post = (req, res, next) => {
+	// Extract the validation errors from a request.
+	let errors = validationResult(req);
 
-	// // Sanitize fields.
-	// sanitizeBody('phone').trim().escape(),
-	// sanitizeBody('zipcode').toString(),
-	sanitizeBody('date').toDate(),
-	sanitizeBody('imagename').toString(),
-
-	// Process request after validation and sanitization.
-	(req, res, next) => {
-		// Extract the validation errors from a request.
-		let errors = validationResult(req);
-
-		if (!errors.isEmpty()) {
-			// There are errors. Render form again with sanitized values/errors messages.
-			res.render('yardsale_form', { title: 'Create Yardsale', yardsale: req.body, errors: errors.array() });
-			// return;
-		}
-		else {
-			// Data from form is valid.
-			const ysFile = req.file;
-			let key = (req.user.username + '/' + ysFile.originalname);
-			S3.params.Body = ysFile.buffer;
-			S3.params.ContentType = ysFile.mimetype;
-			S3.params.Key = key;
-
-			// Create an Yardsale object with escaped and trimmed data.
-			let yardsale = new Yardsale({
-				phone: req.body.phone,
-				address: req.body.address,
-				address2: req.body.address2,
-				city: req.body.city,
-				state: req.body.state,
-				zipcode: req.body.zipcode,
-				full_address: req.body.address + req.body.city + req.body.state + req.body.zipcode,
-				date: req.body.date,
-				starttime: req.body.starttime,
-				endtime: req.body.endtime,
-				description: req.body.description,
-				user: req.user._id,
-				imagename: ysFile.originalname
-			});
-
-			yardsale.save((err) => {
-				if (err) return next(err);
-
-				// S3 Image upload
-				S3.s3Client.putObject(S3.params, (err, data) => {
-					if (err) debug('Error: ', err);
-					else {
-						debug(`Posting ${S3.params.Key} to ${process.env.S3_BUCKET} in S3`);
-						debug(data);
-					}
-				});
-
-				// Successful - redirect to new yardsale record.
-				debug(yardsale);
-				res.redirect('/yardsales/'+yardsale._id);
-			});
-		}
+	if (!errors.isEmpty()) {
+		// There are errors. Render form again with sanitized values/errors messages.
+		res.render('yardsale_form', { title: 'Create Yardsale', yardsale: req.body, errors: errors.array() });
+		// return;
 	}
-];
+	else {
+		// Data from form is valid.
+		const ysFile = req.file;
+		let key = (req.user.username + '/' + ysFile.originalname);
+		S3.params.Body = ysFile.buffer;
+		S3.params.ContentType = ysFile.mimetype;
+		S3.params.Key = key;
+
+		// Create an Yardsale object with escaped and trimmed data.
+		let yardsale = new Yardsale({
+			phone: req.body.phone,
+			address: req.body.address,
+			address2: req.body.address2,
+			city: req.body.city,
+			state: req.body.state,
+			zipcode: req.body.zipcode,
+			full_address: req.body.address + req.body.city + req.body.state + req.body.zipcode,
+			date: req.body.date,
+			starttime: req.body.starttime,
+			endtime: req.body.endtime,
+			description: req.body.description,
+			user: req.user._id,
+			imagename: ysFile.originalname
+		});
+
+		yardsale.save((err) => {
+			if (err) return next(err);
+
+			// S3 Image upload
+			S3.s3Client.putObject(S3.params, (err, data) => {
+				if (err) debug('Error: ', err);
+				else {
+					debug(`Posting ${S3.params.Key} to ${process.env.S3_BUCKET} in S3`);
+					debug(data);
+				}
+			});
+
+			// Successful - redirect to new yardsale record.
+			debug(yardsale);
+			res.redirect('/yardsales/'+yardsale._id);
+		});
+	}
+};
 
 // Display Yardsale delete form on GET.
 exports.yardsale_delete_get = (req, res, next) => {
@@ -249,79 +219,55 @@ exports.yardsale_update_get = (req, res, next) => {
 };
 
 // Handle Yardsale update on POST.
-exports.yardsale_update_post = [
-	// Validate form fields.
-	check('phone')
-		.isMobilePhone('en-US')
-		.withMessage('Please enter a valid 10-digit phone number.')
-		.trim(),
-	check('zipcode')
-		.isPostalCode('US')
-		.withMessage('Please enter a valid 5-digit zip code')
-		.trim(),
-	check('date')
-		.isAfter()
-		.withMessage('Please select a date that hasn\'t occurred yet.')
-		.trim(),
+exports.yardsale_update_post = (req, res, next) => {
+	// Extract the validation errors from a request.
+	const errors = validationResult(req);
 
-	// Sanitize fields.
-	sanitizeBody('phone').toInt(),
-	sanitizeBody('zipcode').toString(),
-	sanitizeBody('date').toDate(),
-	sanitizeBody('imagename').toString(),
+	const ysFile = req.file;
+	const key = (req.user.username + '/' + ysFile.originalname);
+	S3.params.Body = ysFile.buffer;
+	S3.params.ContentType = ysFile.mimetype;
+	S3.params.Key = key;
 
-	// Process request after validation and sanitization.
-	(req, res, next) => {
+	// Create Yardsale object with escaped and trimmed data (and the old id!)
+	let yardsale = new Yardsale({
+		phone: req.body.phone,
+		address: req.body.address,
+		address2: req.body.address2,
+		city: req.body.city,
+		state: req.body.state,
+		zipcode: req.body.zipcode,
+		date: req.body.date,
+		starttime: req.body.starttime,
+		endtime: req.body.endtime,
+		description: req.body.description,
+		imagename: ysFile.originalname,
+		_id: req.params.id
+	});
 
-		// Extract the validation errors from a request.
-		const errors = validationResult(req);
-
-		const ysFile = req.file;
-		const key = (req.user.username + '/' + ysFile.originalname);
-		S3.params.Body = ysFile.buffer;
-		S3.params.ContentType = ysFile.mimetype;
-		S3.params.Key = key;
-
-		// Create Yardsale object with escaped and trimmed data (and the old id!)
-		let yardsale = new Yardsale({
-			phone: req.body.phone,
-			address: req.body.address,
-			address2: req.body.address2,
-			city: req.body.city,
-			state: req.body.state,
-			zipcode: req.body.zipcode,
-			date: req.body.date,
-			starttime: req.body.starttime,
-			endtime: req.body.endtime,
-			description: req.body.description,
-			imagename: ysFile.originalname,
-			_id: req.params.id
-		});
-
-		if (!errors.isEmpty()) {
-			// There are errors. Render the form again with sanitized values and error messages.
-			res.render('yardsale_edit', {
-				title: 'Update Yardsale',
-				yardsale: yardsale,
-				errors: errors.array() });
-			return;
-		}
-		else {
-			// Data from form is valid. Update the yardsale record.
-			Yardsale
-				.findByIdAndUpdate(req.params.id, yardsale, {}, (err, theyardsale) => {
-					if (err) return next(err);
-					// S3 Image upload
-					S3.s3Client.putObject(S3.params, (err, data) => {
-						if (err) debug('Error: ', err);
-						else {
-							debug(`Posting ${S3.params.Key} to ${process.env.S3_BUCKET} in S3`);
-							debug(data);
-						}
-					});
-					// Successful - redirect to yardsale detail page.
-					res.redirect('/yardsales/'+theyardsale._id);
-				});
-		}
+	if (!errors.isEmpty()) {
+		// There are errors. Render the form again with sanitized values and error messages.
+		res.render('yardsale_edit', {
+			title: 'Update Yardsale',
+			yardsale: yardsale,
+			errors: errors.array() });
+		return;
 	}
-];
+	else {
+		// Data from form is valid. Update the yardsale record.
+		Yardsale
+			.findByIdAndUpdate(req.params.id, yardsale, {}, (err, theyardsale) => {
+				if (err) return next(err);
+				// S3 Image upload
+				S3.s3Client.putObject(S3.params, (err, data) => {
+					if (err) debug('Error: ', err);
+					else {
+						debug(`Posting ${S3.params.Key} to ${process.env.S3_BUCKET} in S3`);
+						debug(data);
+					}
+				});
+				// Successful - redirect to yardsale detail page.
+				res.redirect('/yardsales/'+theyardsale._id);
+			});
+	}
+};

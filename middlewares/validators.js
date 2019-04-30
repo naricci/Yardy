@@ -1,4 +1,4 @@
-const { body, check } = require('express-validator/check');
+const { body } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
 exports.validate = (method) => {
@@ -38,9 +38,60 @@ exports.validate = (method) => {
 		case 'profilepic_post': {
 			return [
 				// Validate form fields.
-				check('profilepic', 'Image name cannot be longer than 100 characters long.').isLength({ max: 50 }),
+				body('profilepic', 'Image name cannot be longer than 100 characters long.').isLength({ max: 50 }),
 				// Sanitize fields.
 				sanitizeBody('profilepic').toString(),
+			];
+		}
+		case 'reset_post': {
+			return [
+				// First step of the password reset process.
+				// Take username and email from form, and try to find a matching user.
+				// Validate fields.
+				body('username', 'Username must be between 4-32 characters long.').isLength({ min: 4, max: 32 }),
+				body('email', 'Please enter a valid email address.').isEmail(),
+				// Sanitize fields with wildcard operator.
+				sanitizeBody('*').trim().escape(),
+			];
+		}
+		case 'reset_post_final': {
+			return [
+				// Second and the final step of the password reset process.
+				// Take userid, password and password_confirm fields from form,
+				// and update the User record.
+				body('password', 'Password must be between 4-32 characters long.').isLength({ min: 4, max: 32 }).trim(),
+				body('cpassword', 'Password must be between 4-32 characters long.').isLength({ min: 4, max: 32 }).trim(),
+				// Sanitize fields with wildcard operator.
+				sanitizeBody('*').trim().escape(),
+			];
+		}
+		case 'yardsale_create_post': {
+			return [
+				// Validate fields
+				body('phone', 'Please enter a 10-digit phone number.').isLength({ max: 10 }).trim(),
+				body('phone', 'Phone number is not valid.').isMobilePhone('en-US'),
+				// check('zipcode').isPostalCode('US').withMessage('Please enter a valid 5-digit zip code'),
+				body('date').optional({ checkFalsy: true }).isISO8601().withMessage('Please enter a valid date')
+					.isAfter().withMessage('Please select a date that hasn\'t occurred yet.'),
+				// // Sanitize fields.
+				// sanitizeBody('phone').trim().escape(),
+				// sanitizeBody('zipcode').toString(),
+				sanitizeBody('date').toDate(),
+				sanitizeBody('imagename').toString(),
+			];
+		}
+		case 'yardsale_update_post': {
+			return [
+				// Validate form fields.
+				body('phone', 'Phone number is not valid.').isMobilePhone('en-US'),
+				body('zipcode', 'Please enter a valid 5-digit zip code.').isPostalCode('US'),
+				body('date', 'Date is not valid.').optional({ checkFalsy: true }).isISO8601()
+				 	.isAfter().withMessage('Please select a date that hasn\'t occurred yet.').trim(),
+				// Sanitize fields.
+				sanitizeBody('phone').toInt(),
+				sanitizeBody('zipcode').toString(),
+				sanitizeBody('date').toDate(),
+				sanitizeBody('imagename').toString(),
 			];
 		}
 	}

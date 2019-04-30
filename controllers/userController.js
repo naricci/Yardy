@@ -88,80 +88,75 @@ exports.register_get = [
 ];
 
 // Handle register on POST.
-exports.register_post = [
+exports.register_post = (req, res, next) => {
+	// Extract the validation errors from a request.
+	let errors = validationResult(req);
+	// Get a handle on errors.array() array,
+	// so we can push our own error messages into it.
+	let errorsArray = errors.array();
 
+	// Create a user object with escaped and trimmed data.
+	let user = new User({
+		username: req.body.username,
+		email: req.body.email
+	});
 
-	// Process request after validation and sanitization.
-	(req, res, next) => {
-		// Extract the validation errors from a request.
-		let errors = validationResult(req);
-		// Get a handle on errors.array() array,
-		// so we can push our own error messages into it.
-		let errorsArray = errors.array();
+	// Check if passwords match or not.
+	if (!user.passwordsMatch(req.body.password, req.body.cpassword)) {
+		// Passwords do not match. Create and push an error message.
+		errorsArray.push({ msg: 'Passwords do not match.' });
+	}
 
-		// Create a user object with escaped and trimmed data.
-		let user = new User({
-			username: req.body.username,
-			email: req.body.email
+	if (errorsArray.length > 0) {
+		// There are errors. Render the form again with sanitized values/error messages.
+		res.render('user_form', {
+			title: 'Create User',
+			user: user,
+			errors: errorsArray
 		});
+		return;
+	} else {
+		// Data from form is valid.
 
-		// Check if passwords match or not.
-		if (!user.passwordsMatch(req.body.password, req.body.cpassword)) {
-			// Passwords do not match. Create and push an error message.
-			errorsArray.push({ msg: 'Passwords do not match.' });
-		}
+		// Passwords match. Set password.
+		user.setPassword(req.body.password);
 
-		if (errorsArray.length > 0) {
-			// There are errors. Render the form again with sanitized values/error messages.
-			res.render('user_form', {
-				title: 'Create User',
-				user: user,
-				errors: errorsArray
-			});
-			return;
-		} else {
-			// Data from form is valid.
-
-			// Passwords match. Set password.
-			user.setPassword(req.body.password);
-
-			// Check if User with same username already exists.
-			User
-				.findOne({ username: req.body.username, email: req.body.email })
-				.exec((err, found_user, found_email) => {
-					if (err) return next(err);
-					if (found_user) {
-						// Username exists, re-render the form with error message.
+		// Check if User with same username already exists.
+		User
+			.findOne({ username: req.body.username, email: req.body.email })
+			.exec((err, found_user, found_email) => {
+				if (err) return next(err);
+				if (found_user) {
+					// Username exists, re-render the form with error message.
+					res.render('user_form', {
+						title: 'Create User',
+						user: user,
+						errors: [{ msg: 'Username already taken. Choose another one.' }]
+					});
+					if (found_email) {
+						// Email exists, re-render the form with error message.
 						res.render('user_form', {
 							title: 'Create User',
 							user: user,
-							errors: [{ msg: 'Username already taken. Choose another one.' }]
-						});
-						if (found_email) {
-							// Email exists, re-render the form with error message.
-							res.render('user_form', {
-								title: 'Create User',
-								user: user,
-								errors: [{msg: 'Email already taken. Choose another one.'}]
-							});
-						}
-					} else {
-						// User does not exist. Create it.
-						user.save(err => {
-							if (err) return next(err);
-							debug('User Created Successfully\n' + user);
-							// User saved. Redirect to login page.
-							req.flash(
-								'success',
-								'Successfully registered. You can log in now!'
-							);
-							res.redirect('/users/login');
+							errors: [{msg: 'Email already taken. Choose another one.'}]
 						});
 					}
-				});
-		}
+				} else {
+					// User does not exist. Create it.
+					user.save(err => {
+						if (err) return next(err);
+						debug('User Created Successfully\n' + user);
+						// User saved. Redirect to login page.
+						req.flash(
+							'success',
+							'Successfully registered. You can log in now!'
+						);
+						res.redirect('/users/login');
+					});
+				}
+			});
 	}
-];
+};
 
 // Display update form on GET.
 exports.update_get = (req, res, next) => {
@@ -263,163 +258,127 @@ exports.reset_get = [
 ];
 
 // Handle reset password on POST (1st step).
-exports.reset_post = [
-	// First step of the password reset process.
-	// Take username and email from form, and try to find a matching user.
-	// Validate fields.
-	body('username', 'Username must be between 4-32 characters long.')
-		.isLength({ min: 4, max: 32 })
-		.trim(),
-	body('email', 'Please enter a valid email address.')
-		.isEmail()
-		.trim(),
+exports.reset_post = (req, res, next) => {
+	// Extract the validation errors from a request.
+	let errors = validationResult(req);
+	// Get a handle on errors.array() array.
+	let errorsArray = errors.array();
 
-	// Sanitize fields with wildcard operator.
-	sanitizeBody('*')
-		.trim()
-		.escape(),
+	// Create a user object with escaped and trimmed data.
+	let user = new User({
+		username: req.body.username,
+		email: req.body.email
+	});
 
-	// Process request after validation and sanitization.
-	(req, res, next) => {
-		// Extract the validation errors from a request.
-		let errors = validationResult(req);
-		// Get a handle on errors.array() array.
-		let errorsArray = errors.array();
-
-		// Create a user object with escaped and trimmed data.
-		let user = new User({
-			username: req.body.username,
-			email: req.body.email
+	if (errorsArray.length > 0) {
+		// There are errors. Render the form again with sanitized values/error messages.
+		// The user couldn't pass this step yet. Hence we're still in the first step!
+		res.render('user_reset', {
+			title: 'Reset Password',
+			is_first_step: true,
+			user: user, // Pass user object created with user-entered values.
+			errors: errorsArray
 		});
+		return;
+	} else {
+		// Data from form is valid.
 
-		if (errorsArray.length > 0) {
-			// There are errors. Render the form again with sanitized values/error messages.
-			// The user couldn't pass this step yet. Hence we're still in the first step!
-			res.render('user_reset', {
-				title: 'Reset Password',
-				is_first_step: true,
-				user: user, // Pass user object created with user-entered values.
-				errors: errorsArray
-			});
-			return;
-		} else {
-			// Data from form is valid.
-
-			// Check if User exists.
-			User
-				.findOne({ username: req.body.username, email: req.body.email })
-				.exec(
-					(err, found_user) => {
-						if (err) return next(err);
-						if (found_user) {
-							// User exists and credentials did match. Proceed to the second step.
-							// And pass found_user to the form. We'll need user._id in the final step.
-							res.render('user_reset', {
-								title: 'Reset Password',
-								is_second_step: true,
-								user: found_user // Pass found_user.
-							});
-						} else {
-							// User does not exist or credentials didn't match.
-							// Render the form again with error messages. Still first step!
-							res.render('user_reset', {
-								title: 'Reset Password',
-								is_first_step: true,
-								user: user, // Pass user object created with user-entered values.
-								errors: [
-									{
-										msg:
-										'The user does not exist or credentials did not match a user. Try again.'
-									}
-								]
-							});
-						}
-					}
-				);
-		}
-	}
-];
-
-// Handle reset password on POST (2nd step).
-exports.reset_post_final = [
-	// Second and the final step of the password reset process.
-	// Take userid, password and password_confirm fields from form,
-	// and update the User record.
-	body('password', 'Password must be between 4-32 characters long.')
-		.isLength({ min: 4, max: 32 })
-		.trim(),
-	body('cpassword', 'Password must be between 4-32 characters long.')
-		.isLength({ min: 4, max: 32 })
-		.trim(),
-
-	// Sanitize fields with wildcard operator.
-	sanitizeBody('*')
-		.trim()
-		.escape(),
-
-	// Process request after validation and sanitization.
-	(req, res, next) => {
-		// Extract the validation errors from a request.
-		let errors = validationResult(req);
-
-		// Get a handle on errors.array() array.
-		let errorsArray = errors.array();
-
-		// Create a user object containing only id field, for now.
-		// We need to use old _id, which is coming from found_user passed in the first step.
-		let user = new User({
-			_id: req.body.userid
-		});
-
-		// -- Custom Validation -- //
-		// Check if passwords match or not.
-		if (!user.passwordsMatch(req.body.password, req.body.cpassword)) {
-			// Passwords do not match. Create and push an error message.
-			errorsArray.push({ msg: 'Passwords do not match.' });
-		}
-
-		if (errorsArray.length > 0) {
-			// There are errors. Render the form again with sanitized values/error messages.
-			res.render('user_reset', {
-				title: 'Reset Password',
-				is_second_step: true,
-				user: user, // We need to pass user back to form because we will need user._id in the next step.
-				errors: errorsArray
-			});
-			return;
-		} else {
-			// Data from form is valid.
-
-			// Passwords match. Set password.
-			user.setPassword(req.body.password);
-
-			// Update the record.
-			async.waterfall(
-				[
-					(callback) => {
-						User
-							.findById(req.body.userid)
-							.exec(callback);
-					},
-					(found_user, callback) => {
-						User
-							.findByIdAndUpdate(req.body.userid, user, {})
-							.exec(callback);
-					}
-				],
-				(err, theuser) => {
+		// Check if User exists.
+		User
+			.findOne({ username: req.body.username, email: req.body.email })
+			.exec(
+				(err, found_user) => {
 					if (err) return next(err);
-					// Success, redirect to login page and show a flash message.
-					req.flash(
-						'success',
-						'You have successfully changed your password. You can log in now!'
-					);
-					res.redirect('/users/login');
+					if (found_user) {
+						// User exists and credentials did match. Proceed to the second step.
+						// And pass found_user to the form. We'll need user._id in the final step.
+						res.render('user_reset', {
+							title: 'Reset Password',
+							is_second_step: true,
+							user: found_user // Pass found_user.
+						});
+					} else {
+						// User does not exist or credentials didn't match.
+						// Render the form again with error messages. Still first step!
+						res.render('user_reset', {
+							title: 'Reset Password',
+							is_first_step: true,
+							user: user, // Pass user object created with user-entered values.
+							errors: [
+								{
+									msg:
+										'The user does not exist or credentials did not match a user. Try again.'
+								}
+							]
+						});
+					}
 				}
 			);
-		}
 	}
-];
+};
+
+// Handle reset password on POST (2nd step).
+exports.reset_post_final = (req, res, next) => {
+	// Extract the validation errors from a request.
+	let errors = validationResult(req);
+
+	// Get a handle on errors.array() array.
+	let errorsArray = errors.array();
+
+	// Create a user object containing only id field, for now.
+	// We need to use old _id, which is coming from found_user passed in the first step.
+	let user = new User({
+		_id: req.body.userid
+	});
+
+	// -- Custom Validation -- //
+	// Check if passwords match or not.
+	if (!user.passwordsMatch(req.body.password, req.body.cpassword)) {
+		// Passwords do not match. Create and push an error message.
+		errorsArray.push({ msg: 'Passwords do not match.' });
+	}
+
+	if (errorsArray.length > 0) {
+		// There are errors. Render the form again with sanitized values/error messages.
+		res.render('user_reset', {
+			title: 'Reset Password',
+			is_second_step: true,
+			user: user, // We need to pass user back to form because we will need user._id in the next step.
+			errors: errorsArray
+		});
+		return;
+	} else {
+		// Data from form is valid.
+
+		// Passwords match. Set password.
+		user.setPassword(req.body.password);
+
+		// Update the record.
+		async.waterfall(
+			[
+				(callback) => {
+					User
+						.findById(req.body.userid)
+						.exec(callback);
+				},
+				(found_user, callback) => {
+					User
+						.findByIdAndUpdate(req.body.userid, user, {})
+						.exec(callback);
+				}
+			],
+			(err, theuser) => {
+				if (err) return next(err);
+				// Success, redirect to login page and show a flash message.
+				req.flash(
+					'success',
+					'You have successfully changed your password. You can log in now!'
+				);
+				res.redirect('/users/login');
+			}
+		);
+	}
+};
 
 // Display profile picture update page on GET
 exports.profilepic_get = (req, res, next) => {
