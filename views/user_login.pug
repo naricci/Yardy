@@ -5,11 +5,11 @@ block content
 		.container
 			h1.subtitle.has-text-centered
 				strong= title
+			.notification#error-group(role="alert" style="display: none")
+				ul#errors
 			.columns
 				.column.is-one-third
 				.column.is-one-third
-					.alert#error-group(class="alert-danger" role="alert" style="display: none")
-						ul#errors
 					form(method='post' action='' autocomplete='on')
 						.field
 							label.label Username

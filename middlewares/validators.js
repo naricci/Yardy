@@ -21,16 +21,16 @@ exports.validate = (method) => {
 				body('password', 'Password must be between 4-25 characters long.').isLength({ min: 4, max: 25 }),
 				body('cpassword', 'Password must be between 4-25 characters long.').isLength({ min: 4, max: 25 }),
 				body('firstname', 'First Name must be between 2-25 characters long.').isLength({ min: 2, max: 25 })
-					.isAlpha().withMessage('First Name must strictly contain letters.'),
+					.isAlpha().withMessage('First Name must strictly contain letters.').optional(),
 				body('lastname', 'Last Name must be between 2-25 characters long.').isLength({ min: 2, max: 25 })
-					 .isAlpha().withMessage('Last Name must strictly contain letters.'),
-				body('phone', 'Phone number is not valid.').isMobilePhone('en-US'),
-				body('address', 'Address cannot be more than 250 characters.').isLength({ min: 0, max: 250 }),
+					 .isAlpha().withMessage('Last Name must strictly contain letters.').optional(),
+				body('phone', 'Phone number is not valid.').isMobilePhone('en-US').optional(),
+				body('address', 'Address cannot be more than 250 characters.').isLength({ min: 0, max: 250 }).optional(),
 				// .isAlphanumeric('en-US').withMessage('Address not valid.  Please enter a proper alpha-numeric address.'),
-				body('address2', 'Address 2 cannot be more than 250 characters.').isLength({ min: 0, max: 250 }),
-				body('city', 'City cannot be more than 25 characters.').isLength({ min: 0, max: 25 }),
+				body('address2', 'Address 2 cannot be more than 250 characters.').isLength({ min: 0, max: 250 }).optional(),
+				body('city', 'City cannot be more than 25 characters.').isLength({ min: 0, max: 25 }).optional(),
 				// body('state', 'Please select a state.').isEmpty(),
-				body('zipcode', 'Zip Code is not valid.').isPostalCode('US'),
+				body('zipcode', 'Zip Code is not valid.').isPostalCode('US').optional(),
 				// Sanitize fields with wildcard operator.
 				sanitizeBody('*').trim().escape()
 			];
@@ -68,8 +68,7 @@ exports.validate = (method) => {
 		case 'yardsale_create_post': {
 			return [
 				// Validate fields
-				body('phone', 'Please enter a 10-digit phone number.').isLength({ max: 10 }).trim(),
-				body('phone', 'Phone number is not valid.').isMobilePhone('en-US'),
+				body('phone', 'Phone number is not valid.').isMobilePhone('en-US').optional(),
 				// check('zipcode').isPostalCode('US').withMessage('Please enter a valid 5-digit zip code'),
 				body('date').optional({ checkFalsy: true }).isISO8601().withMessage('Please enter a valid date')
 					.isAfter().withMessage('Please select a date that hasn\'t occurred yet.'),
@@ -83,7 +82,7 @@ exports.validate = (method) => {
 		case 'yardsale_update_post': {
 			return [
 				// Validate form fields.
-				body('phone', 'Phone number is not valid.').isMobilePhone('en-US'),
+				body('phone', 'Phone number is not valid.').isMobilePhone('en-US').optional(),
 				body('zipcode', 'Please enter a valid 5-digit zip code.').isPostalCode('US'),
 				body('date', 'Date is not valid.').optional({ checkFalsy: true }).isISO8601()
 				 	.isAfter().withMessage('Please select a date that hasn\'t occurred yet.').trim(),

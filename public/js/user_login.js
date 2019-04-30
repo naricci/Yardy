@@ -5,7 +5,7 @@
 // });
 $('#loginBtn').click(function () {
 	$.ajax({
-		url: '/users',
+		url: '/users/login',
 		type: 'POST',
 		cache: false,
 		data: {
