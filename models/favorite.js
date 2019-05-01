@@ -14,6 +14,10 @@ const FavoriteSchema = new Schema({
 	isChecked: {
 		type: Boolean,
 		required: false
+	},
+	dateAdded: {
+		type: Date,
+		default: Date.now
 	}
 });
 

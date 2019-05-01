@@ -5,7 +5,6 @@ const passport = require('passport');
 const S3 = require('../config/s3_config');
 const helpers = require('../util/helpers');
 // Models
-const Favorite = require('../models/favorite');
 const User = require('../models/user');
 const Yardsale = require('../models/yardsale');
 
@@ -444,41 +443,4 @@ exports.profilepic_post = (req, res, next) => {
 				res.redirect('/users/' + theuser._id);
 			});
 	}
-};
-
-// Display favorites page on GET
-exports.favorites_get = (req, res, next) => {
-	User
-		.findById(req.params.id)
-		.exec((err, found_user) => {
-			if (err) return next(err);
-			if (found_user === null) {
-				let err = new Error('User not found');
-				err.status = 404;
-				return next(err);
-			}
-			// Successful, so render
-			res.render('user_favorites', {
-				title: 'Manage Favorites',
-				user: found_user,
-			});
-		});
-};
-
-// TODO Finish writing function to POST favorites
-// Handle favorites page on POST
-exports.favorites_post = (req, res, next) => {
-	let favorite = new Favorite({
-		user: req.user._id,
-		yardsale: req.yardsale._id,
-		isChecked: true
-	});
-	debug(favorite);
-	// POST favorite object and redirect to the home page.
-	favorite.save((err) => {
-		if (err) return next(err);
-
-		// Success - go to yardsale list.
-		res.redirect('/');
-	});
 };

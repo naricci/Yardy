@@ -1,47 +1,47 @@
 nav.panel.is-hidden-mobile
-	p.panel-heading #{user.username}&nbsp;&nbsp;
+	p.panel-heading #{current_user.username}&nbsp;&nbsp;
 		small
-			a(href='/users/' + user._id +'/profilepic') upload picture
+			a(href='/users/' + current_user._id +'/profilepic') upload picture
 			// TODO - Possibly add a modal here
 	.panel-block
-		if (user.profilepic !== undefined)
-			img.is-128x128(src='https://s3.amazonaws.com/yardy-pics/'+user.username+'/'+user.profilepic alt='profile picture')
+		if (current_user.profilepic !== undefined)
+			img.is-128x128(src='https://s3.amazonaws.com/yardy-pics/'+current_user.username+'/'+current_user.profilepic alt='profile picture')
 		else
 			img.is-128x128(src='/img/blank_profile.png' alt='profile picture')
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-user(aria-hidden=true)
-		p #[strong Full Name:&nbsp;] #{user.firstName} #{user.lastName}
+		p #[strong Full Name:&nbsp;] #{current_user.firstName} #{current_user.lastName}
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-user(aria-hidden=true)
-		p #[strong Username:&nbsp;] #{user.username}
+		p #[strong Username:&nbsp;] #{current_user.username}
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-envelope(aria-hidden=true)
-		p #[strong Email:&nbsp;] #{user.email}
+		p #[strong Email:&nbsp;] #{current_user.email}
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-phone(aria-hidden=true)
-		p #[strong Phone:&nbsp;] #{user.phone}
+		p #[strong Phone:&nbsp;] #{current_user.phone}
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-map-marker-alt(aria-hidden=true)
-		p #[strong Address:&nbsp;] #{user.address}
-	if (user.address2 !== '')
+		p #[strong Address:&nbsp;] #{current_user.address}
+	if (current_user.address2 !== '')
 		a.panel-block
 			span.panel-icon
 				i.fas.fa-map-marker-alt(aria-hidden=true)
-			p #[strong Address 2:&nbsp;] #{user.address2}
+			p #[strong Address 2:&nbsp;] #{current_user.address2}
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-city(aria-hidden=true)
-		p #[strong City:&nbsp;] #{user.city}
+		p #[strong City:&nbsp;] #{current_user.city}
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-map-marker-alt(aria-hidden=true)
-		p #[strong State:&nbsp;] #{user.state}
+		p #[strong State:&nbsp;] #{current_user.state}
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-map-marker-alt(aria-hidden=true)
-		p #[strong Zip Code:&nbsp;] #{user.zipcode}
+		p #[strong Zip Code:&nbsp;] #{current_user.zipcode}

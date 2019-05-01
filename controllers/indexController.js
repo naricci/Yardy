@@ -1,7 +1,4 @@
-const async = require('async');
 const debug = require('debug')('yardy:index.controller');
-const Favorite = require('../models/favorite');
-const User = require('../models/user');
 const Yardsale = require('../models/yardsale');
 
 exports.index = (req, res, next) => {
@@ -101,29 +98,4 @@ exports.search = (req, res, next) => {
 				});
 			});
 	}
-};
-
-// TODO Finish writing function to POST favorites
-// Handle favorites page on POST
-exports.favorites_post = (req, res, next) => {
-	let favorite = new Favorite({
-		user: req.user._id,
-		yardsale: req.yardsale._id,
-		isChecked: true
-	});
-	// POST favorite object and redirect to the home page.
-	favorite.save((err) => {
-		if (err) {
-			debug(favorite);
-			return next(err);
-		}
-		// Success - go to yardsale list.
-		res.redirect('/');
-	});
-};
-
-// TODO Finish writing function to POST favorites
-// Handle favorites page on DELETE
-exports.favorites_delete = (req, res, next) => {
-
 };

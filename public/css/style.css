@@ -83,7 +83,11 @@ input:invalid {
 	text-decoration: underline;
 }
 
-a:hover.button.is-link {
+button:hover.button.is-link {
+	color: hsl(48, 100%, 67%);
+}
+
+button:hover.button.is-danger {
 	color: hsl(48, 100%, 67%);
 }
 

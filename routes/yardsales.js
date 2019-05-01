@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+const favoriteController = require('../controllers/favoriteController');
 const yardsaleController = require('../controllers/yardsaleController');
 const validators = require('../middlewares/validators');
 
@@ -19,7 +20,7 @@ router.post('/create', validators.validate('yardsale_create_post'), upload.singl
 router.get('/:id', yardsaleController.yardsale_detail);
 
 // POST request to delete Favorite.
-router.post('/:id', yardsaleController.favorites_post);
+router.post('/:id', favoriteController.favorites_post);
 
 // GET request to update Yardsale.
 router.get('/:id/update', yardsaleController.yardsale_update_get);

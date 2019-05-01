@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+const favoriteController = require('../controllers/favoriteController');
 const userController = require('../controllers/userController');
 const validators = require('../middlewares/validators');
 
@@ -54,9 +55,12 @@ router.get('/:id/profilepic', userController.profilepic_get);
 router.post('/:id/profilepic', validators.validate('profilepic_post'), upload.single('profilepic'), userController.profilepic_post);
 
 // GET request for User favorites
-router.get('/:id/favorites', userController.favorites_get);
+router.get('/:id/favorites', favoriteController.favorites_get);
 
 // POST request for User favorites
-router.post('/:id/favorites', userController.favorites_post);
+router.post('/:id/favorites', favoriteController.favorites_post);
+
+// POST request to delete a User's favorite yard sale
+router.post('/:id/favorites', favoriteController.favorites_delete);
 
 module.exports = router;

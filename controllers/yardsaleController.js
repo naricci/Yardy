@@ -176,7 +176,7 @@ exports.yardsale_delete_post = (req, res, next) => {
 				.exec(callback);
 		},
 	}, (err, results) => {
-		if (err) { return next(err); }
+		if (err) return next(err);
 		// Success.
 		if (results.yardsale.length === 1) {
 			// yardsale has books. Render in same way as for GET route.
@@ -187,7 +187,7 @@ exports.yardsale_delete_post = (req, res, next) => {
 			// Delete yardsale object and redirect to the list of yardsales.
 			Yardsale
 				.findByIdAndDelete(req.body.id, function deleteYardsale(err) {
-					if (err) { return next(err); }
+					if (err) return next(err);
 					// Success - go to yardsale list.
 					res.redirect('/yardsales');
 				});
@@ -273,22 +273,4 @@ exports.yardsale_update_post = (req, res, next) => {
 				res.redirect('/yardsales/'+theyardsale._id);
 			});
 	}
-};
-
-// Handle favorites page on POST
-exports.favorites_post = (req, res, next) => {
-	debug(`User ID: ${req.body.userId}`);
-	debug(`Yard Sale ID: ${req.body.yardsale}`);
-	let favorite = new Favorite({
-		user: req.body.userId,
-		yardsale: req.body.yardsale,
-		isChecked: true
-	});
-
-	// POST favorite object and redirect to the home page.
-	favorite.save((err) => {
-		if (err) return next(err);
-		// Success - go to yardsale list.
-		res.redirect('/');
-	});
 };

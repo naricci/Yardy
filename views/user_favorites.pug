@@ -11,6 +11,7 @@ block content
 
 				.column.is-three-quarters
 					include components/map
+					br
 					if favorites_list && isAuthenticated
 						each favorite in favorites_list
 							.box
@@ -18,7 +19,7 @@ block content
 									figure.media-left
 										figure.image.is-128x128
 											a(href='/yardsales/' + favorite.yardsale._id)
-												if (yardsale.imagename !== undefined && favorite.yardsale.imagename !== '' && favorite.yardsale.imagename !== null)
+												if (favorite.yardsale.imagename !== undefined && favorite.yardsale.imagename !== '' && favorite.yardsale.imagename !== null)
 													img(src='https://s3.amazonaws.com/yardy-pics/' + favorite.yardsale.user.username + '/' + favorite.yardsale.imagename alt='yard sale')
 												else
 													img(src='/img/yardsale_poster.jpg' alt='yard sale')
@@ -41,5 +42,13 @@ block content
 											.level-left
 												a.level-item(href='/yardsales/' + favorite.yardsale._id) view details
 									.media-right
-										include components/favorites_button
-
+										form(method='POST' action='')
+											//input(type='hidden' name='yardsale' value=favorite.yardsale._id)
+											//input(type='hidden' name='userId' value=current_user._id)
+											input(type='hidden' name='favorite' required='true' value=favorite._id )
+											button.button.is-danger.is-rounded(type='submit')
+												span.icon
+													i.fas.fa-trash
+					else
+						h1.subtitle.has-text-centered
+							strong.has-text-danger You have not added any yard sales to your favorites yet.
