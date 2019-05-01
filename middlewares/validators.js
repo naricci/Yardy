@@ -38,7 +38,7 @@ exports.validate = (method) => {
 		case 'profilepic_post': {
 			return [
 				// Validate form fields.
-				body('profilepic', 'Image name cannot be longer than 100 characters long.').isLength({ max: 50 }),
+				body('profilepic', 'Image name cannot be longer than 50 characters long.').isLength({ max: 50 }),
 				// Sanitize fields.
 				sanitizeBody('profilepic').toString(),
 			];
@@ -86,6 +86,7 @@ exports.validate = (method) => {
 				body('zipcode', 'Please enter a valid 5-digit zip code.').isPostalCode('US'),
 				body('date', 'Date is not valid.').optional({ checkFalsy: true }).isISO8601()
 				 	.isAfter().withMessage('Please select a date that hasn\'t occurred yet.'),
+				body('imagename', 'Image name cannot be longer than 50 characters long.').isLength({ max: 50 }),
 				// Sanitize fields.
 				sanitizeBody('phone').toInt(),
 				sanitizeBody('zipcode').toString(),

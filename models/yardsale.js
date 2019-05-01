@@ -59,7 +59,8 @@ const YardsaleSchema = new Schema({
 	},
 	imagename: {
 		type: String,
-		required: false
+		required: false,
+		maxlength: 50
 	},
 	user: {
 		type: Schema.Types.ObjectId,
@@ -70,6 +71,8 @@ const YardsaleSchema = new Schema({
 		default: Date.now
 	}
 });
+
+// TODO - Add column/function to generate date + time when document is updated
 
 // Create Index
 YardsaleSchema.index({ 'address':'text', 'city':'text', 'state': 'text', 'zipcode': 'text' });

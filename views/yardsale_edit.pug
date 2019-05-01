@@ -76,8 +76,7 @@ block content
 						.field
 							label.label End Time *
 							.control.has-icons-left
-								input.input#endtime(type='time' name='endtime' placeholder='' value=(undefined ===
-								yardsale ? '' : yardsale.endtime) required)
+								input.input#endtime(type='time' name='endtime' placeholder='' value=(undefined === yardsale ? '' : yardsale.endtime) required)
 								span.icon.is-small.is-left
 									i.fas.fa-clock
 						.field
@@ -89,21 +88,24 @@ block content
 							.control
 								.file
 									label.file-label(for='file')
-										input.file-input#file(type='file' name='imagename')
+										input.file-input#file(type='file' name='imagename' value=(undefined === yardsale ? '' : yardsale.imagename))
 										span.file-cta
 											span.file-icon
 												i.fas.fa-upload
-											span.file-label Upload&mldr;
+											span.file-label Choose image&mldr;
 										span.file-name#filename no file selected
 						.field
-							//label.label Current Image
-							//img#imagePreview(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
-							//yardsale.imagename alt='preview' width='200' height='200')
-							label.label Preview
-							img#imagePreview(width='200' height='200')
+							.columns
+								.column
+									label.label Current Image
+										img(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
+										yardsale.imagename alt='preview' width='200' height='200')
+								.column
+									label.label New Image
+									img#imagePreview(width='200' height='200')
 						.field
 							.control
-								button.button.is-link(type='submit') Submit
+								button.button.is-link(type='submit') Update
 	script(src='/js/select_image_name.js')
 
 

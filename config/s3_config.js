@@ -7,6 +7,7 @@ const s3Client = new AWS.S3({
 	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 	region: process.env.AWS_REGION
 });
+
 const params = {
 	ACL: 'public-read',
 	Body: '',
@@ -16,8 +17,14 @@ const params = {
 	ServerSideEncryption: 'AES256'
 };
 
+let deleteParams = {
+	Bucket: process.env.S3_BUCKET,
+	Key: ''
+};
+
 const S3 = {};
 S3.s3Client = s3Client;
 S3.params = params;
+S3.deleteParams = deleteParams;
 
 module.exports = S3;

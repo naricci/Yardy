@@ -24,7 +24,10 @@ exports.favorites_get = (req, res, next) => {
 			// Successful, so render
 			res.render('user_favorites', {
 				title: 'Manage Favorites',
-				favorites_list: all_favorites
+				favorites_list: all_favorites,
+				// Not sure if I need the two lines below
+				yardsale: all_favorites.yardsale,
+				user: all_favorites.user
 			});
 		});
 };

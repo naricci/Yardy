@@ -200,16 +200,13 @@ exports.yardsale_update_get = (req, res, next) => {
 	Yardsale
 		.findById(req.params.id)
 		.populate('user')
-		.exec()
-		.catch((err, yardsale) => {
+		.exec((err, yardsale) => {
 			if (err) return next(err);
 			if (yardsale === null) { // No results.
 				let err = new Error('Yardsale not found.');
 				err.status = 404;
 				return next(err);
 			}
-		})
-		.then((yardsale) => {
 			// Success.
 			res.render('yardsale_edit', {
 				title: 'Update Yardsale',
@@ -227,6 +224,7 @@ exports.yardsale_update_post = (req, res, next) => {
 
 	const ysFile = req.file;
 	const key = (req.user.username + '/' + ysFile.originalname);
+
 	S3.params.Body = ysFile.buffer;
 	S3.params.ContentType = ysFile.mimetype;
 	S3.params.Key = key;
@@ -261,11 +259,22 @@ exports.yardsale_update_post = (req, res, next) => {
 		Yardsale
 			.findByIdAndUpdate(req.params.id, yardsale, {}, (err, theyardsale) => {
 				if (err) return next(err);
-				// S3 Image upload
+				// Upload yard sale image to S3 bucket
 				S3.s3Client.putObject(S3.params, (err, data) => {
-					if (err) debug('Error: ', err);
+					if (err) debug(err, err.stack);
 					else {
 						debug(`Posting ${S3.params.Key} to ${process.env.S3_BUCKET} in S3`);
+						debug(data);
+					}
+				});
+				// TODO - Figure this shit out
+				var oldKey = (req.user.username + '/' + req.yardsale.imagename);
+				S3.deleteParams.Key = oldKey;
+				// Delete old profile picture from S3 bucket
+				S3.s3Client.deleteObject(S3.deleteParams, (err, data) => {
+					if (err) debug(err, err.stack);
+					else {
+						debug(`Deleting ${S3.deleteParams.Key} in ${process.env.S3_BUCKET} in S3`);
 						debug(data);
 					}
 				});

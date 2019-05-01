@@ -400,15 +400,17 @@ exports.profilepic_get = (req, res, next) => {
 // Handle profilepic page on POST to DB and S3
 exports.profilepic_post = (req, res, next) => {
 	// Extract the validation errors from a request.
-	var errors = validationResult(req);
+	const errors = validationResult(req);
 	// Get a handle on errors.array() array.
-	var errorsArray = errors.array();
+	const errorsArray = errors.array();
 
 	const ysFile = req.file;
 	const key = (req.user.username + '/' + ysFile.originalname);
+	const oldKey = (req.user.username + '/' + req.user.profilepic);
 	S3.params.Body = ysFile.buffer;
 	S3.params.ContentType = ysFile.mimetype;
 	S3.params.Key = key;
+	S3.deleteParams.Key = oldKey;
 
 	let user = new User({
 		profilepic: ysFile.originalname,
@@ -431,11 +433,19 @@ exports.profilepic_post = (req, res, next) => {
 					err.status = 404;
 					return next(err);
 				}
-				// S3 Image upload
+				// Upload new profile pic to S3 bucket
 				S3.s3Client.putObject(S3.params, (err, data) => {
-					if (err) debug('Error: ', err);
+					if (err) debug(err, err.stack);
 					else {
 						debug(`Posting ${S3.params.Key} to ${process.env.S3_BUCKET} in S3`);
+						debug(data);
+					}
+				});
+				// Delete old profile picture from S3
+				S3.s3Client.deleteObject(S3.deleteParams, (err, data) => {
+					if (err) debug(err, err.stack);
+					else {
+						debug(`Deleting ${S3.deleteParams.Key} in ${process.env.S3_BUCKET} in S3`);
 						debug(data);
 					}
 				});
