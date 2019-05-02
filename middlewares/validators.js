@@ -40,7 +40,7 @@ exports.validate = (method) => {
 				// Validate form fields.
 				body('profilepic', 'Image name cannot be longer than 50 characters long.').isLength({ max: 50 }),
 				// Sanitize fields.
-				sanitizeBody('profilepic').toString(),
+				sanitizeBody('*').trim().escape()
 			];
 		}
 		case 'reset_post': {
@@ -51,7 +51,7 @@ exports.validate = (method) => {
 				body('username', 'Username must be between 4-32 characters long.').isLength({ min: 4, max: 32 }),
 				body('email', 'Please enter a valid email address.').isEmail().normalizeEmail(),
 				// Sanitize fields with wildcard operator.
-				sanitizeBody('*').trim().escape(),
+				sanitizeBody('*').trim().escape()
 			];
 		}
 		case 'reset_post_final': {
@@ -62,37 +62,40 @@ exports.validate = (method) => {
 				body('password', 'Password must be between 4-32 characters long.').isLength({ min: 4, max: 32 }).trim(),
 				body('cpassword', 'Password must be between 4-32 characters long.').isLength({ min: 4, max: 32 }).trim(),
 				// Sanitize fields with wildcard operator.
-				sanitizeBody('*').trim().escape(),
+				sanitizeBody('*').trim().escape()
 			];
 		}
 		case 'yardsale_create_post': {
 			return [
 				// Validate fields
 				body('phone', 'Phone number is not valid.').isMobilePhone('en-US').optional(),
+				body('address', 'Address cannot be more than 250 characters.').isLength({ min: 0, max: 250 }).optional(),
+				// .isAlphanumeric('en-US').withMessage('Address not valid.  Please enter a proper alpha-numeric address.'),
+				body('address2', 'Address 2 cannot be more than 250 characters.').isLength({ min: 0, max: 250 }).optional(),
+				body('city', 'City cannot be more than 25 characters.').isLength({ min: 0, max: 25 }).optional(),
+				// body('state', 'Please select a state.').isEmpty(),
 				body('zipcode', 'Please enter a valid 5-digit zip code.').isPostalCode('US'),
 				body('date').optional({ checkFalsy: true }).isISO8601().withMessage('Please enter a valid date')
 					.isAfter().withMessage('Please select a date that hasn\'t occurred yet.'),
 				// // Sanitize fields.
-				// sanitizeBody('phone').trim().escape(),
-				// sanitizeBody('zipcode').toString(),
-				sanitizeBody('date').toDate(),
-				sanitizeBody('imagename').toString(),
+				sanitizeBody('*').trim().escape()
 			];
 		}
 		case 'yardsale_update_post': {
 			return [
 				// Validate form fields.
 				body('phone', 'Phone number is not valid.').isMobilePhone('en-US').optional(),
+				body('address', 'Address cannot be more than 250 characters.').isLength({ min: 0, max: 250 }).optional(),
+				// .isAlphanumeric('en-US').withMessage('Address not valid.  Please enter a proper alpha-numeric address.'),
+				body('address2', 'Address 2 cannot be more than 250 characters.').isLength({ min: 0, max: 250 }).optional(),
+				body('city', 'City cannot be more than 25 characters.').isLength({ min: 0, max: 25 }).optional(),
+				// body('state', 'Please select a state.').isEmpty(),
 				body('zipcode', 'Please enter a valid 5-digit zip code.').isPostalCode('US'),
 				body('date', 'Date is not valid.').optional({ checkFalsy: true }).isISO8601()
 				 	.isAfter().withMessage('Please select a date that hasn\'t occurred yet.'),
 				body('imagename', 'Image name cannot be longer than 50 characters long.').isLength({ max: 50 }),
 				// Sanitize fields.
-				sanitizeBody('phone').toInt(),
-				sanitizeBody('zipcode').toString(),
-				sanitizeBody('date').toDate(),
-				sanitizeBody('imagename').toString(),
-				sanitizeBody('*').trim().escape(),
+				sanitizeBody('*').trim().escape()
 			];
 		}
 	}

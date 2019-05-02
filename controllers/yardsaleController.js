@@ -170,7 +170,7 @@ exports.yardsale_delete_get = (req, res, next) => {
 // Handle Yardsale delete on POST.
 exports.yardsale_delete_post = (req, res, next) => {
 	async.parallel({
-		yardsale: (callback) =>{
+		yardsale: (callback) => {
 			Yardsale
 				.findById(req.body.id)
 				.exec(callback);
@@ -268,7 +268,7 @@ exports.yardsale_update_post = (req, res, next) => {
 					}
 				});
 				// TODO - Figure this shit out
-				var oldKey = (req.user.username + '/' + req.yardsale.imagename);
+				const oldKey = (req.user.username + '/' + req.yardsale.imagename);
 				S3.deleteParams.Key = oldKey;
 				// Delete old profile picture from S3 bucket
 				S3.s3Client.deleteObject(S3.deleteParams, (err, data) => {

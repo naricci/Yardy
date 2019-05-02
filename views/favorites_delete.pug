@@ -1,0 +1,6 @@
+extends layout
+
+block content
+	h1=title
+	h2 Favorite #{removed}
+	p: a(href='/users/'+current_user._id+'/favorites') Back to Favorites

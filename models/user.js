@@ -71,10 +71,15 @@ const UserSchema = new Schema({
 	// 	ref: 'yardsales',
 	// 	required: false
 	// },
+	// favorites: {
+	// 	type: [Schema.Types.ObjectId],
+	// 	ref: 'favorites',
+	// 	required: false
+	// },
 	profilepic: {
 		type: String,
 		required: false,
-		maxlength: 100
+		maxlength: 50
 	},
 	createdDate: {
 		type: Date,

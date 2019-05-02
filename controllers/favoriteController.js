@@ -2,32 +2,33 @@ const async = require('async');
 const debug = require('debug')('yardy:favorite.controller');
 // Models
 const Favorite = require('../models/favorite');
+const Yardsale = require('../models/yardsale');
 
 // TODO Finish writing function to GET favorites
 // Display favorites page on GET
 exports.favorites_get = (req, res, next) => {
 	Favorite
-		.find({})
-		.where('user').equals(req.user._id)
-		.populate('yardsale')
-		// .select('phone address address2 city state zipcode date starttime endtime user description imagename')
-		.exec()
-		.catch((err, all_favorites) => {
+		.find({ user: req.user._id })
+		.populate({
+			path: 'yardsale',
+			model: 'yardsales',
+			populate: {
+				path: 'user',
+				model: 'users'
+			}
+		})
+		.sort([['date', 'ascending']])
+		.exec((err, favorites) => {
 			if (err) return next(err);
-			if (all_favorites === null) {
-				let err = new Error('Favorites not found');
+			if (favorites === null) {
+				let err = new Error('Favorite Yardsales not found');
 				err.status = 404;
 				return next(err);
 			}
-		})
-		.then(all_favorites => {
-			// Successful, so render
+			debug(`Favorite ID: ${favorites}`);
 			res.render('user_favorites', {
 				title: 'Manage Favorites',
-				favorites_list: all_favorites,
-				// Not sure if I need the two lines below
-				yardsale: all_favorites.yardsale,
-				user: all_favorites.user
+				favorites_list: favorites
 			});
 		});
 };
@@ -53,29 +54,48 @@ exports.favorites_post = (req, res, next) => {
 // Handle favorites page on DELETE
 exports.favorites_delete = (req, res, next) => {
 	// Favorite
-	// 	.findByIdAndDelete(req.body.favorite, function deleteFavorite(err) {
+	// 	.remove({ _id: req.params.id }, (err) => {
 	// 		if (err) return next(err);
 	// 		// Success - go to yardsale list.
 	// 		res.redirect('/users/'+req.user._id+'/favorites');
 	// 	});
 
-	async.parallel({
-		favorite: (callback) =>{
-			Favorite
-				.findById(req.body.favorite)
-				.exec(callback);
-		},
-	}, (err) => {
-		if (err) return next(err);
-		// Success.
-		else {
-			// Delete favorite object and redirect to the list of yardsales.
-			Favorite
-				.findByIdAndDelete(req.body.favorite, function deleteFavorite(err) {
-					if (err) return next(err);
-					// Success - go to yardsale list.
-					res.redirect('/users/'+req.user._id+'/favorites');
-				});
-		}
-	});
+	let id = req.body.favId;
+	let removed = '';
+	Favorite
+		.findByIdAndDelete({ _id: id })
+		.exec()
+		.then(() => {
+			debug(`Favorite ${id} has been removed`);
+			removed `Favorite ${id} has been removed`;
+		})
+		.catch((err) => {
+			debug(`Favorite ${id} has not been removed`);
+			removed `Favorite ${id} has not been removed`;
+			return err;
+		})
+		.then(() => {
+			// res.redirect('/users/'+req.user._id+'/favorites');
+			res.redirect('favorites_delete');
+		});
+
+	// async.parallel({
+	// 	favorite: (callback) =>{
+	// 		Favorite
+	// 			.findById(req.body.favorite)
+	// 			.exec(callback);
+	// 	},
+	// }, (err) => {
+	// 	if (err) return next(err);
+	// 	// Success.
+	// 	else {
+	// 		// Delete favorite object and redirect to the list of yardsales.
+	// 		Favorite
+	// 			.findByIdAndDelete(req.body.favorite, function deleteFavorite(err) {
+	// 				if (err) return next(err);
+	// 				// Success - go to yardsale list.
+	// 				res.redirect('/users/'+req.user._id+'/favorites');
+	// 			});
+	// 	}
+	// });
 };

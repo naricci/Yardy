@@ -55,12 +55,13 @@ router.get('/:id/profilepic', userController.profilepic_get);
 router.post('/:id/profilepic', validators.validate('profilepic_post'), upload.single('profilepic'), userController.profilepic_post);
 
 // GET request for User favorites
-router.get('/:id/favorites', favoriteController.favorites_get);
+router.get('/:userId/favorites', favoriteController.favorites_get);
 
 // POST request for User favorites
-router.post('/:id/favorites', favoriteController.favorites_post);
+router.post('/:userId/favorites', favoriteController.favorites_post);
 
 // POST request to delete a User's favorite yard sale
-router.post('/:id/favorites', favoriteController.favorites_delete);
+router.post('/:userId/favorites', favoriteController.favorites_delete);
+// router.post('/:id/favorites/:fav_id?', favoriteController.favorites_delete);
 
 module.exports = router;
