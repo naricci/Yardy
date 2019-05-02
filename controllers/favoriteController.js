@@ -17,7 +17,7 @@ exports.favorites_get = (req, res, next) => {
 				model: 'users'
 			}
 		})
-		.sort([['date', 'ascending']])
+		.sort([['dateAdded', 'ascending']])	// sorts favorites by date/time added
 		.exec((err, favorites) => {
 			if (err) return next(err);
 			if (favorites === null) {

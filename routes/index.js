@@ -13,7 +13,7 @@ router.get('/', indexController.index);
 router.post('/', favoriteController.favorites_post);
 
 // POST request for User favorites
-router.post('/', favoriteController.favorites_delete);
+// router.post('/', favoriteController.favorites_delete);
 
 module.exports = router;
 

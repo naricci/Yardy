@@ -11,10 +11,6 @@ const FavoriteSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'yardsales',
 	},
-	isChecked: {
-		type: Boolean,
-		required: false
-	},
 	dateAdded: {
 		type: Date,
 		default: Date.now

@@ -91,6 +91,11 @@ button:hover.button.is-danger {
 	color: hsl(48, 100%, 67%);
 }
 
+#facebook {
+	background-color: #3768AE;
+	color: #FFFFFF;
+}
+
 /* HERO TITLE */
 h1.title.is-1 {
 	font-family: 'Permanent Marker', cursive;

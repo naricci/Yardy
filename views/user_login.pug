@@ -23,7 +23,19 @@ block content
 						.field
 							.control
 								a(href='/users/reset') Forgot your password?
-						.field
-							.control
-								button.button.is-link#loginBtn(type='submit') Log In
-				.column.is-one-third
+						.columns
+							.column
+								.field
+									.control
+										button.button.is-info#loginBtn(type='submit')
+											span.icon.is-small.is-left
+												i.fas.i.fa.fa-envelope
+											span Log in with Username
+							.column
+								.field
+									.control
+										a.button#facebook(href='/users/auth/facebook')
+											span.icon.is-small
+												i.fab.fa-facebook
+											span Log in with Facebook
+	.column.is-one-third

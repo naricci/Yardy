@@ -454,3 +454,11 @@ exports.profilepic_post = (req, res, next) => {
 			});
 	}
 };
+
+exports.facebook_auth = passport.authenticate('facebook');
+
+exports.facebook_callback = passport.authenticate('facebook', {
+	successRedirect: '/',
+	failureRedirect: '/users/login',
+	failureFlash: true
+});

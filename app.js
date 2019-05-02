@@ -23,6 +23,8 @@ const helmet = require('helmet');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
+// require('/middlewares/passport');
 const User = require('./models/user');
 const flash = require('express-flash');
 const MongoStore = require('connect-mongo')(session);
@@ -108,8 +110,14 @@ app.use(session(sess));
 
 // Initialize Passport and restore authentication state,
 // if any, from the session.
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.initialize((user, done) => {
+	done(null, user.id);
+}));
+app.use(passport.session((id, done) => {
+	User.findById(id, (err, user) => {
+		done(err, user);
+	});
+}));
 
 // Pass isAuthenticated and current_user to all views.
 app.use((req, res, next) => {
@@ -123,6 +131,53 @@ app.use((req, res, next) => {
 	res.locals.current_user = safeUser;
 	next();
 });
+
+passport.use(new FacebookStrategy({
+	clientID: process.env.FACEBOOK_APP_ID,
+	clientSecret: process.env.FACEBOOK_APP_SECRET,
+	callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+	profileURL: process.env.FACEBOOK_PROFILE_URL,
+	profileFields: ['id', 'email', 'name'] // For requesting permissions from Facebook API
+},
+function(accessToken, refreshToken, profile, done) {
+	// User
+	// 	.findOrCreate(..., function(err, user) {
+	// 		if (err) { return done(err); }
+	// 		done(null, user);
+	// 	});
+// find the user in the database based on their facebook id
+	User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+
+		// if there is an error, stop everything and return that
+		// ie an error connecting to the database
+		if (err)
+			return done(err);
+
+		// if the user is found, then log them in
+		if (user) {
+			return done(null, user); // user found, return that user
+		} else {
+			// if there is no user found with that facebook id, create them
+			var newUser = new User();
+
+			// set all of the facebook information in our user model
+			newUser.facebook.id    = profile.id; // set the users facebook id
+			newUser.facebook.accessToken = accessToken; // we will save the token that facebook provides to the user
+			newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
+			newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+
+			// save our user to the database
+			newUser.save(function(err) {
+				if (err)
+					throw err;
+
+				// if successful, return the new user
+				return done(null, newUser);
+			});
+		}
+	});
+}
+));
 
 // Use the Routes
 app.use('/', index);

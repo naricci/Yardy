@@ -76,6 +76,10 @@ const UserSchema = new Schema({
 	// 	ref: 'favorites',
 	// 	required: false
 	// },
+	facebook: {
+		type: Object,
+		required: false
+	},
 	profilepic: {
 		type: String,
 		required: false,
