@@ -111,6 +111,14 @@ block content
 									input.input#zipcode(type='text' name='zipcode' placeholder='zip code' maxlength='5' value=(undefined === user ? '' : user.zipcode))
 									span.icon.is-small.is-left
 										i.fas.fa-map-marker-alt
+							.field
+								label.label Facebook
+								.control
+									a(href='#') Connect to Facebook
+							.field
+								label.label Twitter
+								.control
+									a(href='#') Connect to Twitter
 						if is_update_form && isAuthenticated
 							.field
 								.control

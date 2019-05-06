@@ -7,7 +7,7 @@ const UserSchema = new Schema({
 	username: {
 		type: String,
 		unique: true,
-		required: [true, 'Username is required'],
+		// required: [true, 'Username is required'],
 		minlength: 4,
 		maxlength: 25
 	},
@@ -19,6 +19,12 @@ const UserSchema = new Schema({
 		type: String,
 		required: true
 	},
+	email: {
+		type: String,
+		unique: true,
+		// required: [true, 'Email is required'],
+		maxlength: 25
+	},
 	firstName: {
 		type: String,
 		required: false,
@@ -29,61 +35,52 @@ const UserSchema = new Schema({
 		required: false,
 		maxlength: 25
 	},
-	email: {
-		type: String,
-		unique: true,
-		required: [true, 'Email is required'],
-		maxlength: 25
-	},
 	phone: {
 		type: String,
-		required: false,
 		maxlength: 10
 	},
 	address: {
 		type: String,
-		required: false,
 		maxlength: 250
 	},
 	address2: {
 		type: String,
-		required: false,
 		maxlength: 250
 	},
 	city: {
 		type: String,
-		required: false,
 		maxlength: 25
 	},
 	state: {
 		type: String,
-		required: false,
 		maxlength: 2
 	},
 	zipcode: {
 		type: String,
-		required: false,
 		minlength: 5,
 		maxlength: 5
 	},
-	// yardsales: {
-	// 	type: [Schema.Types.ObjectId],
-	// 	ref: 'yardsales',
-	// 	required: false
-	// },
-	// favorites: {
-	// 	type: [Schema.Types.ObjectId],
-	// 	ref: 'favorites',
-	// 	required: false
-	// },
-	facebook: {
-		type: Object,
-		required: false
-	},
 	profilepic: {
 		type: String,
-		required: false,
 		maxlength: 50
+	},
+	facebook: {
+		id: String,
+		token: String,
+		email: String,
+		name: String
+	},
+	twitter: {
+		id: String,
+		token: String,
+		displayName: String,
+		username: String
+	},
+	google: {
+		id: String,
+		token: String,
+		email: String,
+		name: String
 	},
 	createdDate: {
 		type: Date,
@@ -135,6 +132,8 @@ UserSchema.methods.validatePassword = function(password) {
 UserSchema.methods.passwordsMatch = function(password, passwordConfirm) {
 	return password === passwordConfirm;
 };
+
+UserSchema.statics.findOrCreate = require('find-or-create');
 
 const User = mongoose.model('users', UserSchema);
 

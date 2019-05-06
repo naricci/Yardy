@@ -91,8 +91,18 @@ button:hover.button.is-danger {
 	color: hsl(48, 100%, 67%);
 }
 
+#loginBtn {
+	background-color: hsl(48, 100%, 67%);
+	color: hsl(217, 71%, 53%);
+}
+
 #facebook {
 	background-color: #3768AE;
+	color: #FFFFFF;
+}
+
+#twitter {
+	background-color: #00A3EE;
 	color: #FFFFFF;
 }
 

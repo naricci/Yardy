@@ -2,6 +2,7 @@ const async = require('async');
 const debug = require('debug')('yardy:user.controller');
 const { validationResult } = require('express-validator/check');
 const passport = require('passport');
+const passportFacebook = require('passport-facebook');
 const S3 = require('../config/s3_config');
 const helpers = require('../util/helpers');
 // Models
@@ -456,8 +457,17 @@ exports.profilepic_post = (req, res, next) => {
 };
 
 exports.facebook_auth = passport.authenticate('facebook');
+// exports.facebook_auth = passport.authenticate('facebook', { scope: ['displayName', 'email'] });
 
 exports.facebook_callback = passport.authenticate('facebook', {
+	successRedirect: '/',
+	failureRedirect: '/users/login',
+	failureFlash: true
+});
+
+exports.twitter_auth = passport.authenticate('twitter');
+
+exports.twitter_callback = passport.authenticate('twitter', {
 	successRedirect: '/',
 	failureRedirect: '/users/login',
 	failureFlash: true

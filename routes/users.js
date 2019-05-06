@@ -8,7 +8,7 @@ const userController = require('../controllers/userController');
 const validators = require('../middlewares/validators');
 
 // Handler for all types of requests pointed to '/' route.
-router.all('/', (req, res) => {
+router.all('/', (req, res, next) => {
 	res.redirect('/');
 });
 
@@ -74,5 +74,35 @@ router.get('/auth/facebook', userController.facebook_auth);
 // access was granted, the user will be logged in.  Otherwise,
 // authentication has failed.
 router.get('/auth/facebook/callback', userController.facebook_callback);
+
+// Redirect user to Twitter for authentication.
+router.get('/auth/twitter', userController.twitter_auth);
+
+// Returns Twitter user data through callback.
+router.get('/auth/twitter/callback', userController.twitter_callback);
+
+// locally --------------------------------
+// app.get('/connect/local', function(req, res) {
+// 	res.render('connect-local.ejs', { message: req.flash('loginMessage') });
+// });
+// app.post('/connect/local', passport.authenticate('local-signup', {
+// 	successRedirect : '/profile', // redirect to the secure profile section
+// 	failureRedirect : '/connect/local', // redirect back to the signup page if there is an error
+// 	failureFlash : true // allow flash messages
+// }));
+//
+// // facebook -------------------------------
+//
+// // send to facebook to do the authentication
+// app.get('/connect/facebook', passport.authorize('facebook', {
+// 	scope : ['public_profile', 'email']
+// }));
+//
+// // handle the callback after facebook has authorized the user
+// app.get('/connect/facebook/callback',
+// 	passport.authorize('facebook', {
+// 		successRedirect : '/profile',
+// 		failureRedirect : '/'
+// 	}));
 
 module.exports = router;

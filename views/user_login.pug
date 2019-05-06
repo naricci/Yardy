@@ -27,9 +27,9 @@ block content
 							.column
 								.field
 									.control
-										button.button.is-info#loginBtn(type='submit')
+										button.button#loginBtn(type='submit')
 											span.icon.is-small.is-left
-												i.fas.i.fa.fa-envelope
+												i.fas.fa-envelope
 											span Log in with Username
 							.column
 								.field
@@ -38,4 +38,11 @@ block content
 											span.icon.is-small
 												i.fab.fa-facebook
 											span Log in with Facebook
+							.column
+								.field
+									.control
+										a.button#twitter(href='/users/auth/twitter')
+											span.icon.is-small
+												i.fab.fa-twitter
+											span Log in with Twitter
 	.column.is-one-third
