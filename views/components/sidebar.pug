@@ -45,12 +45,12 @@ nav.panel.is-hidden-mobile
 		span.panel-icon
 			i.fas.fa-map-marker-alt(aria-hidden=true)
 		p #[strong Zip Code:&nbsp;] #{current_user.zipcode}
-	a.panel-block
+	a.panel-block(href='https://facebook.com/'+current_user.facebook.token)
 		span.panel-icon
 			i.fab.fa-facebook(aria-hidden=true)
-		p #[strong Facebook:&nbsp;]
-	a.panel-block
+		p.has-text-info #[strong Facebook:&nbsp;] #{current_user.facebook.email}
+	a.panel-block(href='https://twitter.com/'+current_user.twitter.username)
 		span.panel-icon
 			i.fab.fa-twitter(aria-hidden=true)
-		p #[strong Twitter:&nbsp;]
+		p.has-text-info #[strong Twitter:&nbsp;] #{current_user.twitter.username}
 

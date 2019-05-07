@@ -85,17 +85,17 @@ passport.use(new FacebookStrategy({
 	clientSecret: process.env.FACEBOOK_APP_SECRET,
 	callbackURL: process.env.FACEBOOK_CALLBACK_URL,
 	passReqToCallback : true, // allows us to pass in the req from our route (lets us check if a user is logged in or not)
-	profileFields: ['emails']
+	profileFields: ['email', 'displayName', 'name']
 },
 (req, token, refreshToken, profile, done) => {
-
+	console.log(profile);
 	// asynchronous
-	process.nextTick(function() {
+	process.nextTick(() => {
 
 		// check if the user is already logged in
 		if (!req.user) {
 
-			User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+			User.findOne({ 'facebook.id' : profile.id }, (err, user) => {
 				if (err) return done(err);
 
 				if (user) {
@@ -103,12 +103,10 @@ passport.use(new FacebookStrategy({
 					// if there is a user id already but no token (user was linked at one point and then removed)
 					if (!user.facebook.token) {
 						user.facebook.token = token;
-						user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
+						user.facebook.name  = profile.displayName;
 						user.facebook.email = profile.emails[0].value;
-						// user.firstName = profile.name.givenName;
-						// user.lastName = profile.name.familyName;
 
-						user.save(function(err) {
+						user.save((err) => {
 							if (err) throw err;
 							return done(null, user);
 						});
@@ -121,13 +119,14 @@ passport.use(new FacebookStrategy({
 
 					newUser.facebook.id = profile.id;
 					newUser.facebook.token = token;
-					newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
+					newUser.facebook.name  = profile.displayName;
 					newUser.facebook.email = profile.emails[0].value;
+					// newUser.username = profile.username;
 					newUser.email = profile.emails[0].value;
 					newUser.firstName = profile.name.givenName;
 					newUser.lastName = profile.name.familyName;
 
-					newUser.save(function(err) {
+					newUser.save((err) => {
 						if (err) throw err;
 						return done(null, newUser);
 					});

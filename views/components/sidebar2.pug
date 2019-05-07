@@ -47,8 +47,8 @@ nav.panel.is-hidden-mobile
 	a.panel-block
 		span.panel-icon
 			i.fab.fa-facebook(aria-hidden=true)
-		p #[strong Facebook:&nbsp;]
+		p #[strong Facebook:&nbsp;] #{current_user.facebook.email}
 	a.panel-block
 		span.panel-icon
 			i.fab.fa-twitter(aria-hidden=true)
-		p #[strong Twitter:&nbsp;]
+		p #[strong Twitter:&nbsp;] #{current_user.twitter.username}

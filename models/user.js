@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const crypto = require('crypto');
-var bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcrypt-nodejs');
 
 // Create Schema and Model
 const UserSchema = new Schema({
@@ -64,10 +64,6 @@ const UserSchema = new Schema({
 	profilepic: {
 		type: String,
 		maxlength: 50
-	},
-	local: {
-		email: String,
-		password: String
 	},
 	facebook: {
 		id: String,
