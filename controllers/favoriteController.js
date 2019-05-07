@@ -17,7 +17,6 @@ exports.favorites_get = (req, res, next) => {
 				model: 'users'
 			}
 		})
-		.sort([['dateAdded', 'ascending']])	// sorts favorites by date/time added
 		.exec((err, favorites) => {
 			if (err) return next(err);
 			if (favorites === null) {
@@ -25,7 +24,7 @@ exports.favorites_get = (req, res, next) => {
 				err.status = 404;
 				return next(err);
 			}
-			debug(`Favorite ID: ${favorites}`);
+			// debug(`Favorite ID: ${favorites}`);
 			res.render('user_favorites', {
 				title: 'Manage Favorites',
 				favorites_list: favorites

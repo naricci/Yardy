@@ -19,7 +19,7 @@ block content
 										figure.image.is-128x128
 											a(href='/yardsales/' + favorites.yardsale._id)
 												if (favorites.yardsale.imagename !== undefined && favorites.yardsale.imagename !== '' && favorites.yardsale.imagename !== null)
-													img(src='https://s3.amazonaws.com/yardy-pics/' + favorites.yardsale.user.username + '/' + favorites.yardsale.imagename alt='yard sale')
+													img(src='https://'+process.env.S3_BUCKET+'.s3.amazonaws.com/'+favorites.yardsale.user.username+'/'+favorites.yardsale.imagename alt='favorite yard sale')
 												else
 													img(src='/img/yardsale_poster.jpg' alt='yard sale')
 									.media-content

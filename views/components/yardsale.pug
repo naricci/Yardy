@@ -35,7 +35,6 @@ hr
 h1.subtitle.subTitle #[strong Images]
 figure.image.is-256x256
 	if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
-		img(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
-		yardsale.imagename alt='profile picture')
+		img(src='https://'+process.env.S3_BUCKET+'.s3.amazonaws.com/'+yardsale.user.username+'/'+yardsale.imagename alt='yard sale')
 	else
-		img(src='/img/yardsale_poster.jpg' alt='profile picture' )
+		img(src='/img/yardsale_poster.jpg' alt='yard sale' )

@@ -64,6 +64,10 @@ const UserSchema = new Schema({
 		type: String,
 		maxlength: 50
 	},
+	local: {
+		email: String,
+		password: String
+	},
 	facebook: {
 		id: String,
 		token: String,
@@ -75,12 +79,6 @@ const UserSchema = new Schema({
 		token: String,
 		displayName: String,
 		username: String
-	},
-	google: {
-		id: String,
-		token: String,
-		email: String,
-		name: String
 	},
 	createdDate: {
 		type: Date,

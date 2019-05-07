@@ -4,7 +4,7 @@ nav.panel.is-hidden-mobile
 			a(href='/users/' + user._id +'/profilepic') upload picture
 	.panel-block
 		if (yardsale.user.profilepic !== undefined && yardsale.user.profilepic !== '' && yardsale.user.profilepic !== null)
-			img.is-128x128(src='https://s3.amazonaws.com/yardy-pics/'+yardsale.user.username+'/'+yardsale.user.profilepic alt='profile picture')
+			img.is-128x128(src='https://' + process.env.S3_BUCKET + '.s3.amazonaws.com/' + current_user.username + '/' + current_user.profilepic alt='profile picture')
 		else
 			img.is-128x128(src='/img/blank_profile.png' alt='profile picture')
 	a.panel-block
@@ -48,10 +48,6 @@ nav.panel.is-hidden-mobile
 		span.panel-icon
 			i.fab.fa-facebook(aria-hidden=true)
 		p #[strong Facebook:&nbsp;]
-	a.panel-block
-		span.panel-icon
-			i.fab.fa-google(aria-hidden=true)
-		p #[strong Google:&nbsp;]
 	a.panel-block
 		span.panel-icon
 			i.fab.fa-twitter(aria-hidden=true)

@@ -12,10 +12,9 @@ block content
 							p.image.is-128x128
 								a(href='/yardsales/' + yardsale._id)
 									if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
-										img(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
-										yardsale.imagename alt='profile picture')
+										img(src='https://'+process.env.S3_BUCKET+'.s3.amazonaws.com/'+yardsale.user.username+'/'+yardsale.imagename alt='yard sale')
 									else
-										img(src='/img/yardsale_poster.jpg' alt='profile picture')
+										img(src='/img/yardsale_poster.jpg' alt='yard sale')
 						.media-content
 							.content
 								p Location:&nbsp;&nbsp;
@@ -38,8 +37,7 @@ block content
 						figure.media-left
 							figure.image.is-128x128
 								if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
-									img(src='https://s3.amazonaws.com/yardy-pics/' + yardsale.user.username + '/' +
-									yardsale.imagename alt='yard sale')
+									img(src='https://'+process.env.S3_BUCKET+'.s3.amazonaws.com/'+yardsale.user.username+'/'+yardsale.imagename alt='yard sale')
 								else
 									img(src='/img/yardsale_poster.jpg' alt='yard sale')
 						.media-content

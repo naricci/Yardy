@@ -28,7 +28,6 @@ const helmet = require('helmet');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-// const FacebookStrategy = require('passport-facebook').Strategy;
 require('./middlewares/passport')(passport); // pass passport for configuration
 const User = require('./models/user');
 const flash = require('express-flash');
@@ -44,22 +43,6 @@ const sess = {
 		ttl: 7 * 24 * 60 * 60 // 7 days
 	})
 };
-
-// Facebook Login
-// const fbOptions = {
-// 	clientID: process.env.FACEBOOK_APP_ID,
-// 	clientSecret: process.env.FACEBOOK_APP_SECRET,
-// 	callbackURL: process.env.FACEBOOK_CALLBACK_URL,
-// 	passReqToCallback : true, // allows us to pass in the req from our route (lets us check if a user is logged in or not)
-// 	// profileFields: ['displayName', 'emails']
-// };
-// const fbCallback = function(accessToken, refreshToken, profile, done) {
-// 	console.log(accessToken, refreshToken, profile);
-// 	User.findOrCreate({ name: profile.displayName }, { name: profile.displayName, userid: profile.id }, function(err, user) {
-// 		if (err) return done(err);
-// 		done(null, user);
-// 	});
-// };
 
 // Initialize Express App
 const app = express();
@@ -81,8 +64,6 @@ passport.use(new LocalStrategy(
 		});
 	}
 ));
-
-// passport.use(new FacebookStrategy(fbOptions, fbCallback));
 
 // Configure Passport authenticated session persistence.
 passport.serializeUser((user, done) => {
@@ -176,6 +157,5 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
 	return debug(`Heroku listening on ${ PORT }`);
 });
-
 
 module.exports = app;

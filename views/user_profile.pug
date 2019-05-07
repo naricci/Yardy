@@ -18,10 +18,9 @@ block content
 										figure.image.is-128x128
 											a(href='/yardsales/'+yardsale._id)
 												if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
-													img(src='https://s3.amazonaws.com/yardy-pics/' + user.username + '/' +
-													yardsale.imagename alt='preview')
+													img(src='https://'+process.env.S3_BUCKET+'.s3.amazonaws.com/'+user.username+'/'+yardsale.imagename alt='yard sale')
 												else
-													img(src='/img/yardsale_poster.jpg' alt='preview')
+													img(src='/img/yardsale_poster.jpg' alt='yard sale')
 									.media-content
 										.content
 											p
