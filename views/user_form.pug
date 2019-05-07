@@ -111,14 +111,28 @@ block content
 									input.input#zipcode(type='text' name='zipcode' placeholder='zip code' maxlength='5' value=(undefined === user ? '' : user.zipcode))
 									span.icon.is-small.is-left
 										i.fas.fa-map-marker-alt
-							.field
-								label.label Facebook
-								.control
-									a(href='#') Connect to Facebook
-							.field
-								label.label Twitter
-								.control
-									a(href='#') Connect to Twitter
+							if user.facebook.token
+								.field
+									label.label Facebook
+									.control
+										p #{user.facebook.email}
+											a(href='/users/unlink/facebook') Unlink
+							else
+								.field
+									label.label Facebook
+									.control
+										a(href='/users/connect/facebook') Connect to Facebook
+							if user.twitter.token
+								.field
+									label.label Twitter
+									.control
+										p #{user.twitter.username}
+											a(href='/users/unlink/twitter') Unlink
+							else
+								.field
+									label.label Twitter
+									.control
+										a(href='/users/connect/twitter') Connect to Twitter
 						if is_update_form && isAuthenticated
 							.field
 								.control
@@ -126,5 +140,20 @@ block content
 						if !is_update_form
 							.field
 								.control
-									button.button.is-link(type='submit') Register
+									button.button.is-link(type='submit')
+										span.icon.is-small
+											i.fas.fa-sign-in-alt
+										span Register
+							hr
+							p.has-text-centered Or sign up with a social media account!
+							hr
+							a.button#facebook(href='/users/auth/facebook')
+								span.icon.is-small
+									i.fab.fa-facebook
+								span Sign up with Facebook
+							.divider
+							a.button#twitter(href='/users/auth/twitter')
+								span.icon.is-small
+									i.fab.fa-twitter
+								span Sign up with Twitter
 				.column.is-one-quarter

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const crypto = require('crypto');
+var bcrypt = require('bcrypt-nodejs');
 
 // Create Schema and Model
 const UserSchema = new Schema({
@@ -13,11 +14,11 @@ const UserSchema = new Schema({
 	},
 	salt: {
 		type: String,
-		required: true
+		// required: true
 	},
 	hash: {
 		type: String,
-		required: true
+		// required: true
 	},
 	email: {
 		type: String,
@@ -131,7 +132,18 @@ UserSchema.methods.passwordsMatch = function(password, passwordConfirm) {
 	return password === passwordConfirm;
 };
 
-UserSchema.statics.findOrCreate = require('find-or-create');
+
+// generating a hash
+UserSchema.methods.generateHash = function(password) {
+	return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+// checking if password is valid
+UserSchema.methods.validPassword = function(password) {
+	return bcrypt.compareSync(password, this.local.password);
+};
+
+// UserSchema.statics.findOrCreate = require('find-or-create');
 
 const User = mongoose.model('users', UserSchema);
 

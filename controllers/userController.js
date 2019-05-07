@@ -456,8 +456,7 @@ exports.profilepic_post = (req, res, next) => {
 	}
 };
 
-exports.facebook_auth = passport.authenticate('facebook');
-// exports.facebook_auth = passport.authenticate('facebook', { scope: ['displayName', 'email'] });
+exports.facebook_auth = passport.authenticate('facebook', { scope : 'email' });
 
 exports.facebook_callback = passport.authenticate('facebook', {
 	successRedirect: '/',
@@ -465,10 +464,62 @@ exports.facebook_callback = passport.authenticate('facebook', {
 	failureFlash: true
 });
 
-exports.twitter_auth = passport.authenticate('twitter');
+exports.twitter_auth = passport.authenticate('twitter', { scope : 'email' });
 
 exports.twitter_callback = passport.authenticate('twitter', {
 	successRedirect: '/',
 	failureRedirect: '/users/login',
 	failureFlash: true
 });
+
+exports.connect_local_get = (req, res, next) => {
+	res.render('/users/connect_local', { message: req.flash('loginMessage') });
+};
+
+exports.connect_local_post = passport.authenticate('local-signup', {
+	successRedirect: '/', // redirect to the secure profile section
+	failureRedirect: '/users/connect_local', // redirect back to the signup page if there is an error
+	failureFlash: true // allow flash messages
+});
+
+exports.connect_facebook_get = passport.authorize('facebook', { scope : ['email'] });
+
+exports.connect_facebook_callback = passport.authorize('facebook', {
+	successRedirect: '/',
+	failureRedirect: '/users/connect_local'
+});
+
+exports.connect_twitter_get = passport.authorize('twitter', { scope : ['email'] });
+
+exports.connect_twitter_callback = passport.authorize('facebook', {
+	successRedirect: '/',
+	failureRedirect: '/users/connect_local'
+
+});
+
+exports.unlink_local_get = (req, res, next) => {
+	var user = req.user;
+	user.local.email = undefined;
+	user.local.password = undefined;
+
+	user.save(function(err) {
+		res.redirect('/');
+	});
+};
+
+exports.unlink_facebook_get = (req, res, next) => {
+	var user            = req.user;
+	user.facebook.token = undefined;
+	user.save(function(err) {
+		res.redirect('/');
+	});
+};
+
+exports.unlink_twitter_get = (req, res, next) => {
+	var user           = req.user;
+	user.twitter.token = undefined;
+	user.save(function(err) {
+		res.redirect('/');
+	});
+};
+

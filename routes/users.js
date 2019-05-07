@@ -64,45 +64,38 @@ router.post('/:userId/favorites', favoriteController.favorites_post);
 router.post('/:userId/favorites', favoriteController.favorites_delete);
 // router.post('/:id/favorites/:fav_id?', favoriteController.favorites_delete);
 
-// Redirect the user to Facebook for authentication.  When complete,
-// Facebook will redirect the user back to the application at
-//     /auth/facebook/callback
+// Redirect the user to Facebook for authentication.
 router.get('/auth/facebook', userController.facebook_auth);
 
-// Facebook will redirect the user to this URL after approval.  Finish the
-// authentication process by attempting to obtain an access token.  If
-// access was granted, the user will be logged in.  Otherwise,
-// authentication has failed.
+// Facebook will redirect the user to this URL after approval.
 router.get('/auth/facebook/callback', userController.facebook_callback);
 
 // Redirect user to Twitter for authentication.
 router.get('/auth/twitter', userController.twitter_auth);
 
-// Returns Twitter user data through callback.
+// Twitter will redirect the user to this URL after approval.
 router.get('/auth/twitter/callback', userController.twitter_callback);
 
-// locally --------------------------------
-// app.get('/connect/local', function(req, res) {
-// 	res.render('connect-local.ejs', { message: req.flash('loginMessage') });
-// });
-// app.post('/connect/local', passport.authenticate('local-signup', {
-// 	successRedirect : '/profile', // redirect to the secure profile section
-// 	failureRedirect : '/connect/local', // redirect back to the signup page if there is an error
-// 	failureFlash : true // allow flash messages
-// }));
-//
-// // facebook -------------------------------
-//
-// // send to facebook to do the authentication
-// app.get('/connect/facebook', passport.authorize('facebook', {
-// 	scope : ['public_profile', 'email']
-// }));
-//
-// // handle the callback after facebook has authorized the user
-// app.get('/connect/facebook/callback',
-// 	passport.authorize('facebook', {
-// 		successRedirect : '/profile',
-// 		failureRedirect : '/'
-// 	}));
+// Connect Accounts when already logged in Routes
+router.get('/connect/local', function(req, res) {
+	res.render('connect-local.ejs', { message: req.flash('loginMessage') });
+});
+
+router.post('/connect/local', userController.connect_local_post);
+
+router.get('/connect/facebook', userController.connect_facebook_get);
+
+router.get('/connect/facebook/callback', userController.connect_facebook_callback);
+
+router.get('/connect/twitter', userController.connect_twitter_get);
+
+router.get('/connect/twitter/callback', userController.connect_twitter_callback);
+
+// Unlink Accounts Routes
+router.get('/unlink/local', userController.unlink_local_get);
+
+router.get('/unlink/facebook', userController.unlink_facebook_get);
+
+router.get('/unlink/twitter', userController.unlink_twitter_get);
 
 module.exports = router;

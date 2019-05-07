@@ -28,7 +28,8 @@ const helmet = require('helmet');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-require('./middlewares/passport')(passport); // pass passport for configuration
+const FacebookStrategy = require('passport-facebook').Strategy;
+const TwitterStrategy = require('passport-twitter').Strategy;
 const User = require('./models/user');
 const flash = require('express-flash');
 const MongoStore = require('connect-mongo')(session);
@@ -47,7 +48,21 @@ const sess = {
 // Initialize Express App
 const app = express();
 
-// Configure the local strategy for use by Passport.
+// Configure Passport authenticated session persistence.
+passport.serializeUser((user, done) => {
+	done(null, user._id);
+});
+
+passport.deserializeUser((id, done) => {
+	User.findById(id, (err, user) => {
+		if (err) {
+			return done(err);
+		}
+		done(null, user);
+	});
+});
+
+// // Configure the local strategy for use by Passport.
 passport.use(new LocalStrategy(
 	(username, password, done) => {
 		User.findOne({ username: username }, (err, user) => {
@@ -65,19 +80,147 @@ passport.use(new LocalStrategy(
 	}
 ));
 
-// Configure Passport authenticated session persistence.
-passport.serializeUser((user, done) => {
-	done(null, user._id);
-});
+passport.use(new FacebookStrategy({
+	clientID: process.env.FACEBOOK_APP_ID,
+	clientSecret: process.env.FACEBOOK_APP_SECRET,
+	callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+	passReqToCallback : true, // allows us to pass in the req from our route (lets us check if a user is logged in or not)
+	profileFields: ['emails']
+},
+(req, token, refreshToken, profile, done) => {
 
-passport.deserializeUser((id, done) => {
-	User.findById(id, (err, user) => {
-		if (err) {
-			return done(err);
+	// asynchronous
+	process.nextTick(function() {
+
+		// check if the user is already logged in
+		if (!req.user) {
+
+			User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+				if (err) return done(err);
+
+				if (user) {
+
+					// if there is a user id already but no token (user was linked at one point and then removed)
+					if (!user.facebook.token) {
+						user.facebook.token = token;
+						user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
+						user.facebook.email = profile.emails[0].value;
+						// user.firstName = profile.name.givenName;
+						// user.lastName = profile.name.familyName;
+
+						user.save(function(err) {
+							if (err) throw err;
+							return done(null, user);
+						});
+					}
+
+					return done(null, user); // user found, return that user
+				} else {
+					// if there is no user, create them
+					var newUser = new User();
+
+					newUser.facebook.id = profile.id;
+					newUser.facebook.token = token;
+					newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
+					newUser.facebook.email = profile.emails[0].value;
+					newUser.email = profile.emails[0].value;
+					newUser.firstName = profile.name.givenName;
+					newUser.lastName = profile.name.familyName;
+
+					newUser.save(function(err) {
+						if (err) throw err;
+						return done(null, newUser);
+					});
+				}
+			});
+
+		} else {
+			// user already exists and is logged in, we have to link accounts
+			var user = req.user; // pull the user out of the session
+
+			user.facebook.id = profile.id;
+			user.facebook.token = token;
+			user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
+			user.facebook.email = profile.emails[0].value;
+
+			user.save(function(err) {
+				if (err) throw err;
+				return done(null, user);
+			});
 		}
-		done(null, user);
 	});
-});
+}));
+
+passport.use(new TwitterStrategy({
+
+	consumerKey     : process.env.TWITTER_API_KEY,
+	consumerSecret  : process.env.TWITTER_API_SECRET_KEY,
+	callbackURL     : process.env.TWITTER_CALLBACK_URL,
+	passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
+
+},
+function(req, token, tokenSecret, profile, done) {
+
+	// asynchronous
+	process.nextTick(function() {
+
+		// check if the user is already logged in
+		if (!req.user) {
+
+			User.findOne({ 'twitter.id' : profile.id }, function(err, user) {
+				if (err)
+					return done(err);
+
+				if (user) {
+					// if there is a user id already but no token (user was linked at one point and then removed)
+					if (!user.twitter.token) {
+						user.twitter.token       = token;
+						user.twitter.username    = profile.username;
+						user.twitter.displayName = profile.displayName;
+
+						user.save(function(err) {
+							if (err)
+								throw err;
+							return done(null, user);
+						});
+					}
+
+					return done(null, user); // user found, return that user
+				} else {
+					// if there is no user, create them
+					var newUser                 = new User();
+
+					newUser.twitter.id          = profile.id;
+					newUser.twitter.token       = token;
+					newUser.twitter.username    = profile.username;
+					newUser.twitter.displayName = profile.displayName;
+
+					newUser.save(function(err) {
+						if (err)
+							throw err;
+						return done(null, newUser);
+					});
+				}
+			});
+
+		} else {
+			// user already exists and is logged in, we have to link accounts
+			var user                 = req.user; // pull the user out of the session
+
+			user.twitter.id          = profile.id;
+			user.twitter.token       = token;
+			user.twitter.username    = profile.username;
+			user.twitter.displayName = profile.displayName;
+
+			user.save(function(err) {
+				if (err)
+					throw err;
+				return done(null, user);
+			});
+		}
+	});
+}));
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -110,14 +253,16 @@ app.use(session(sess));
 
 // Initialize Passport and restore authentication state,
 // if any, from the session.
-app.use(passport.initialize((user, done) => {
-	done(null, user.id);
-}));
-app.use(passport.session((id, done) => {
-	User.findById(id, (err, user) => {
-		done(err, user);
-	});
-}));
+// app.use(passport.initialize((user, done) => {
+// 	done(null, user.id);
+// }));
+// app.use(passport.session((id, done) => {
+// 	User.findById(id, (err, user) => {
+// 		done(err, user);
+// 	});
+// }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Pass isAuthenticated and current_user to all views.
 app.use((req, res, next) => {
