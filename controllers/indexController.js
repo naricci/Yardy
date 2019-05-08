@@ -44,7 +44,6 @@ exports.search = (req, res, next) => {
 
 	if (params !== null && params !== '' &&
 			params !== undefined && req.method === 'GET') {
-
 		debug('Searching for yard sales.');
 
 		Yardsale
@@ -91,8 +90,8 @@ exports.search = (req, res, next) => {
 			.catch((err) => {
 				if (err) return next(err);
 			})
-			.then((err, list_yardsales) => {
-				// Successful, so render
+			.then((list_yardsales) => {
+			// Successful, so render
 				res.render('index', {
 					title: 'Yardy',
 					yardsale_list: list_yardsales
