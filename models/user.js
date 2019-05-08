@@ -75,7 +75,8 @@ const UserSchema = new Schema({
 		id: String,
 		token: String,
 		displayName: String,
-		username: String
+		username: String,
+		email: String
 	},
 	createdDate: {
 		type: Date,
@@ -139,7 +140,7 @@ UserSchema.methods.validPassword = function(password) {
 	return bcrypt.compareSync(password, this.local.password);
 };
 
-// UserSchema.statics.findOrCreate = require('find-or-create');
+UserSchema.statics.findOrCreate = require('find-or-create');
 
 const User = mongoose.model('users', UserSchema);
 
