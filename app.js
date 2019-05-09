@@ -1,6 +1,10 @@
 // Use dotenv to read .env vars into Node
 require('dotenv').config();
 
+// Compression/Security Packages
+const compression = require('compression');
+const helmet = require('helmet');
+
 const createError = require('http-errors');
 const express = require('express');
 const favicon = require('serve-favicon');
@@ -19,10 +23,6 @@ const PORT = process.env.PORT || 5000;
 const index = require('./routes/index');
 const users = require('./routes/users');
 const yardsales = require('./routes/yardsales');
-
-// Compression/Security Packages
-const compression = require('compression');
-const helmet = require('helmet');
 
 // Authentication Packages
 const session = require('express-session');

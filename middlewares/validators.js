@@ -1,7 +1,7 @@
 const { body, check } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
-exports.validate = (method) => {
+const validators = (method) => {
 	switch (method) {
 		case 'register_post': {
 			return [
@@ -100,3 +100,5 @@ exports.validate = (method) => {
 		}
 	}
 };
+
+module.exports = validators;
