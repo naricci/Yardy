@@ -1,9 +1,9 @@
+const debug = require('debug')('yardy:passport');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
 const User = require('../models/user');
-const debug = require('debug')('yardy:passport');
 
 // Configure the local strategy for use by Passport.
 passport.use(new LocalStrategy(

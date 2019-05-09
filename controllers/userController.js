@@ -2,7 +2,6 @@ const async = require('async');
 const debug = require('debug')('yardy:user.controller');
 const { validationResult } = require('express-validator/check');
 const passport = require('passport');
-const passportFacebook = require('passport-facebook');
 const S3 = require('../config/s3_config');
 const helpers = require('../util/helpers');
 // Models
@@ -42,7 +41,7 @@ exports.user_profile = (req, res, next) => {
 // Display login form on GET.
 exports.login_get = [
 	helpers.isAlreadyLoggedIn,
-	(req, res, next) => {
+	(req, res) => {
 		let messages = helpers.extractFlashMessages(req);
 		res.render('user_login', {
 			title: 'Login',
@@ -52,7 +51,7 @@ exports.login_get = [
 ];
 
 // Display warning page on GET.
-exports.warning = (req, res, next) => {
+exports.warning = (req, res) => {
 	let messages = helpers.extractFlashMessages(req);
 	res.render('user_warning', {
 		title: 'Sorry!',
@@ -68,9 +67,9 @@ exports.login_post = passport.authenticate('local', {
 });
 
 // Handle logout on GET.
-exports.logout_get = (req, res, next) => {
+exports.logout_get = (req, res) => {
 	req.logout();
-	req.session.destroy((err) => {
+	req.session.destroy(() => {
 		res.redirect('/');
 	});
 };
@@ -79,7 +78,7 @@ exports.logout_get = (req, res, next) => {
 exports.register_get = [
 	helpers.isAlreadyLoggedIn,
 	// Continue processing.
-	(req, res, next) => {
+	(req, res) => {
 		res.render('user_form', {
 			title: 'Create User'
 		});
@@ -114,7 +113,6 @@ exports.register_post = (req, res, next) => {
 			user: user,
 			errors: errorsArray
 		});
-		return;
 	} else {
 		// Passwords match. Set password.
 		user.setPassword(req.body.password);
@@ -160,13 +158,16 @@ exports.register_post = (req, res, next) => {
 exports.update_get = (req, res, next) => {
 	User
 		.findById(req.params.id)
-		.exec((err, found_user) => {
+		.exec()
+		.catch((err, found_user) => {
 			if (err) return next(err);
 			if (found_user === null) {
 				let err = new Error('User not found');
 				err.status = 404;
 				return next(err);
 			}
+		})
+		.then((found_user) => {
 			// Successful, so render
 			res.render('user_form', {
 				title: 'Update Profile',
@@ -247,7 +248,7 @@ exports.update_post = (req, res, next) => {
 // Display reset password form on GET.
 exports.reset_get = [
 	helpers.isAlreadyLoggedIn,
-	(req, res, next) => {
+	(req, res) => {
 		res.render('user_reset', {
 			title: 'Reset Password',
 			is_first_step: true
@@ -277,7 +278,6 @@ exports.reset_post = (req, res, next) => {
 			user: user, // Pass user object created with user-entered values.
 			errors: errorsArray
 		});
-		return;
 	} else {
 		// Data from form is valid.
 
@@ -302,12 +302,7 @@ exports.reset_post = (req, res, next) => {
 							title: 'Reset Password',
 							is_first_step: true,
 							user: user, // Pass user object created with user-entered values.
-							errors: [
-								{
-									msg:
-										'The user does not exist or credentials did not match a user. Try again.'
-								}
-							]
+							errors: [{ msg: 'The user does not exist or credentials did not match a user. Try again.' }]
 						});
 					}
 				}
@@ -344,10 +339,8 @@ exports.reset_post_final = (req, res, next) => {
 			user: user, // We need to pass user back to form because we will need user._id in the next step.
 			errors: errorsArray
 		});
-		return;
-	} else {
-		// Data from form is valid.
 
+	} else {
 		// Passwords match. Set password.
 		user.setPassword(req.body.password);
 
@@ -365,7 +358,7 @@ exports.reset_post_final = (req, res, next) => {
 						.exec(callback);
 				}
 			],
-			(err, theuser) => {
+			(err) => {
 				if (err) return next(err);
 				// Success, redirect to login page and show a flash message.
 				req.flash(
@@ -383,13 +376,16 @@ exports.profilepic_get = (req, res, next) => {
 	debug(`Getting user ${req.user.username}'s profilepic page`);
 	User
 		.findById(req.params.id)
-		.exec((err, found_user) => {
+		.exec()
+		.catch((err, found_user) => {
 			if (err) return next(err);
 			if (found_user == null) {
 				let err = new Error('User not found');
 				err.status = 404;
 				return next(err);
 			}
+		})
+		.then((found_user) => {
 			// Successful, so render
 			res.render('user_profilepic', {
 				title: 'Update Profile Pic',
@@ -456,7 +452,7 @@ exports.profilepic_post = (req, res, next) => {
 	}
 };
 
-exports.facebook_auth = passport.authenticate('facebook', { scope : 'email' });
+exports.facebook_auth = passport.authenticate('facebook', { scope : ['email'] });
 
 exports.facebook_callback = passport.authenticate('facebook', {
 	successRedirect: '/',
@@ -464,7 +460,7 @@ exports.facebook_callback = passport.authenticate('facebook', {
 	failureFlash: true
 });
 
-exports.twitter_auth = passport.authenticate('twitter', { scope : 'email' });
+exports.twitter_auth = passport.authenticate('twitter', { scope : ['email'] });
 
 exports.twitter_callback = passport.authenticate('twitter', {
 	successRedirect: '/',
@@ -472,7 +468,7 @@ exports.twitter_callback = passport.authenticate('twitter', {
 	failureFlash: true
 });
 
-exports.connect_local_get = (req, res, next) => {
+exports.connect_local_get = (req, res) => {
 	res.render('/users/connect_local', { message: req.flash('loginMessage') });
 };
 
@@ -494,31 +490,29 @@ exports.connect_twitter_get = passport.authorize('twitter', { scope : ['email'] 
 exports.connect_twitter_callback = passport.authorize('facebook', {
 	successRedirect: '/',
 	failureRedirect: '/users/connect_local'
-
 });
 
-exports.unlink_local_get = (req, res, next) => {
-	var user = req.user;
+exports.unlink_local_get = (req, res) => {
+	const user = req.user;
 	user.local.email = undefined;
 	user.local.password = undefined;
-
-	user.save(function(err) {
+	user.save(() => {
 		res.redirect('/');
 	});
 };
 
-exports.unlink_facebook_get = (req, res, next) => {
-	var user            = req.user;
+exports.unlink_facebook_get = (req, res) => {
+	const user = req.user;
 	user.facebook.token = undefined;
-	user.save(function(err) {
+	user.save(() => {
 		res.redirect('/');
 	});
 };
 
-exports.unlink_twitter_get = (req, res, next) => {
-	var user           = req.user;
+exports.unlink_twitter_get = (req, res) => {
+	const user = req.user;
 	user.twitter.token = undefined;
-	user.save(function(err) {
+	user.save(() => {
 		res.redirect('/');
 	});
 };

@@ -75,9 +75,7 @@ router.get('/auth/twitter', userController.twitter_auth);
 router.get('/auth/twitter/callback', userController.twitter_callback);
 
 // Connect Accounts when already logged in Routes
-router.get('/connect/local', function(req, res) {
-	res.render('connect-local.ejs', { message: req.flash('loginMessage') });
-});
+router.get('/connect/local', userController.connect_local_get);
 
 router.post('/connect/local', userController.connect_local_post);
 

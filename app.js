@@ -1,34 +1,28 @@
-// Use dotenv to read .env vars into Node
 require('dotenv').config();
-
-// Compression/Security Packages
+require('./config/db_config');
+require('./config/passport_config');
 const compression = require('compression');
-const helmet = require('helmet');
-
+const cookieParser = require('cookie-parser');
 const createError = require('http-errors');
+const debug = require('debug')('yardy:app');
 const express = require('express');
 const favicon = require('serve-favicon');
-const path = require('path');
-const cookieParser = require('cookie-parser');
+const flash = require('express-flash');
+const helmet = require('helmet');
 const logger = require('morgan');
-const debug = require('debug')('yardy:app');
-
-// Require Mongoose Configuration
-require('./config/db_config');
-
-// For Heroku
+const passport = require('passport');
+const path = require('path');
 const PORT = process.env.PORT || 5000;
+const serveStatic = require('serve-static');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 // Routes
 const index = require('./routes/index');
 const users = require('./routes/users');
 const yardsales = require('./routes/yardsales');
 
-// Authentication Packages
-const session = require('express-session');
-const passport = require('passport');
-const flash = require('express-flash');
-const MongoStore = require('connect-mongo')(session);
+// Session Configuration
 const sess = {
 	secret: 'yardy-session-secret',
 	cookie: {},
@@ -41,17 +35,13 @@ const sess = {
 	})
 };
 
-// Require Passport Strategies
-require('./config/passport_config');
-
 // Initialize Express App
 const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-// used to display the json in pretty print format
-app.set('json spaces', 2);
+app.set('json spaces', 4);
 
 // trust first proxy for using cookies with HTTPS
 if (app.get('env') === 'production') {
@@ -64,23 +54,19 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
 // Compress all routes
 app.use(compression());
 app.use(helmet());
-
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(serveStatic(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public', 'icons', 'favicon.ico')));
-
 // Authentication related middleware.
 app.use(flash());
 app.use(session(sess));
-
 // Initialize Passport and restore authentication state,
 // if any, from the session.
 app.use(passport.initialize());
 app.use(passport.session());
-
 // Pass isAuthenticated and current_user to all views.
 app.use((req, res, next) => {
 	res.locals.isAuthenticated = req.isAuthenticated();
