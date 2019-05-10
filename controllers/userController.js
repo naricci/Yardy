@@ -180,9 +180,9 @@ exports.update_get = (req, res, next) => {
 // Handle update on POST.
 exports.update_post = (req, res, next) => {
 	// Extract the validation errors from a request.
-	let errors = validationResult(req);
+	var errors = validationResult(req);
 	// Get a handle on errors.array() array.
-	let errorsArray = errors.array();
+	var errorsArray = errors.array();
 
 	// Create a user object with escaped and trimmed data and the old _id!
 	let user = new User({
@@ -284,7 +284,8 @@ exports.reset_post = (req, res, next) => {
 		// Check if User exists.
 		User
 			.findOne({ username: req.body.username, email: req.body.email })
-			.exec(
+			.exec()
+			.then(
 				(err, found_user) => {
 					if (err) return next(err);
 					if (found_user) {
@@ -379,7 +380,7 @@ exports.profilepic_get = (req, res, next) => {
 		.exec()
 		.catch((err, found_user) => {
 			if (err) return next(err);
-			if (found_user == null) {
+			if (found_user === null) {
 				let err = new Error('User not found');
 				err.status = 404;
 				return next(err);
@@ -430,14 +431,7 @@ exports.profilepic_post = (req, res, next) => {
 					err.status = 404;
 					return next(err);
 				}
-				// Upload new profile pic to S3 bucket
-				S3.s3Client.putObject(S3.params, (err, data) => {
-					if (err) debug(err, err.stack);
-					else {
-						debug(`Posting ${S3.params.Key} to ${process.env.S3_BUCKET} in S3`);
-						debug(data);
-					}
-				});
+
 				// Delete old profile picture from S3
 				S3.s3Client.deleteObject(S3.deleteParams, (err, data) => {
 					if (err) debug(err, err.stack);
@@ -446,6 +440,16 @@ exports.profilepic_post = (req, res, next) => {
 						debug(data);
 					}
 				});
+
+				// Upload new profile pic to S3 bucket
+				S3.s3Client.putObject(S3.params, (err, data) => {
+					if (err) debug(err, err.stack);
+					else {
+						debug(`Posting ${S3.params.Key} to ${process.env.S3_BUCKET} in S3`);
+						debug(data);
+					}
+				});
+
 				// Successful - redirect to user detail page.
 				res.redirect('/users/' + theuser._id);
 			});

@@ -26,11 +26,11 @@ const validators = (method) => {
 					 .isAlpha().withMessage('Last Name must strictly contain letters.').optional(),
 				body('phone', 'Phone number is not valid.').isMobilePhone('en-US').optional(),
 				body('address', 'Address cannot be more than 250 characters.').isLength({ min: 0, max: 250 }).optional(),
-				// .isAlphanumeric('en-US').withMessage('Address not valid.  Please enter a proper alpha-numeric address.'),
 				body('address2', 'Address 2 cannot be more than 250 characters.').isLength({ min: 0, max: 250 }).optional(),
 				body('city', 'City cannot be more than 25 characters.').isLength({ min: 0, max: 25 }).optional(),
 				// body('state', 'Please select a state.').isEmpty(),
-				body('zipcode', 'Zip Code is not valid.').isPostalCode('US').optional(),
+				// TODO - Fix Zip Code validation
+				body('zipcode', 'Zip code is not valid.').isPostalCode('US').optional(),
 				// Sanitize fields with wildcard operator.
 				sanitizeBody('*').trim().escape()
 			];
@@ -70,13 +70,16 @@ const validators = (method) => {
 				// Validate fields
 				body('phone', 'Phone number is not valid.').isMobilePhone('en-US').optional(),
 				body('address', 'Address cannot be more than 250 characters.').isLength({ min: 0, max: 250 }).optional(),
-				// .isAlphanumeric('en-US').withMessage('Address not valid.  Please enter a proper alpha-numeric address.'),
 				body('address2', 'Address 2 cannot be more than 250 characters.').isLength({ min: 0, max: 250 }).optional(),
-				body('city', 'City cannot be more than 25 characters.').isLength({ min: 0, max: 25 }).optional(),
-				// body('state', 'Please select a state.').isEmpty(),
-				body('zipcode', 'Please enter a valid 5-digit zip code.').isPostalCode('US'),
+				// body('city', 'City cannot be more than 25 characters.').isLength({ min: 2, max: 25 }).trim(),
+				body('state', 'Please select a state.').isUppercase(),
+				// TODO - Fix Zip Code validation
+				// body('zipcode', 'Zip code is not valid.').isPostalCode('US').trim(),
+				// body('zipcode', 'Zip code is not valid.').isLength({ min: 5, max: 5 }).trim(),
 				body('date').optional({ checkFalsy: true }).isISO8601().withMessage('Please enter a valid date')
 					.isAfter().withMessage('Please select a date that hasn\'t occurred yet.'),
+				body('description').isLength({ min: 0, max: 1000 }).optional(),
+				body('imagename', 'Image name cannot be longer than 50 characters long.').isLength({ max: 50 }).optional(),
 				// // Sanitize fields.
 				sanitizeBody('*').trim().escape()
 			];
@@ -86,14 +89,16 @@ const validators = (method) => {
 				// Validate form fields.
 				body('phone', 'Phone number is not valid.').isMobilePhone('en-US').optional(),
 				body('address', 'Address cannot be more than 250 characters.').isLength({ min: 0, max: 250 }).optional(),
-				// .isAlphanumeric('en-US').withMessage('Address not valid.  Please enter a proper alpha-numeric address.'),
 				body('address2', 'Address 2 cannot be more than 250 characters.').isLength({ min: 0, max: 250 }).optional(),
-				body('city', 'City cannot be more than 25 characters.').isLength({ min: 0, max: 25 }).optional(),
-				// body('state', 'Please select a state.').isEmpty(),
-				body('zipcode', 'Please enter a valid 5-digit zip code.').isPostalCode('US'),
+				body('city', 'City cannot be more than 25 characters.').isLength({ min: 0, max: 25 }).trim(),
+				body('state', 'Please select a state.').isUppercase(),
+				// TODO - Fix Zip Code validation
+				// body('zipcode', 'Zip code is not valid.').isPostalCode('US'),
+				// body('zipcode', 'Zip code is not valid.').isInt({ allow_leading_zeroes: true }),
 				body('date', 'Date is not valid.').optional({ checkFalsy: true }).isISO8601()
 				 	.isAfter().withMessage('Please select a date that hasn\'t occurred yet.'),
-				body('imagename', 'Image name cannot be longer than 50 characters long.').isLength({ max: 50 }),
+				body('description').isLength({ min: 0, max: 1000 }).optional(),
+				body('imagename', 'Image name cannot be longer than 50 characters long.').isLength({ max: 50 }).optional(),
 				// Sanitize fields.
 				sanitizeBody('*').trim().escape()
 			];

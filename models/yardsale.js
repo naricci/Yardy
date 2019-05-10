@@ -12,18 +12,16 @@ const YardsaleSchema = new Schema({
 	address: {
 		type: String,
 		text: true,
-		required: false,
 		maxlength: 250
 	},
 	address2: {
 		type: String,
-		required: false,
 		maxlength: 250
 	},
 	city: {
 		type: String,
 		text: true,
-		required: true,
+		required: [true, 'City is required'],
 		maxlength: 25
 	},
 	state: {
@@ -54,12 +52,10 @@ const YardsaleSchema = new Schema({
 	},
 	description: {
 		type: String,
-		required: false,
 		maxlength: 1000
 	},
 	imagename: {
 		type: String,
-		required: false,
 		maxlength: 50
 	},
 	user: {

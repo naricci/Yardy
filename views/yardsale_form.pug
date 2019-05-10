@@ -39,12 +39,13 @@ block content
 							.control.has-icons-left
 								.select
 									select#state(name='state' required)
-										option(selected) Select State
 										option(value='CT' selected=(undefined === yardsale || yardsale.state !== 'CT' ? false : 'selected')) CT
 										option(value='MA' selected=(undefined === yardsale || yardsale.state !== 'MA' ? false : 'selected')) MA
 										option(value='ME' selected=(undefined === yardsale || yardsale.state !== 'ME' ? false : 'selected')) ME
 										option(value='NH' selected=(undefined === yardsale || yardsale.state !== 'NH' ? false : 'selected')) NH
+										option(value='NY' selected=(undefined === yardsale || yardsale.state !== 'NY' ? false : 'selected')) NY
 										option(value='RI' selected=(undefined === yardsale || yardsale.state !== 'RI' ? false : 'selected')) RI
+										option(value='VT' selected=(undefined === yardsale || yardsale.state !== 'VT' ? false : 'selected')) VT
 									span.icon.is-small.is-left
 										i.fas.fa-map-marker-alt
 						.field
@@ -56,7 +57,7 @@ block content
 						.field
 							label.label Date *
 							.control.has-icons-left
-								input.input#date(type='date' name='date' placeholder='July 4, 2019' value=(undefined===yardsale ? '' : yardsale.date.toDateString()) required)
+								input.input#date(type='date' name='date' placeholder='July 4, 2019' value=(undefined===yardsale ? '' : yardsale.date) required)
 								span.icon.is-small.is-left
 									i.fas.fa-calendar
 						.field

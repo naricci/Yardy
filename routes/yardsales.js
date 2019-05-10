@@ -23,7 +23,7 @@ router.post('/:id', favoriteController.favorites_post);
 // GET request to update Yardsale.
 router.get('/:id/update', yardsaleController.yardsale_update_get);
 
-// POST request to update Yardsale.
+// POST request to update Yardsale with image upload..
 router.post('/:id/update', validators('yardsale_update_post'), upload.single('imagename'), yardsaleController.yardsale_update_post);
 
 // GET request to delete Yardsale.

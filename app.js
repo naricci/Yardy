@@ -13,12 +13,12 @@ const logger = require('morgan');
 const passport = require('passport');
 const path = require('path');
 const PORT = process.env.PORT || 5000;
-const serveStatic = require('serve-static');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
 // Routes
 const index = require('./routes/index');
+const messages = require('./routes/messages');
 const users = require('./routes/users');
 const yardsales = require('./routes/yardsales');
 
@@ -33,6 +33,11 @@ const sess = {
 		url: process.env.MONGODB_URI,
 		ttl: 7 * 24 * 60 * 60 // 7 days
 	})
+};
+
+// Options for serving static files
+const options = {
+	maxAge: 604800
 };
 
 // Initialize Express App
@@ -57,8 +62,7 @@ app.use(cookieParser());
 // Compress all routes
 app.use(compression());
 app.use(helmet());
-app.use(serveStatic(path.join(__dirname, 'public')));
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), options));
 app.use(favicon(path.join(__dirname, 'public', 'icons', 'favicon.ico')));
 // Authentication related middleware.
 app.use(flash());
@@ -82,6 +86,7 @@ app.use((req, res, next) => {
 
 // Use the Routes
 app.use('/', index);
+app.use('/messages', messages);
 app.use('/users', users);
 app.use('/yardsales', yardsales);
 
@@ -102,8 +107,6 @@ app.use((err, req, res, next) => {
 });
 
 // Heroku Listening on Port ...
-app.listen(PORT, () => {
-	return debug(`Heroku listening on ${ PORT }`);
-});
+app.listen(PORT, () => { return debug(`Heroku listening on ${ PORT }`); });
 
 module.exports = app;
