@@ -14,31 +14,6 @@ body {
 	position: relative;
 }
 
-/*input {*/
-/*	border: 2px solid;*/
-/*}*/
-
-/*#username:valid,*/
-/*#email:valid,*/
-/*#password:valid,*/
-/*#cpassword:valid,*/
-/*#firstname:valid,*/
-/*#lastname:valid,*/
-/*#phone:valid,*/
-/*#profilepic:valid,*/
-/*#address:valid,*/
-/*#address2:valid,*/
-/*#city:valid,*/
-/*#zipcode:valid,*/
-/*#date:valid,*/
-/*#starttime:valid,*/
-/*#endtime:valid,*/
-/*#description:valid,*/
-/*#imagename:valid,*/
-/*#file:valid {*/
-/*	border: 2px solid green;*/
-/*}*/
-
 input:invalid {
 	border: 2px solid red;
 }
@@ -124,23 +99,10 @@ h1.title.is-1 {
 	width: 100%;
 }
 
-/* SEARCH BAR */
-.field-body.field.searchBar {
-	/*margin-right: 10px;*/
-}
-
 /* CUSTOM */
 section.section {
 	padding-bottom: 5px;
 	padding-top: 10px;
-}
-
-section.section.has-background-light {
-	/*padding-bottom: 0;*/
-}
-
-#yardsaleResults {
-	/*padding-bottom: 0;*/
 }
 
 h1.subtitle.subTitle {

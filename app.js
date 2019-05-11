@@ -1,6 +1,5 @@
 require('dotenv').config();
 require('./config/db_config');
-require('./config/passport_config');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const createError = require('http-errors');
@@ -28,20 +27,22 @@ const sess = {
 	cookie: {},
 	resave: true,	// false originally
 	saveUninitialized: true,
-	maxAge: 86400000,	// 1 day
+	maxAge: 2 * 24 * 60 * 60, // 2 days //86400000,	// 1 day
 	store: new MongoStore({
 		url: process.env.MONGODB_URI,
-		ttl: 7 * 24 * 60 * 60 // 7 days
+		ttl: 14 * 24 * 60 * 60 // 14 days
 	})
 };
 
 // Options for serving static files
 const options = {
-	maxAge: 604800
+	maxAge: 31536000
 };
 
 // Initialize Express App
 const app = express();
+
+require('./config/passport_config');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -95,7 +96,7 @@ app.use((req, res, next) => {
 });
 
 // error handler
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
 	// set locals, only providing error in development
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};

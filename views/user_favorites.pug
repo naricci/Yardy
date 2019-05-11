@@ -11,34 +11,34 @@ block content
 				.column.is-three-quarters
 					include components/map
 					br
-					if favorites_list && isAuthenticated
-						each favorites in favorites_list
+					if favorite && isAuthenticated
+						for favorite in favorite
 							.box
 								article.media
 									figure.media-left
 										figure.image.is-128x128
-											a(href='/yardsales/' + favorites.yardsale._id)
-												if (favorites.yardsale.imagename !== undefined && favorites.yardsale.imagename !== '' && favorites.yardsale.imagename !== null)
-													img.image.lazy(src='img/yardsale_poster.jpg' data-src=process.env.S3_IMAGES_URL+'/'+favorites.yardsale.user.username+'/'+favorites.yardsale.imagename alt='favorite yard sale')
+											a(href='/yardsales/' + yardsale._id)
+												if (favorite.yardsale.imagename !== undefined && favorite.yardsale.imagename !== '' && favorite.yardsale.imagename !== null)
+													img.image.lazy(src='/img/yardsale_poster.webp' data-src=process.env.S3_IMAGES_URL+'/'+favorite.yardsale.user.username+'/'+favorite.yardsale.imagename alt='favorite yard sale')
 												else
-													img.image.lazy(src='img/yardsale_poster.jpg' alt='yard sale')
+													img.image(src='/img/yardsale_poster.webp' alt='yard sale')
 									.media-content
 										.content
 											p Location:&nbsp;&nbsp;
-												strong #{favorites.yardsale.full_address}
+												strong #{favorite.yardsale.full_address}
 											p Date:&nbsp;&nbsp;
-												strong #{favorites.yardsale.date.toDateString()}
+												strong #{favorite.yardsale.date.toDateString()}
 											p Host:&nbsp;&nbsp;
-												strong #{favorites.yardsale.user.username}
-											p #{favorites.yardsale.description}
+												strong #{favorite.yardsale.user.username}
+											p #{favorite.yardsale.description}
 										nav.level.is-mobile
 											.level-left
-												a.level-item(href='/yardsales/' + favorites.yardsale._id) view details
+												a.level-item(href='/yardsales/' + favorite.yardsale._id) view details
 									.media-right
 										form(method='POST' action='')
-											input(type='hidden' name='favId' required='true' value=favorites._id)
-											input(type='hidden' name='yardsaleId' value=favorites.yardsale._id)
-											input(type='hidden' name='userId' value=favorites.user._id)
+											input(type='hidden' name='favId' required='true' value=favorite._id)
+											input(type='hidden' name='yardsaleId' value=favorite.yardsale._id)
+											input(type='hidden' name='userId' value=favorite.user._id)
 											button.button.is-danger.is-rounded(type='submit')
 												span.icon
 													i.fas.fa-trash

@@ -18,7 +18,7 @@ const FavoriteSchema = new Schema({
 });
 
 // Compound Index
-// FavoriteSchema.index({ user: 1, yardsale: 1 });
+FavoriteSchema.index({ user: 1, yardsale: 1 });
 
 const Favorite = mongoose.model('favorites', FavoriteSchema);
 
