@@ -11,8 +11,8 @@ block content
 				.column.is-three-quarters
 					include components/map
 					br
-					if favorite && isAuthenticated
-						for favorite in favorite
+					if favorites && isAuthenticated
+						for favorite in favorites
 							.box
 								article.media
 									figure.media-left

@@ -4,8 +4,10 @@ const Favorite = require('../models/favorite');
 
 // Display favorites page on GET
 exports.favorites_get = (req, res, next) => {
+	debug('Getting Favorites page');
+
 	Favorite
-		.find({ user: req.user })
+		.find({ user: req.current_user })
 		.populate({
 			path: 'yardsale',
 			model: 'yardsales',
@@ -14,20 +16,21 @@ exports.favorites_get = (req, res, next) => {
 				model: 'users'
 			}
 		})
-		// .exec()
-		.catch((err, results) => {
+		// .select('yardsale')
+		.exec()
+		.catch((err, favorite) => {
 			if (err) return next(err);
-			if (results.favorite === null) {
+			if (favorite === null) {
 				let err = new Error('Favorite yard sales not found');
 				err.status = 404;
 				return next(err);
 			}
 		})
-		.then((results) => {
-			debug(`Favorite ID: ${results}`);
+		.then((err, favorite) => {
+			debug(`Favorite ID: ${favorite}`);
 			res.render('user_favorites', {
 				title: 'Manage Favorites',
-				favorite: results.favorite
+				favorites: favorite
 			});
 		});
 };
