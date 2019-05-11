@@ -5,9 +5,9 @@ nav.panel.is-hidden-mobile
 			// TODO - Possibly add a modal here
 	.panel-block
 		if (current_user.profilepic !== undefined)
-			img.is-128x128(src='https://'+process.env.S3_IMAGES_URL+'/'+current_user.username+'/'+current_user.profilepic alt='profile picture')
+			img.is-128x128(src=process.env.S3_IMAGES_URL+'/'+current_user.username+'/'+current_user.profilepic alt='profile picture')
 		else
-			img.is-128x128(src=process.env.S3_STATIC_URL+'/img/blank_profile.png' alt='profile picture')
+			img.is-128x128(src=process.env.S3_STATIC_URL+'/public/img/blank_profile.png' alt='profile picture')
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-user(aria-hidden=true)

@@ -4,9 +4,9 @@
 			figure.image.is-128x128
 				a(href='/yardsales/'+yardsale._id)
 					if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
-						img(src='https://'+process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='yard sale')
+						img(src=process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='yard sale')
 					else
-						img(src='/img/yardsale_poster.jpg' alt='yard sale')
+						img(src=process.env.S3_STATIC_URL+'/public/img/yardsale_poster.jpg' alt='yard sale')
 		.media-content
 			.content
 				p Location:&nbsp;&nbsp;

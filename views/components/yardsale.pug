@@ -35,6 +35,6 @@ hr
 h1.subtitle.subTitle #[strong Images]
 figure.image.is-256x256
 	if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
-		img(src='https://'+process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='yard sale')
+		img(src=process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='yard sale')
 	else
-		img(src=process.env.S3_STATIC_URL+'/img/yardsale_poster.jpg' alt='yard sale' )
+		img(src=process.env.S3_STATIC_URL+'/public/img/yardsale_poster.jpg' alt='yard sale' )

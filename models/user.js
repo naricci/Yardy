@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const crypto = require('crypto');
-const bcrypt = require('bcrypt-nodejs');
+// const bcrypt = require('bcrypt-nodejs');
 
 // Create Schema and Model
 const UserSchema = new Schema({
@@ -131,16 +131,16 @@ UserSchema.methods.passwordsMatch = function(password, passwordConfirm) {
 
 
 // generating a hash
-UserSchema.methods.generateHash = function(password) {
-	return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-};
+// UserSchema.methods.generateHash = function(password) {
+// 	return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+// };
 
 // checking if password is valid
-UserSchema.methods.validPassword = function(password) {
-	return bcrypt.compareSync(password, this.local.password);
-};
+// UserSchema.methods.validPassword = function(password) {
+// 	return bcrypt.compareSync(password, this.local.password);
+// };
 
-UserSchema.statics.findOrCreate = require('find-or-create');
+// UserSchema.statics.findOrCreate = require('find-or-create');
 
 const User = mongoose.model('users', UserSchema);
 

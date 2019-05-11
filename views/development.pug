@@ -5,6 +5,6 @@ block content
 		.container
 			h1.title.has-text-centered This page is currently in development.
 			br
-			img.image(src='/img/in_development.png')
+			img.image(src=process.env.S3_STATIC_URL+'/public/img/in_development.png')
 			br
 			h1.title.has-text-centered Please check back later for updates.
