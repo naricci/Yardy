@@ -45,8 +45,6 @@ const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-// view engine setup with views on S3 Bucket
-// app.set(process.env.S3_VIEWS_URL+'/views', path.join(__dirname, process.env.S3_VIEWS_URL+'/views'));
 app.set('view engine', 'pug');
 app.set('json spaces', 4);
 
@@ -61,12 +59,10 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-// Compress all routes
-app.use(compression());
+app.use(compression());	// Compress all routes
 app.use(helmet());
-// app.use(express.static(path.join(__dirname, 'public'), options));
-app.use(process.env.S3_STATIC_URL, express.static(path.join(__dirname, 'public'), options));
-app.use(process.env.S3_STATIC_URL, favicon(path.join(__dirname, 'public', 'icons', 'favicon.ico')));
+app.use(express.static(path.join('public'), options));
+app.use(favicon(path.join(__dirname, 'public', 'icons', 'favicon.ico')));
 // Authentication related middleware.
 app.use(flash());
 app.use(session(sess));
