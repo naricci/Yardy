@@ -65,8 +65,8 @@ app.use(cookieParser());
 app.use(compression());
 app.use(helmet());
 // app.use(express.static(path.join(__dirname, 'public'), options));
-app.use(express.static(path.join(__dirname, process.env.S3_STATIC_URL+'/public'), options));
-app.use(favicon(path.join(__dirname, 'public', 'icons', 'favicon.ico')));
+app.use(process.env.S3_STATIC_URL, express.static(path.join(__dirname, 'public'), options));
+app.use(process.env.S3_STATIC_URL, favicon(path.join(__dirname, 'public', 'icons', 'favicon.ico')));
 // Authentication related middleware.
 app.use(flash());
 app.use(session(sess));
