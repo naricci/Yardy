@@ -17,11 +17,10 @@ block content
 								.select
 									select#sort(name='sort')
 										option(selected, value='') Sort By
-										option(value='date') Date + Time
+										option(value='date') Date & Time
 										option(value='city') City
 										option(value='state') State
 										option(value='zipcode') Zip Code
-										//option(value='distance') Distance
 						.field.is-grouped
 							p.control
 								a.button.is-success(onclick='getLocation()') Find Me
@@ -47,3 +46,6 @@ block content
 					include components/results_nonauth
 			else
 				p #{results}
+	br
+	script(defer src='/js/get_location.js')
+	//script(defer src='/js/reverse_geocoder.js')

@@ -1,10 +1,14 @@
 extends layout
 
 block content
-	section.section.has-background-light
+	section.section
 		.container
-			h1.title.has-text-centered This page is currently in development.
+			h1.title.is-3.has-text-centered This page is currently in development.
 			br
-			img.image(src='/img/in_development.webp')
+			picture
+				source(srcset='/img/in_development.webp' type='image/webp')
+				source(srcset='/img/in_development.png' type='image/png')
+				img.image(src='/img/in_development.png' alt='In Development')
 			br
-			h1.title.has-text-centered Please check back later for updates.
+			h2.title.is-4.has-text-centered Please check back later for updates.
+	script(type='text/javascript' src='/js/browser_check.js')

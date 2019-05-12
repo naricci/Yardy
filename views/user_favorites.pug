@@ -19,9 +19,12 @@ block content
 										figure.image.is-128x128
 											a(href='/yardsales/' + yardsale._id)
 												if (favorite.yardsale.imagename !== undefined && favorite.yardsale.imagename !== '' && favorite.yardsale.imagename !== null)
-													img.image.lazy(src='/img/yardsale_poster.webp' data-src=process.env.S3_IMAGES_URL+'/'+favorite.yardsale.user.username+'/'+favorite.yardsale.imagename alt='favorite yard sale')
+													img.image.lazy(src='/img/yardsale_poster.jpg' data-src=process.env.S3_IMAGES_URL+'/'+favorite.yardsale.user.username+'/'+favorite.yardsale.imagename alt='Favorite Yard Sale')
 												else
-													img.image(src='/img/yardsale_poster.webp' alt='yard sale')
+													picture
+														source(srcset='/img/yardsale_poster.webp' type='image/webp')
+														source(srcset='/img/yardsale_poster.jpg' type='image/jpeg')
+														img.image(src='/img/yardsale_poster.jpg' alt='Favorite Yard Sale')
 									.media-content
 										.content
 											p Location:&nbsp;&nbsp;
@@ -43,5 +46,6 @@ block content
 												span.icon
 													i.fas.fa-trash
 					else
-						h1.subtitle.has-text-centered.animated.bounce.delay-1s
+						h1.subtitle.has-text-centered
 							strong.has-text-danger You have not added any yard sales to your favorites yet.
+			br

@@ -21,7 +21,7 @@ block content
 							.field
 								label.label Username
 								.control.has-icons-left
-									input.input#username(type='text' name='username' value=(undefined === user ? '' : user.username) disabled autofocus)
+									input.input#username(type='text' name='username' value=(undefined === user ? '' : user.username) disabled)
 									span.icon.is-small.is-left
 										i.fas.fa-user
 						else
@@ -157,3 +157,4 @@ block content
 									i.fab.fa-twitter
 								span Sign up with Twitter
 				.column.is-one-quarter
+			br

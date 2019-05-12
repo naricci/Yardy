@@ -2,12 +2,24 @@ doctype html
 html(lang='en-US')
 	head
 		include components/metas
+
 		title= title
+
 		include components/links
+
+		// jQuery
+		script(src='https://code.jquery.com/jquery-3.4.1.min.js'
+			integrity='sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo='
+			crossorigin='anonymous')
 
 	body
 		.main-container
+
 			include components/header
+
 			block content
+
 			include components/footer
+
+		// Custom JavaScripts
 		include components/scripts

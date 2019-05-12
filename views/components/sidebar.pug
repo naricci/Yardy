@@ -5,9 +5,12 @@ nav.panel.is-hidden-mobile
 			a(href='/users/' + current_user._id +'/profilepic') upload picture
 	.panel-block
 		if (current_user.profilepic !== undefined)
-			img.is-128x128.lazy(src='/img/blank_profile.webp' data-src=process.env.S3_IMAGES_URL+'/'+current_user.username+'/'+current_user.profilepic alt='profile picture')
+			img.is-128x128.lazy(src='/img/blank_profile.png' data-src=process.env.S3_IMAGES_URL+'/'+current_user.username+'/'+current_user.profilepic alt='profile picture')
 		else
-			img.is-128x128(src='/img/blank_profile.webp' alt='profile picture')
+			picture
+				source(srcset='/img/blank_profile.webp' type='image/webp')
+				source(srcset='/img/blank_profile.png' type='image/png')
+				img.is-128x128.lazy(src='/img/blank_profile.png' alt='Profile Picture')
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-user(aria-hidden=true)
@@ -45,12 +48,15 @@ nav.panel.is-hidden-mobile
 		span.panel-icon
 			i.fas.fa-map-marker-alt(aria-hidden=true)
 		p #[strong Zip Code:&nbsp;] #{current_user.zipcode}
-	a.panel-block
-		span.panel-icon
-			i.fab.fa-facebook(aria-hidden=true)
-		p.has-text-info #[strong Facebook:&nbsp;] #{current_user.facebook.email}
-	a.panel-block(href='https://twitter.com/'+current_user.twitter.username)
-		span.panel-icon
-			i.fab.fa-twitter(aria-hidden=true)
-		p.has-text-info #[strong Twitter:&nbsp;] #{current_user.twitter.username}
-
+	if (current_user.facebook.token)
+		a.panel-block
+			span.panel-icon
+				i.fab.fa-facebook(aria-hidden=true)
+			p.has-text-info #[strong Facebook:&nbsp;] #{current_user.facebook.email}
+	if (current_user.twitter.token)
+		a.panel-block(href='https://twitter.com/'+current_user.twitter.username)
+			span.panel-icon
+				i.fab.fa-twitter(aria-hidden=true)
+			p.has-text-info #[strong Twitter:&nbsp;] #{current_user.twitter.username}
+	.panel-block
+		button.button.is-danger.is-outlined.is-fullwidth Delete Account

@@ -3,12 +3,15 @@
 		figure.media-left
 			figure.image.is-128x128
 				if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
-					img.image.lazy(src='/img/yardsale_poster.webp' data-src=process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='yard sale')
+					img.image.lazy(src='/img/yardsale_poster.jpg' data-src=process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='yard sale')
 				else
-					img.image(src='/img/yardsale_poster.webp' alt='yard sale')
+					picture
+						source(srcset='/img/yardsale_poster.webp' type='image/webp')
+						source(srcset='/img/yardsale_poster.jpg' type='image/jpeg')
+						img.image.lazy(src='/img/yardsale_poster.jpg' alt='Yard Sale')
 		.media-content
 			.content
-				p Locaion:&nbsp;&nbsp;
+				p Location:&nbsp;&nbsp;
 					strong #{yardsale.city}, #{yardsale.state}&nbsp;
 				p Date:&nbsp;&nbsp;
 					strong #{yardsale.date.toDateString()}&nbsp;

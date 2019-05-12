@@ -2,12 +2,12 @@ const debug = require('debug')('yardy:favorite.controller');
 // Models
 const Favorite = require('../models/favorite');
 
+// TODO - Fix this stupid fucking function again...
 // Display favorites page on GET
 exports.favorites_get = (req, res, next) => {
 	debug('Getting Favorites page');
 
-	Favorite
-		.find({ user: req.current_user })
+	Favorite.find({ user: req.current_user })
 		.populate({
 			path: 'yardsale',
 			model: 'yardsales',
@@ -44,6 +44,9 @@ exports.favorites_post = (req, res, next) => {
 		yardsale: req.body.yardsale,
 		isChecked: true
 	});
+
+	// TODO - Add logic to see if yard sale has already been favorited
+
 	// POST favorite object and redirect to the home page.
 	favorite.save((err) => {
 		if (err) return next(err);
@@ -64,8 +67,7 @@ exports.favorites_delete = (req, res, next) => {
 
 	let id = req.body.favId;
 	let removed = '';
-	Favorite
-		.findByIdAndDelete({ _id: id })
+	Favorite.findByIdAndDelete({ _id: id })
 		.exec()
 		.then(() => {
 			debug(`Favorite ${id} has been removed`);

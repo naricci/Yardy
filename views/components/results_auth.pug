@@ -4,23 +4,31 @@
 			figure.image.is-128x128
 				a(href='/yardsales/'+yardsale._id)
 					if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
-						img.image.lazy(src='/img/yardsale_poster.webp' data-src=process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='yard sale')
+						img.lazy(src='/img/yardsale_poster.jpg' data-src=process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='Yard Sale')
 					else
-						img.image(src='/img/yardsale_poster.webp' alt='yard sale')
+						picture
+							source(srcset='/img/yardsale_poster.webp' type='image/webp')
+							source(srcset='/img/yardsale_poster.jpg' type='image/jpg')
+							img.lazy(src='/img/yardsale_poster.jpg' alt='Yard Sale')
 		.media-content
 			.content
 				p Location:&nbsp;&nbsp;
 					strong #{yardsale.full_address}
-				p Date:&nbsp;&nbsp;
-					strong #{yardsale.date.toDateString()}
-				p Start Time:&nbsp;
-					if parseInt(yardsale.starttime) < 12
-						strong #{parseInt(yardsale.starttime)} AM
-					else
-						if parseInt(yardsale.starttime) - 12 === 0
-							strong #{parseInt(yardsale.starttime)} PM
+				.level
+					.level-left
+						p Date:&nbsp;&nbsp;
+							strong #{yardsale.date.toDateString()}
+					.level-item
+						if parseInt(yardsale.starttime) < 12
+							p Start Time:&nbsp;
+								strong #{parseInt(yardsale.starttime)} AM
 						else
-							strong #{parseInt(yardsale.starttime) - 12} PM
+							if parseInt(yardsale.starttime) - 12 === 0
+								p Start Time:&nbsp;
+									strong #{parseInt(yardsale.starttime)} PM
+							else
+								p Start Time:&nbsp;
+									strong #{parseInt(yardsale.starttime) - 12} PM
 				p #{yardsale.description}
 			nav.level.is-mobile
 				.level-left

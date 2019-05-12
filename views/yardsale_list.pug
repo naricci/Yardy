@@ -7,44 +7,59 @@ block content
 				strong= title
 			if yardsale_list && isAuthenticated
 				each yardsale in yardsale_list
-					article.media
-						figure.media-left
-							p.image.is-128x128
-								a(href='/yardsales/' + yardsale._id)
-									if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
-										img.image.lazy(src='/img/yardsale_poster.webp' data-src=process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='yard sale')
-									else
-										img.image.lazy(src='/img/yardsale_poster.webp' alt='yard sale')
-						.media-content
-							.content
-								p Location:&nbsp;&nbsp;
-									strong #{yardsale.full_address}
-								p Date:&nbsp;&nbsp;
-									strong #{yardsale.date.toDateString()}&nbsp;
-								p #{yardsale.description}
-							nav.level.is-mobile
-								.level-left
-									a.level-item(href='/yardsales/' + yardsale._id) view details
-						.media-right
-							a.button.is-link.is-rounded
-								span.icon
-									i.fas.fa-star
+					.box
+						article.media
+							figure.media-left
+								p.image.is-128x128
+									a(href='/yardsales/' + yardsale._id)
+										if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
+											img.lazy(src='/img/yardsale_poster.jpg' data-src=process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='Yard Sale')
+										else
+											picture
+												source(srcset='/img/yardsale_poster.webp' type='image/webp')
+												source(srcset='/img/yardsale_poster.jpg' type='image/jpg')
+												img.lazy(src='/img/yardsale_poster.jpg' alt='Yard Sale')
+							.media-content
+								.content
+									.level
+										.level-left
+											.level-item.has-text-centered
+												strong #{yardsale.full_address}
+										.level-right
+											.level-item.has-text-centered
+												strong.is-hidden-mobile #{yardsale.date.toDateString()}&nbsp;
+									p #{yardsale.description}
+								nav.level.is-mobile
+									.level-left
+										a.level-item(href='/yardsales/' + yardsale._id) view details
+							.media-right
+								a.button.is-link.is-rounded
+									span.icon
+										i.fas.fa-star
 			else
 				h1.subtitle.has-text-centered
 					strong.has-text-danger Please sign in to view more details about our yard sales.
 				each yardsale in yardsale_list
-					article.media
-						figure.media-left
-							figure.image.is-128x128
-								if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
-									img.image.lazy(src='/img/yardsale_poster.webp' data-src=process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='yard sale')
-								else
-									img.image.lazy(src='/img/yardsale_poster.webp' alt='yard sale')
-						.media-content
-							.content
-								p Locaion:&nbsp;&nbsp;
-									strong #{yardsale.city}, #{yardsale.state}&nbsp;
-								p Date:&nbsp;&nbsp;
-									strong #{yardsale.date.toDateString()}
-								p #{yardsale.description}
-						.media-right
+					.box
+						article.media
+							figure.media-left
+								figure.image.is-128x128
+									if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
+										img.lazy(src='/img/yardsale_poster.jpg' data-src=process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='Yard Sale')
+									else
+										picture
+											source(srcset='/img/yardsale_poster.webp' type='image/webp')
+											source(srcset='/img/yardsale_poster.jpg' type='image/jpg')
+											img.lazy(src='/img/yardsale_poster.jpg' alt='Yard Sale')
+							.media-content
+								.content
+									.level
+										.level-left
+											.level-item.has-text-centered
+												strong #{yardsale.city}, #{yardsale.state}&nbsp;
+										.level-right
+											.level-item.has-text-centered
+												strong #{yardsale.date.toDateString()}
+									p #{yardsale.description}
+							.media-right
+		br
