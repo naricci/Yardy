@@ -2,6 +2,7 @@ require('dotenv').config();
 require('./config/db_config');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const createError = require('http-errors');
 const debug = require('debug')('yardy:app');
 const express = require('express');
@@ -60,6 +61,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cors());
 app.use(compression());	// Compress all routes
 app.use(helmet());
 app.use(express.static(path.join('public'), options));

@@ -18,7 +18,7 @@ block content
 									figure.media-left
 										figure.image.is-128x128
 											a(href='/yardsales/' + yardsale._id)
-												if (favorite.yardsale.imagename !== undefined && favorite.yardsale.imagename !== '' && favorite.yardsale.imagename !== null)
+												if (favorite.yardsale.imagename !== undefined)
 													img.image.lazy(src='/img/yardsale_poster.jpg' data-src=process.env.S3_IMAGES_URL+'/'+favorite.yardsale.user.username+'/'+favorite.yardsale.imagename alt='Favorite Yard Sale')
 												else
 													picture
