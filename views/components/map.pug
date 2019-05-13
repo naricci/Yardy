@@ -1,4 +1,5 @@
 #map
 	script(src='/js/index_map.js')
-	script(async defer src='https://maps.googleapis.com/maps/api/js?key='+process.env.MAPS_API_KEY+'&callback=initMap')
+	script(src='/js/get_location.js')
+	script(src='https://maps.googleapis.com/maps/api/js?key='+process.env.MAPS_API_KEY+'&callback=initMap' async defer)
 	br

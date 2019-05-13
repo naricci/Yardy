@@ -31,7 +31,7 @@ block content
 									span Search
 	// MAP OF USA
 	section.section.has-background-light
-		.container
+		.container(onload='markerLoader()')
 			include components/map
 	// YARD SALE LIST
 	section.section#yardsaleResults
@@ -47,5 +47,4 @@ block content
 			else
 				p #{results}
 	br
-	script(defer src='/js/get_location.js')
 	//script(defer src='/js/reverse_geocoder.js')

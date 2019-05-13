@@ -168,6 +168,7 @@ h1.subtitle.subTitle {
 footer {
 	bottom: 0;
 	flex: 1;
+	padding: 24px;
 	position: absolute;
 	width: 100%;
 }
