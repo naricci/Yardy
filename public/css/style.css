@@ -10,7 +10,7 @@
 html,
 body {
 	/*font: 14px 'Lato', sans-serif;*/
-	font: 16px 'Ubuntu', sans-serif;
+	font: 14px 'Ubuntu', sans-serif;
 	height: 100%;
 	position: relative;
 }
@@ -39,7 +39,7 @@ input:invalid {
 
 .navbar-end > a.navbar-item {
 	font-family: 'Lato', sans-serif;
-	font-size: 16px;
+
 }
 
 .navbar-item > .buttons > a.button {
@@ -48,7 +48,7 @@ input:invalid {
 
 .navbar-end > a.navbar-item {
 	color: hsl(48, 100%, 67%);
-	font-size: 16px;
+	font-size: 18px;
 	font-weight: bold;
 }
 
