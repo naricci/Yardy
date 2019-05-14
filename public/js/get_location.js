@@ -1,14 +1,12 @@
 let searchParams = document.getElementById('searchParams');
 
 function getLocation() {
-	let perms = false;
-	alert('May we use your current location to show you upcoming yard sales in your area?');
-
 	// Check geolocation support
 	if (navigator.geolocation) {
 		console.log('Geolocation is supported!');
 		navigator.geolocation.getCurrentPosition(showPosition, showError);
-	} else {
+	}
+	else {
 		console.log('Geolocation is not supported for this browser.');
 		searchParams.value = 'Geolocation is not supported by this browser.';
 	}
@@ -16,11 +14,10 @@ function getLocation() {
 
 // show geolocation
 function showPosition(position) {
-	// var latlon = position.coords.latitude + "," + position.coords.longitude;
-	// var img_url = 'https://maps.googleapis.com/maps/api/staticmap?center='+latlon+'&zoom=14&size=400x300&sensor=false&key='+process.env.MAPS_API_KEY;
-	searchParams.value = position.coords.latitude + ',' + position.coords.longitude;
-	// document.getElementById('#myLocation').src = img_url;
-	console.log(position.coords.latitude + ', ' + position.coords.longitude);
+	var latlng = position.coords.latitude + ',' + position.coords.longitude;
+	console.log(latlng);
+	searchParams.value = latlng;
+	// localStorage.setItem('latlng', latlng);
 }
 
 // show geolocation error

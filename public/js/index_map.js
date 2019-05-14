@@ -21,18 +21,22 @@
 // document.addEventListener('touchstart', wheel, {passive: true});
 
 let map;
-// var infoWindow;
+let searchParams = document.getElementById('searchParams');
 
 function initMap() {
+	var userLat = localStorage.getItem('lat');
+	var userLng = localStorage.getItem('lng');
 	map = new google.maps.Map(document.getElementById('map'), {
-		center: new google.maps.LatLng(41.8240,-71.4128),
+		// center: new google.maps.LatLng(41.8240,-71.4128),
+		center: new google.maps.LatLng(parseFloat(userLat), parseFloat(userLng)),
 		// center: new google.maps.LatLng(location),
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		zoom: 10
 	});
 
 	let locations = [
-		new google.maps.LatLng(41.8240,-71.4128)
+		// new google.maps.LatLng(41.8240,-71.4128)
+		new google.maps.LatLng(parseFloat(userLat), parseFloat(userLng))
 	// and additional coordinates, just add a new item
 	];
 
@@ -63,6 +67,48 @@ function initMap() {
 	let infowindow = new google.maps.InfoWindow({
 		content: contentString
 	});
+}
+
+// show geolocation
+function showPosition(position) {
+	var lat = position.coords.latitude.toString();
+	var lng = position.coords.longitude.toString();
+	console.log(lat + ', ' + lng);
+	// searchParams.value = latlng;
+	localStorage.setItem('lat', lat);
+	localStorage.setItem('lng', lng);
+}
+
+// var infoWindow;
+if (navigator.geolocation) {
+	navigator.geolocation.getCurrentPosition(showPosition, showError);
+	console.log('Geolocation is supported!');
+}
+else {
+	console.log('Geolocation is not supported for this browser.');
+	searchParams.value = 'Geolocation is not supported by this browser.';
+}
+
+// show geolocation error
+function showError(error) {
+	switch(error.code) {
+		case error.PERMISSION_DENIED:
+			searchParams.value = 'User denied the request for Geolocation.';
+			console.log('User denied the request for Geolocation.');
+			break;
+		case error.POSITION_UNAVAILABLE:
+			searchParams.value = 'Location information is unavailable.';
+			console.log('Location information is unavailable.');
+			break;
+		case error.TIMEOUT:
+			searchParams.value = 'The request to get user location timed out.';
+			console.log('The request to get user location timed out.');
+			break;
+		case error.UNKNOWN_ERROR:
+			searchParams.value = 'An unknown error occurred.';
+			console.log('An unknown error occurred.');
+			break;
+	}
 }
 
 /*

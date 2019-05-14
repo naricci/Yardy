@@ -4,7 +4,7 @@ block content
 	// TITLE & SEARCH BAR
 	section.section.has-background-light
 		.container
-			h1.title.is-3.has-text-centered Search for yard sales in your area!
+			h1.title.is-size-2-fullhd.is-size-3-desktop.is-size-4-mobile.has-text-centered Search for yard sales in your area!
 			form(method='GET' action='')
 				.field.is-horizontal
 					.field-body
@@ -13,7 +13,7 @@ block content
 								input.input#searchParams(type='text' name='search' placeholder="Search for yard sales near you!")
 								span.icon.is-small.is-left
 									i.fas.fa-map-marker-alt
-							p.control.has-icons-left
+							p.control
 								.select
 									select#sort(name='sort')
 										option(selected, value='') Sort By
@@ -21,7 +21,8 @@ block content
 										option(value='city') City
 										option(value='state') State
 										option(value='zipcode') Zip Code
-						.field.is-grouped
+							.divider
+							.divider
 							p.control
 								a.button.is-success(onclick='getLocation()') Find Me
 							p.control

@@ -18,6 +18,7 @@ const MongoStore = require('connect-mongo')(session);
 
 // Routes
 const index = require('./routes/index');
+const favorites = require('./routes/favorites');
 const messages = require('./routes/messages');
 const users = require('./routes/users');
 const yardsales = require('./routes/yardsales');
@@ -88,6 +89,7 @@ app.use((req, res, next) => {
 
 // Use the Routes
 app.use('/', index);
+app.use('/favorites', favorites);
 app.use('/messages', messages);
 app.use('/users', users);
 app.use('/yardsales', yardsales);

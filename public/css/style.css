@@ -9,7 +9,8 @@
 
 html,
 body {
-	font: 14px 'Lato', sans-serif;
+	/*font: 14px 'Lato', sans-serif;*/
+	font: 16px 'Ubuntu', sans-serif;
 	height: 100%;
 	position: relative;
 }

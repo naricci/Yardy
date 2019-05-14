@@ -3,12 +3,18 @@ extends layout
 block content
 	section.section
 		.container
-			h1.title.is-3.has-text-centered This page is currently in development.
+			include components/panel
+			.columns
+				.column.is-one-quarter
+					include components/sidebar
+				.column.is-half
+					h1.title.is-size-3-desktop.is-size-5-mobile.is-size-3-mobile.has-text-centered This page is currently in development.
+					br
+					picture
+						source(srcset='/img/in_development.webp' type='image/webp')
+						source(srcset='/img/in_development.png' type='image/png')
+						img.image(src='/img/in_development.png' alt='In Development')
+					br
+					h2.title.is-size-3-desktop.is-size-5-mobile.has-text-centered Please check back later for updates.
 			br
-			picture
-				source(srcset='/img/in_development.webp' type='image/webp')
-				source(srcset='/img/in_development.png' type='image/png')
-				img.image(src='/img/in_development.png' alt='In Development')
-			br
-			h2.title.is-4.has-text-centered Please check back later for updates.
 	script(type='text/javascript' src='/js/browser_check.js')

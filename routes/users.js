@@ -53,13 +53,13 @@ router.get('/:id/profilepic', userController.profilepic_get);
 router.post('/:id/profilepic', validators('profilepic_post'), upload.single('profilepic'), userController.profilepic_post);
 
 // GET request for User favorites
-router.get('/:userId/favorites', favoriteController.favorites_get);
+// router.get('/:userId/favorites', favoriteController.favorites_get);
 
 // POST request for User favorites
-router.post('/:userId/favorites', favoriteController.favorites_post);
+// router.post('/:userId/favorites', favoriteController.favorites_post);
 
 // POST request to delete a User's favorite yard sale
-router.post('/:userId/favorites', favoriteController.favorites_delete);
+// router.post('/:userId/favorites', favoriteController.favorites_delete);
 // router.post('/:id/favorites/:fav_id?', favoriteController.favorites_delete);
 
 // Redirect the user to Facebook for authentication.
