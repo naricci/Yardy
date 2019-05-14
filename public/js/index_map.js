@@ -17,46 +17,85 @@
 // 	});
 // });
 
-var map;
+var map, infoWindow;
 
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
 		center: new google.maps.LatLng(41.8240,-71.4128),
 		// center: new google.maps.LatLng(location),
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
-		zoom: 8
+		zoom: 10
 	});
+	infoWindow = new google.maps.InfoWindow;
 
-	var locations = [
-		new google.maps.LatLng(41.8240,-71.4128)
-		// and additional coordinates, just add a new item
-	];
+	// Try HTML5 geolocation.
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition((position) => {
+			var pos = {
+				lat: position.coords.latitude,
+				lng: position.coords.longitude
+			};
 
-	locations.forEach((location) => {
-		var marker = new google.maps.Marker({
-			position: location,
-			map: map,
-			title:'Yard Sale'
+			infoWindow.setPosition(pos);
+			infoWindow.setContent('You are here.');
+			infoWindow.open(map);
+			map.setCenter(pos);
+		}, () => {
+			handleLocationError(true, infoWindow, map.getCenter());
 		});
-
-		marker.addListener('mouseover',() => {
-			infowindow.open(map, marker);
-		});
-	});
-
-	// TODO - Add loop to display all yardsales on the map as markers
-	let contentString = '<div id="content">'+
-	'<div id="siteNotice">'+
-	'</div>'+
-	'<h1 id="firstHeading" class="firstHeading">Address: </h1>'+
-	'<h1 id="firstHeading" class="firstHeading">Date: </h1>'+
-	'<div id="bodyContent">'+
-	'<p class="image is-64x64 lazy"><img src="https://bulma.io/images/placeholders/128x128.png" alt="Yard Sale"></p>'+
-	'<p>Yard sale info.</p>'+
-	'</div>'+
-	'</div>';
-
-	var infowindow = new google.maps.InfoWindow({
-		content: contentString
-	});
+	} else {
+		// Browser doesn't support Geolocation
+		handleLocationError(false, infoWindow, map.getCenter());
+	}
 }
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+	infoWindow.setPosition(pos);
+	infoWindow.setContent(browserHasGeolocation ?
+		'Error: The Geolocation service failed.' :
+		'Error: Your browser doesn\'t support geolocation.');
+	infoWindow.open(map);
+}
+
+// Geocoder for map
+// geocoder.geocode( { 'address': address}, function(results, status) {
+// 	if (status === google.maps.GeocoderStatus.OK) {
+// 		var latitude = results[0].geometry.location.lat();
+// 		var longitude = results[0].geometry.location.lng();
+// 		console.log(latitude + ', ' + longitude);
+// 	}
+// });
+
+// var locations = [
+// 	new google.maps.LatLng(41.8240,-71.4128)
+// 	// and additional coordinates, just add a new item
+// ];
+//
+// locations.forEach((location) => {
+// 	var marker = new google.maps.Marker({
+// 		position: location,
+// 		map: map,
+// 		title:'Yard Sale'
+// 	});
+//
+// 	marker.addListener('mouseover',() => {
+// 		infowindow.open(map, marker);
+// 	});
+// });
+//
+// // TODO - Add loop to display all yardsales on the map as markers
+// let contentString = '<div id="content">'+
+// '<div id="siteNotice">'+
+// '</div>'+
+// '<h1 id="firstHeading" class="firstHeading">Address: </h1>'+
+// '<h1 id="firstHeading" class="firstHeading">Date: </h1>'+
+// '<div id="bodyContent">'+
+// '<p class="image is-64x64 lazy"><img src="https://bulma.io/images/placeholders/128x128.png" alt="Yard Sale"></p>'+
+// '<p>Yard sale info.</p>'+
+// '</div>'+
+// '</div>';
+//
+// var infowindow = new google.maps.InfoWindow({
+// 	content: contentString
+// });
+// }

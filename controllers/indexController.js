@@ -11,6 +11,7 @@ exports.index = (req, res, next) => {
 			if (err) return next(err);
 		})
 		.then((list_yardsales) => {
+
 			// Successful, so render
 			res.render('index', {
 				title: 'Yardy',
