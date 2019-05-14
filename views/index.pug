@@ -31,10 +31,11 @@ block content
 									span Search
 	// MAP OF USA
 	section.section.has-background-light
-		.container(onload='markerLoader()')
+		.container
 			include components/map
+			p.results#yardsaleResults
 	// YARD SALE LIST
-	section.section#yardsaleResults
+	section.section
 		.container
 			if yardsale_list && isAuthenticated
 				each yardsale in yardsale_list
