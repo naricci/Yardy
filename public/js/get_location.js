@@ -1,6 +1,9 @@
 let searchParams = document.getElementById('searchParams');
 
 function getLocation() {
+	let perms = false;
+	alert('May we use your current location to show you upcoming yard sales in your area?');
+
 	// Check geolocation support
 	if (navigator.geolocation) {
 		console.log('Geolocation is supported!');
