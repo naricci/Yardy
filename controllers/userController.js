@@ -508,6 +508,10 @@ exports.unlink_local_get = (req, res) => {
 exports.unlink_facebook_get = (req, res) => {
 	const user = req.user;
 	user.facebook.token = undefined;
+	user.facebook.id = undefined;
+	user.facebook.email = undefined;
+	user.facebook.name = undefined;
+
 	user.save(() => {
 		res.redirect('/');
 	});
@@ -516,6 +520,10 @@ exports.unlink_facebook_get = (req, res) => {
 exports.unlink_twitter_get = (req, res) => {
 	const user = req.user;
 	user.twitter.token = undefined;
+	user.twitter.id = undefined;
+	user.twitter.displayName = undefined;
+	user.twitter.username = undefined;
+
 	user.save(() => {
 		res.redirect('/');
 	});

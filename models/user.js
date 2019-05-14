@@ -75,8 +75,7 @@ const UserSchema = new Schema({
 		id: String,
 		token: String,
 		displayName: String,
-		username: String,
-		email: String
+		username: String
 	},
 	createdDate: {
 		type: Date,

@@ -92,7 +92,7 @@ passport.use(new TwitterStrategy({
 	consumerKey: process.env.TWITTER_API_KEY,
 	consumerSecret: process.env.TWITTER_API_SECRET_KEY,
 	callbackURL: process.env.TWITTER_CALLBACK_URL,
-	includeEmail: true,
+	// includeEmail: true,
 	passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
 },
 (req, token, tokenSecret, profile, done) => {
@@ -109,7 +109,7 @@ passport.use(new TwitterStrategy({
 						user.twitter.token = token;
 						user.twitter.username = profile.username;
 						user.twitter.displayName = profile.displayName;
-						user.twitter.email = profile.email;
+						// user.twitter.email = profile.email;
 						// Save current user's Twitter data to Mongo DB
 						user.save((err) => {
 							if (err) throw err;
@@ -125,7 +125,7 @@ passport.use(new TwitterStrategy({
 					newUser.twitter.token = token;
 					newUser.twitter.username = profile.username;
 					newUser.twitter.displayName = profile.displayName;
-					newUser.twitter.email = profile.email;
+					// newUser.twitter.email = profile.email;
 					// Save New User to Mongo DB
 					newUser.save((err) => {
 						if (err) throw err;
@@ -141,7 +141,7 @@ passport.use(new TwitterStrategy({
 			user.twitter.token = token;
 			user.twitter.username = profile.username;
 			user.twitter.displayName = profile.displayName;
-			user.twitter.email = profile.email;
+			// user.twitter.email = profile.email;
 			// Save current user's Twitter data to Mongo DB
 			user.save((err) => {
 				if (err) throw err;
