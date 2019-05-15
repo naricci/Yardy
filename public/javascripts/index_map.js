@@ -77,7 +77,6 @@ function showPosition(position) {
 	var lat = position.coords.latitude.toString();
 	var lng = position.coords.longitude.toString();
 	console.log(lat + ', ' + lng);
-	// searchParams.value = latlng;
 	localStorage.setItem('lat', lat);
 	localStorage.setItem('lng', lng);
 }

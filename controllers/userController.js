@@ -1,15 +1,27 @@
-const async = require('async');
-const debug = require('debug')('yardy:user.controller');
-const { validationResult } = require('express-validator/check');
-const passport = require('passport');
-const S3 = require('../config/s3_config');
-const helpers = require('../util/helpers');
-// Models
-const User = require('../models/user');
-const Yardsale = require('../models/yardsale');
+// const async = require('async');
+// const debug = require('debug')('yardy:user.controller');
+// const { validationResult } = require('express-validator/check');
+// const passport = require('passport');
+// const S3 = require('../config/s3_config');
+// const helpers = require('../util/helpers');
+// // Models
+// const User = require('../models/user');
+// const Yardsale = require('../models/yardsale');
+
+import async from 'async';
+import debugLib from 'debug';
+import { validationResult } from 'express-validator/check';
+import passport from 'passport';
+import S3 from '../config/s3_config';
+import helpers from '../util/helpers';
+import User from '../models/user';
+import Yardsale from '../models/yardsale';
+
+const debug = debugLib('yardy:user.controller');
+const userController = {};
 
 // Display detail page for a specific user.
-exports.user_profile = (req, res, next) => {
+userController.user_profile = async (req, res, next) => {
 	async.parallel({
 		user: (callback) => {
 			User
@@ -39,9 +51,9 @@ exports.user_profile = (req, res, next) => {
 };
 
 // Display login form on GET.
-exports.login_get = [
+userController.login_get = [
 	helpers.isAlreadyLoggedIn,
-	(req, res) => {
+	async (req, res, next) => {
 		let messages = helpers.extractFlashMessages(req);
 		res.render('user_login', {
 			title: 'Login',
@@ -51,7 +63,7 @@ exports.login_get = [
 ];
 
 // Display warning page on GET.
-exports.warning = (req, res) => {
+exports.warning = async (req, res, next) => {
 	let messages = helpers.extractFlashMessages(req);
 	res.render('user_warning', {
 		title: 'Sorry!',
@@ -60,14 +72,14 @@ exports.warning = (req, res) => {
 };
 
 // Handle login form on POST
-exports.login_post = passport.authenticate('local', {
+userController.login_post = passport.authenticate('local', {
 	successRedirect: '/',
 	failureRedirect: '/users/login',
 	failureFlash: true
 });
 
 // Handle logout on GET.
-exports.logout_get = (req, res) => {
+userController.logout_get = async (req, res, next) => {
 	req.logout();
 	req.session.destroy(() => {
 		res.redirect('/');
@@ -75,10 +87,10 @@ exports.logout_get = (req, res) => {
 };
 
 // Display register form on GET.
-exports.register_get = [
+userController.register_get = [
 	helpers.isAlreadyLoggedIn,
 	// Continue processing.
-	(req, res) => {
+	async (req, res, next) => {
 		res.render('user_form', {
 			title: 'Create User'
 		});
@@ -86,7 +98,7 @@ exports.register_get = [
 ];
 
 // Handle register on POST.
-exports.register_post = (req, res, next) => {
+userController.register_post = async (req, res, next) => {
 	// Extract the validation errors from a request.
 	const errors = validationResult(req);
 	// Get a handle on errors.array() array,
@@ -155,7 +167,7 @@ exports.register_post = (req, res, next) => {
 };
 
 // Display update form on GET.
-exports.update_get = (req, res, next) => {
+userController.update_get = async (req, res, next) => {
 	User
 		.findById(req.params.id)
 		.exec()
@@ -178,7 +190,7 @@ exports.update_get = (req, res, next) => {
 };
 
 // Handle update on POST.
-exports.update_post = (req, res, next) => {
+exports.update_post = async (req, res, next) => {
 	// Extract the validation errors from a request.
 	var errors = validationResult(req);
 	// Get a handle on errors.array() array.
@@ -246,9 +258,9 @@ exports.update_post = (req, res, next) => {
 };
 
 // Display reset password form on GET.
-exports.reset_get = [
+userController.reset_get = [
 	helpers.isAlreadyLoggedIn,
-	(req, res) => {
+	async (req, res, next) => {
 		res.render('user_reset', {
 			title: 'Reset Password',
 			is_first_step: true
@@ -257,7 +269,7 @@ exports.reset_get = [
 ];
 
 // Handle reset password on POST (1st step).
-exports.reset_post = (req, res, next) => {
+userController.reset_post = async (req, res, next) => {
 	// Extract the validation errors from a request.
 	let errors = validationResult(req);
 	// Get a handle on errors.array() array.
@@ -312,7 +324,7 @@ exports.reset_post = (req, res, next) => {
 };
 
 // Handle reset password on POST (2nd step).
-exports.reset_post_final = (req, res, next) => {
+userController.reset_post_final = async (req, res, next) => {
 	// Extract the validation errors from a request.
 	let errors = validationResult(req);
 
@@ -373,7 +385,7 @@ exports.reset_post_final = (req, res, next) => {
 };
 
 // Display profile picture update page on GET
-exports.profilepic_get = (req, res, next) => {
+userController.profilepic_get = async (req, res, next) => {
 	debug(`Getting user ${req.user.username}'s profilepic page`);
 	User
 		.findById(req.params.id)
@@ -396,7 +408,7 @@ exports.profilepic_get = (req, res, next) => {
 };
 
 // Handle profilepic page on POST to DB and S3
-exports.profilepic_post = (req, res, next) => {
+userController.profilepic_post = async (req, res, next) => {
 	// Extract the validation errors from a request.
 	const errors = validationResult(req);
 	// Get a handle on errors.array() array.
@@ -456,15 +468,15 @@ exports.profilepic_post = (req, res, next) => {
 	}
 };
 
-exports.facebook_auth = passport.authenticate('facebook', { scope : ['email'] });
+userController.facebook_auth = passport.authenticate('facebook', { scope : ['email'] });
 
-exports.facebook_callback = passport.authenticate('facebook', {
+userController.facebook_callback = passport.authenticate('facebook', {
 	successRedirect: '/',
 	failureRedirect: '/users/login',
 	failureFlash: true
 });
 
-exports.twitter_auth = passport.authenticate('twitter', { scope : ['email'] });
+userController.twitter_auth = passport.authenticate('twitter', { scope : ['email'] });
 
 exports.twitter_callback = passport.authenticate('twitter', {
 	successRedirect: '/',
@@ -472,31 +484,31 @@ exports.twitter_callback = passport.authenticate('twitter', {
 	failureFlash: true
 });
 
-exports.connect_local_get = (req, res) => {
+userController.connect_local_get = async (req, res, next) => {
 	res.render('/users/connect_local', { message: req.flash('loginMessage') });
 };
 
-exports.connect_local_post = passport.authenticate('local-signup', {
+userController.connect_local_post = passport.authenticate('local-signup', {
 	successRedirect: '/', // redirect to the secure profile section
 	failureRedirect: '/users/connect_local', // redirect back to the signup page if there is an error
 	failureFlash: true // allow flash messages
 });
 
-exports.connect_facebook_get = passport.authorize('facebook', { scope : ['email'] });
+userController.connect_facebook_get = passport.authorize('facebook', { scope : ['email'] });
 
-exports.connect_facebook_callback = passport.authorize('facebook', {
+userController.connect_facebook_callback = passport.authorize('facebook', {
 	successRedirect: '/',
 	failureRedirect: '/users/connect_local'
 });
 
-exports.connect_twitter_get = passport.authorize('twitter', { scope : ['email'] });
+userController.connect_twitter_get = passport.authorize('twitter', { scope : ['email'] });
 
-exports.connect_twitter_callback = passport.authorize('facebook', {
+userController.connect_twitter_callback = passport.authorize('facebook', {
 	successRedirect: '/',
 	failureRedirect: '/users/connect_local'
 });
 
-exports.unlink_local_get = (req, res) => {
+userController.unlink_local_get = async (req, res, next) => {
 	const user = req.user;
 	user.local.email = undefined;
 	user.local.password = undefined;
@@ -505,7 +517,7 @@ exports.unlink_local_get = (req, res) => {
 	});
 };
 
-exports.unlink_facebook_get = (req, res) => {
+userController.unlink_facebook_get = async (req, res, next) => {
 	const user = req.user;
 	user.facebook.token = undefined;
 	user.facebook.id = undefined;
@@ -517,7 +529,7 @@ exports.unlink_facebook_get = (req, res) => {
 	});
 };
 
-exports.unlink_twitter_get = (req, res) => {
+userController.unlink_twitter_get = async (req, res, next) => {
 	const user = req.user;
 	user.twitter.token = undefined;
 	user.twitter.id = undefined;
@@ -533,3 +545,5 @@ exports.unlink_twitter_get = (req, res) => {
 // exports.delete_account_get = (req, res, next) => {
 //
 // };
+
+export default userController;

@@ -1,10 +1,17 @@
-const debug = require('debug')('yardy:favorite.controller');
-// Models
-const Favorite = require('../models/favorite');
+// const debug = require('debug')('yardy:favorite.controller');
+// // Models
+// const Favorite = require('../models/favorite');
+
+import debugLib from 'debug';
+import Favorite from '../models/favorite';
+
+const debug = debugLib('yardy:favorite_controller');
+const favoriteController = {};
 
 // TODO - Fix this stupid fucking function again...
 // Display favorites page on GET
-exports.favorites_get = (req, res, next) => {
+// exports.favorites_get = (req, res, next) => {
+favoriteController.favorites_get = async (req, res, next) => {
 	debug('Getting Favorites page');
 
 	Favorite.find({ user: req.current_user })
@@ -36,7 +43,7 @@ exports.favorites_get = (req, res, next) => {
 };
 
 // Handle favorites page on POST
-exports.favorites_post = (req, res, next) => {
+favoriteController.favorites_post = async (req, res, next) => {
 	debug(`User ID: ${req.body.userId}`);
 	debug(`Yard Sale ID: ${req.body.yardsale}`);
 	let favorite = new Favorite({
@@ -46,7 +53,6 @@ exports.favorites_post = (req, res, next) => {
 	});
 
 	// TODO - Add logic to see if yard sale has already been favorited
-
 	// POST favorite object and redirect to the home page.
 	favorite.save((err) => {
 		if (err) return next(err);
@@ -57,7 +63,7 @@ exports.favorites_post = (req, res, next) => {
 
 // TODO Finish writing function to DELETE favorites
 // Handle favorites page on DELETE
-exports.favorites_delete = (req, res, next) => {
+favoriteController.favorites_delete = async (req, res, next) => {
 	// Favorite
 	// 	.remove({ _id: req.params.id }, (err) => {
 	// 		if (err) return next(err);
@@ -103,3 +109,5 @@ exports.favorites_delete = (req, res, next) => {
 	// 	}
 	// });
 };
+
+export default favoriteController;

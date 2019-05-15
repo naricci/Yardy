@@ -1,5 +1,8 @@
-const { body, check } = require('express-validator/check');
-const { sanitizeBody } = require('express-validator/filter');
+// const { body, check } = require('express-validator/check');
+// const { sanitizeBody } = require('express-validator/filter');
+
+import { body, check } from 'express-validator/check';
+import { sanitizeBody } from 'express-validator/filter';
 
 const validators = (method) => {
 	switch (method) {
@@ -106,4 +109,5 @@ const validators = (method) => {
 	}
 };
 
-module.exports = validators;
+// module.exports = validators;
+export default validators;

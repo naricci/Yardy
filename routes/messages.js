@@ -1,8 +1,15 @@
-const express = require('express');
-const router = express.Router();
-// Models
-const messageController = require('../controllers/messageController');
+// const express = require('express');
+// const router = express.Router();
+// // Models
+// const messageController = require('../controllers/messageController');
 
-router.get('/:userId', messageController.messages_get);
+import { Router } from 'express';
+import messageController from '../controllers/messageController';
+const router = new Router();
 
-module.exports = router;
+router.get('/:userId', (req, res, next) => {
+	messageController.messages_get(req, res, next);
+});
+
+// module.exports = router;
+export default router;

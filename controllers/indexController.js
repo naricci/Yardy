@@ -1,7 +1,12 @@
-const debug = require('debug')('yardy:index.controller');
-const Yardsale = require('../models/yardsale');
+// const debug = require('debug')('yardy:index.controller');
+// const Yardsale = require('../models/yardsale');
+import debugLib from 'debug';
+import Yardsale from '../models/yardsale';
 
-exports.index = (req, res, next) => {
+const debug = debugLib('yardy:index.controller');
+const indexController = {};
+
+indexController.index = async (req, res, next) => {
 	Yardsale
 		.find()
 		.populate('user')
@@ -13,14 +18,14 @@ exports.index = (req, res, next) => {
 		.then((list_yardsales) => {
 
 			// Successful, so render
-			res.render('index', {
+			res.render('indexm.js', {
 				title: 'Yardy',
 				yardsale_list: list_yardsales
 			});
 		});
 };
 
-exports.search = (req, res, next) => {
+indexController.search = async (req, res, next) => {
 	let params = req.query.search;
 	// let paramsLike = '/'+req.query.search+'/';
 	let sort = req.query.sort;
@@ -65,7 +70,7 @@ exports.search = (req, res, next) => {
 					debug('No yard sales found.');
 					const results = 'No yard sales found.';
 					// Successful, so render
-					res.render('index', {
+					res.render('indexm.js', {
 						title: 'Yardy Search Results',
 						results: results
 					});
@@ -75,7 +80,7 @@ exports.search = (req, res, next) => {
 						debug(yardsale);
 					});
 					// Successful, so render
-					res.render('index', {
+					res.render('indexm.js', {
 						title: 'Yardy Search Results',
 						yardsale_list: list_yardsales
 					});
@@ -93,10 +98,12 @@ exports.search = (req, res, next) => {
 			})
 			.then((list_yardsales) => {
 				// Successful, so render
-				res.render('index', {
+				res.render('indexm.js', {
 					title: 'Yardy',
 					yardsale_list: list_yardsales
 				});
 			});
 	}
 };
+
+export default indexController;

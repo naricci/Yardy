@@ -1,4 +1,5 @@
-const aws = require('aws-sdk');
+// const aws = require('aws-sdk');
+import aws from 'aws-sdk';
 
 // AWS S3 Configuration
 const s3Client = new aws.S3({
@@ -27,4 +28,5 @@ S3.s3Client = s3Client;
 S3.params = params;
 S3.deleteParams = deleteParams;
 
-module.exports = S3;
+// module.exports = S3;
+export default S3;

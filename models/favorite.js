@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 // Create Schema and Model
@@ -22,4 +23,5 @@ FavoriteSchema.index({ user: 1, yardsale: 1 });
 
 const Favorite = mongoose.model('favorites', FavoriteSchema);
 
-module.exports = Favorite;
+// module.exports = Favorite;
+export default Favorite;

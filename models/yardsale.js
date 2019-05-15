@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 // Create Schema and Model
@@ -93,4 +94,5 @@ YardsaleSchema
 
 const Yardsale = mongoose.model('yardsales', YardsaleSchema);
 
-module.exports = Yardsale;
+// module.exports = Yardsale;
+export default Yardsale;

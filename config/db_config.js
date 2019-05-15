@@ -1,7 +1,10 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 mongoose.Promise = global.Promise;
-const debug = require('debug')('yardy:mongo');
-const mongoDB = process.env.MONGODB_URI;
+// const debug = require('debug')('yardy:mongo');
+import debugLib from 'debug';
+const debug = debugLib('yardy:mongo');
+const mongoDB = process.env.MONGODB_URI || 'mongodb://nick:Yardy123@ds121475.mlab.com:21475/yardy';
 const options = {
 	autoIndex: false,	// set to false in production to prevent performance issues
 	autoReconnect: true,
