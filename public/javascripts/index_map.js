@@ -22,6 +22,8 @@
 
 let map;
 let searchParams = document.getElementById('searchParams');
+var today = Date.now();
+console.log(today);
 
 function initMap() {
 	var userLat = localStorage.getItem('lat');
@@ -45,6 +47,7 @@ function initMap() {
 			position: location,
 			map: map,
 			title:'Yard Sale'
+			// title: 'You are here!'
 		});
 
 		marker.addListener('click',() => {
@@ -57,9 +60,9 @@ function initMap() {
 		'<div id="siteNotice">'+
 		'</div>'+
 		'<h1 id="firstHeading" class="firstHeading">Address: </h1>'+
-		'<h1 id="firstHeading" class="firstHeading">Date: </h1>'+
+		'<h1 id="firstHeading" class="firstHeading">Date: ' + today + '</h1>'+
 		'<div id="bodyContent">'+
-		'<p class="image is-64x64 lazy"><img src="https://bulma.io/images/placeholders/128x128.png" alt="Yard Sale"></p>'+
+		'<p class="image is-64x64 lazy"><images src="https://bulma.io/images/placeholders/128x128.png" alt="Yard Sale"></p>'+
 		'<p>Yard sale info.</p>'+
 		'</div>'+
 		'</div>';

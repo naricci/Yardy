@@ -29,11 +29,11 @@ gulp.task('lint', (next) => {
 	next();
 });
 
-// function to inject bootstrap css/js files into html page
+// function to inject bootstrap css/javascripts files into html page
 gulp.task('inject', () => {
 	const wiredep = require('wiredep').stream;
 	const inject = require('gulp-inject');
-	const injectSrc = gulp.src(['./public/css/*.css', './public/js/*.js']);
+	const injectSrc = gulp.src(['./public/css/*.css', './public/javascripts/*.js']);
 
 	const injectOptions = {
 		ignorePath: './public'
@@ -54,7 +54,7 @@ gulp.task('inject', () => {
 gulp.task('start', (done) => {
 	let stream = nodemon({
 		script: 'app.js',
-		ext: 'js pug',
+		ext: 'javascripts pug',
 		env: { 'NODE_ENV': 'development' },
 		delayTime: 1,
 		watch: jsFiles,
@@ -76,7 +76,7 @@ gulp.task('build', (done) => {
 	let stream =  nodemon({
 		script: 'app.js',
 		nodeArgs: ['$NODE_DEBUG_OPTION'],
-		ext: 'js pug',
+		ext: 'javascripts pug',
 		env: { 'NODE_ENV': 'development' },
 		tasks: ['lint'],
 		delayTime: 1,

@@ -1,4 +1,4 @@
-let searchParams = document.getElementById('searchParams');
+var searchParams = document.getElementById('searchParams');
 
 function getLocation() {
 	// Check geolocation support

@@ -529,3 +529,7 @@ exports.unlink_twitter_get = (req, res) => {
 	});
 };
 
+// Get Delete Account page.
+// exports.delete_account_get = (req, res, next) => {
+//
+// };
