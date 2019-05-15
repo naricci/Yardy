@@ -45,6 +45,9 @@
     "supports-color": "^6.1.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/register": "^7.4.4",
     "eslint": "^5.15.0",
     "gulp": "^4.0.0",
     "gulp-eslint": "^5.0.0",
