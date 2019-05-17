@@ -1,23 +1,12 @@
-// const async = require('async');
-// const debug = require('debug')('yardy:yardsale.controller');
-// const { validationResult } = require('express-validator/check');
-// const S3 = require('../config/s3_config');
-// // Models
-// const User = require('../models/user');
-// const Yardsale = require('../models/yardsale');
-
-import async from 'async';
-import debugLib from 'debug';
-import { validationResult } from 'express-validator/check';
-import S3 from '../config/s3_config';
-import User from '../models/user';
-import Yardsale from '../models/yardsale';
-
-const debug = debugLib('yardy:yardsale.controller');
-const yardsaleController = {};
+const async = require('async');
+const debug = require('debug')('yardy:yardsale.controller');
+const { validationResult } = require('express-validator/check');
+const S3 = require('../config/s3_config');
+const User = require('../models/user');
+const Yardsale = require('../models/yardsale');
 
 // Display list of all yardsales.
-yardsaleController.yardsale_list = async (req, res, next) => {
+exports.yardsale_list = (req, res, next) => {
 	const params = req.body.address;
 	if (params === undefined || params === null || params === '') {
 	  Yardsale
@@ -38,7 +27,7 @@ yardsaleController.yardsale_list = async (req, res, next) => {
 };
 
 // Display detail page for a specific yardsale.
-yardsaleController.yardsale_detail = async (req, res, next) => {
+exports.yardsale_detail = (req, res, next) => {
 	async.parallel({
 		yardsale: (callback) => {
 			Yardsale
@@ -74,7 +63,7 @@ yardsaleController.yardsale_detail = async (req, res, next) => {
 };
 
 // Display yardsale create form on GET.
-yardsaleController.yardsale_create_get = async (req, res, next) => {
+exports.yardsale_create_get = (req, res, next) => {
 	User
 		.findById(req.params.id)
 		.exec()
@@ -94,7 +83,7 @@ yardsaleController.yardsale_create_get = async (req, res, next) => {
 };
 
 // Handle Yardsale create on POST.
-yardsaleController.yardsale_create_post = async (req, res, next) => {
+exports.yardsale_create_post = (req, res, next) => {
 	// Extract the validation errors from a request.
 	let errors = validationResult(req);
 	let errorsArray = errors.array();
@@ -178,7 +167,7 @@ yardsaleController.yardsale_create_post = async (req, res, next) => {
 };
 
 // Display Yardsale delete form on GET.
-yardsaleController.yardsale_delete_get = async (req, res, next) => {
+exports.yardsale_delete_get = (req, res, next) => {
 	async.parallel({
 		yardsale: (callback) => {
 			Yardsale
@@ -207,7 +196,7 @@ yardsaleController.yardsale_delete_get = async (req, res, next) => {
 };
 
 // Handle Yardsale delete on POST.
-yardsaleController.yardsale_delete_post = async (req, res, next) => {
+exports.yardsale_delete_post = (req, res, next) => {
 	async.parallel({
 		yardsale: (callback) => {
 			Yardsale
@@ -220,7 +209,6 @@ yardsaleController.yardsale_delete_post = async (req, res, next) => {
 		if (results.yardsale.length === 1) {
 			// yardsale has books. Render in same way as for GET route.
 			res.render('yardsale_delete', { title: 'Delete Yardsale', yardsale: results.yardsale });
-			return;
 		}
 		else {
 			// Delete yardsale object and redirect to the list of yardsales.
@@ -235,7 +223,7 @@ yardsaleController.yardsale_delete_post = async (req, res, next) => {
 };
 
 // Display Yardsale update form on GET.
-yardsaleController.yardsale_update_get = async (req, res, next) => {
+exports.yardsale_update_get = (req, res, next) => {
 	debug('Getting YS update page.');
 	Yardsale
 		.findById(req.params.id)
@@ -259,7 +247,7 @@ yardsaleController.yardsale_update_get = async (req, res, next) => {
 };
 
 // Handle Yardsale update on POST.
-yardsaleController.yardsale_update_post = async (req, res, next) => {
+exports.yardsale_update_post = (req, res, next) => {
 
 	// If there is no image included in post
 	if (req.file === undefined) {
@@ -372,5 +360,3 @@ yardsaleController.yardsale_update_post = async (req, res, next) => {
 		}
 	}
 };
-
-export default yardsaleController;

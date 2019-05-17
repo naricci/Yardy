@@ -1,10 +1,6 @@
-// const mongoose = require('mongoose');
-import mongoose from 'mongoose';
-mongoose.Promise = global.Promise;
-// const debug = require('debug')('yardy:mongo');
-import debugLib from 'debug';
-const debug = debugLib('yardy:mongo');
-const mongoDB = process.env.MONGODB_URI || 'mongodb://nick:Yardy123@ds121475.mlab.com:21475/yardy';
+const debug = require('debug')('yardy:mongo');
+const mongoose = require('mongoose');
+const mongoDB = process.env.MONGODB_URI;
 const options = {
 	autoIndex: false,	// set to false in production to prevent performance issues
 	autoReconnect: true,
@@ -15,10 +11,11 @@ const options = {
 const db_config = mongoose.connection;
 let gracefulShutdown;
 
+mongoose.Promise = global.Promise;
 // Set up mongoose connection
 mongoose.connect(mongoDB, options)
-	.catch(err => {
-		debug(err);
+	.catch((err) => {
+		console.log(err);
 	});
 
 // MongoDB CONNECTION EVENTS

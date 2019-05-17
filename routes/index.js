@@ -1,31 +1,18 @@
-// const express = require('express');
-// const router = express.Router();
-// // Models
-// const favoriteController = require('../controllers/favoriteController');
-// const indexController = require('../controllers/indexController');
-
-import { Router } from 'express';
-import favoriteController from '../controllers/favoriteController';
-import indexController from '../controllers/indexController';
-const router = new Router();
+const express = require('express');
+const router = express.Router();
+const favoriteController = require('../controllers/favoriteController');
+const indexController = require('../controllers/indexController');
 
 /* GET home page search results */
-router.get('/', (req, res, next) => {
-	indexController.search(req, res, next);
-});
+router.get('/', indexController.search);
 
 /* GET home page. */
-router.get('/', (req, res, next) => {
-	indexController.index(req, res, next);
-});
+router.get('/', indexController.index);
 
 // POST request for User favorites
-router.post('/', (req, res, next) => {
-	favoriteController.favorites_post(req, res, next);
-});
+router.post('/',favoriteController.favorites_post);
 
 // POST request for User favorites
 // router.post('/', favoriteController.favorites_delete);
 
-// module.exports = router;
-export default router;
+module.exports = router;

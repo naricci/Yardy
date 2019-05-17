@@ -1,5 +1,4 @@
-// const mongoose = require('mongoose');
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // Create Schema and Model
@@ -12,6 +11,10 @@ const FavoriteSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'yardsales',
 	},
+	isChecked: {
+		type: Boolean,
+		required: false
+	},
 	dateAdded: {
 		type: Date,
 		default: Date.now
@@ -19,9 +22,8 @@ const FavoriteSchema = new Schema({
 });
 
 // Compound Index
-FavoriteSchema.index({ user: 1, yardsale: 1 });
+// FavoriteSchema.index({ user: 1, yardsale: 1 });
 
 const Favorite = mongoose.model('favorites', FavoriteSchema);
 
-// module.exports = Favorite;
-export default Favorite;
+module.exports = Favorite;

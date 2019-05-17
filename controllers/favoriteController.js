@@ -1,20 +1,12 @@
-// const debug = require('debug')('yardy:favorite.controller');
-// // Models
-// const Favorite = require('../models/favorite');
-
-import debugLib from 'debug';
-import Favorite from '../models/favorite';
-
-const debug = debugLib('yardy:favorite_controller');
-const favoriteController = {};
+const debug = require('debug')('yardy:favorite_controller');
+const Favorite = require('../models/favorite');
 
 // TODO - Fix this stupid fucking function again...
 // Display favorites page on GET
-// exports.favorites_get = (req, res, next) => {
-favoriteController.favorites_get = async (req, res, next) => {
+exports.favorites_get = (req, res, next) => {
 	debug('Getting Favorites page');
-
-	Favorite.find({ user: req.current_user })
+	var me = req.current_user;
+	Favorite.find({ user: me })
 		.populate({
 			path: 'yardsale',
 			model: 'yardsales',
@@ -23,27 +15,37 @@ favoriteController.favorites_get = async (req, res, next) => {
 				model: 'users'
 			}
 		})
-		// .select('yardsale')
 		.exec()
-		.catch((err, favorite) => {
+		.then((favorites) => {
+			debug(`Favorite ID: ${favorites}`);
+			res.render('user_favorites', {
+				title: 'Manage Favorites',
+				// favorites_list: favorites
+				favorites_list: favorites.yardsale,
+			});
+		})
+		.catch((err, favorites) => {
 			if (err) return next(err);
-			if (favorite === null) {
+			if (favorites.yardsale === null) {
 				let err = new Error('Favorite yard sales not found');
 				err.status = 404;
 				return next(err);
 			}
-		})
-		.then((err, favorite) => {
-			debug(`Favorite ID: ${favorite}`);
-			res.render('user_favorites', {
-				title: 'Manage Favorites',
-				favorites: favorite
-			});
+			if (favorites.user !== me) {
+				let err = new Error('Favorite yard sales not found');
+				err.status = 404;
+				return next(err);
+			}
+			if (favorites.length === 0) {
+				res.render('user_favorites', {
+					title: '0 Favorites found.'
+				})
+			}
 		});
 };
 
 // Handle favorites page on POST
-favoriteController.favorites_post = async (req, res, next) => {
+exports.favorites_post = (req, res, next) => {
 	debug(`User ID: ${req.body.userId}`);
 	debug(`Yard Sale ID: ${req.body.yardsale}`);
 	let favorite = new Favorite({
@@ -57,13 +59,13 @@ favoriteController.favorites_post = async (req, res, next) => {
 	favorite.save((err) => {
 		if (err) return next(err);
 		// Success - go to yardsale list.
-		res.redirect('/users/'+req.user._id+'/favorites');
+		res.redirect('/favorites/'+req.user._id);
 	});
 };
 
 // TODO Finish writing function to DELETE favorites
 // Handle favorites page on DELETE
-favoriteController.favorites_delete = async (req, res, next) => {
+exports.favorites_delete = (req, res, next) => {
 	// Favorite
 	// 	.remove({ _id: req.params.id }, (err) => {
 	// 		if (err) return next(err);
@@ -109,5 +111,3 @@ favoriteController.favorites_delete = async (req, res, next) => {
 	// 	}
 	// });
 };
-
-export default favoriteController;

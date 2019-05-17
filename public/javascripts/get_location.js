@@ -1,10 +1,21 @@
-var searchParams = document.getElementById('searchParams');
+const searchParams = document.getElementById('searchParams');
 
 function getLocation() {
 	// Check geolocation support
 	if (navigator.geolocation) {
 		console.log('Geolocation is supported!');
-		navigator.geolocation.getCurrentPosition(showPosition, showError);
+		Notification.requestPermission().then(function(result) {
+			if (result === 'denied') {
+				console.log('Permission wasn\'t granted. Allow a retry.');
+				return;
+			}
+			if (result === 'default') {
+				console.log('The permission request was dismissed.');
+				return;
+			}
+			// Do something with the granted permission.
+			navigator.geolocation.getCurrentPosition(showPosition, showError);
+		});
 	}
 	else {
 		console.log('Geolocation is not supported for this browser.');
@@ -12,13 +23,26 @@ function getLocation() {
 	}
 }
 
+
+// show geolocation
+// function showPosition(position) {
+// 	const latlng = position.coords.latitude + ',' + position.coords.longitude;
+// 	console.log(latlng);
+// 	searchParams.value = latlng;
+// 	// localStorage.setItem('latlng', latlng);
+// }
+
+
 // show geolocation
 function showPosition(position) {
-	var latlng = position.coords.latitude + ',' + position.coords.longitude;
-	console.log(latlng);
-	searchParams.value = latlng;
-	// localStorage.setItem('latlng', latlng);
+	const lat = position.coords.latitude.toString();
+	const lng = position.coords.longitude.toString();
+	console.log(lat + ', ' + lng);
+	localStorage.setItem('lat', lat);
+	localStorage.setItem('lng', lng);
+	searchParams.value = lat + ', ' + lng;
 }
+
 
 // show geolocation error
 function showError(error) {
@@ -41,3 +65,6 @@ function showError(error) {
 			break;
 	}
 }
+
+// export { searchParams, getLocation, showPosition, showError };
+// module.exports = get_location;

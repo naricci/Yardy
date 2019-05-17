@@ -1,6 +1,7 @@
 extends layout
 
 block content
+
 	// TITLE & SEARCH BAR
 	section.section.has-background-light
 		.container
@@ -25,11 +26,14 @@ block content
 							.divider
 							p.control
 								a.button.is-success(onclick='getLocation()') Find Me
+							.divider
+							.divider
 							p.control
 								button.button.is-link#submit(type='submit')
 									span.icon
 										i.fas.fa-search-location
 									span Search
+
 	// MAP OF USA
 	section.section.has-background-light
 		.container

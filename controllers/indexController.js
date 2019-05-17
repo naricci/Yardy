@@ -1,31 +1,30 @@
-// const debug = require('debug')('yardy:index.controller');
-// const Yardsale = require('../models/yardsale');
-import debugLib from 'debug';
-import Yardsale from '../models/yardsale';
+const debug = require('debug')('yardy:index.controller');
+const Yardsale = require('../models/yardsale');
 
-const debug = debugLib('yardy:index.controller');
-const indexController = {};
-
-indexController.index = async (req, res, next) => {
+exports.index = (req, res, next) => {
 	Yardsale
 		.find()
 		.populate('user')
 		.sort([['date', 'ascending']])
 		.exec()
-		.catch((err) => {
+		.catch((err, list_yardsales) => {
 			if (err) return next(err);
+			if (list_yardsales === null) { // No yardsales.
+				err = new Error('Yardsale not found');
+				err.status = 404;
+				return next(err);
+			}
 		})
 		.then((list_yardsales) => {
-
 			// Successful, so render
-			res.render('indexm.js', {
+			res.render('index', {
 				title: 'Yardy',
 				yardsale_list: list_yardsales
 			});
 		});
 };
 
-indexController.search = async (req, res, next) => {
+exports.search = (req, res, next) => {
 	let params = req.query.search;
 	// let paramsLike = '/'+req.query.search+'/';
 	let sort = req.query.sort;
@@ -70,7 +69,7 @@ indexController.search = async (req, res, next) => {
 					debug('No yard sales found.');
 					const results = 'No yard sales found.';
 					// Successful, so render
-					res.render('indexm.js', {
+					res.render('index', {
 						title: 'Yardy Search Results',
 						results: results
 					});
@@ -80,7 +79,7 @@ indexController.search = async (req, res, next) => {
 						debug(yardsale);
 					});
 					// Successful, so render
-					res.render('indexm.js', {
+					res.render('index', {
 						title: 'Yardy Search Results',
 						yardsale_list: list_yardsales
 					});
@@ -93,17 +92,29 @@ indexController.search = async (req, res, next) => {
 			// .sort([['date', 'ascending']])
 			.sort([sortType])
 			.exec()
-			.catch((err) => {
+			.catch((err, list_yardsales) => {
 				if (err) return next(err);
+				if (list_yardsales === null) { // No yardsales.
+					err = new Error('Yardsale not found');
+					err.status = 404;
+					return next(err);
+				}
+				else if (list_yardsales.length === 0) {
+					debug('No yard sales found.');
+					const results = 'No yard sales found.';
+					// Successful, so render
+					res.render('index', {
+						title: 'Yardy Search Results',
+						results: results
+					});
+				}
 			})
 			.then((list_yardsales) => {
 				// Successful, so render
-				res.render('indexm.js', {
+				res.render('index', {
 					title: 'Yardy',
 					yardsale_list: list_yardsales
 				});
-			});
+			})
 	}
 };
-
-export default indexController;

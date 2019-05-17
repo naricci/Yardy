@@ -1,20 +1,9 @@
-// const debug = require('debug')('yardy:passport');
-// const passport = require('passport');
-// const LocalStrategy = require('passport-local').Strategy;
-// const FacebookStrategy = require('passport-facebook').Strategy;
-// const TwitterStrategy = require('passport-twitter').Strategy;
-// const User = require('../models/user');
-
-import debugLib from 'debug';
-const debug = debugLib('yardy:passport');
-import passport from 'passport';
-import localStrategy from 'passport-local';
-const LocalStrategy = localStrategy.Strategy;
-import facebookStrategy from 'passport-facebook';
-const FacebookStrategy = facebookStrategy.Strategy;
-import twitterStrategy from 'passport-twitter';
-const TwitterStrategy = twitterStrategy.Strategy;
-import User from '../models/user';
+const debug = require('debug')('yardy:passport');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
+const TwitterStrategy = require('passport-twitter').Strategy;
+const User = require('../models/user');
 
 // Configure the local strategy for use by Passport.
 passport.use(new LocalStrategy(

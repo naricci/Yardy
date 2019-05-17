@@ -46,8 +46,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
-    "@babel/register": "^7.4.4",
+    "babel-loader": "^8.0.6",
+    "browserify": "^16.2.3",
     "eslint": "^5.15.0",
     "gulp": "^4.0.0",
     "gulp-eslint": "^5.0.0",
@@ -55,6 +55,7 @@
     "gulp-nodemon": "^2.4.2",
     "install-peers": "^1.0.3",
     "nodemon": "^1.18.9",
+    "webpack": "^4.31.0",
     "wiredep": "^4.0.0"
   },
   "nodemonConfig": {

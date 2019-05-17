@@ -1,33 +1,23 @@
-// $(document).ready(function() {
-// 	// // AJAX call to Mongo for addresses
-// 	$.ajax({
-// 		dataType: 'jsonp',
-// 		data: $('#yardsaleResults').serialize(),
-// 		type: 'GET',
-// 		url: '/',
-// 		// contentType: 'application/json',
-// 		// crossDomain: true,
-// 		success: function(data) {
-// 			console.log('success!', data);
-// 			document.getElementById('#yardsaleResults').value = data;
-// 		},
-// 		error: function(xhr, status, err) {
-// 			console.log(err);
-// 		}
-// 	});
-// });
+// import { searchParams, getLocation } from './get_location';
+
+var map;
+const date = new Date;
+const today = date.getDay() + '/' + date.getMonth() + '/' + date.getFullYear();
+console.log(`Today is ${today}.`);
 
 // Set passive event listeners
-// document.addEventListener('touchstart', wheel, {passive: true});
+// document.addEventListener('touchstart', ontouchstart, { passive: true });
+// document.addEventListener('touchmove', ontouchmove, { passive: true });
 
-let map;
-let searchParams = document.getElementById('searchParams');
-var today = Date.now();
-console.log(today);
+// Call function to grab user's lat + long
+// getLocation();
 
+// Initialize Google Map
 function initMap() {
-	var userLat = localStorage.getItem('lat');
-	var userLng = localStorage.getItem('lng');
+	// searchParams.value = lat + ', ' + lng;
+	let userLat = localStorage.getItem('lat');
+	let userLng = localStorage.getItem('lng');
+
 	map = new google.maps.Map(document.getElementById('map'), {
 		// center: new google.maps.LatLng(41.8240,-71.4128),
 		center: new google.maps.LatLng(parseFloat(userLat), parseFloat(userLng)),
@@ -39,78 +29,36 @@ function initMap() {
 	let locations = [
 		// new google.maps.LatLng(41.8240,-71.4128)
 		new google.maps.LatLng(parseFloat(userLat), parseFloat(userLng))
-	// and additional coordinates, just add a new item
+		// and additional coordinates, just add a new item
 	];
 
 	locations.forEach((location) => {
-		let marker = new google.maps.Marker({
+		var marker = new google.maps.Marker({
 			position: location,
 			map: map,
 			title:'Yard Sale'
-			// title: 'You are here!'
 		});
 
-		marker.addListener('click',() => {
-			infowindow.open(map, marker);
+		marker.addListener('mouseover', () => {
+			infoWindow.open(map, marker);
 		});
 	});
 
 	// TODO - Add loop to display all yardsales on the map as markers
-	let contentString = '<div id="content">'+
+	var contentString = '<div id="content">'+
 		'<div id="siteNotice">'+
 		'</div>'+
 		'<h1 id="firstHeading" class="firstHeading">Address: </h1>'+
 		'<h1 id="firstHeading" class="firstHeading">Date: ' + today + '</h1>'+
 		'<div id="bodyContent">'+
-		'<p class="image is-64x64 lazy"><images src="https://bulma.io/images/placeholders/128x128.png" alt="Yard Sale"></p>'+
-		'<p>Yard sale info.</p>'+
+		'<p class="image is-64x64"><img src="https://bulma.io/images/placeholders/128x128.png" alt="Yard Sale"></p>'+
+		'<p>You are here!</p>'+
 		'</div>'+
 		'</div>';
 
-	let infowindow = new google.maps.InfoWindow({
+	var infoWindow = new google.maps.InfoWindow({
 		content: contentString
 	});
-}
-
-// show geolocation
-function showPosition(position) {
-	var lat = position.coords.latitude.toString();
-	var lng = position.coords.longitude.toString();
-	console.log(lat + ', ' + lng);
-	localStorage.setItem('lat', lat);
-	localStorage.setItem('lng', lng);
-}
-
-// var infoWindow;
-if (navigator.geolocation) {
-	navigator.geolocation.getCurrentPosition(showPosition, showError);
-	console.log('Geolocation is supported!');
-}
-else {
-	console.log('Geolocation is not supported for this browser.');
-	searchParams.value = 'Geolocation is not supported by this browser.';
-}
-
-// show geolocation error
-function showError(error) {
-	switch(error.code) {
-		case error.PERMISSION_DENIED:
-			searchParams.value = 'User denied the request for Geolocation.';
-			console.log('User denied the request for Geolocation.');
-			break;
-		case error.POSITION_UNAVAILABLE:
-			searchParams.value = 'Location information is unavailable.';
-			console.log('Location information is unavailable.');
-			break;
-		case error.TIMEOUT:
-			searchParams.value = 'The request to get user location timed out.';
-			console.log('The request to get user location timed out.');
-			break;
-		case error.UNKNOWN_ERROR:
-			searchParams.value = 'An unknown error occurred.';
-			console.log('An unknown error occurred.');
-			break;
-	}
 }
 
 /*

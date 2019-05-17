@@ -1,31 +1,28 @@
-import dotenv from 'dotenv';
-import compression from 'compression';
-import cookieParser from 'cookie-parser';
-import cors from 'cors';
-import createError from 'http-errors';
-import debugLib from 'debug';
-import express from 'express';
-import favicon from 'serve-favicon';
-import flash from 'express-flash';
-import helmet from 'helmet';
-import logger from 'morgan';
-import passport from 'passport';
-import path from 'path';
-import session from 'express-session';
-// const MongoStore = require('connect-mongo')(session);
-import ms from 'connect-mongo';
+require('dotenv').config();
+require('./config/db_config');
+
+const compression = require('compression');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const createError = require('http-errors');
+const debug = require('debug')('yardy:app');
+const express = require('express');
+const favicon = require('serve-favicon');
+const flash = require('express-flash');
+const helmet = require('helmet');
+const logger = require('morgan');
+const passport = require('passport');
+const path = require('path');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 // Routes
-import index from './routes';
-import favorites from './routes/favorites';
-import messages from './routes/messages';
-import users from './routes/users';
-import yardsales from './routes/yardsales';
-
-const debug = debugLib('yardy:app');
+const index = require('./routes/index');
+const favorites = require('./routes/favorites');
+const messages = require('./routes/messages');
+const users = require('./routes/users');
+const yardsales = require('./routes/yardsales');
 const PORT = process.env.PORT || 5000;
-const MongoStore = ms(session);
-dotenv.config({ path: path.join(__dirname, '.env') });
 
 // Session Configuration
 const sess = {
@@ -48,8 +45,7 @@ const options = {
 // Initialize Express App
 const app = express();
 
-// require('./config/passport_config');
-import './config/passport_config';
+require('./config/passport_config');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -72,13 +68,16 @@ app.use(compression());	// Compress all routes
 app.use(helmet());
 app.use(express.static(path.join('public'), options));
 app.use(favicon(path.join(__dirname, 'public', 'icons', 'favicon.ico')));
+
 // Authentication related middleware.
 app.use(flash());
 app.use(session(sess));
+
 // Initialize Passport and restore authentication state,
 // if any, from the session.
 app.use(passport.initialize());
 app.use(passport.session());
+
 // Pass isAuthenticated and current_user to all views.
 app.use((req, res, next) => {
 	res.locals.isAuthenticated = req.isAuthenticated();
@@ -118,5 +117,4 @@ app.use((err, req, res, next) => {
 // Heroku Listening on Port ...
 app.listen(PORT, () => { return debug(`Heroku listening on ${ PORT }`); });
 
-// module.exports = app;
-export default app;
+module.exports = app;
