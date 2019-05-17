@@ -1,12 +1,10 @@
 const debug = require('debug')('yardy:favorite_controller');
 const Favorite = require('../models/favorite');
 
-// TODO - Fix this stupid fucking function again...
 // Display favorites page on GET
 exports.favorites_get = (req, res, next) => {
 	debug('Getting Favorites page');
-	var me = req.current_user;
-	Favorite.find({ user: me })
+	Favorite.find({ user: req.user._id })
 		.populate({
 			path: 'yardsale',
 			model: 'yardsales',
@@ -15,31 +13,24 @@ exports.favorites_get = (req, res, next) => {
 				model: 'users'
 			}
 		})
-		.exec()
-		.then((favorites) => {
-			debug(`Favorite ID: ${favorites}`);
-			res.render('user_favorites', {
-				title: 'Manage Favorites',
-				// favorites_list: favorites
-				favorites_list: favorites.yardsale,
-			});
-		})
-		.catch((err, favorites) => {
+		.exec((err, favorites) => {
 			if (err) return next(err);
 			if (favorites.yardsale === null) {
 				let err = new Error('Favorite yard sales not found');
 				err.status = 404;
 				return next(err);
 			}
-			if (favorites.user !== me) {
-				let err = new Error('Favorite yard sales not found');
-				err.status = 404;
-				return next(err);
-			}
-			if (favorites.length === 0) {
+			else if (favorites.length === 0) {
 				res.render('user_favorites', {
 					title: '0 Favorites found.'
 				})
+			}
+			else {
+				debug(favorites);
+				res.render('user_favorites', {
+					title: 'Manage Favorites',
+					favorites_list: favorites
+				});
 			}
 		});
 };
