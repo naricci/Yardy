@@ -3,9 +3,7 @@ extends layout
 block content
 	section.section
 		.container
-			if isAuthenticated
-				include components/title_user
-			else
+			if isAuthenticated === false
 				h1.subtitle.has-text-centered
 					strong Registration
 			if isAuthenticated

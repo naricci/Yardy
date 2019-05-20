@@ -3,7 +3,7 @@ extends layout
 block content
 	section.section
 		.container
-			include components/title_user
+			//- include components/title_user
 			include components/panel
 			.columns
 				.column.is-one-quarter
@@ -37,15 +37,15 @@ block content
 										nav.level.is-mobile
 											.level-left
 												a.level-item(href='/yardsales/' + favorites.yardsale._id) view details
-									//.media-right
-									// Delete Favorite Form
-									//	form(method='POST' action='')
-									//		input(type='hidden' name='favId' required='true' value=favorites._id)
-									//		input(type='hidden' name='yardsaleId' value=favorites.yardsale._id)
-									//		input(type='hidden' name='userId' value=favorites.user._id)
-									//		button.button.is-danger.is-rounded(type='submit')
-									//			span.icon
-									//				i.fas.fa-trash
+									.media-right
+										// Delete Favorite Form
+										form(method='POST' action='')
+											input(type='hidden' name='favId' required='true' value=favorites._id)
+											input(type='hidden' name='yardsaleId' value=favorites.yardsale._id)
+											input(type='hidden' name='userId' value=favorites.user._id)
+											button.button.is-danger.is-rounded(type='submit')
+												span.icon
+													i.fas.fa-trash
 					else
 						h1.subtitle.has-text-centered
 							strong.has-text-danger You have not added any yard sales to your favorites yet.

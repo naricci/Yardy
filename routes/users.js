@@ -10,16 +10,16 @@ router.all('/', (req, res, next) => {
 });
 
 // GET request for login page.
-router.get('/login',userController.login_get);
+router.get('/login', userController.login_get);
 
 // POST request for login page.
-router.post('/login',userController.login_post);
+router.post('/login', userController.login_post);
 
 // GET request for logout page.
-router.get('/logout',userController.logout_get);
+router.get('/logout', userController.logout_get);
 
 // GET request for create User.
-router.get('/register',userController.register_get);
+router.get('/register', userController.register_get);
 
 // POST request for create User.
 router.post('/register',validators('register_post'), userController.register_post);
@@ -31,7 +31,7 @@ router.get('/reset', userController.reset_get);
 router.post('/reset',validators('reset_post'), userController.reset_post);
 
 // POST request for reset User password (2nd step).
-router.post('/resetfinal',userController.reset_post_final);
+router.post('/resetfinal', userController.reset_post_final);
 
 // GET request for User permission reminder page.
 router.get('/stop', userController.warning);
@@ -51,15 +51,8 @@ router.get('/:id/profilepic', userController.profilepic_get);
 // POST request for User updating profile pic
 router.post('/:id/profilepic', validators('profilepic_post'), upload.single('profilepic'), userController.profilepic_post);
 
-// GET request for User favorites
-// router.get('/:userId/favorites', favoriteController.favorites_get);
-
-// POST request for User favorites
-// router.post('/:userId/favorites', favoriteController.favorites_post);
-
-// POST request to delete a User's favorite yard sale
-// router.post('/:userId/favorites', favoriteController.favorites_delete);
-// router.post('/:id/favorites/:fav_id?', favoriteController.favorites_delete);
+// DELETE request for User updating profile pic
+router.get('/:id/profilepic/delete?', userController.profilepic_delete);
 
 // Redirect the user to Facebook for authentication.
 router.get('/auth/facebook', userController.facebook_auth);

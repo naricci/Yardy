@@ -4,13 +4,13 @@ nav.panel.is-hidden-mobile
 		small
 			a(href='/users/' + current_user._id +'/profilepic') upload picture
 	.panel-block
-		if (current_user.profilepic !== undefined)
-			img.is-128x128.lazy(src='/images/blank_profile.png' data-src=process.env.S3_IMAGES_URL+'/'+current_user.username+'/'+current_user.profilepic alt='profile picture')
+		if (current_user.profilepic !== undefined && current_user.profilepic !== null && current_user.profilepic !== '')
+			img.is-128x128(src=process.env.S3_IMAGES_URL+'/'+current_user.username+'/'+current_user.profilepic alt='profile picture')
 		else
 			picture
 				source(srcset='/images/blank_profile.webp' type='image/webp')
 				source(srcset='/images/blank_profile.png' type='image/png')
-				img.is-128x128.lazy(src='/images/blank_profile.png' alt='Profile Picture')
+				img.is-128x128(src='/images/blank_profile.png' alt='Profile Picture')
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-user(aria-hidden=true)

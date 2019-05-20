@@ -30,6 +30,6 @@ block content
 							.control
 								button.button.is-link(type='submit') Update Profile Pic
 								.divider
-								button.button.is-danger(type='reset') Cancel
+								a.button.is-danger(href='/users/'+current_user._id+'/profilepic/delete') Remove Profile Pic
 		script(src='/javascripts/select_image_name.js')
 

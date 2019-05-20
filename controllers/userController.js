@@ -3,7 +3,7 @@ const debug = require('debug')('yardy:user.controller');
 const { validationResult } = require('express-validator/check');
 const passport = require('passport');
 const S3 = require('../config/s3_config');
-const helpers = require('../util/helpers');
+const helpers = require('../util/helpers.js');
 const User = require('../models/user');
 const Yardsale = require('../models/yardsale');
 
@@ -28,12 +28,18 @@ exports.user_profile = (req, res, next) => {
 			err.status = 404;
 			return next(err);
 		}
-
-		res.render('user_profile', {
-			title: 'Your Yard Sales',
-			user: results.user,
-			yardsales: results.yardsales
-		});
+		else if (results.yardsales === null) { // No results.
+			let err = new Error('Yardsales not found');
+			err.status = 404;
+			return next(err);
+		}
+		else {
+			res.render('user_profile', {
+				title: 'Your Yard Sales',
+				user: results.user,
+				yardsales: results.yardsales
+			});
+		}
 	});
 };
 
@@ -420,13 +426,21 @@ exports.profilepic_post = (req, res, next) => {
 		_id: req.params.id
 	});
 
+	// -- Custom Validation -- //
+	// Check if passwords match or not.
+	if (ysFile.originalname === undefined) {
+		// Passwords do not match. Create and push an error message.
+		errorsArray.push({ msg: 'Please select an image before you click submit.' });
+	}
+
 	if (errorsArray.length > 0) {
 		// There are errors. Render the form again with sanitized values/error messages.
-		res.render('user_form', {
+		res.render('user_profilepic', {
 			title: 'Update Profile',
 			user: user,
 			errors: errorsArray
 		});
+
 	} else {
 		User
 			.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
@@ -458,6 +472,41 @@ exports.profilepic_post = (req, res, next) => {
 				// Successful - redirect to user detail page.
 				res.redirect('/users/' + theuser._id);
 			});
+	}
+};
+
+exports.profilepic_delete = (req, res, next) => {
+	const oldKey = (req.user.username + '/' + req.user.profilepic);
+	S3.deleteParams.Key = oldKey;
+
+	let user = new User({
+		profilepic: undefined,
+		_id: req.params.id
+	});
+
+	try {
+		User.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
+			if (err) return next(err);
+			if (theuser === null) {
+				let err = new Error('User not found');
+				err.status = 404;
+				return next(err);
+			}
+
+			// Delete old profile picture from S3
+			S3.s3Client.deleteObject(S3.deleteParams, (err, data) => {
+				if (err) debug(err, err.stack);
+				else {
+					debug(`Deleting ${S3.deleteParams.Key} in ${process.env.S3_BUCKET} in S3`);
+					debug(data);
+				}
+			});
+
+			res.redirect('/users/'+theuser._id+'/profilepic');
+		});
+	}
+	catch (err) {
+		res.render('error');
 	}
 };
 

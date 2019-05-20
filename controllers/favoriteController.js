@@ -23,7 +23,7 @@ exports.favorites_get = (req, res, next) => {
 			else if (favorites.length === 0) {
 				res.render('user_favorites', {
 					title: '0 Favorites found.'
-				})
+				});
 			}
 			else {
 				debug(favorites);
@@ -56,7 +56,7 @@ exports.favorites_post = (req, res, next) => {
 
 // TODO Finish writing function to DELETE favorites
 // Handle favorites page on DELETE
-exports.favorites_delete = (req, res, next) => {
+exports.favorites_delete = (req, res) => {
 	// Favorite
 	// 	.remove({ _id: req.params.id }, (err) => {
 	// 		if (err) return next(err);

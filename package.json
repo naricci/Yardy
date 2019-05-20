@@ -3,13 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "description": "A community yard sale search.",
-  "main": "app.js",
+	"main": "app.js",
   "repository": {
     "type": "git",
     "url": "https://www.github.com/naricci/Yardy"
   },
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "node app.js",
     "dev:pc": "SET DEBUG=yardy:* & nodemon ./bin/www",
     "dev:mac": "DEBUG=yardy:* nodemon ./bin/www",
     "lint": "eslint -c .eslintrc.json . --fix"
