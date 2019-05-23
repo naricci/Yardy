@@ -1,6 +1,4 @@
-// import { searchParams, getLocation } from './get_location';
-
-var map;
+let map;
 const date = new Date;
 const today = date.getDay() + '/' + date.getMonth() + '/' + date.getFullYear();
 console.log(`Today is ${today}.`);
@@ -9,12 +7,8 @@ console.log(`Today is ${today}.`);
 // document.addEventListener('touchstart', ontouchstart, { passive: true });
 // document.addEventListener('touchmove', ontouchmove, { passive: true });
 
-// Call function to grab user's lat + long
-// getLocation();
-
 // Initialize Google Map
 function initMap() {
-	// searchParams.value = lat + ', ' + lng;
 	let userLat = localStorage.getItem('lat');
 	let userLng = localStorage.getItem('lng');
 
@@ -60,44 +54,3 @@ function initMap() {
 		content: contentString
 	});
 }
-
-/*
-infoWindow = new google.maps.InfoWindow;
-
-// Try HTML5 geolocation.
-if (navigator.geolocation) {
-	navigator.geolocation.getCurrentPosition((position) => {
-		var pos = {
-			lat: position.coords.latitude,
-			lng: position.coords.longitude
-		};
-
-		infoWindow.setPosition(pos);
-		infoWindow.setContent('You are here.');
-		infoWindow.open(map);
-		map.setCenter(pos);
-	}, () => {
-		handleLocationError(true, infoWindow, map.getCenter());
-	});
-} else {
-	// Browser doesn't support Geolocation
-	handleLocationError(false, infoWindow, map.getCenter());
-}
-
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-	infoWindow.setPosition(pos);
-	infoWindow.setContent(browserHasGeolocation ?
-		'Error: The Geolocation service failed.' :
-		'Error: Your browser doesn\'t support geolocation.');
-	infoWindow.open(map);
-}
-*/
-
-// Geocoder for map
-// geocoder.geocode( { 'address': address}, function(results, status) {
-// 	if (status === google.maps.GeocoderStatus.OK) {
-// 		var latitude = results[0].geometry.location.lat();
-// 		var longitude = results[0].geometry.location.lng();
-// 		console.log(latitude + ', ' + longitude);
-// 	}
-// });

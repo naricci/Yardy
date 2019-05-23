@@ -116,6 +116,6 @@ app.use((err, req, res, next) => {
 });
 
 // Heroku Listening on Port ...
-app.listen(PORT, () => { return debug(`Heroku listening on ${ PORT }`); });
+app.listen(PORT, () => debug(`Heroku listening on ${ PORT }`));
 
 module.exports = app;

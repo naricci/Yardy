@@ -4,18 +4,18 @@ function getLocation() {
 	// Check geolocation support
 	if (navigator.geolocation) {
 		console.log('Geolocation is supported!');
-		Notification.requestPermission().then(function(result) {
-			if (result === 'denied') {
-				console.log('Permission wasn\'t granted. Allow a retry.');
-				return;
-			}
-			if (result === 'default') {
-				console.log('The permission request was dismissed.');
-				return;
-			}
+		// Notification.requestPermission().then(function(result) {
+		// 	if (result === 'denied') {
+		// 		console.log('Permission wasn\'t granted. Allow a retry.');
+		// 		return;
+		// 	}
+		// 	if (result === 'default') {
+		// 		console.log('The permission request was dismissed.');
+		// 		return;
+		// 	}
 			// Do something with the granted permission.
 			navigator.geolocation.getCurrentPosition(showPosition, showError);
-		});
+		// });
 	}
 	else {
 		console.log('Geolocation is not supported for this browser.');

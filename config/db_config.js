@@ -13,16 +13,16 @@ let gracefulShutdown;
 
 mongoose.Promise = global.Promise;
 // Set up mongoose connection
-mongoose.connect(mongoDB, options)
-	.catch((err) => {
-		console.log(err);
-	});
+mongoose
+	.connect(mongoDB, options)
+	.then(() => debug('Mongoose connected to ' + mongoDB))
+	.catch(err => console.error(err));
 
 // MongoDB CONNECTION EVENTS
-db_config.on('connected', () => {
-	debug('Mongoose connected to ' + mongoDB);
-});
-db_config.on('error', (err) => {
+// db_config.on('connected', () => {
+// 	debug('Mongoose connected to ' + mongoDB);
+// });
+db_config.on('error', err => {
 	debug('Mongoose connection error: ' + err);
 	process.exit(0);
 });
@@ -55,6 +55,6 @@ process.on('SIGTERM', () => {
 		process.exit(0);
 	});
 });
-process.on('exit', (code) => {
+process.on('exit', code => {
 	debug('About to exit with code: ', code);
 });

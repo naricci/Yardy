@@ -10,19 +10,19 @@ const Yardsale = require('../models/yardsale');
 // Display detail page for a specific user.
 exports.user_profile = (req, res, next) => {
 	async.parallel({
-		user: (callback) => {
+		user: callback => {
 			User
 				.findById(req.params.id)
 				.exec(callback);
 		},
-		yardsales: (callback) => {
+		yardsales: callback => {
 			Yardsale
 				.find({ 'user': req.params.id }, 'date starttime endtime address city state zipcode description imagename')
 				.sort([['date', 'ascending']])
 				.exec(callback);
 		},
 	}, (err, results) => {
-		if (err) { return next(err); } // Error in API usage.
+		if (err) return next(err); // Error in API usage.
 		if (results.user === null) { // No results.
 			let err = new Error('User not found');
 			err.status = 404;
@@ -172,7 +172,7 @@ exports.update_get = (req, res, next) => {
 				return next(err);
 			}
 		})
-		.then((found_user) => {
+		.then(found_user => {
 			// Successful, so render
 			res.render('user_form', {
 				title: 'Update Profile',
@@ -353,11 +353,11 @@ exports.reset_post_final = (req, res, next) => {
 		// Update the record.
 		async.waterfall(
 			[
-				(callback) => {
+				callback => {
 					User
 						.findById(req.body.userid)
 						.exec(callback)
-						.catch((err) => {
+						.catch(err => {
 							return next(err);
 						});
 				},
@@ -365,12 +365,12 @@ exports.reset_post_final = (req, res, next) => {
 					User
 						.findByIdAndUpdate(req.body.userid, user, {})
 						.exec(callback)
-						.catch((err) => {
+						.catch(err => {
 							return next(err);
 						});
 				}
 			],
-			(err) => {
+			err => {
 				if (err) return next(err);
 				// Success, redirect to login page and show a flash message.
 				req.flash(
@@ -397,7 +397,7 @@ exports.profilepic_get = (req, res, next) => {
 				return next(err);
 			}
 		})
-		.then((found_user) => {
+		.then(found_user => {
 			// Successful, so render
 			res.render('user_profilepic', {
 				title: 'Update Profile Pic',
@@ -485,6 +485,7 @@ exports.profilepic_delete = (req, res, next) => {
 	});
 
 	try {
+		// TODO - Figure out why this isn't deleting image name from DB
 		User.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
 			if (err) return next(err);
 			if (theuser === null) {
