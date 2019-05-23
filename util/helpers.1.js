@@ -11,8 +11,7 @@ export function extractFlashMessages(req) {
 	if (errorFlash && errorFlash.length) messages.push({ msg: errorFlash[0] });
 
 	// Look for success flash.
-	if (successFlash && successFlash.length)
-		messages.push({ msg: successFlash[0] });
+	if (successFlash && successFlash.length) messages.push({ msg: successFlash[0] });
 
 	return messages;
 }
@@ -20,8 +19,7 @@ export function extractFlashMessages(req) {
 // Function to prevent user who already logged in from
 // accessing login and register routes.
 export function isAlreadyLoggedIn(req, res, next) {
-	if (req.user && req.isAuthenticated())
-		res.redirect('/');
+	if (req.user && req.isAuthenticated()) res.redirect('/');
 	else next();
 }
 

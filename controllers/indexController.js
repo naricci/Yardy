@@ -15,7 +15,7 @@ exports.index = (req, res, next) => {
 				return next(err);
 			}
 		})
-		.then((list_yardsales) => {
+		.then(list_yardsales => {
 			// Successful, so render
 			res.render('index', {
 				title: 'Yardy',
@@ -75,7 +75,7 @@ exports.search = (req, res, next) => {
 					});
 				}
 				else {
-					Object.keys(list_yardsales).forEach((yardsale) => {
+					Object.keys(list_yardsales).forEach(yardsale => {
 						debug(yardsale);
 					});
 					// Successful, so render
@@ -109,7 +109,7 @@ exports.search = (req, res, next) => {
 					});
 				}
 			})
-			.then((list_yardsales) => {
+			.then(list_yardsales => {
 				// Successful, so render
 				res.render('index', {
 					title: 'Yardy',

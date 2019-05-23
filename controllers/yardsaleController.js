@@ -14,9 +14,7 @@ exports.yardsale_list = (req, res, next) => {
 			.populate('user')
 			.sort([['date', 'ascending']])
 			.exec((err, list_yardsales) => {
-				if (err) {
-					return next(err);
-				}
+				if (err) return next(err);
 				// Successful, so render
 				res.render('yardsale_list', {
 					title: 'Yard Sale Search Results',
@@ -29,13 +27,13 @@ exports.yardsale_list = (req, res, next) => {
 // Display detail page for a specific yardsale.
 exports.yardsale_detail = (req, res, next) => {
 	async.parallel({
-		yardsale: (callback) => {
+		yardsale: callback => {
 			Yardsale
 				.findById(req.params.id)
 				.populate('user')
 				.exec(callback);
 		},
-		user: (callback) => {
+		user: callback => {
 			User
 				.findById(req.user._id)
 				.exec(callback);
@@ -112,7 +110,7 @@ exports.yardsale_create_post = (req, res, next) => {
 				user: req.user._id,
 			});
 
-			yardsale.save((err) => {
+			yardsale.save(err => {
 				if (err) return next(err);
 
 				// Successful - redirect to new yardsale record.
@@ -146,7 +144,7 @@ exports.yardsale_create_post = (req, res, next) => {
 				imagename: ysFile.originalname
 			});
 
-			yardsale.save((err) => {
+			yardsale.save(err => {
 				if (err) return next(err);
 
 				// S3 Image upload
@@ -169,13 +167,13 @@ exports.yardsale_create_post = (req, res, next) => {
 // Display Yardsale delete form on GET.
 exports.yardsale_delete_get = (req, res, next) => {
 	async.parallel({
-		yardsale: (callback) => {
+		yardsale: callback => {
 			Yardsale
 				.findById(req.params.id)
 				.populate('user')
 				.exec(callback);
 		},
-		user: (callback) => {
+		user: callback => {
 			User
 				.find({ 'user': req.params.id }, 'username email firstName lastName phone profilepic')
 				.exec(callback);
@@ -198,7 +196,7 @@ exports.yardsale_delete_get = (req, res, next) => {
 // Handle Yardsale delete on POST.
 exports.yardsale_delete_post = (req, res, next) => {
 	async.parallel({
-		yardsale: (callback) => {
+		yardsale: callback => {
 			Yardsale
 				.findById(req.body.id)
 				.exec(callback);
@@ -237,7 +235,7 @@ exports.yardsale_update_get = (req, res, next) => {
 				return next(err);
 			}
 		})
-		.then((yardsale) => {
+		.then(yardsale => {
 			// Success.
 			res.render('yardsale_edit', {
 				title: 'Update Yardsale',

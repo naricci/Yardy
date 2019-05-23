@@ -13,8 +13,7 @@ let gracefulShutdown;
 
 mongoose.Promise = global.Promise;
 // Set up mongoose connection
-mongoose
-	.connect(mongoDB, options)
+mongoose.connect(mongoDB, options)
 	.then(() => debug('Mongoose connected to ' + mongoDB))
 	.catch(err => console.error(err));
 

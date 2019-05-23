@@ -47,7 +47,7 @@ exports.favorites_post = (req, res, next) => {
 
 	// TODO - Add logic to see if yard sale has already been favorited
 	// POST favorite object and redirect to the home page.
-	favorite.save((err) => {
+	favorite.save(err => {
 		if (err) return next(err);
 		// Success - go to yardsale list.
 		res.redirect('/favorites/'+req.user._id);
@@ -72,7 +72,7 @@ exports.favorites_delete = (req, res) => {
 			debug(`Favorite ${id} has been removed`);
 			removed `Favorite ${id} has been removed`;
 		})
-		.catch((err) => {
+		.catch(err => {
 			debug(`Favorite ${id} has not been removed`);
 			removed `Favorite ${id} has not been removed`;
 			return err;

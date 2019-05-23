@@ -45,7 +45,7 @@ passport.use(new FacebookStrategy({
 						user.facebook.name  = profile.displayName;
 						user.facebook.email = profile.emails[0].value;
 						// Save current user's Facebook data to Mongo DB
-						user.save((err) => {
+						user.save(err => {
 							if (err) throw err;
 							debug(`Saving...${user}`);
 							return done(null, user);
@@ -64,7 +64,7 @@ passport.use(new FacebookStrategy({
 					newUser.firstName = profile.name.givenName;
 					newUser.lastName = profile.name.familyName;
 					// Save New User to Mongo DB
-					newUser.save((err) => {
+					newUser.save(err => {
 						if (err) throw err;
 						debug(`Saving...${newUser}`);
 						return done(null, newUser);
@@ -79,7 +79,7 @@ passport.use(new FacebookStrategy({
 			user.facebook.name = profile.displayName;
 			user.facebook.email = profile.emails[0].value;
 			// Save current user's Facebook data to Mongo DB
-			user.save((err) => {
+			user.save(err => {
 				if (err) throw err;
 				debug(`Saving...${user}`);
 				return done(null, user);
@@ -111,7 +111,7 @@ passport.use(new TwitterStrategy({
 						user.twitter.displayName = profile.displayName;
 						// user.twitter.email = profile.email;
 						// Save current user's Twitter data to Mongo DB
-						user.save((err) => {
+						user.save(err => {
 							if (err) throw err;
 							debug(`Saving...${user}`);
 							return done(null, user);
@@ -127,7 +127,7 @@ passport.use(new TwitterStrategy({
 					newUser.twitter.displayName = profile.displayName;
 					// newUser.twitter.email = profile.email;
 					// Save New User to Mongo DB
-					newUser.save((err) => {
+					newUser.save(err => {
 						if (err) throw err;
 						debug(`Saving...${newUser}`);
 						return done(null, newUser);
@@ -143,7 +143,7 @@ passport.use(new TwitterStrategy({
 			user.twitter.displayName = profile.displayName;
 			// user.twitter.email = profile.email;
 			// Save current user's Twitter data to Mongo DB
-			user.save((err) => {
+			user.save(err => {
 				if (err) throw err;
 				debug(`Saving...${user}`);
 				return done(null, user);

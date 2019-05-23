@@ -95,7 +95,7 @@ UserSchema
 	.get(() => {
 		return this.firstName + ' ' + this.lastName;
 	})
-	.set((setFullNameTo) => {
+	.set(setFullNameTo => {
 		var split = setFullNameTo.split(' '),
 			firstName = split[0],
 			lastName = split[1];
@@ -109,8 +109,7 @@ UserSchema.methods.setPassword = function(password) {
 	// Create a salt for the user.
 	this.salt = crypto.randomBytes(16).toString('hex');
 	// Use salt to create hashed password.
-	this.hash = crypto
-		.pbkdf2Sync(password, this.salt, 10000, 128, 'sha512')
+	this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 128, 'sha512')
 		.toString('hex');
 };
 

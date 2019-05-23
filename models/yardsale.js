@@ -68,14 +68,13 @@ const YardsaleSchema = new Schema({
 	}
 });
 
-// TODO - Add column/function to generate date + time when document is updated
-
 // Create Index
 YardsaleSchema.index({ 'address':'text', 'city':'text', 'state': 'text', 'zipcode': 'text' });
 
 // Virtual for this yardsale instance URL.
 YardsaleSchema
-	.virtual('url').get(function() {
+	.virtual('url')
+	.get(function() {
 		return '/yardsale/' + this._id;
 	});
 

@@ -26,7 +26,7 @@ function initMap() {
 		// and additional coordinates, just add a new item
 	];
 
-	locations.forEach((location) => {
+	locations.forEach(location => {
 		var marker = new google.maps.Marker({
 			position: location,
 			map: map,

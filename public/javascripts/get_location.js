@@ -4,33 +4,14 @@ function getLocation() {
 	// Check geolocation support
 	if (navigator.geolocation) {
 		console.log('Geolocation is supported!');
-		// Notification.requestPermission().then(function(result) {
-		// 	if (result === 'denied') {
-		// 		console.log('Permission wasn\'t granted. Allow a retry.');
-		// 		return;
-		// 	}
-		// 	if (result === 'default') {
-		// 		console.log('The permission request was dismissed.');
-		// 		return;
-		// 	}
-			// Do something with the granted permission.
-			navigator.geolocation.getCurrentPosition(showPosition, showError);
-		// });
+		// Do something with the granted permission.
+		navigator.geolocation.getCurrentPosition(showPosition, showError);
 	}
 	else {
 		console.log('Geolocation is not supported for this browser.');
 		searchParams.value = 'Geolocation is not supported by this browser.';
 	}
 }
-
-
-// show geolocation
-// function showPosition(position) {
-// 	const latlng = position.coords.latitude + ',' + position.coords.longitude;
-// 	console.log(latlng);
-// 	searchParams.value = latlng;
-// 	// localStorage.setItem('latlng', latlng);
-// }
 
 
 // show geolocation
@@ -65,6 +46,3 @@ function showError(error) {
 			break;
 	}
 }
-
-// export { searchParams, getLocation, showPosition, showError };
-// module.exports = get_location;
