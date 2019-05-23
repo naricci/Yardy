@@ -18,7 +18,7 @@ const jsFiles = [
 ];
 
 // function to style/lint JS code
-gulp.task('lint', (next) => {
+gulp.task('lint', next => {
 	gulp.src(jsFiles)
 		.pipe(eslint())
 		// .pipe(eslint.result(result => {
@@ -53,7 +53,7 @@ gulp.task('inject', () => {
 		.pipe(gulp.dest('./views'));
 });
 
-gulp.task('start', (done) => {
+gulp.task('start', done => {
 	let stream = nodemon({
 		script: 'app.js',
 		ext: 'js mjs pug',
@@ -64,17 +64,15 @@ gulp.task('start', (done) => {
 	});
 
 	stream
-		.on('restart',  () => {
-			console.log('Restarting Server...');
-		})
-		.on('crash', function() {
+		.on('restart', () => console.log('Restarting Server...'))
+		.on('crash', () => {
 			console.error('Application has crashed!\n');
 			stream.emit('restart', 2);  // restart the server in 2 seconds
 		});
 });
 
 
-gulp.task('build', (done) => {
+gulp.task('build', done => {
 	let stream =  nodemon({
 		script: 'app.js',
 		ext: 'js mjs pug',
@@ -86,9 +84,7 @@ gulp.task('build', (done) => {
 	});
 
 	stream
-		.on('restart', () => {
-			console.log('Restarting Server...');
-		})
+		.on('restart', () => console.log('Restarting Server...'))
 		.on('crash', () => {
 			console.error('Application has crashed!\n');
 			stream.emit('restart', 2);  // restart the server in 2 seconds
