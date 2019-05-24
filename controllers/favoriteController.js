@@ -93,6 +93,6 @@ exports.favorites_delete = (req, res, next) => {
 		})
 		.then(favorite => {
 			debug(`Favorite ${favorite._id} has been removed`);
-			res.render('favorites_delete');
+			res.render('favorites_delete', { title: 'Favorite removed successfully!' });
 		});
 };
