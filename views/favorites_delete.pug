@@ -8,7 +8,6 @@ block content
 				.column.is-one-quarter
 					include components/sidebar
 				.column.is-three-quarters
-					h1=title
-					h2 Favorite #{removed}
+					h1= title
 					p
 						a(href='/favorites/'+current_user._id) Back to Favorites
