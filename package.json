@@ -9,7 +9,7 @@
     "url": "https://www.github.com/naricci/Yardy"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "node ./bin/www",
     "dev:pc": "SET DEBUG=yardy:* & nodemon ./bin/www",
     "dev:mac": "DEBUG=yardy:* nodemon ./bin/www",
     "lint": "eslint -c .eslintrc.json . --fix"

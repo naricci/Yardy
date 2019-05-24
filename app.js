@@ -92,6 +92,14 @@ app.use((req, res, next) => {
 	next();
 });
 
+// enable Cross-Origin Resource Sharing (CORS)
+app.use((reg, res, next) => {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept');
+	res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+	next();
+});
+
 // Use the Routes
 app.use('/', index);
 app.use('/favorites', favorites);

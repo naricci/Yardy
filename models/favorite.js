@@ -1,14 +1,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 // Create Schema and Model
 const FavoriteSchema = new Schema({
 	user: {
-		type: Schema.Types.ObjectId,
+		type: ObjectId,
 		ref: 'users'
 	},
 	yardsale: {
-		type: Schema.Types.ObjectId,
+		type: ObjectId,
 		ref: 'yardsales',
 	},
 	isChecked: {

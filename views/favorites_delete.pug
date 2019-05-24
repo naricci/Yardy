@@ -1,6 +1,14 @@
 extends layout
 
 block content
-	h1=title
-	h2 Favorite #{removed}
-	p: a(href='/users/'+current_user._id+'/favorites') Back to Favorites
+	section.section
+		.container
+			include components/panel
+			.columns
+				.column.is-one-quarter
+					include components/sidebar
+				.column.is-three-quarters
+					h1=title
+					h2 Favorite #{removed}
+					p
+						a(href='/favorites/'+current_user._id) Back to Favorites

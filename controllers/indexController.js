@@ -17,10 +17,7 @@ exports.index = (req, res, next) => {
 		})
 		.then(list_yardsales => {
 			// Successful, so render
-			res.render('index', {
-				title: 'Yardy',
-				yardsale_list: list_yardsales
-			});
+			res.render('index', { title: 'Yardy', yardsale_list: list_yardsales });
 		});
 };
 
@@ -69,20 +66,12 @@ exports.search = (req, res, next) => {
 					debug('No yard sales found.');
 					const results = 'No yard sales found.';
 					// Successful, so render
-					res.render('index', {
-						title: 'Yardy Search Results',
-						results: results
-					});
+					res.render('index', { title: 'Yardy Search Results', results: results });
 				}
 				else {
-					Object.keys(list_yardsales).forEach(yardsale => {
-						debug(yardsale);
-					});
+					Object.keys(list_yardsales).forEach(yardsale => debug(yardsale));
 					// Successful, so render
-					res.render('index', {
-						title: 'Yardy Search Results',
-						yardsale_list: list_yardsales
-					});
+					res.render('index', { title: 'Yardy Search Results', yardsale_list: list_yardsales });
 				}
 			});
 	} else {
@@ -103,18 +92,12 @@ exports.search = (req, res, next) => {
 					debug('No yard sales found.');
 					const results = 'No yard sales found.';
 					// Successful, so render
-					res.render('index', {
-						title: 'Yardy Search Results',
-						results: results
-					});
+					res.render('index', { title: 'Yardy Search Results', results: results });
 				}
 			})
 			.then(list_yardsales => {
 				// Successful, so render
-				res.render('index', {
-					title: 'Yardy',
-					yardsale_list: list_yardsales
-				});
-			})
+				res.render('index', { title: 'Yardy', yardsale_list: list_yardsales });
+			});
 	}
 };
