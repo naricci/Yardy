@@ -61,8 +61,8 @@ const UserSchema = new Schema({
 		maxlength: 5
 	},
 	profilepic: {
-		type: String,
-		maxlength: 50
+		type: String
+		// maxlength: 50
 	},
 	facebook: {
 		id: String,
@@ -74,7 +74,8 @@ const UserSchema = new Schema({
 		id: String,
 		token: String,
 		displayName: String,
-		username: String
+		username: String,
+		photo: String
 	},
 	createdDate: {
 		type: Date,
@@ -92,9 +93,7 @@ UserSchema
 // Virtual Getter/Setter for User's Full Name.
 UserSchema
 	.virtual('fullname')
-	.get(() => {
-		return this.firstName + ' ' + this.lastName;
-	})
+	.get(() => this.firstName + ' ' + this.lastName)
 	.set(setFullNameTo => {
 		var split = setFullNameTo.split(' '),
 			firstName = split[0],

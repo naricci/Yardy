@@ -1,6 +1,9 @@
 let map;
 const date = new Date;
 const today = date.getDay() + '/' + date.getMonth() + '/' + date.getFullYear();
+let userLat = localStorage.getItem('lat');
+let userLng = localStorage.getItem('lng');
+
 console.log(`Today is ${today}.`);
 
 // Set passive event listeners
@@ -9,9 +12,6 @@ console.log(`Today is ${today}.`);
 
 // Initialize Google Map
 function initMap() {
-	let userLat = localStorage.getItem('lat');
-	let userLng = localStorage.getItem('lng');
-
 	map = new google.maps.Map(document.getElementById('map'), {
 		// center: new google.maps.LatLng(41.8240,-71.4128),
 		center: new google.maps.LatLng(parseFloat(userLat), parseFloat(userLng)),

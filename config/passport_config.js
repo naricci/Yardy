@@ -44,6 +44,7 @@ passport.use(new FacebookStrategy({
 						user.facebook.token = token;
 						user.facebook.name  = profile.displayName;
 						user.facebook.email = profile.emails[0].value;
+
 						// Save current user's Facebook data to Mongo DB
 						user.save(err => {
 							if (err) throw err;
@@ -63,6 +64,7 @@ passport.use(new FacebookStrategy({
 					newUser.email = profile.emails[0].value;
 					newUser.firstName = profile.name.givenName;
 					newUser.lastName = profile.name.familyName;
+
 					// Save New User to Mongo DB
 					newUser.save(err => {
 						if (err) throw err;
@@ -78,6 +80,7 @@ passport.use(new FacebookStrategy({
 			user.facebook.token = token;
 			user.facebook.name = profile.displayName;
 			user.facebook.email = profile.emails[0].value;
+
 			// Save current user's Facebook data to Mongo DB
 			user.save(err => {
 				if (err) throw err;
@@ -109,7 +112,7 @@ passport.use(new TwitterStrategy({
 						user.twitter.token = token;
 						user.twitter.username = profile.username;
 						user.twitter.displayName = profile.displayName;
-						// user.twitter.email = profile.email;
+
 						// Save current user's Twitter data to Mongo DB
 						user.save(err => {
 							if (err) throw err;
@@ -119,13 +122,23 @@ passport.use(new TwitterStrategy({
 					}
 					return done(null, user); // user found, return that user
 				} else {
+					// split data into appropriate fields
+					const nameSplitter = profile.displayName.split(' ');
+					const locationSplitter = profile._json.location.split(',');
+
 					// if there is no user, create them
 					const newUser = new User();
 					newUser.twitter.id = profile.id;
 					newUser.twitter.token = token;
 					newUser.twitter.username = profile.username;
 					newUser.twitter.displayName = profile.displayName;
-					// newUser.twitter.email = profile.email;
+					newUser.username = profile.username;
+					newUser.firstName = nameSplitter[0];
+					newUser.lastName = nameSplitter[1];
+					newUser.profilepic = profile.photos[0].value;
+					newUser.city = locationSplitter[0];
+					newUser.state = locationSplitter[1].trim();
+
 					// Save New User to Mongo DB
 					newUser.save(err => {
 						if (err) throw err;
@@ -141,7 +154,7 @@ passport.use(new TwitterStrategy({
 			user.twitter.token = token;
 			user.twitter.username = profile.username;
 			user.twitter.displayName = profile.displayName;
-			// user.twitter.email = profile.email;
+
 			// Save current user's Twitter data to Mongo DB
 			user.save(err => {
 				if (err) throw err;

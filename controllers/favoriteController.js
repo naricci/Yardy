@@ -83,12 +83,13 @@ exports.favorites_post_Promise = (req, res, next) => {
 exports.favorites_delete = (req, res, next) => {
 	debug('Deleting Favorite.');
 
-	var id = req.favorite;
+	var id = req.params.favId;
 
 	Favorite
-		.remove({ _id: id })
+		.findByIdAndDelete({ _id: id })
+		.exec()
 		.catch(err => {
-			if (err) return next(err)
+			if (err) return next(err);
 		})
 		.then(favorite => {
 			debug(`Favorite ${favorite._id} has been removed`);
