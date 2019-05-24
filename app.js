@@ -62,7 +62,7 @@ if (app.get('env') === 'production') {
 // Base Middleware
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
 app.use(compression());	// Compress all routes
@@ -93,7 +93,7 @@ app.use((req, res, next) => {
 });
 
 // enable Cross-Origin Resource Sharing (CORS)
-app.use((reg, res, next) => {
+app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept');
 	res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
@@ -120,7 +120,15 @@ app.use((err, req, res, next) => {
 
 	// render the error page
 	res.status(err.status || 500);
-	res.render('error');
+	if (res.json) {
+		res.json({
+			'error': {
+				'message': err.message,
+				'status' : err.status
+			}
+		});
+	}
+	else res.render('error');
 });
 
 // Heroku Listening on Port ...

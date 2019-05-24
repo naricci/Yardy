@@ -1,5 +1,6 @@
 const debug = require('debug')('yardy:index.controller');
 const Yardsale = require('../models/yardsale');
+const helpers = require('../util/helpers');
 
 exports.index = (req, res, next) => {
 	Yardsale
@@ -14,10 +15,13 @@ exports.index = (req, res, next) => {
 				err.status = 404;
 				return next(err);
 			}
+			helpers.sendJSONresponse(res, 404, err);
 		})
 		.then(list_yardsales => {
 			// Successful, so render
-			res.render('index', { title: 'Yardy', yardsale_list: list_yardsales });
+			// res.render('index', { title: 'Yardy', yardsale_list: list_yardsales });
+			// res.status(200).jsonp({ yardsale_list: list_yardsales });
+			helpers.sendJSONresponse(res, 200, list_yardsales);
 		});
 };
 
