@@ -80,13 +80,15 @@ YardsaleSchema
 
 // Full address
 YardsaleSchema
-	.virtual('full_address').get(function() {
+	.virtual('full_address')
+	.get(function() {
 		return this.address + ', ' + this.city + ', ' + this.state + ', ' + this.zipcode;
 	});
 
 // Date and Time
 YardsaleSchema
-	.virtual('date_and_time').get(function() {
+	.virtual('date_and_time')
+	.get(function() {
 		return this.date.toDateString() + ', ' + this.starttime + ' - ' + this.endtime;
 	});
 

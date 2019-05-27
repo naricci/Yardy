@@ -3,15 +3,15 @@
   "version": "0.0.1",
   "private": true,
   "description": "A community yard sale search.",
-	"main": "app.js",
+  "main": "app.js",
   "repository": {
     "type": "git",
     "url": "https://www.github.com/naricci/Yardy"
   },
   "scripts": {
     "start": "node ./bin/www",
+    "debug": "DEBUG=yardy:* nodemon ./bin/www",
     "dev:pc": "SET DEBUG=yardy:* & nodemon ./bin/www",
-    "dev:mac": "DEBUG=yardy:* nodemon ./bin/www",
     "lint": "eslint -c .eslintrc.json . --fix"
   },
   "dependencies": {
@@ -45,9 +45,6 @@
     "supports-color": "^6.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.4",
-    "babel-loader": "^8.0.6",
-    "browserify": "^16.2.3",
     "eslint": "^5.15.0",
     "gulp": "^4.0.0",
     "gulp-eslint": "^5.0.0",
@@ -55,7 +52,6 @@
     "gulp-nodemon": "^2.4.2",
     "install-peers": "^1.0.3",
     "nodemon": "^1.18.9",
-    "webpack": "^4.31.0",
     "wiredep": "^4.0.0"
   },
   "nodemonConfig": {

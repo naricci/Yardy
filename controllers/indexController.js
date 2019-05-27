@@ -15,21 +15,21 @@ exports.index = (req, res, next) => {
 				err.status = 404;
 				return next(err);
 			}
-			helpers.sendJSONresponse(res, 404, err);
+			helpers.sendJSONresponse(res, 404, { title: 'An error occurred', err });
 		})
 		.then(list_yardsales => {
 			// Successful, so render
 			// res.render('index', { title: 'Yardy', yardsale_list: list_yardsales });
-			// res.status(200).jsonp({ yardsale_list: list_yardsales });
-			helpers.sendJSONresponse(res, 200, list_yardsales);
+			helpers.sendJSONresponse(res, 200, { title: 'Yardy', list_yardsales });
 		});
 };
 
 exports.search = (req, res, next) => {
 	let params = req.query.search;
-	// let paramsLike = '/'+req.query.search+'/';
+	let paramsLike = /^req.query.search/i;
 	let sort = req.query.sort;
 	let sortType = [];
+
 	switch (sort) {
 		case 'date':
 			sortType = ['date', 'ascending'];
@@ -44,7 +44,7 @@ exports.search = (req, res, next) => {
 			sortType = ['zipcode', 'ascending'];
 			break;
 		default:
-			sortType = [];
+			sortType = ['date', 'ascending'];
 			break;
 	}
 
@@ -76,6 +76,7 @@ exports.search = (req, res, next) => {
 					Object.keys(list_yardsales).forEach(yardsale => debug(yardsale));
 					// Successful, so render
 					res.render('index', { title: 'Yardy Search Results', yardsale_list: list_yardsales });
+					// helpers.sendJSONresponse(res, 200, { title: 'Yardy Search Results', list_yardsales });
 				}
 			});
 	} else {

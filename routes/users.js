@@ -5,7 +5,7 @@ const upload = require('../middlewares/multer');
 const router = express.Router();
 
 // Handler for all types of requests pointed to '/' route.
-router.all('/', (req, res, next) => {
+router.all('/', (req, res) => {
 	res.redirect('/');
 });
 

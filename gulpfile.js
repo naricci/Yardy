@@ -1,8 +1,8 @@
 const gulp = require('gulp');
 const eslint = require('gulp-eslint');
 const nodemon = require('gulp-nodemon');
-// const wiredep = require('wiredep').stream;
 const inject = require('gulp-inject');
+// const wiredep = require('wiredep').stream;
 
 // Location of JS files
 const jsFiles = [
@@ -21,13 +21,6 @@ const jsFiles = [
 gulp.task('lint', next => {
 	gulp.src(jsFiles)
 		.pipe(eslint())
-		// .pipe(eslint.result(result => {
-		// 	// Called for each ESLint result.
-		// 	console.log(`ESLint result: ${result.filePath}`);
-		// 	console.log(`# Messages: ${result.messages.length}`);
-		// 	console.log(`# Warnings: ${result.warningCount}`);
-		// 	console.log(`# Errors: ${result.errorCount}`);
-		// }))
 		.pipe(eslint.format())
 		.pipe(eslint.failAfterError());
 	next();

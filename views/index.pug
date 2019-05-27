@@ -1,7 +1,6 @@
 extends layout
 
 block content
-
 	// TITLE & SEARCH BAR
 	section.section.has-background-light
 		.container
@@ -29,7 +28,8 @@ block content
 							.divider
 							.divider
 							p.control
-								button.button.is-link#submit(type='submit')
+								//- button#submit.button.is-link(type='button' onclick='initMap()')
+								button#submit.button.is-link(type='submit')
 									span.icon
 										i.fas.fa-search-location
 									span Search
@@ -37,6 +37,7 @@ block content
 	// MAP OF USA
 	section.section.has-background-light
 		.container
+			script(async src='/javascripts/get_location.js')
 			include components/map
 	// YARD SALE LIST
 	section.section
@@ -52,4 +53,3 @@ block content
 			else
 				p #{results}
 	br
-	//script(defer src='/js/reverse_geocoder.js')
