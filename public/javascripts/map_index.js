@@ -1,4 +1,4 @@
-let map, infoWindow;
+let map, google, infoWindow;
 let url = 'https://api.mlab.com/api/1/databases/yardy/collections/yardsales?apiKey=9mCElimS5yqDidSAKQzweNrYtfa6hY7C';
 let myHeaders = new Headers();
 myHeaders.set('Content-Type', 'application/json');

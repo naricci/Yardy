@@ -8,14 +8,14 @@ function initMap() {
 	});
 	var geocoder = new google.maps.Geocoder();
 
-	submit.addEventListener('click', function() {
+	submit.addEventListener('click', () => {
 		geocodeAddress(geocoder, map);
 	});
 }
 
 function geocodeAddress(geocoder, resultsMap) {
 	var address = document.getElementById('searchParams').value;
-	geocoder.geocode({'address': address}, function(results, status) {
+	geocoder.geocode({'address': address}, (results, status) => {
 		if (status === 'OK') {
 			resultsMap.setCenter(results[0].geometry.location);
 			var marker = new google.maps.Marker({

@@ -13,10 +13,6 @@
 			cache: 'default'
 		};
 		let myRequest = new Request(url, myInit);
-	
-
-		
-			
 
 		// Initialize Google Map
 		function initMap() {
@@ -56,16 +52,15 @@
 						map: map,
 						title: 'Yard Sale'
 					});
-
-					marker.addListener('click', () => {
-						infoWindow.open(map, marker);
-					}, { passive: true });
 				})
 				.catch(err => {
 					console.error(err);
 				});
 			});
 
+			marker.addListener('click', () => {
+				infoWindow.open(map, marker);
+			});
 			// TODO - Add loop to display all yardsales on the map as markers
 			// var contentString = '<div id="content">'+
 			// 	'<div id="siteNotice">'+
