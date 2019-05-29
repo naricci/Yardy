@@ -486,7 +486,7 @@ exports.profilepic_delete = (req, res, next) => {
 
 	try {
 		// TODO - Figure out why this isn't deleting image name from DB
-		User.findByIdAndUpdate(req.params.id, user, {}, (err, theuser) => {
+		User.findByIdAndDelete(req.params.id, user, {}, (err, theuser) => {
 			if (err) return next(err);
 			if (theuser === null) {
 				let err = new Error('User not found');
@@ -503,7 +503,7 @@ exports.profilepic_delete = (req, res, next) => {
 				}
 			});
 
-			res.redirect('/users/'+theuser._id+'/profilepic');
+			res.redirect('/users/' + theuser._id + '/profilepic');
 		});
 	}
 	catch (err) {

@@ -1,4 +1,4 @@
-let map, google, infoWindow;
+var address, contentString, geocoder, latLong, infoWindow, locations, map, marker;
 let url = 'https://api.mlab.com/api/1/databases/yardy/collections/yardsales?apiKey=9mCElimS5yqDidSAKQzweNrYtfa6hY7C';
 let myHeaders = new Headers();
 myHeaders.set('Content-Type', 'application/json');
@@ -10,63 +10,87 @@ let myInit = { method: 'GET',
 };
 let myRequest = new Request(url, myInit);
 
-fetch(myRequest)
-	.then(response => {
-		let contentType = response.headers.get('content-type');
-		if(contentType && contentType.includes('application/json')) {
-			return response.text();
-		}
-
-		// 	throw new TypeError('Oops, we haven\' got JSON!');
-
-	// }).then((response, jsonText) => {
-	// 	response.value = jsonText;
-	// }).catch(err => {
-	// 	console.error(err);
-	});
-
-
 // Initialize Google Map
 function initMap() {
-
 	map = new google.maps.Map(document.getElementById('map'), {
-		center: new google.maps.LatLng(41.8240,-71.4128),
-		// center: new google.maps.LatLng(39.8283, 98.5795),
-		// center: new google.maps.LatLng(parseFloat(userLat), parseFloat(userLng)),
+		center: new google.maps.LatLng(39.8283, -98.5795),
 		// center: new google.maps.LatLng(location),
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
-		zoom: 10
+		zoom: 4
 	});
 
-	let locations = [
-		// new google.maps.LatLng(41.8240,-71.4128)
-	];
+	geocoder = new google.maps.Geocoder();
 
-	locations.forEach(location => {
-		var marker = new google.maps.Marker({
-			position: location,
-			map: map,
-			title: 'Yard Sale'
-		});
+	fetch(myRequest)
+		.then(response => {
+			let contentType = response.headers.get('content-type');
+			if(contentType && contentType.includes('application/json')) {
+				return response.json();
+				//- return response.text();
+			}
+			throw new TypeError('Oops, we haven\' got JSON!');
+		})
+		.then(json => {
+			locations = [];
 
-		marker.addListener('click', () => {
-			infoWindow.open(map, marker);
+			for (let i = 0; i < json.length; i++) {
+				address = json[i].address + ' ' + json[i].city + ', ' + json[i].state + ', ' + json[i].zipcode;
+				console.log(address);
+				latLong = geocodeAddress(address);
+				locations.push(latLong);
+			}
+
+			return locations;
+		})
+		.then(locations => {
+
+			for (var s = 0; s < locations.length; s++) {
+				marker = new google.maps.Marker({
+					position: locations[s],
+					map: map,
+					title: 'Yard Sale'
+				});
+			}
+
+			marker.addListener('click', () => {
+				infoWindow.open(map, marker);
+			});
+
+			// TODO - Add loop to display all yardsales on the map as markers
+			for (var x = 0; x < locations.length; x++) {
+				contentString = '<div id="content">'+
+				'<div id="siteNotice">'+
+				'</div>'+
+				'<h1 id="firstHeading" class="firstHeading">Address: ' + locations[x] + '</h1>'+
+				'<h1 id="firstHeading" class="firstHeading">Date: </h1>'+
+				'<div id="bodyContent">'+
+				'<p class="image is-64x64"><img src="#" alt="Yard Sale"></p>'+
+				'<p>Yard Sale</p>'+
+				'</div>'+
+				'</div>';
+			}
+
+			infoWindow = new google.maps.InfoWindow({
+				content: contentString
+			});
+		})
+		.catch(err => {
+			console.error(err);
 		});
+}
+
+function geocodeAddress(address) {
+
+	geocoder.geocode({ 'address' : address }, function(results, status) {
+		if (status === 'OK') {
+			var loc = results[0].geometry.location;
+			// 	  lat = loc.$a,
+			// 	  long = loc.$b;
+			// return lat + ', ' + long;
+			// console.log(loc);
+			return loc;
+		} else {
+			alert('Geocode was not successful for the following reason: ' + status);
+		}
 	});
-
-	// TODO - Add loop to display all yardsales on the map as markers
-	// var contentString = '<div id="content">'+
-	// 	'<div id="siteNotice">'+
-	// 	'</div>'+
-	// 	'<h1 id="firstHeading" class="firstHeading">Address: </h1>'+
-	// 	'<h1 id="firstHeading" class="firstHeading">Date: </h1>'+
-	// 	'<div id="bodyContent">'+
-	// 	'<p class="image is-64x64"><img src="https://bulma.io/images/placeholders/128x128.png" alt="Yard Sale"></p>'+
-	// 	'<p>You are here!</p>'+
-	// 	'</div>'+
-	// 	'</div>';
-
-	// var infoWindow = new google.maps.InfoWindow({
-	// 	content: contentString
-	// });
 }
