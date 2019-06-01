@@ -6,6 +6,13 @@
     "configurations": [
 			{
 				"type": "chrome",
+				"request": "attach",
+				"name": "Attach to Chrome",
+				"port": 9222,
+				"webRoot": "${workspaceFolder}/views/index.pug"
+			},
+			{
+				"type": "chrome",
 				"request": "launch",
 				"name": "Launch Chrome",
 				"url": "http://localhost:3000",

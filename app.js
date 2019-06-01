@@ -6,7 +6,7 @@ const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const createError = require('http-errors');
-const debug = require('debug')('yardy:app');
+// const debug = require('debug')('yardy:app');
 const express = require('express');
 const favicon = require('serve-favicon');
 const flash = require('express-flash');
@@ -23,7 +23,7 @@ const favorites = require('./routes/favorites');
 const messages = require('./routes/messages');
 const users = require('./routes/users');
 const yardsales = require('./routes/yardsales');
-const PORT = process.env.PORT || 5000;
+// const PORT = process.env.PORT || 5000;
 
 // Session Configuration
 const sess = {
@@ -133,6 +133,6 @@ app.use((err, req, res, next) => {
 });
 
 // Heroku Listening on Port ...
-app.listen(PORT, () => debug(`Heroku listening on ${ PORT }`));
+// app.listen(PORT, () => debug(`Heroku listening on ${ PORT }`));
 
 module.exports = app;

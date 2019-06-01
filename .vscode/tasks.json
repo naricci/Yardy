@@ -15,7 +15,7 @@
 			},
 			{
 				"type": "npm",
-				"script": "dev:mac",
+				"script": "debug",
 				"problemMatcher": []
 			}
 		]
