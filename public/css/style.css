@@ -38,8 +38,7 @@ input:invalid {
 }
 
 .navbar-end > a.navbar-item {
-	font-family: 'Lato', sans-serif;
-
+	font-family: 'Ubuntu', sans-serif; /* 'Lato' */
 }
 
 .navbar-item > .buttons > a.button {

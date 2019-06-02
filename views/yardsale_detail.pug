@@ -3,14 +3,13 @@ extends layout
 block content
 	section.section
 		.container
-			//include components/title_yardsale
 			include components/panel
 			.columns
 				.column.is-one-quarter
 					if isAuthenticated
 						include components/sidebar
 				.column.is-three-quarters
-					include components/errors
+					include error
 					if (user.username !== yardsale.user.username)
 						.level
 							.level-left
