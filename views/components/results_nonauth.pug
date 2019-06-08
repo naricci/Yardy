@@ -3,12 +3,12 @@
 		figure.media-left
 			figure.image.is-128x128
 				if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
-					img.image.lazy(src='/images/yardsale_poster.jpg' data-src=process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='yard sale')
+					img.image.lazy(src=process.env.S3_STATIC_URL+'/img/yardsale_poster.jpg' data-src=process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='yard sale')
 				else
 					picture
-						source(srcset='/images/yardsale_poster.webp' type='image/webp')
-						source(srcset='/images/yardsale_poster.jpg' type='image/jpeg')
-						img.image.lazy(src='/images/yardsale_poster.jpg' alt='Yard Sale')
+						source(srcset=process.env.S3_STATIC_URL+'/img/yardsale_poster.webp' type='image/webp')
+						source(srcset=process.env.S3_STATIC_URL+'/img/yardsale_poster.jpg' type='image/jpeg')
+						img.image.lazy(src=process.env.S3_STATIC_URL+'/img/yardsale_poster.jpg' alt='Yard Sale')
 		.media-content
 			.content
 				p Location:&nbsp;&nbsp;

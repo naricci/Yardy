@@ -3,7 +3,6 @@ extends layout
 block content
 	section.section
 		.container
-			//include components/title_yardsale
 			include components/panel
 			.columns
 				.column.is-one-quarter
@@ -99,7 +98,7 @@ block content
 							.columns
 								.column
 									label.label Current Image
-										img.image.lazy(src='/images/yardsale_poster.jpg' data-src=process.env.S3_IMAGES_URL+'/'+current_user.username+'/'+yardsale.imagename alt='Preview' width='200' height='200')
+										img.image.lazy(src=process.env.S3_STATIC_URL+'/img/yardsale_poster.jpg' data-src=process.env.S3_IMAGES_URL+'/'+current_user.username+'/'+yardsale.imagename alt='Preview' width='200' height='200')
 								.column
 									label.label New Image
 									img.image#imagePreview(width='200' height='200')
