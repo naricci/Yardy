@@ -86,4 +86,7 @@ router.get('/unlink/facebook', userController.unlink_facebook_get);
 
 router.get('/unlink/twitter', userController.unlink_twitter_get);
 
+// GET User DELETE page
+router.get('/:id/delete_account', userController.delete_account_get);
+
 module.exports = router;

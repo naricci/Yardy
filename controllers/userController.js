@@ -357,17 +357,13 @@ exports.reset_post_final = (req, res, next) => {
 					User
 						.findById(req.body.userid)
 						.exec(callback)
-						.catch(err => {
-							return next(err);
-						});
+						.catch(err => next(err));
 				},
 				(found_user, callback) => {
 					User
 						.findByIdAndUpdate(req.body.userid, user, {})
 						.exec(callback)
-						.catch(err => {
-							return next(err);
-						});
+						.catch(err => next(err));
 				}
 			],
 			err => {
@@ -588,6 +584,24 @@ exports.unlink_twitter_get = (req, res) => {
 };
 
 // Get Delete Account page.
-// exports.delete_account_get = (req, res, next) => {
-//
-// };
+exports.delete_account_get = (req, res, next) => {
+	debug(`Getting user ${req.user.username}'s delete account page.`);
+	User
+		.findById(req.params.id)
+		.exec()
+		.catch((err, found_user) => {
+			if (err) return next(err);
+			if (found_user === null) {
+				let err = new Error('User not found');
+				err.status = 404;
+				return next(err);
+			}
+		})
+		.then(found_user => {
+		// Successful, so render
+			res.render('delete_account', {
+				title: 'Delete Account',
+				user: found_user
+			});
+		});
+};

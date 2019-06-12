@@ -61,4 +61,4 @@ nav.panel.is-hidden-mobile
 				i.fab.fa-twitter(aria-hidden=true)
 			p.has-text-info #[strong Twitter:&nbsp;] #{current_user.twitter.username}
 	.panel-block
-		button.button.is-danger.is-outlined.is-fullwidth Delete Account
+		a.button.is-danger.is-outlined.is-fullwidth(href='/users/'+current_user._id+'/delete_account') Delete Account

@@ -1,6 +1,6 @@
 const express = require('express');
-const messageController = require('../controllers/messageController');
 const router = express.Router();
+const messageController = require('../controllers/messageController');
 
 router.get('/:userId', messageController.messages_get);
 

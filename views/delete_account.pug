@@ -1,0 +1,14 @@
+extends layout
+
+block content
+	section.section
+		.container
+			include components/panel
+			.columns
+				.column.is-one-quarter
+					include components/sidebar
+				.column.is-three-quarters
+					include components/errors
+					h1= title
+					p
+						a(href='/') Home
