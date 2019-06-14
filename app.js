@@ -1,6 +1,4 @@
-
 require('dotenv').config();
-require('./config/db_config');
 
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
@@ -14,6 +12,7 @@ const helmet = require('helmet');
 const logger = require('morgan');
 const passport = require('passport');
 const path = require('path');
+const PORT = process.env.PORT || 5000;
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
@@ -23,29 +22,33 @@ const favorites = require('./routes/favorites');
 const messages = require('./routes/messages');
 const users = require('./routes/users');
 const yardsales = require('./routes/yardsales');
-const PORT = process.env.PORT || 5000;
-
-// Session Configuration
-const sess = {
-	secret: 'yardy-session-secret',
-	cookie: {},
-	resave: true,	// false originally
-	saveUninitialized: true,
-	// maxAge: 2 * 24 * 60 * 60, // 2 days //86400000,	// 1 day
-	store: new MongoStore({
-		url: process.env.MONGODB_URI,
-		ttl: 14 * 24 * 60 * 60 // 14 days
-	})
-};
 
 // Options for serving static files
 const options = {
-	maxAge: 31536000
+	maxAge: 315360000	// 1 year
+};
+
+// Session Configuration
+const sess = {
+	secret: '3970E81D-6229-4574-89D8-4650D6FB2252',
+	resave: false,
+	saveUninitialized: true,
+	maxAge: 172800, // 2 days
+	store: new MongoStore({
+		url: process.env.MONGODB_URI,
+		autoRemove: 'native', // Default
+		ttl: 604800 // 7 days
+	}),
+	cookie: {}
 };
 
 // Initialize Express App
 const app = express();
 
+// Set up MongoDB connection
+require('./config/db_config');
+
+// Set up Passport Strategies
 require('./config/passport_config');
 
 // view engine setup
@@ -53,23 +56,22 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.set('json spaces', 4);
 
-// trust first proxy for using cookies with HTTPS
-if (app.get('env') === 'production') {
-	app.set('trust proxy', 1);	// trust first proxy
-	sess.cookie.secure = true;	// serve secure cookies
-}
-
 // Base Middleware
+app.use(favicon(path.join(__dirname, 'public', 'icons', 'favicon.ico')));
 app.use(compression());	// Compress all routes
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
-
 app.use(helmet());
 app.use(express.static(path.join('public'), options));
-app.use(favicon(path.join(__dirname, 'public', 'icons', 'favicon.ico')));
+
+// trust first proxy for using cookies with HTTPS
+if (app.get('env') === 'production') {
+	app.set('trust proxy', 1);	// trust first proxy
+	sess.cookie.secure = true;	// serve secure cookies
+}
 
 // Authentication related middleware.
 app.use(flash());
@@ -93,7 +95,7 @@ app.use((req, res, next) => {
 	next();
 });
 
-// enable Cross-Origin Resource Sharing (CORS)
+// Enable Cross-Origin Resource Sharing (CORS)
 app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept');

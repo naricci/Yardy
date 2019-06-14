@@ -167,7 +167,7 @@ passport.use(new TwitterStrategy({
 
 // Configure Passport authenticated session persistence.
 passport.serializeUser((user, done) => {
-	debug(user);
+	debug(`${user.username} is logging in...`);
 	done(null, user._id);
 });
 
