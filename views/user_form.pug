@@ -13,7 +13,8 @@ block content
 					if isAuthenticated
 						include components/sidebar
 				.column.is-two-quarters
-					include components/errors
+					if errors
+						include components/errors
 					form(method='POST' action='' autocomplete='on')
 						if is_update_form
 							.field

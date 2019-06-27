@@ -8,7 +8,8 @@ block content
 			.columns
 				.column.is-one-third
 				.column.is-one-third
-					include components/errors
+					if errors
+						include components/errors
 					form(method='POST' action='' autocomplete='on')
 						.field
 							.control.has-icons-left

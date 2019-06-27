@@ -1,16 +1,22 @@
-var myMap, google;
+var google;
 const searchParams = document.getElementById('searchParams');
 const findMe = document.getElementById('find-me');
-findMe.addEventListener('click', getLocation);
+findMe.addEventListener('click', getLocation, { passive: true });
 
-var userLat = localStorage.getItem('lat');
-var userLng = localStorage.getItem('lng');
+/**
+ *  Geocoding API Request Format
+ *  https://maps.googleapis.com/maps/api/geocode/outputFormat?parameters
+ */
+
+const userLat = localStorage.getItem('lat');
+const userLng = localStorage.getItem('lng');
+
+// DATE STUFF
 // var date = new Date;
 // var day = date.getDay() + 1;
 // var month = date.getMonth() + 1;
 // var year = date.getFullYear();
 // var today = month + '/' + day + '/' + year;
-
 
 function getLocation() {
 	// Check geolocation support
@@ -25,18 +31,17 @@ function getLocation() {
 	}
 }
 
-
 // show geolocation
 function showPosition(position) {
+	initMyMap();
 	const lat = position.coords.latitude.toString();
 	const lng = position.coords.longitude.toString();
-	console.log(lat + ', ' + lng);
+	// console.log(lat + ', ' + lng);
 	localStorage.setItem('lat', lat);
 	localStorage.setItem('lng', lng);
-	searchParams.value = lat + ', ' + lng;
-	initMyMap();
+	// searchParams.value = lat + ', ' + lng;
+	// TODO - Add address to search bar
 }
-
 
 // show geolocation error
 function showError(error) {
@@ -60,10 +65,9 @@ function showError(error) {
 	}
 }
 
-
 // Initialize Google Map
 function initMyMap() {
-	myMap = new google.maps.Map(document.getElementById('map'), {
+	let myMap = new google.maps.Map(document.getElementById('map'), {
 		center: new google.maps.LatLng(parseFloat(userLat), parseFloat(userLng)),
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		zoom: 10
@@ -74,7 +78,7 @@ function initMyMap() {
 	];
 
 	locations.forEach(location => {
-		var marker = new google.maps.Marker({
+		let marker = new google.maps.Marker({
 			position: location,
 			map: myMap,
 			title:'Yard Sale'
@@ -87,12 +91,12 @@ function initMyMap() {
 	});
 
 	// TODO - Add loop to display all yardsales on the map as markers
-	var contentString =
+	let contentString =
 		'<div id="content">' +
 		'<p>You are here!</p>' +
 		'</div>';
 
-	var infoWindow = new google.maps.InfoWindow({
+	let infoWindow = new google.maps.InfoWindow({
 		content: contentString
 	});
 }

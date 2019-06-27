@@ -1,6 +1,7 @@
-if errors
-	.notification.is-danger
-		button.delete
-		ul
-			for error in errors
-				li!= error.msg
+.notification.is-danger
+	button.delete
+	ul
+		for error in errors
+			li!= error.msg
+
+script(defer src='/javascripts/delete_toggle.js')

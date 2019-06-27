@@ -1,9 +1,7 @@
 const debug = require('debug')('yardy:index.controller');
+// const Favorite = require('../models/favorite');
 const Yardsale = require('../models/yardsale');
 const helpers = require('../util/helpers');
-// const googleMapsClient = require('@google/maps').createClient({
-// 	key: process.env.MAPS_API_KEY
-// });
 
 exports.index = (req, res, next) => {
 	let latlng = [];
@@ -22,23 +20,7 @@ exports.index = (req, res, next) => {
 			helpers.sendJSONresponse(res, 404, { title: 'An error occurred', err });
 		})
 		.then(list_yardsales => {
-			// for (let i = 0; i < list_yardsales.length; i++) {
-			// 	// Geocode an address.
-			// 	googleMapsClient.geocode({
-			// 		address: list_yardsales[i].address + list_yardsales[i].city + ', ' + list_yardsales[i].state + ', ' + list_yardsales[i].zipcode  // change to req full address
-			// 	}, function(err, response) {
-			// 		if (!err) {
-			// 			console.log(response.json.results);
-			// 		}
-			//
-			// 		latlng.push(response.json.results[i]);
-			// 		debug(latlng);
-			// 		return latlng;
-			// 	});
-			// }
-
-			// Successful, so render
-			// res.render('index', { title: 'Yardy', yardsale_list: list_yardsales });
+			// var query = Favorite.findOne({ user });
 			helpers.sendJSONresponse(res, 200, { title: 'Yardy', list_yardsales, latlng });
 		});
 };

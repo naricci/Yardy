@@ -8,7 +8,8 @@ block content
 				.column.is-one-quarter
 					include components/sidebar
 				.column.is-three-quarters
-					include components/errors
+					if errors
+						include components/errors
 					.columns
 						.column
 							p Do you really want to delete this yard sale?  This process is irreversible.

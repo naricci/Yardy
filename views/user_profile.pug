@@ -9,7 +9,8 @@ block content
 				.column.is-one-quarter
 					include components/sidebar
 				.column.is-three-quarters
-					include components/errors
+					if errors
+						include components/errors
 					if yardsales
 						each yardsale in yardsales
 							.box

@@ -9,6 +9,7 @@ block content
 			.column.is-one-third
 				h1 #{title}
 				hr
-				include components/errors
+				if errors
+					include components/errors
 				hr
 			.column.is-one-third

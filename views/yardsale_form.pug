@@ -6,7 +6,8 @@ block content
 			.columns
 				.column.is-one-fifth
 				.column.is-three-fifths
-					include components/errors
+					if errors
+						include components/errors
 					form(method='POST' enctype='multipart/form-data' autocomplete='on')
 						.field
 							label.label Phone Number

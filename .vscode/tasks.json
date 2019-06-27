@@ -4,11 +4,6 @@
     "version": "2.0.0",
     "tasks": [
 			{
-				"type": "gulp",
-				"task": "lint",
-				"problemMatcher": []
-			},
-			{
 				"type": "npm",
 				"script": "start",
 				"problemMatcher": []
@@ -17,6 +12,11 @@
 				"type": "npm",
 				"script": "debug",
 				"problemMatcher": []
-			}
+			},
+			{
+				"type": "npm",
+				"script": "lint",
+				"problemMatcher": []
+			},
 		]
 }
