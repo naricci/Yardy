@@ -10,9 +10,9 @@ nav.panel.is-hidden-mobile
 			img.is-128x128(src=process.env.S3_IMAGES_URL+'/'+current_user.username+'/'+current_user.profilepic alt='profile picture')
 		else
 			picture
-				source(srcset=process.env.S3_STATIC_URL+'/img/blank_profile.webp' type='image/webp')
-				source(srcset=process.env.S3_STATIC_URL+'/img/blank_profile.png' type='image/png')
-				img.is-128x128(src=process.env.S3_STATIC_URL+'/img/blank_profile.png' alt='Profile Picture')
+				source(srcset='/images/blank_profile.webp' type='image/webp')
+				source(srcset='/images/blank_profile.png' type='image/png')
+				img.is-128x128(src='/images/blank_profile.png' alt='Profile Picture')
 	a.panel-block
 		span.panel-icon
 			i.fas.fa-user(aria-hidden=true)

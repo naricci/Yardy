@@ -11,12 +11,12 @@ block content
 								p.image.is-128x128
 									a(href='/yardsales/' + yardsale._id)
 										if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
-											img.lazy(src=process.env.S3_STATIC_URL+'/img/yardsale_poster.jpg' data-src=process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='Yard Sale')
+											img.lazy(src='/images/yardsale_poster.jpg' data-src=process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='Yard Sale')
 										else
 											picture
-												source(srcset=process.env.S3_STATIC_URL+'/img/yardsale_poster.webp' type='image/webp')
-												source(srcset=process.env.S3_STATIC_URL+'/img/yardsale_poster.jpg' type='image/jpg')
-												img.lazy(src=process.env.S3_STATIC_URL+'/img/yardsale_poster.jpg' alt='Yard Sale')
+												source(srcset='/images/yardsale_poster.webp' type='image/webp')
+												source(srcset='/images/yardsale_poster.jpg' type='image/jpg')
+												img.lazy(src='/images/yardsale_poster.jpg' alt='Yard Sale')
 							.media-content
 								.content
 									.level
@@ -43,12 +43,12 @@ block content
 							figure.media-left
 								figure.image.is-128x128
 									if (yardsale.imagename !== undefined && yardsale.imagename !== '' && yardsale.imagename !== null)
-										img.lazy(src=process.env.S3_STATIC_URL+'/img/yardsale_poster.jpg' data-src=process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='Yard Sale')
+										img.lazy(src='/images/yardsale_poster.jpg' data-src=process.env.S3_IMAGES_URL+'/'+yardsale.user.username+'/'+yardsale.imagename alt='Yard Sale')
 									else
 										picture
-											source(srcset=process.env.S3_STATIC_URL+'/img/yardsale_poster.webp' type='image/webp')
-											source(srcset=process.env.S3_STATIC_URL+'/img/yardsale_poster.jpg' type='image/jpg')
-											img.lazy(src=process.env.S3_STATIC_URL+'/img/yardsale_poster.jpg' alt='Yard Sale')
+											source(srcset='/images/yardsale_poster.webp' type='image/webp')
+											source(srcset='/images/yardsale_poster.jpg' type='image/jpg')
+											img.lazy(src='/images/yardsale_poster.jpg' alt='Yard Sale')
 							.media-content
 								.content
 									.level

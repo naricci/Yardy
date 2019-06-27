@@ -99,7 +99,7 @@ block content
 							.columns
 								.column
 									label.label Current Image
-										img.image.lazy(src=process.env.S3_STATIC_URL+'/img/yardsale_poster.jpg' data-src=process.env.S3_IMAGES_URL+'/'+current_user.username+'/'+yardsale.imagename alt='Preview' width='200' height='200')
+										img.image.lazy(src='/images/yardsale_poster.jpg' data-src=process.env.S3_IMAGES_URL+'/'+current_user.username+'/'+yardsale.imagename alt='Preview' width='200' height='200')
 								.column
 									label.label New Image
 									img.image#imagePreview(width='200' height='200')
@@ -107,6 +107,7 @@ block content
 							.control
 								button.button.is-link(type='submit') Update Yard Sale
 			br
-	script(defer src='/javascripts/select_image_name.js')
+	script(defer src='/javascripts/get_current_image.js')
+
 
 
