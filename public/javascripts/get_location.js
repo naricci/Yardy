@@ -1,31 +1,15 @@
-/**
- *  Geocoding API Request Format
- *  https://maps.googleapis.com/maps/api/geocode/outputFormat?parameters
- */
-
 var google;
 var searchParams = document.getElementById('searchParams');
 const findMe = document.getElementById('find-me');
 findMe.addEventListener('click', getLocation, { passive: true });
 
-const userLat = localStorage.getItem('lat');
-const userLng = localStorage.getItem('lng');
-// const userLatLng = userLat + ', ' + userLng;
-
-// DATE STUFF
-// var date = new Date;
-// var day = date.getDay() + 1;
-// var month = date.getMonth() + 1;
-// var year = date.getFullYear();
-// var today = month + '/' + day + '/' + year;
-
+// Get Location
 function getLocation() {
 	// Check geolocation support
 	if (navigator.geolocation) {
 		console.log('Geolocation is supported!');
 		// Do something with the granted permission.
 		navigator.geolocation.getCurrentPosition(showPosition, showError);
-		// initMyMap();
 	}
 	else {
 		console.log('Geolocation is not supported for this browser.');
@@ -37,10 +21,10 @@ function getLocation() {
 function showPosition(position) {
 	const lat = position.coords.latitude.toString();
 	const lng = position.coords.longitude.toString();
-	// console.log(lat + ', ' + lng);
 	localStorage.setItem('lat', lat);
 	localStorage.setItem('lng', lng);
-	searchParams.value = lat + ', ' + lng;
+
+	// Initialize map of current location
 	initMyMap();
 }
 
@@ -68,8 +52,8 @@ function showError(error) {
 
 // Initialize Google Map
 function initMyMap() {
-	let myMap = new google.maps.Map(document.getElementById('map'), {
-		center: new google.maps.LatLng(parseFloat(userLat), parseFloat(userLng)),
+	let map = new google.maps.Map(document.getElementById('map'), {
+		center: new google.maps.LatLng(parseFloat(localStorage.getItem('lat')), parseFloat(localStorage.getItem('lng'))),
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		zoom: 10
 	});
@@ -77,59 +61,18 @@ function initMyMap() {
 	var geocoder = new google.maps.Geocoder;
 	var infowindow = new google.maps.InfoWindow;
 
-	geocodeLatLng(geocoder, myMap, infowindow);
-
-	// let locations = [
-	// 	new google.maps.LatLng(parseFloat(userLat), parseFloat(userLng))
-	// ];
-	//
-	// locations.forEach(location => {
-	// 	let marker = new google.maps.Marker({
-	// 		position: location,
-	// 		map: myMap,
-	// 		title:'Yard Sale'
-	// 	});
-
-	// 	marker.addListener('mouseover', () => {
-	// 		infoWindow.open(myMap, marker);
-	// 	},
-	// 	{ passive: true });
-	// });
-	//
-	// // TODO - Add loop to display all yardsales on the map as markers
-	// let contentString =
-	// 	'<div id="content">' +
-	// 	'<center>YOU ARE HERE!</center>' +
-	// 	'<br>' +
-	// 	'<p>Lat: ' + userLat + '</p>' +
-	// 	'<p>Long: ' + userLng + '</p>' +
-	// 	'</div>';
-	//
-	// let infoWindow = new google.maps.InfoWindow({
-	// 	content: contentString
-	// });
+	geocodeLatLng(geocoder, map, infowindow);
 }
 
-// For Reverse Geocoding
-// function initMap() {
-// 	var myMap = new google.maps.Map(document.getElementById('map'), {
-// 		zoom: 8,
-// 		center: {lat: 40.731, lng: -73.997}
-// 	});
-// 	var geocoder = new google.maps.Geocoder;
-// 	var infowindow = new google.maps.InfoWindow;
-//
-// 	document.getElementById('submit').addEventListener('click', function() {
-// 		geocodeLatLng(geocoder, myMap, infowindow);
-// 	});
-// }
-
+// For Reverse Geocoding an Address
 function geocodeLatLng(geocoder, map, infowindow) {
+	// Grab Lat+Lng using textbox
 	// var input = document.getElementById('searchParams').value;
+	// Grab Lat+Lng using Local Storage
 	var input = localStorage.getItem('lat') + ',' + localStorage.getItem('lng');
 	var latlngStr = input.split(',', 2);
 	var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
-	geocoder.geocode({'location': latlng}, function(results, status) {
+	geocoder.geocode({'location': latlng}, (results, status) => {
 		if (status === 'OK') {
 			if (results[0]) {
 				map.setZoom(11);
@@ -149,4 +92,16 @@ function geocodeLatLng(geocoder, map, infowindow) {
 			window.alert('Geocoder failed due to: ' + status);
 		}
 	});
+}
+
+// DATE STUFF
+// eslint-disable-next-line no-unused-vars
+function getFormattedDate() {
+	var date = new Date;
+	var day = date.getDay() + 1;
+	var month = date.getMonth() + 1;
+	var year = date.getFullYear();
+	var today = month + '/' + day + '/' + year;
+
+	return today.toString();
 }

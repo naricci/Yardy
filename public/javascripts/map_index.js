@@ -11,6 +11,7 @@ var address, contentString, geocoder, google, latLong, infoWindow, locations, ma
 // let myRequest = new Request(url, myInit);
 
 // Initialize Google Map
+// eslint-disable-next-line no-unused-vars
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
 		center: new google.maps.LatLng(39.8283, -98.5795),

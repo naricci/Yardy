@@ -34,3 +34,15 @@ exports.getFileExtension = function getFileExtension(filename) {
 	let ext = /^.+\.([^.]+)$/.exec(filename);
 	return ext === null ? '' : ext[1];
 };
+
+
+// Function that returns a String of today's date formatted as 00/00/0000
+exports.getFormattedDate = function getFormattedDate() {
+	var date = new Date;
+	var day = date.getDay() + 1;
+	var month = date.getMonth() + 1;
+	var year = date.getFullYear();
+	var today = month + '/' + day + '/' + year;
+
+	return today.toString();
+};
