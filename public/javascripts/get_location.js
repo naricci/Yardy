@@ -25,6 +25,7 @@ function getLocation() {
 		console.log('Geolocation is supported!');
 		// Do something with the granted permission.
 		navigator.geolocation.getCurrentPosition(showPosition, showError);
+		// initMyMap();
 	}
 	else {
 		console.log('Geolocation is not supported for this browser.');
@@ -34,14 +35,13 @@ function getLocation() {
 
 // show geolocation
 function showPosition(position) {
-	initMyMap();
 	const lat = position.coords.latitude.toString();
 	const lng = position.coords.longitude.toString();
 	// console.log(lat + ', ' + lng);
 	localStorage.setItem('lat', lat);
 	localStorage.setItem('lng', lng);
 	searchParams.value = lat + ', ' + lng;
-	// TODO - Add address to search bar
+	initMyMap();
 }
 
 // show geolocation error
@@ -125,8 +125,8 @@ function initMyMap() {
 // }
 
 function geocodeLatLng(geocoder, map, infowindow) {
-	// var input = document.getElementById('latlng').value;
-	var input = document.getElementById('searchParams').value;
+	// var input = document.getElementById('searchParams').value;
+	var input = localStorage.getItem('lat') + ',' + localStorage.getItem('lng');
 	var latlngStr = input.split(',', 2);
 	var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
 	geocoder.geocode({'location': latlng}, function(results, status) {
