@@ -97,3 +97,12 @@ function initMap() {
 // 		}
 // 	});
 // }
+
+// TODO - Grab all results' addresses and loop through them when drawing map
+// var resLocations = [];
+// var full_address = document.getElementsByClassName('full_address');
+
+// for (let a = 0; a < full_address.length; a++) {
+// 	resLocations.push(full_address);
+// 	console.log(full_address);
+// }
