@@ -71,7 +71,7 @@ function geocodeLatLng(geocoder, map, infowindow) {
 	// Grab Lat+Lng using Local Storage
 	var input = localStorage.getItem('lat') + ',' + localStorage.getItem('lng');
 	var latlngStr = input.split(',', 2);
-	var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+	var latlng = { lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1]) };
 	geocoder.geocode({'location': latlng}, (results, status) => {
 		if (status === 'OK') {
 			if (results[0]) {
@@ -81,7 +81,9 @@ function geocodeLatLng(geocoder, map, infowindow) {
 					map: map
 				});
 				// Display results address in search bar
-				searchParams.value = results[0].formatted_address;
+				var full_address = results[0].formatted_address;
+				searchParams.value = full_address;
+				localStorage.setItem('full_address', full_address);
 
 				infowindow.setContent(results[0].formatted_address);
 				infowindow.open(map, marker);
