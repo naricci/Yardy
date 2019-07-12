@@ -32,7 +32,7 @@ section.section.has-background-warning#navbarSection
 										p.control
 											a.button.has-text-primary(href='/users/' + current_user._id) #{current_user.username}
 										p.control
-											a.button.has-text-link(href='/users/logout') Logout
+											a.button.has-text-link#logout(href='/users/logout') Logout
 						// The content below will be visible to users who have NOT logged in.
 						if isAuthenticated === false
 							.navbar-end

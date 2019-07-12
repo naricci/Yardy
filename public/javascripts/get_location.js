@@ -58,16 +58,14 @@ function initMyMap() {
 		zoom: 10
 	});
 
-	var geocoder = new google.maps.Geocoder;
-	var infowindow = new google.maps.InfoWindow;
+	const geocoder = new google.maps.Geocoder;
+	const infowindow = new google.maps.InfoWindow;
 
 	geocodeLatLng(geocoder, map, infowindow);
 }
 
 // For Reverse Geocoding an Address
 function geocodeLatLng(geocoder, map, infowindow) {
-	// Grab Lat+Lng using textbox
-	// var input = document.getElementById('searchParams').value;
 	// Grab Lat+Lng using Local Storage
 	var input = localStorage.getItem('lat') + ',' + localStorage.getItem('lng');
 	var latlngStr = input.split(',', 2);
