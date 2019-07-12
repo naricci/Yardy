@@ -1,5 +1,6 @@
 var submit = document.getElementById('submit');
 var google;
+// eslint-disable-next-line no-unused-vars
 function initMap() {
 	var map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 8,

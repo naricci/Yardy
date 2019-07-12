@@ -1,3 +1,16 @@
+/********** Navigation Bar *********/
+const logout = document.getElementById('logout');
+
+// Logout Button
+// logout.addEventListener('click', (() => {
+// 	localStorage.clear();
+// }));
+logout.onclick = function() {
+	localStorage.clear();
+	return;
+};
+
+// Hamburger Menu
 document.addEventListener('DOMContentLoaded', (() => {
 	// Get all "navbar-burger" elements
 	const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
