@@ -25,7 +25,7 @@ const yardsales = require('./routes/yardsales');
 
 // Options for serving static files
 const options = {
-	maxAge: 315360000	// 1 year
+	maxAge: 31557600	// 1 year
 };
 
 // Session Configuration
@@ -57,7 +57,7 @@ app.set('view engine', 'pug');
 app.set('json spaces', 4);
 
 // Base Middleware
-app.use(favicon(path.join(__dirname, 'public', 'icons', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'icons', 'favicon.ico'), options));
 app.use(compression());	// Compress all routes
 app.use(logger('dev'));
 app.use(express.json());

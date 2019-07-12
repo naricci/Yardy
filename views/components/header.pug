@@ -32,26 +32,26 @@ section.section.has-background-warning#navbarSection
 										p.control
 											a.button.has-text-primary(href='/users/' + current_user._id) #{current_user.username}
 										p.control
-											a.button.has-text-link#logout(href='/users/logout') Logout
+											a.button.has-text-link#logout(href='/users/logout' aria-label='Logout') Logout
 						// The content below will be visible to users who have NOT logged in.
 						if isAuthenticated === false
 							.navbar-end
 								.navbar-item
-									a.button.is-dark(href='https://github.com/naricci/Yardy' aria-label='Home')
+									a.button.is-dark(href='https://github.com/naricci/Yardy' aria-label='Link to GitHub Repository')
 										span.icon.is-small
 											i.fab.fa-github
 										span GitHub
 								.navbar-item
 									.field.has-addons
 										p.control
-											a.button.has-text-link(href='/users/register') Register
+											a.button.has-text-link(href='/users/register' aria-label='Register') Register
 										p.control
-											a.button.has-text-link(href='/users/login') Login
+											a.button.has-text-link(href='/users/login' aria-label='Login') Login
 
 		// HERO/HEADER
 		.hero-body.has-background-warning.is-hidden-touch
 			.container
 				h1.title.is-1.has-text-link.has-text-centered.animated.bounce
-					a(href='/') Yardy
+					a(href='/' aria-label='Home') Yardy
 				h2.subtitle.has-text-link.has-text-centered
 					i a place for yard sale enthusiasts

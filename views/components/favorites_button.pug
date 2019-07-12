@@ -2,6 +2,6 @@
 form(method='POST' action='')
 	input(type='hidden' name='yardsale' value=yardsale._id)
 	input(type='hidden' name='userId' value=current_user._id)
-	button.button.is-link.is-rounded(type='submit')
+	button.button.is-link.is-rounded(type='submit' aria-label='Add to Favorites')
 		span.icon
 			i.fas.fa-star

@@ -1,14 +1,8 @@
 /********** Navigation Bar *********/
-const logout = document.getElementById('logout');
+var logout = document.getElementById('logout');
 
 // Logout Button
-// logout.addEventListener('click', (() => {
-// 	localStorage.clear();
-// }));
-logout.onclick = function() {
-	localStorage.clear();
-	return;
-};
+logout.addEventListener('click', clearLocalStorage);
 
 // Hamburger Menu
 document.addEventListener('DOMContentLoaded', (() => {
@@ -29,3 +23,7 @@ document.addEventListener('DOMContentLoaded', (() => {
 		});
 	}
 }));
+
+function clearLocalStorage() {
+	localStorage.clear();
+}

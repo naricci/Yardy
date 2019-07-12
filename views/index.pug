@@ -10,12 +10,12 @@ block content
 					.field-body
 						.field.is-grouped.is-grouped-multiline
 							p.control.has-icons-left.is-expanded
-								input.input#searchParams(type='text' name='search' placeholder="Search for yard sales near you!")
+								input.input#searchParams(type='text' name='search' placeholder='Search for yard sales near you!' aria-label='Yardsale Search Bar')
 								span.icon.is-small.is-left
 									i.fas.fa-map-marker-alt
 							p.control
 								.select
-									select#sort(name='sort')
+									select#sort(name='sort' aria-label='Sort By')
 										option(selected, value='') Sort By
 										option(value='date') Date & Time
 										option(value='city') City
@@ -24,12 +24,12 @@ block content
 							.divider
 							.divider
 							p.control
-								button#find-me.button.is-success(type='button') Find Me
+								button#find-me.button.is-success(type='button' aria-label='Get Current Location') Find Me
 							.divider
 							.divider
 							p.control
 								//- button#submit.button.is-link(type='button' onclick='initMap()')
-								button#submit.button.is-link(type='submit')
+								button#submit.button.is-link(type='submit' aria-label='Search')
 									span.icon
 										i.fas.fa-search-location
 									span Search
@@ -37,7 +37,7 @@ block content
 	// MAP OF USA
 	section.section.has-background-light
 		.container
-			script(src='/javascripts/get_location.js')
+			script(defer src='/javascripts/get_location.js')
 			include components/map
 
 	// YARD SALE LIST
