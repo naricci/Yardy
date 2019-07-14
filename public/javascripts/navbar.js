@@ -1,8 +1,4 @@
-/********** Navigation Bar *********/
-var logout = document.getElementById('logout');
-
-// Logout Button
-logout.addEventListener('click', clearLocalStorage);
+/********** Navigation Bar Functionality *********/
 
 // Hamburger Menu
 document.addEventListener('DOMContentLoaded', (() => {
@@ -24,6 +20,8 @@ document.addEventListener('DOMContentLoaded', (() => {
 	}
 }));
 
-function clearLocalStorage() {
+// Logout Button
+const logout = document.getElementById('logout');
+logout.addEventListener('click', () => {
 	localStorage.clear();
-}
+});
