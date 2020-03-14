@@ -14,7 +14,7 @@
     "lint": "eslint -c .eslintrc.json . --fix"
   },
   "dependencies": {
-    "acorn": "^6.1.1",
+    "acorn": "^6.4.1",
     "async": "^2.6.2",
     "aws-sdk": "^2.483.0",
     "compression": "^1.7.4",
