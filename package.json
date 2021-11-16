@@ -16,7 +16,7 @@
   "dependencies": {
     "acorn": "^6.1.1",
     "async": "^2.6.2",
-    "aws-sdk": "^2.483.0",
+    "aws-sdk": "^2.814.0",
     "compression": "^1.7.4",
     "connect-mongo": "^2.0.3",
     "cookie-parser": "^1.4.4",
